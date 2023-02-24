@@ -79,33 +79,70 @@ contract NftCourse is ERC721URIStorage, Ownable {
 	}
 
 	function registerTeacher(string metadata) public { // Use payable? (? Lost)
-		require(_addressToRegisteredTeacher[msg.sender].registeredDate == 0, 'You has registered');
-		require(_addressToApprovedTeacher[teacherAddress].registeredDate == 0, 'You has been approved');
+		require(_addressToRegisteredTeacherIndex[msg.sender] == 0, 'You has registered');
+		require(_addressToApprovedTeacher[teacherAddress] == 0, 'You has been approved');
 		require(_registeredTeacherCount.current() < REGISTERED_TEACHER_LIMIT, 'Too many waiting request. Please try again later.');
-		// chainlink to call recheckRegisteredTeacher();
-		// TODO : should use id for teacher?
+		// Idea:  chainlink to call recheckRegisteredTeacher();
+
 		_registeredTeacherCount.increment();
-		_allRegisteredTeachers[_registeredTeacherCount.current()] = new Teacher(); // TODO
+		uint256 currentIndex = _registeredTeacherCount.current();
+		_allRegisteredTeachers[currentIndex] = new Teacher(now(), msg.sender, metadata);
+		_addressToApprovedTeacherIndex[msg.sender] = currentIndex;
 	}
 
 	function approveTeacher(address teacherAddress) public onlyOwner { // Send back (? Lost)
-		require(_addressToApprovedTeacher[teacherAddress].registeredDate == 0, 'Teacher has been registered');
-		require(_addressToRegisteredTeacher[teacherAddress].registeredDate > 0, 'Teacher has not been registered');
+		require(_addressToApprovedTeacherIndex[teacherAddress] == 0, 'Teacher has been registered');
+		require(_addressToRegisteredTeacherIndex[teacherAddress] > 0, 'Teacher has not been registered');
 
-		Teacher memory teacher = _registeredTeacher[teacherAddress];
-		delete _registeredTeacher[teacherAddress];
+		uint256 teacherIndex = _addressToRegisteredTeacherIndex[teacherAddress];
+		uint256 lastTeacherIndex = _registeredTeacherCount.current();
+		Teacher memory teacher = _allRegisteredTeachers[teacherIndex];
 
-		// TODO
-		// _addressToApprovedTeacher[teacherAddress] = 
+		// remove teacher from register list
+		delete _addressToRegisteredTeacherIndex[teacherAddress];
+		if (teacherIndex != lastTeacherIndex) {
+			Teacher memory lastTeacher = _allRegisteredTeachers[lastTeacherIndex];
+			_allRegisteredTeachers[teacherIndex] = lastTeacher;
+			_addressToRegisteredTeacherIndex[lastTeacher.teacherAddress] = teacherIndex;
+		}
+		delete _allRegisteredTeachers[lastTeacherIndex];
+
+		// add teacher to approve list
+		_approvedTeacherCount.increment();
+		uint256 currentIndex = _approvedTeacherCount.current();
+		_addressToApprovedTeacherIndex[teacherAddress] = currentIndex;
+		_allApprovedTeachers.push(teacher);
 	}
 
-	// Use chainlink to remove registered teacher after 30 days if he/she is not registered
+	function removeTeacher(address teacherAddress) public onlyOwner {
+		// Check if teacher currently has class?
+		uint256 teacherIndex = _addressToApprovedTeacherIndex[teacherAddress];
+		uint256 lastTeacherIndex = _approvedTeacherCount.current();
+		delete _addressToApprovedTeacherIndex[teacherAddress];
+		if (teacherIndex != lastTeacherIndex) {
+			Teacher memory lastTeacher = _allApprovedTeachers[lastTeacherIndex];
+			_allApprovedTeachers[teacherIndex] = lastTeacher;
+			_addressToApprovedTeacherIndex[lastTeacher.teacherAddress] = teacherIndex;
+		}
+		delete _addressToApprovedTeacherIndex[lastTeacherIndex];
+	}
+
+	// Idea:  Use chainlink to remove registered teacher after 30 days if he/she is not registered
 	// function recheckRegisteredTeacher() public onlyOwner {
 		// require(_approvedTeacher[msg.sender].registeredDate == 0)
 	// }
 
 	function rejectRegisteredTeacher() public onlyOwner {
-
+		// Idea: Add address to blacklist in a particular time => prevent address from registering in a while?
+		uint256 teacherIndex = _addressToApprovedTeacherIndex[teacherAddress];
+		uint256 lastTeacherIndex = _approvedTeacherCount.current();
+		delete _addressToApprovedTeacherIndex[teacherAddress];
+		if (teacherIndex != lastTeacherIndex) {
+			Teacher memory lastTeacher = _allApprovedTeachers[lastTeacherIndex];
+			_allApprovedTeachers[teacherIndex] = lastTeacher;
+			_addressToApprovedTeacherIndex[lastTeacher.teacherAddress] = teacherIndex;
+		}
+		delete _addressToApprovedTeacherIndex[lastTeacherIndex];
 	}
 	// Teacher section: end
 	
