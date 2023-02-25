@@ -4,38 +4,18 @@ pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./Type.sol";
 
 contract School is Ownable {
     using Counters for Counters.Counter;
 
-    enum CourseType {
-        General,
-        Foundation,
-        Specialized,
-        SpecializedElective,
-        Elective
-    }
-
-    enum CourseStatus {
-        InProgress,
-        Complete
-    }
-
-    struct Requirement {
-        uint256 courseGroupId;
-        uint256 credits;
-    }
-
-    struct Course {
-        uint256 id;
-        address teacherAddress;
-        uint256 credits;
-        uint256 remainNftCounts;
-        uint256 maxNftCounts; // to limit the nft course minted
-        uint256 courseGroup; // course group id, course name: uri
-        CourseType courseType;
-        CourseStatus status;
-    }
+    // enum CourseType {
+    //     General,
+    //     Foundation,
+    //     Specialized,
+    //     SpecializedElective,
+    //     Elective
+    // }
 
     struct Teacher {
         uint256 registeredDate;
@@ -47,13 +27,13 @@ contract School is Ownable {
     bool private _isInitialized;
     bool public canRegistered;
     bool public canGetNftGraduation;
-    Requirement[] private _graduationRequirements;
+    Type.Requirement[] private _graduationRequirements;
     mapping(uint256 => uint256) private _idToGraduationRequirementIndex;
  
     // Course
     Counters.Counter private _courseCount;
     Counters.Counter private _courseIds;
-    Course[] private _allCourses;
+    Type.Course[] private _allCourses;
     mapping(uint256 => uint256) private _idToCourseIndex;
 
     // Metadata = Course group
@@ -85,11 +65,7 @@ contract School is Ownable {
         _;
     }
     
-    constructor() {
-        _isInitialized = true;
-        canRegistered = true;
-        canGetNftGraduation = true;
-    }
+    constructor() {}
 
     function initialize(uint256[] memory courseGroupIds, uint256[] memory credits) public onlyOwner {
         require(courseGroupIds.length == credits.length, 'Invalid input');
@@ -99,7 +75,7 @@ contract School is Ownable {
             if (credits[index] < 1) {
                 revert('Invalid credits input');
             }
-            Requirement memory requirement = Requirement(courseGroupIds[index], credits[index]);
+            Type.Requirement memory requirement = Type.Requirement(courseGroupIds[index], credits[index]);
             _graduationRequirements.push(requirement);
             _idToGraduationRequirementIndex[requirement.courseGroupId] = _graduationRequirements.length;
         }
@@ -107,6 +83,10 @@ contract School is Ownable {
         _isInitialized = true;
         canRegistered = true;
         canGetNftGraduation = true;
+    }
+
+    function getAllRequirements() public view returns (Type.Requirement[] memory requirements) {
+        return _graduationRequirements;
     }
 
     function getAllRegisteredTeachers() public view onlyOwner returns (Teacher[] memory) {
@@ -117,13 +97,23 @@ contract School is Ownable {
         return _allApprovedTeachers;
     }
 
+    function getAllCourses() public view returns (Type.Course[] memory) {
+        return _allCourses;
+    }
+
+    function getCourse(uint256 courseId) public view returns (Type.Course memory) {
+        require(_idToCourseIndex[courseId] > 0, "Course is not exist");
+        uint256 courseIndex = _idToCourseIndex[courseId];
+        Type.Course memory course = _allCourses[courseIndex - 1];
+
+        return course;
+    }
+
     /* Teacher section: start
     Can create smart contract inherit ChainLink to manage teacher
     */
     function teacherAddressOf(uint256 courseId) public view returns (address) {
-        require(_idToCourseIndex[courseId] > 0, "Course is not exist");
-        uint256 courseIndex = _idToCourseIndex[courseId];
-        Course memory course = _allCourses[courseIndex - 1];
+        Type.Course memory course = getCourse(courseId);
 
         return course.teacherAddress;
     }
@@ -214,39 +204,40 @@ contract School is Ownable {
     function createCourse(
         address teacherAddress,
         uint256 credits,
-        uint256 remainNftCounts,
-        uint256 maxNftCounts,
-        uint256 courseGroup, // -> course group?
-        CourseType courseType 
-    ) public onlyOwner returns (Course memory) {
+        uint256 nftCounts,
+        uint256 courseGroupId, // -> course group?
+        string memory metadata
+    ) public onlyOwner onlyInitialized returns (uint256) {
         require(_addressToApprovedTeacherIndex[teacherAddress] > 0, 'Teacher must register before assignment');
+        require(_idToGraduationRequirementIndex[courseGroupId] > 0, 'Course Group is invalid');
+        require(credits > 0, 'Credits must be a positive number');
+        require(nftCounts > 0, 'Nft Count must be a positive number');
 
         _courseCount.increment();
         _courseIds.increment();
         uint256 currentId = _courseIds.current();
         uint256 currentIndex = _allCourses.length;
-        Course memory course = Course(
+        Type.Course memory course = Type.Course(
             currentId,
             teacherAddress,
             credits,
-            remainNftCounts,
-            maxNftCounts,
-            courseGroup,
-            courseType,
-            CourseStatus.InProgress
+            nftCounts,
+            courseGroupId,
+            metadata,
+            Type.CourseStatus.InProgress
         );
 
         _idToCourseIndex[currentId] = currentIndex + 1;
         _allCourses.push(course);
 
         // EVENT
-        return course;
+        return currentId;
     }
 
     function completeCourse(
         uint256 courseId
     ) public onlyTeacher(courseId) {
         uint256 courseIndex = _idToCourseIndex[courseId];
-        _allCourses[courseIndex].status = CourseStatus.Complete;
+        _allCourses[courseIndex].status = Type.CourseStatus.Complete;
     }
 }

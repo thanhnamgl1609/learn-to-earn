@@ -1,0 +1,375 @@
+{
+  "contractName": "Type",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Type.sol\":\"Type\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/Type.sol\":{\"keccak256\":\"0xa95552fee09a6369a9321ac75eafc2a3318e13e1a37ddef430a128df02424ed2\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6a3742e12f3946df6deb6bdd83bd485e1875b0c17d99d9ce5cf52359aa876f63\",\"dweb:/ipfs/QmYvrv7SJnWQzvaMxNErSTcNjXK7LxvFB2Yix9DRPYdMC1\"]}},\"version\":1}",
+  "bytecode": "0x60566050600b82828239805160001a6073146043577f4e487b7100000000000000000000000000000000000000000000000000000000600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220ac944dc56638af32b8b04172e569ce177bd15bc1b00f4250361dcd72ab03162d64736f6c634300080d0033",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220ac944dc56638af32b8b04172e569ce177bd15bc1b00f4250361dcd72ab03162d64736f6c634300080d0033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "132:494:16:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "132:494:16:-:0;;;;;;;;",
+  "source": "// SPDX-License-Identifier: MIT\r\n// Tells the Solidity compiler to compile only from v0.8.13 to v0.9.0\r\npragma solidity ^0.8.13;\r\n\r\nlibrary Type {\r\n    enum CourseStatus {\r\n        InProgress,\r\n        Complete\r\n    }\r\n\r\n    struct Course {\r\n        uint256 id;\r\n        address teacherAddress;\r\n        uint256 credits;\r\n        uint256 maxNftCounts; // to limit the nft course minted\r\n        uint256 courseGroup; // course group id, course name: uri\r\n        string metadata; // course name\r\n        CourseStatus status;\r\n    }\r\n\r\n    struct Requirement {\r\n        uint256 courseGroupId;\r\n        uint256 credits;\r\n    }\r\n}\r\n",
+  "sourcePath": "E:\\learn\\learn-to-earn\\contracts\\Type.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/Type.sol",
+    "exportedSymbols": {
+      "Type": [
+        4213
+      ]
+    },
+    "id": 4214,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4188,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".13"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "104:24:16"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "Type",
+        "contractDependencies": [],
+        "contractKind": "library",
+        "fullyImplemented": true,
+        "id": 4213,
+        "linearizedBaseContracts": [
+          4213
+        ],
+        "name": "Type",
+        "nameLocation": "140:4:16",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "Type.CourseStatus",
+            "id": 4191,
+            "members": [
+              {
+                "id": 4189,
+                "name": "InProgress",
+                "nameLocation": "181:10:16",
+                "nodeType": "EnumValue",
+                "src": "181:10:16"
+              },
+              {
+                "id": 4190,
+                "name": "Complete",
+                "nameLocation": "202:8:16",
+                "nodeType": "EnumValue",
+                "src": "202:8:16"
+              }
+            ],
+            "name": "CourseStatus",
+            "nameLocation": "157:12:16",
+            "nodeType": "EnumDefinition",
+            "src": "152:65:16"
+          },
+          {
+            "canonicalName": "Type.Course",
+            "id": 4207,
+            "members": [
+              {
+                "constant": false,
+                "id": 4193,
+                "mutability": "mutable",
+                "name": "id",
+                "nameLocation": "258:2:16",
+                "nodeType": "VariableDeclaration",
+                "scope": 4207,
+                "src": "250:10:16",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 4192,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "250:7:16",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 4195,
+                "mutability": "mutable",
+                "name": "teacherAddress",
+                "nameLocation": "279:14:16",
+                "nodeType": "VariableDeclaration",
+                "scope": 4207,
+                "src": "271:22:16",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 4194,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "271:7:16",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 4197,
+                "mutability": "mutable",
+                "name": "credits",
+                "nameLocation": "312:7:16",
+                "nodeType": "VariableDeclaration",
+                "scope": 4207,
+                "src": "304:15:16",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 4196,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "304:7:16",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 4199,
+                "mutability": "mutable",
+                "name": "maxNftCounts",
+                "nameLocation": "338:12:16",
+                "nodeType": "VariableDeclaration",
+                "scope": 4207,
+                "src": "330:20:16",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 4198,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "330:7:16",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 4201,
+                "mutability": "mutable",
+                "name": "courseGroup",
+                "nameLocation": "403:11:16",
+                "nodeType": "VariableDeclaration",
+                "scope": 4207,
+                "src": "395:19:16",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 4200,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "395:7:16",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 4203,
+                "mutability": "mutable",
+                "name": "metadata",
+                "nameLocation": "469:8:16",
+                "nodeType": "VariableDeclaration",
+                "scope": 4207,
+                "src": "462:15:16",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 4202,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "462:6:16",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 4206,
+                "mutability": "mutable",
+                "name": "status",
+                "nameLocation": "516:6:16",
+                "nodeType": "VariableDeclaration",
+                "scope": 4207,
+                "src": "503:19:16",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_enum$_CourseStatus_$4191",
+                  "typeString": "enum Type.CourseStatus"
+                },
+                "typeName": {
+                  "id": 4205,
+                  "nodeType": "UserDefinedTypeName",
+                  "pathNode": {
+                    "id": 4204,
+                    "name": "CourseStatus",
+                    "nodeType": "IdentifierPath",
+                    "referencedDeclaration": 4191,
+                    "src": "503:12:16"
+                  },
+                  "referencedDeclaration": 4191,
+                  "src": "503:12:16",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_enum$_CourseStatus_$4191",
+                    "typeString": "enum Type.CourseStatus"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "Course",
+            "nameLocation": "232:6:16",
+            "nodeType": "StructDefinition",
+            "scope": 4213,
+            "src": "225:305:16",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "Type.Requirement",
+            "id": 4212,
+            "members": [
+              {
+                "constant": false,
+                "id": 4209,
+                "mutability": "mutable",
+                "name": "courseGroupId",
+                "nameLocation": "576:13:16",
+                "nodeType": "VariableDeclaration",
+                "scope": 4212,
+                "src": "568:21:16",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 4208,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "568:7:16",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 4211,
+                "mutability": "mutable",
+                "name": "credits",
+                "nameLocation": "608:7:16",
+                "nodeType": "VariableDeclaration",
+                "scope": 4212,
+                "src": "600:15:16",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 4210,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "600:7:16",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "Requirement",
+            "nameLocation": "545:11:16",
+            "nodeType": "StructDefinition",
+            "scope": 4213,
+            "src": "538:85:16",
+            "visibility": "public"
+          }
+        ],
+        "scope": 4214,
+        "src": "132:494:16",
+        "usedErrors": []
+      }
+    ],
+    "src": "104:524:16"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.13+commit.abaa5c0e.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.11",
+  "updatedAt": "2023-02-25T17:47:14.082Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

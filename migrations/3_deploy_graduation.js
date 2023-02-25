@@ -1,8 +1,8 @@
-const School = artifacts.require('School');
+const NftCourse = artifacts.require('NftCourse');
 const NftGraduation = artifacts.require('NftGraduation');
 
 module.exports = function (deployer) {
   deployer
-    .deploy(NftGraduation, School.address)
+    .deploy(NftGraduation, NftCourse.address)
 };
 
