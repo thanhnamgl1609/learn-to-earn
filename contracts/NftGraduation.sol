@@ -49,10 +49,10 @@ contract NftGraduation is ERC721, Ownable {
 		uint256[] memory tokenIds
     ) public returns (NftItem memory) {
         require(_courseContract.validateNftGradution(studentId, tokenIds), "Not credits enough");
-		return mintToken(studentId);
+		return _mintToken(studentId);
     }
     
-    function mintToken(string memory studentId) private returns (NftItem memory) {
+    function _mintToken(string memory studentId) private returns (NftItem memory) {
 		require(_studentIdToNftIndex[studentId] == 0, "Student has been granted nft graduation");
         _tokenIds.increment();
 
