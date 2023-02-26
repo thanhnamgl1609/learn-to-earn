@@ -31,6 +31,19 @@ contract NftGraduation is ERC721, Ownable {
         _courseContract = courseContract;
     }
 
+    function getAllNftGraduations() public view returns (NftItem[] memory) {
+        return _allNftItems;
+    }
+
+    function getNftGraduation(string memory studentId) public view returns (NftItem memory){
+        uint256 nftIndex = _studentIdToNftIndex[studentId];
+        if (nftIndex == 0) {
+            revert("Not exists");
+        }
+
+        return _allNftItems[nftIndex - 1];
+    }
+
     function exchangeNftGraduation(
         string memory studentId,
 		uint256[] memory tokenIds
@@ -39,7 +52,7 @@ contract NftGraduation is ERC721, Ownable {
 		return mintToken(studentId);
     }
     
-    function mintToken(string memory studentId) private onlyCourseContract returns (NftItem memory) {
+    function mintToken(string memory studentId) private returns (NftItem memory) {
 		require(_studentIdToNftIndex[studentId] == 0, "Student has been granted nft graduation");
         _tokenIds.increment();
 

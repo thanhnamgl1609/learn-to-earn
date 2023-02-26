@@ -22,12 +22,14 @@ contract NftCourse is ERC721URIStorage, Ownable {
     Counters.Counter private _tokenIds;
     NftItem[] private _allNftItems;
     mapping(uint256 => uint256) private _idToNftIndex; // tokenId =>NftItem 
+    mapping(string => mapping(uint256 => bool)) private _completedCourse;
+    mapping(string => uint256[]) private _nftCoursesOfStudent;
     // mapping(string => mapping(CourseType => uint256[])) private _completedCourse;
     mapping(string => bool) private _usedTokenURIs;
 
     mapping(uint256 => Type.Course) private _idToCourse;
-    mapping(uint256 => uint256) private _remainNftOfCourse;
-    mapping(string => mapping(uint256 => uint256)) creditsOfCourse;
+    mapping(string => mapping(uint256 => uint256)) private _creditsOfCourse;
+    mapping(string => mapping(string => bool)) private _checkedCourse;
     
     constructor(School schoolContract) ERC721("CourseNFT", "CNFT") {
         _schoolContract = schoolContract;
@@ -41,8 +43,28 @@ contract NftCourse is ERC721URIStorage, Ownable {
 
     function getNftCourse(uint256 tokenId) public view returns (NftItem memory) {
         uint256 tokenIndex = _idToNftIndex[tokenId];
+        if (tokenIndex == 0) { revert("Not exists nft course"); }
 
-        return _allNftItems[tokenIndex];
+        return _allNftItems[tokenIndex - 1];
+    }
+
+    function getNftCourses(string memory studentId) public view returns (NftItem[] memory) {
+        uint256[] memory tokenIds = _nftCoursesOfStudent[studentId];
+        uint256 nftCount = tokenIds.length;
+        NftItem[] memory nftItems = new NftItem[](nftCount);
+
+        for (uint256 index = 0; index < nftCount; ++index) {
+            nftItems[index] = getNftCourse(tokenIds[index]);
+        }
+
+        return nftItems;
+    }
+
+    function getNumberOfNftCourses(string memory studentId) public view returns (uint256) {
+        uint256[] memory tokenIds = _nftCoursesOfStudent[studentId];
+        uint256 nftCount = tokenIds.length;
+
+        return nftCount;
     }
 
     function mintToken(
@@ -53,9 +75,10 @@ contract NftCourse is ERC721URIStorage, Ownable {
     ) public onlyTeacher(courseId) returns (uint256)
     {
         require(!_usedTokenURIs[tokenURI], "URI has already existed");
+        require(!_completedCourse[studentId][courseId], "Student has been granted");
         require(!_isOutOfNft(courseId), "Out of nft");
         _tokenIds.increment();
-        _remainNftOfCourse[courseId] -= 1;
+        _idToCourse[courseId].nftCounts -= 1;
 
         uint256 newTokenId = _tokenIds.current();
         _safeMint(msg.sender, newTokenId);
@@ -76,18 +99,22 @@ contract NftCourse is ERC721URIStorage, Ownable {
 
         for (uint256 index = 0; index < requirementLength; ++index) {
             Type.Requirement memory requirement = requirements[index];
-            creditsOfCourse[studentId][requirement.courseGroupId] = 0;
+            _creditsOfCourse[studentId][requirement.courseGroupId] = 0;
         }
 
         for (uint256 index = 0; index < tokenIdLength; ++index) {
             NftItem memory nftItem = getNftCourse(tokenIds[index]);
             Type.Course memory course = _getCourse(nftItem.courseId);
-            creditsOfCourse[studentId][course.courseGroup] += course.credits;
+            if (_checkedCourse[studentId][course.metadata]) {
+                revert("Duplicate course");
+            }
+            _creditsOfCourse[studentId][course.courseGroup] += course.credits;
+            _checkedCourse[studentId][course.metadata] = true;
         }
 
         for (uint256 index = 0; index < requirementLength; ++index) {
             Type.Requirement memory requirement = requirements[index];
-            if (creditsOfCourse[studentId][requirement.courseGroupId] < requirement.credits) {
+            if (_creditsOfCourse[studentId][requirement.courseGroupId] < requirement.credits) {
                 return false;
             }
         }
@@ -95,15 +122,9 @@ contract NftCourse is ERC721URIStorage, Ownable {
         return true;
     }
 
-    function _isOutOfNft(uint256 courseId) private returns (bool)
+    function _isOutOfNft(uint256 courseId) private view returns (bool)
     {
-        if (_remainNftOfCourse[courseId] == 0)
-        {
-            _remainNftOfCourse[courseId] = _idToCourse[courseId].maxNftCounts;
-            return true;
-        }
-
-        return _idToCourse[courseId].maxNftCounts == 0;
+        return _idToCourse[courseId].nftCounts == 0;
     }
 
     function _createNftItem(
@@ -114,6 +135,8 @@ contract NftCourse is ERC721URIStorage, Ownable {
         NftItem memory nftItem = NftItem(tokenId, studentId, courseId);
         _allNftItems.push(nftItem);
         _idToNftIndex[tokenId] = _allNftItems.length;
+        _nftCoursesOfStudent[studentId].push(tokenId);
+        _completedCourse[studentId][courseId] = true;
     }
 
     function _getCourse(uint256 courseId) private returns (Type.Course memory) {

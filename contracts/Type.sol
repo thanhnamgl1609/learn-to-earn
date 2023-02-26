@@ -12,7 +12,7 @@ library Type {
         uint256 id;
         address teacherAddress;
         uint256 credits;
-        uint256 maxNftCounts; // to limit the nft course minted
+        uint256 nftCounts; // to limit the nft course minted
         uint256 courseGroup; // course group id, course name: uri
         string metadata; // course name
         CourseStatus status;

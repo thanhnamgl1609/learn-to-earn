@@ -125,9 +125,8 @@ contract School is Ownable {
         require(_allRegisteredTeachers.length < REGISTERED_TEACHER_LIMIT, 'Too many waiting request. Please try again later.');
         // Idea:  chainlink to call recheckRegisteredTeacher() => auto reject after a while;
 
-        uint256 currentIndex = _allRegisteredTeachers.length;
         _allRegisteredTeachers.push(Teacher(block.timestamp, msg.sender, metadata));
-        _addressToRegisteredTeacherIndex[msg.sender] = currentIndex + 1;
+        _addressToRegisteredTeacherIndex[msg.sender] = _allRegisteredTeachers.length;
 
         // EVENT
     }
@@ -142,7 +141,7 @@ contract School is Ownable {
 
         // remove teacher from register list
         if (teacherIndex != lastTeacherIndex) {
-            Teacher memory lastTeacher = _allRegisteredTeachers[lastTeacherIndex];
+            Teacher memory lastTeacher = _allRegisteredTeachers[lastTeacherIndex - 1];
             _allRegisteredTeachers[teacherIndex - 1] = lastTeacher;
             _addressToRegisteredTeacherIndex[lastTeacher.registeredAddress] = teacherIndex;
         }
