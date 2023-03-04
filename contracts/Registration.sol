@@ -3,11 +3,8 @@
 pragma solidity ^0.8.13;
 
 contract Registration {
-    mapping(uint256 => address[]) private _registers;
-    mapping(uint256 => mapping(address => uint256)) private _positionOfRegisters;
-
-    mapping(uint256 => address[]) private _members;
-    mapping(uint256 => mapping(address => uint256)) private _positionOfMembers;
+    mapping(uint256 => address[]) private _registers; // Role => address
+    mapping(uint256 => mapping(address => uint256)) private _positionOfRegisters; // Role => address => position
 
     enum ROLE {
         STUDENT,
@@ -20,41 +17,22 @@ contract Registration {
         _hasRole[uint(ROLE.TEACHER)] = true;
     }
 
-    modifier isRegister(uint256 role, address addr) {
+    modifier hasRegistered(uint256 role, address addr) {
         require(_positionOfRegisters[role][addr] > 0, "Not registered");
         _;
-    }
+    } 
 
-    modifier isMember(uint256 role, address addr) {
-        require(_positionOfMembers[role][addr] > 0, "Not member");
-        _;
-    }
-
-    modifier isAllowedRole(uint256 role) {
+    modifier allowedRole(uint256 role) {
         require(_hasRole[role], "Role doesn't not exist");
         _;
     }
 
-    function register(uint256 role, address addr) internal isAllowedRole(role) {
+    function _register(uint256 role, address addr) internal allowedRole(role) {
         _registers[role].push(addr);
         _positionOfRegisters[role][addr] = _registers[role].length;
     }
 
-    function approve(uint256 role, address addr) internal isRegister(role, addr) {
-        removeFromRegistersList(role, addr);
-        _members[role].push(addr);
-        _positionOfMembers[role][addr] = _members[role].length;
-    }
-
-    function reject(uint256 role, address addr) internal isRegister(role, addr) {
-        removeFromRegistersList(role, addr);
-    }
-
-    function remove(uint256 role, address addr) internal isMember(role, addr) {
-        removeFromMembersList(role, addr);
-    }
-
-    function removeFromRegistersList(uint256 role, address addr) private {
+    function _removeFromRegistersList(uint256 role, address addr) internal {
         uint256 pos = _positionOfRegisters[role][addr];
         uint256 len = _registers[role].length;
         if (pos != len) {
@@ -68,17 +46,7 @@ contract Registration {
         delete _positionOfRegisters[role][addr];
     }
 
-    function removeFromMembersList(uint256 role, address addr) private {
-        uint256 pos = _positionOfMembers[role][addr];
-        uint256 len = _members[role].length;
-        if (pos != len) {
-            // swap current with last
-            address lastRegisteredAddr = _members[role][len - 1];
-            _members[role][pos - 1] = lastRegisteredAddr;
-            _positionOfMembers[role][lastRegisteredAddr] = pos;
-        }
-
-        _members[role].pop();
-        delete _positionOfMembers[role][addr];
+    function _isRegister(uint256 role, address addr) internal view returns (bool) {
+        return _positionOfRegisters[role][addr] > 0;
     }
 }
