@@ -15,8 +15,9 @@ contract CertificateDefinition {
     uint256 constant NFT_REQUIREMENT = 1;
     uint256 constant NFT_COURSE_TEMPLATE = 2;
     uint256 constant NFT_CLASS = 3;
-    uint256 constant NFT_COMPLETE_COURSE = 4;
-    uint256 constant NFT_GRADUATION = 5;
+    uint256 constant NFT_SCORE_BOARD = 4;
+    uint256 constant NFT_COMPLETE_COURSE = 5;
+    uint256 constant NFT_GRADUATION = 6;
 
     enum ROLE {
         STUDENT,
@@ -57,7 +58,8 @@ contract CertificateDefinition {
         uint256 credits;
         uint256 completeAt; // end time - editable
         uint256[] requiredScore; // 1, 2, 3, 4, 5 - some score (like pracice can be unused)
-        address studentAddresses;
+        address[] studentAddresses;
+        uint256 maxSize;
         address teacherAddr;
         /* Metadata:
             - Teacher name - Nft Id?
@@ -75,7 +77,7 @@ contract CertificateDefinition {
         uint256 classId;
         address studentAddr;
         uint256[] requiredScore; // accumulate all score and divide by length to get avarage
-        mapping(uint256 => uint256) scores; // type => score value (GK: 5)
+        uint256[] scores; // type => score value (GK: 5)
         /*
             Metadata:
                 - Student info (name + tokenId)

@@ -14,18 +14,16 @@ contract ERC1155BaseContract is ERC1155URIStorage {
 
     constructor (string memory uri) ERC1155(uri) {}
 
-    mapping(uint256 => Counters.Counter) _maxTokenIdIndexOfRole; // type => max token id
-    mapping(string => bool) private _usedTokenURI;
+    mapping(uint256 => Counters.Counter) internal _maxTokenIdIndexOfRole; // type => max token id
+    mapping(string => bool) internal _usedTokenURI;
 
-    mapping(address => uint256) private _nftOfOwner; // address => tokenId[]
+    mapping(uint256 => address) internal _ownerOfNft;
 
-    mapping(uint256 => address) private _ownerOfNft;
-
-    function _getNftType(uint256 tokenId) private pure returns (uint256) {
+    function _getNftType(uint256 tokenId) internal pure returns (uint256) {
         return tokenId >> INDEX_BITS;
     }
 
-    function _generateNewTokenId(uint256 nftType) private returns (uint256) {
+    function _generateNewTokenId(uint256 nftType) internal returns (uint256) {
         _maxTokenIdIndexOfRole[nftType].increment();
         uint256 tokenId = _maxTokenIdIndexOfRole[nftType].current();
 
