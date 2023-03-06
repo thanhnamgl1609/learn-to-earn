@@ -1,0 +1,104 @@
+{
+  "contractName": "INftCertificates",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/INftCertificates.sol\":\"INftCertificates\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces/IConstant.sol\":{\"keccak256\":\"0xb5f5bbeb3650463f322b069be01c261bf31a11c0d15a3ab100783d655e3f9bde\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5809db41eabb3e2af8b1d3cef94d62408dc0e1b06abe45b293ef9bad3b6a8283\",\"dweb:/ipfs/QmezdKfoV5YzGtwzqhgJ8Kvf8xW5rN3s7Y4TYGp9a4KZGT\"]},\"project:/contracts/interfaces/INftCertificates.sol\":{\"keccak256\":\"0x82c4e170812b4b162264f75f329ed9b4c95ee8bfa2c77b0e5e137c288ad35a80\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c5a35087c97cf9290d0e4decd02a99d4ccf4f4864a84d2deb304d87e3e17aca7\",\"dweb:/ipfs/QmZh9gnrH87UdGj5FMb2H8Xu2ErrwKkPmcq47aeysKB5pH\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\r\n// Tells the Solidity compiler to compile only from v0.8.13 to v0.9.0\r\npragma solidity ^0.8.13;\r\nimport \"./IConstant.sol\";\r\n\r\ninterface INftCertificates is IConstant {}\r\n",
+  "sourcePath": "E:\\learn\\learn-to-earn\\contracts\\interfaces\\INftCertificates.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/interfaces/INftCertificates.sol",
+    "exportedSymbols": {
+      "IConstant": [
+        9311
+      ],
+      "INftCertificates": [
+        9317
+      ]
+    },
+    "id": 9318,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 9313,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".13"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "104:24:29"
+      },
+      {
+        "absolutePath": "project:/contracts/interfaces/IConstant.sol",
+        "file": "./IConstant.sol",
+        "id": 9314,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 9318,
+        "sourceUnit": 9312,
+        "src": "130:25:29",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 9315,
+              "name": "IConstant",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 9311,
+              "src": "189:9:29"
+            },
+            "id": 9316,
+            "nodeType": "InheritanceSpecifier",
+            "src": "189:9:29"
+          }
+        ],
+        "canonicalName": "INftCertificates",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": true,
+        "id": 9317,
+        "linearizedBaseContracts": [
+          9317,
+          9311
+        ],
+        "name": "INftCertificates",
+        "nameLocation": "169:16:29",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 9318,
+        "src": "159:42:29",
+        "usedErrors": []
+      }
+    ],
+    "src": "104:99:29"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.13+commit.abaa5c0e.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.11",
+  "updatedAt": "2023-03-06T23:34:50.165Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

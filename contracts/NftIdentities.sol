@@ -6,8 +6,9 @@ import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./Registration.sol";
+import "./interfaces/INftIdentities.sol";
 
-contract NftIdentities is ERC1155URIStorage, Registration {
+contract NftIdentities is ERC1155URIStorage, Registration, INftIdentities {
     using Counters for Counters.Counter;
 
     struct NftIdentity {
@@ -76,6 +77,8 @@ contract NftIdentities is ERC1155URIStorage, Registration {
 
     constructor() ERC1155("") {
         _owner = msg.sender;
+        _hasRole[uint(ROLE.STUDENT)] = true;
+        _hasRole[uint(ROLE.TEACHER)] = true;
     }
 
     // Used for everyone: Section start

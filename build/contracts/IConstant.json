@@ -1,0 +1,850 @@
+{
+  "contractName": "IConstant",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/IConstant.sol\":\"IConstant\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces/IConstant.sol\":{\"keccak256\":\"0xb5f5bbeb3650463f322b069be01c261bf31a11c0d15a3ab100783d655e3f9bde\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5809db41eabb3e2af8b1d3cef94d62408dc0e1b06abe45b293ef9bad3b6a8283\",\"dweb:/ipfs/QmezdKfoV5YzGtwzqhgJ8Kvf8xW5rN3s7Y4TYGp9a4KZGT\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\r\n// Tells the Solidity compiler to compile only from v0.8.13 to v0.9.0\r\npragma solidity ^0.8.13;\r\n\r\n/*\r\n    Core creation flows: Requirement => Course template => class => complete course => graduation\r\n    Removable:\r\n        - Requirement <- need course template remove before\r\n        - Course Template <- need all class belongs to done\r\n        - Class <- Need to complete\r\n    Editable:\r\n        - Requirement {}\r\n*/\r\ninterface IConstant {\r\n    enum ROLE {\r\n        STUDENT,\r\n        TEACHER\r\n    }\r\n\r\n    enum ScoreType {\r\n        Midterm,\r\n        Practice,\r\n        Plus,\r\n        Final,\r\n        Other\r\n    }\r\n\r\n    struct NftRequirement {\r\n        uint256 tokenId;\r\n        uint256 credits;\r\n        /*\r\n            Metadata:\r\n                - name\r\n        */\r\n    }\r\n\r\n    struct NftCourseTemplate { // cannot be burn if exist any nft classes belongs to it\r\n        uint256 tokenId;\r\n        uint256 requirementId; // cannot be updated\r\n        uint256 credits;\r\n        /*\r\n            Metadata:\r\n                - Requirement name\r\n                - Course name\r\n        */\r\n    }\r\n    \r\n    struct NftClass {\r\n        uint256 tokenId;\r\n        uint256 courseTemplateId; // courseId - requirementId\r\n        uint256 credits;\r\n        uint256 completeAt; // end time - editable\r\n        uint256[] requiredScore; // 1, 2, 3, 4, 5 - some score (like pracice can be unused)\r\n        address[] studentAddresses;\r\n        uint256 maxSize;\r\n        address teacherAddr;\r\n        /* Metadata:\r\n            - Teacher name - Nft Id?\r\n            - Course name\r\n            - Course group name?\r\n            - CompleteAt (datetime)\r\n            - Credits\r\n            - Student List (Name - Nft Id?)\r\n            - Start at\r\n        */\r\n    }\r\n\r\n    struct NftScoreBoard {\r\n        uint256 tokenId;\r\n        uint256 classId;\r\n        address studentAddr;\r\n        uint256[] requiredScore; // accumulate all score and divide by length to get avarage\r\n        uint256[] scores; // type => score value (GK: 5)\r\n        /*\r\n            Metadata:\r\n                - Student info (name + tokenId)\r\n                - Required Scores (GK, CK, ...)\r\n                - Class info\r\n        */\r\n    }\r\n\r\n    struct NftCompleteCourse {\r\n        uint256 tokenId;\r\n        uint256 credits;\r\n        uint256 avgScore; // * 100 to keep 2 digits after comma\r\n        /* Metadata:\r\n            - Teacher name - Nft Id?\r\n            - Course name\r\n            - Course group name?\r\n            - Start at\r\n            - CompleteAt (datetime)\r\n            - Credits\r\n            - Scores -- where?\r\n        */\r\n    }\r\n\r\n    struct NftGraduation {\r\n        uint256 tokenId;\r\n        /*\r\n            Metadata:\r\n                - Student name\r\n                - Student token ID\r\n                - Courses + Scores (detail?)\r\n                - Final average score\r\n        */\r\n    }\r\n}\r\n",
+  "sourcePath": "E:\\learn\\learn-to-earn\\contracts\\interfaces\\IConstant.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/interfaces/IConstant.sol",
+    "exportedSymbols": {
+      "IConstant": [
+        9311
+      ]
+    },
+    "id": 9312,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 9247,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".13"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "104:24:28"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IConstant",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": true,
+        "id": 9311,
+        "linearizedBaseContracts": [
+          9311
+        ],
+        "name": "IConstant",
+        "nameLocation": "465:9:28",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "IConstant.ROLE",
+            "id": 9250,
+            "members": [
+              {
+                "id": 9248,
+                "name": "STUDENT",
+                "nameLocation": "503:7:28",
+                "nodeType": "EnumValue",
+                "src": "503:7:28"
+              },
+              {
+                "id": 9249,
+                "name": "TEACHER",
+                "nameLocation": "521:7:28",
+                "nodeType": "EnumValue",
+                "src": "521:7:28"
+              }
+            ],
+            "name": "ROLE",
+            "nameLocation": "487:4:28",
+            "nodeType": "EnumDefinition",
+            "src": "482:53:28"
+          },
+          {
+            "canonicalName": "IConstant.ScoreType",
+            "id": 9256,
+            "members": [
+              {
+                "id": 9251,
+                "name": "Midterm",
+                "nameLocation": "569:7:28",
+                "nodeType": "EnumValue",
+                "src": "569:7:28"
+              },
+              {
+                "id": 9252,
+                "name": "Practice",
+                "nameLocation": "587:8:28",
+                "nodeType": "EnumValue",
+                "src": "587:8:28"
+              },
+              {
+                "id": 9253,
+                "name": "Plus",
+                "nameLocation": "606:4:28",
+                "nodeType": "EnumValue",
+                "src": "606:4:28"
+              },
+              {
+                "id": 9254,
+                "name": "Final",
+                "nameLocation": "621:5:28",
+                "nodeType": "EnumValue",
+                "src": "621:5:28"
+              },
+              {
+                "id": 9255,
+                "name": "Other",
+                "nameLocation": "637:5:28",
+                "nodeType": "EnumValue",
+                "src": "637:5:28"
+              }
+            ],
+            "name": "ScoreType",
+            "nameLocation": "548:9:28",
+            "nodeType": "EnumDefinition",
+            "src": "543:106:28"
+          },
+          {
+            "canonicalName": "IConstant.NftRequirement",
+            "id": 9261,
+            "members": [
+              {
+                "constant": false,
+                "id": 9258,
+                "mutability": "mutable",
+                "name": "tokenId",
+                "nameLocation": "698:7:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9261,
+                "src": "690:15:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 9257,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "690:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 9260,
+                "mutability": "mutable",
+                "name": "credits",
+                "nameLocation": "724:7:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9261,
+                "src": "716:15:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 9259,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "716:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "NftRequirement",
+            "nameLocation": "664:14:28",
+            "nodeType": "StructDefinition",
+            "scope": 9311,
+            "src": "657:153:28",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "IConstant.NftCourseTemplate",
+            "id": 9268,
+            "members": [
+              {
+                "constant": false,
+                "id": 9263,
+                "mutability": "mutable",
+                "name": "tokenId",
+                "nameLocation": "919:7:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9268,
+                "src": "911:15:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 9262,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "911:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 9265,
+                "mutability": "mutable",
+                "name": "requirementId",
+                "nameLocation": "945:13:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9268,
+                "src": "937:21:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 9264,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "937:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 9267,
+                "mutability": "mutable",
+                "name": "credits",
+                "nameLocation": "998:7:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9268,
+                "src": "990:15:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 9266,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "990:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "NftCourseTemplate",
+            "nameLocation": "825:17:28",
+            "nodeType": "StructDefinition",
+            "scope": 9311,
+            "src": "818:309:28",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "IConstant.NftClass",
+            "id": 9287,
+            "members": [
+              {
+                "constant": false,
+                "id": 9270,
+                "mutability": "mutable",
+                "name": "tokenId",
+                "nameLocation": "1174:7:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9287,
+                "src": "1166:15:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 9269,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1166:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 9272,
+                "mutability": "mutable",
+                "name": "courseTemplateId",
+                "nameLocation": "1200:16:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9287,
+                "src": "1192:24:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 9271,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1192:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 9274,
+                "mutability": "mutable",
+                "name": "credits",
+                "nameLocation": "1263:7:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9287,
+                "src": "1255:15:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 9273,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1255:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 9276,
+                "mutability": "mutable",
+                "name": "completeAt",
+                "nameLocation": "1289:10:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9287,
+                "src": "1281:18:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 9275,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1281:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 9279,
+                "mutability": "mutable",
+                "name": "requiredScore",
+                "nameLocation": "1343:13:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9287,
+                "src": "1333:23:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                  "typeString": "uint256[]"
+                },
+                "typeName": {
+                  "baseType": {
+                    "id": 9277,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1333:7:28",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 9278,
+                  "nodeType": "ArrayTypeName",
+                  "src": "1333:9:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                    "typeString": "uint256[]"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 9282,
+                "mutability": "mutable",
+                "name": "studentAddresses",
+                "nameLocation": "1436:16:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9287,
+                "src": "1426:26:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                  "typeString": "address[]"
+                },
+                "typeName": {
+                  "baseType": {
+                    "id": 9280,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1426:7:28",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 9281,
+                  "nodeType": "ArrayTypeName",
+                  "src": "1426:9:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                    "typeString": "address[]"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 9284,
+                "mutability": "mutable",
+                "name": "maxSize",
+                "nameLocation": "1471:7:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9287,
+                "src": "1463:15:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 9283,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1463:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 9286,
+                "mutability": "mutable",
+                "name": "teacherAddr",
+                "nameLocation": "1497:11:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9287,
+                "src": "1489:19:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 9285,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1489:7:28",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "NftClass",
+            "nameLocation": "1146:8:28",
+            "nodeType": "StructDefinition",
+            "scope": 9311,
+            "src": "1139:639:28",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "IConstant.NftScoreBoard",
+            "id": 9300,
+            "members": [
+              {
+                "constant": false,
+                "id": 9289,
+                "mutability": "mutable",
+                "name": "tokenId",
+                "nameLocation": "1826:7:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9300,
+                "src": "1818:15:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 9288,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1818:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 9291,
+                "mutability": "mutable",
+                "name": "classId",
+                "nameLocation": "1852:7:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9300,
+                "src": "1844:15:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 9290,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1844:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 9293,
+                "mutability": "mutable",
+                "name": "studentAddr",
+                "nameLocation": "1878:11:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9300,
+                "src": "1870:19:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 9292,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1870:7:28",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 9296,
+                "mutability": "mutable",
+                "name": "requiredScore",
+                "nameLocation": "1910:13:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9300,
+                "src": "1900:23:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                  "typeString": "uint256[]"
+                },
+                "typeName": {
+                  "baseType": {
+                    "id": 9294,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1900:7:28",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 9295,
+                  "nodeType": "ArrayTypeName",
+                  "src": "1900:9:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                    "typeString": "uint256[]"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 9299,
+                "mutability": "mutable",
+                "name": "scores",
+                "nameLocation": "2004:6:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9300,
+                "src": "1994:16:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                  "typeString": "uint256[]"
+                },
+                "typeName": {
+                  "baseType": {
+                    "id": 9297,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1994:7:28",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 9298,
+                  "nodeType": "ArrayTypeName",
+                  "src": "1994:9:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                    "typeString": "uint256[]"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "NftScoreBoard",
+            "nameLocation": "1793:13:28",
+            "nodeType": "StructDefinition",
+            "scope": 9311,
+            "src": "1786:438:28",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "IConstant.NftCompleteCourse",
+            "id": 9307,
+            "members": [
+              {
+                "constant": false,
+                "id": 9302,
+                "mutability": "mutable",
+                "name": "tokenId",
+                "nameLocation": "2276:7:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9307,
+                "src": "2268:15:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 9301,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "2268:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 9304,
+                "mutability": "mutable",
+                "name": "credits",
+                "nameLocation": "2302:7:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9307,
+                "src": "2294:15:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 9303,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "2294:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 9306,
+                "mutability": "mutable",
+                "name": "avgScore",
+                "nameLocation": "2328:8:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9307,
+                "src": "2320:16:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 9305,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "2320:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "NftCompleteCourse",
+            "nameLocation": "2239:17:28",
+            "nodeType": "StructDefinition",
+            "scope": 9311,
+            "src": "2232:399:28",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "IConstant.NftGraduation",
+            "id": 9310,
+            "members": [
+              {
+                "constant": false,
+                "id": 9309,
+                "mutability": "mutable",
+                "name": "tokenId",
+                "nameLocation": "2679:7:28",
+                "nodeType": "VariableDeclaration",
+                "scope": 9310,
+                "src": "2671:15:28",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 9308,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "2671:7:28",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "NftGraduation",
+            "nameLocation": "2646:13:28",
+            "nodeType": "StructDefinition",
+            "scope": 9311,
+            "src": "2639:255:28",
+            "visibility": "public"
+          }
+        ],
+        "scope": 9312,
+        "src": "455:2442:28",
+        "usedErrors": []
+      }
+    ],
+    "src": "104:2795:28"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.13+commit.abaa5c0e.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.11",
+  "updatedAt": "2023-03-06T23:34:50.164Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

@@ -1,0 +1,241 @@
+{
+  "contractName": "INftIdentities",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "registerAddr",
+          "type": "address"
+        }
+      ],
+      "name": "isAbleToOperate",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"registerAddr\",\"type\":\"address\"}],\"name\":\"isAbleToOperate\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/INftIdentities.sol\":\"INftIdentities\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces/IConstant.sol\":{\"keccak256\":\"0xb5f5bbeb3650463f322b069be01c261bf31a11c0d15a3ab100783d655e3f9bde\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5809db41eabb3e2af8b1d3cef94d62408dc0e1b06abe45b293ef9bad3b6a8283\",\"dweb:/ipfs/QmezdKfoV5YzGtwzqhgJ8Kvf8xW5rN3s7Y4TYGp9a4KZGT\"]},\"project:/contracts/interfaces/INftIdentities.sol\":{\"keccak256\":\"0xdd92c420fc12ac0cdff10f0b9a842c3a0f79acdde8df99e743fb61475b78bd92\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8d06a9cec6e57c518b8b8582191c03bbe7da751f4358cf45f50967e25784267a\",\"dweb:/ipfs/QmTCzsyGcfzCCqXxg4jzkYphSzA3AAbiBUUvkCQgMoBSUD\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\r\n// Tells the Solidity compiler to compile only from v0.8.13 to v0.9.0\r\npragma solidity ^0.8.13;\r\nimport \"./IConstant.sol\";\r\n\r\ninterface INftIdentities is IConstant {\r\n    function isAbleToOperate(address registerAddr)\r\n        external\r\n        view\r\n        returns (bool, uint256);\r\n}\r\n",
+  "sourcePath": "E:\\learn\\learn-to-earn\\contracts\\interfaces\\INftIdentities.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/interfaces/INftIdentities.sol",
+    "exportedSymbols": {
+      "IConstant": [
+        9311
+      ],
+      "INftIdentities": [
+        9332
+      ]
+    },
+    "id": 9333,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 9319,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".13"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "104:24:30"
+      },
+      {
+        "absolutePath": "project:/contracts/interfaces/IConstant.sol",
+        "file": "./IConstant.sol",
+        "id": 9320,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 9333,
+        "sourceUnit": 9312,
+        "src": "130:25:30",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 9321,
+              "name": "IConstant",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 9311,
+              "src": "187:9:30"
+            },
+            "id": 9322,
+            "nodeType": "InheritanceSpecifier",
+            "src": "187:9:30"
+          }
+        ],
+        "canonicalName": "INftIdentities",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "id": 9332,
+        "linearizedBaseContracts": [
+          9332,
+          9311
+        ],
+        "name": "INftIdentities",
+        "nameLocation": "169:14:30",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "functionSelector": "ce268f69",
+            "id": 9331,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "isAbleToOperate",
+            "nameLocation": "213:15:30",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 9325,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 9324,
+                  "mutability": "mutable",
+                  "name": "registerAddr",
+                  "nameLocation": "237:12:30",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 9331,
+                  "src": "229:20:30",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 9323,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "229:7:30",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "228:22:30"
+            },
+            "returnParameters": {
+              "id": 9330,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 9327,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 9331,
+                  "src": "301:4:30",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 9326,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "301:4:30",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 9329,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 9331,
+                  "src": "307:7:30",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 9328,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "307:7:30",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "300:15:30"
+            },
+            "scope": 9332,
+            "src": "204:112:30",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 9333,
+        "src": "159:160:30",
+        "usedErrors": []
+      }
+    ],
+    "src": "104:217:30"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.13+commit.abaa5c0e.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.11",
+  "updatedAt": "2023-03-06T23:34:50.165Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

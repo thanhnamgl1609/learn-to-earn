@@ -6,16 +6,7 @@ contract Registration {
     mapping(uint256 => address[]) private _registers; // Role => address
     mapping(uint256 => mapping(address => uint256)) private _positionOfRegisters; // Role => address => position
 
-    enum ROLE {
-        STUDENT,
-        TEACHER
-    }
-    mapping(uint256 => bool) private _hasRole;
-
-    constructor () {
-        _hasRole[uint(ROLE.STUDENT)] = true;
-        _hasRole[uint(ROLE.TEACHER)] = true;
-    }
+    mapping(uint256 => bool) internal _hasRole;
 
     modifier hasRegistered(uint256 role, address addr) {
         require(_positionOfRegisters[role][addr] > 0, "Not registered");
