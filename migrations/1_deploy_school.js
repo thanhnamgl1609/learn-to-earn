@@ -1,8 +1,6 @@
-const Type = artifacts.require('Type');
-const School = artifacts.require('School');
+// const Type = artifacts.require('Type');
+const NftIdentities = artifacts.require('NftIdentities');
 
 module.exports = function (deployer) {
-  deployer.deploy(Type);
-  deployer.link(School, Type);
-  deployer.deploy(School);
+  deployer.deploy(NftIdentities)
 };

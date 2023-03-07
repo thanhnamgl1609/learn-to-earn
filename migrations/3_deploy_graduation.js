@@ -1,8 +1,10 @@
-const NftCourse = artifacts.require('NftCourse');
-const NftGraduation = artifacts.require('NftGraduation');
+const NftCertificates = artifacts.require('NftCertificates');
+const NftSchool = artifacts.require('NftSchool');
+const NftIdentities = artifacts.require('NftIdentities');
 
 module.exports = function (deployer) {
   deployer
-    .deploy(NftGraduation, NftCourse.address)
+    .deploy(NftCertificates, NftSchool.address, NftIdentities.address)
+    .then(() => NftSchool.deployed())
+    .then((nftSchool) => nftSchool.initialize(NftCertificates.address));
 };
-

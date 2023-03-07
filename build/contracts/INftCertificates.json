@@ -15,18 +15,18 @@
     "absolutePath": "project:/contracts/interfaces/INftCertificates.sol",
     "exportedSymbols": {
       "IConstant": [
-        9311
+        9462
       ],
       "INftCertificates": [
-        9317
+        9468
       ]
     },
-    "id": 9318,
+    "id": 9469,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 9313,
+        "id": 9464,
         "literals": [
           "solidity",
           "^",
@@ -39,11 +39,11 @@
       {
         "absolutePath": "project:/contracts/interfaces/IConstant.sol",
         "file": "./IConstant.sol",
-        "id": 9314,
+        "id": 9465,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 9318,
-        "sourceUnit": 9312,
+        "scope": 9469,
+        "sourceUnit": 9463,
         "src": "130:25:29",
         "symbolAliases": [],
         "unitAlias": ""
@@ -53,13 +53,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 9315,
+              "id": 9466,
               "name": "IConstant",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 9311,
+              "referencedDeclaration": 9462,
               "src": "189:9:29"
             },
-            "id": 9316,
+            "id": 9467,
             "nodeType": "InheritanceSpecifier",
             "src": "189:9:29"
           }
@@ -68,16 +68,16 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": true,
-        "id": 9317,
+        "id": 9468,
         "linearizedBaseContracts": [
-          9317,
-          9311
+          9468,
+          9462
         ],
         "name": "INftCertificates",
         "nameLocation": "169:16:29",
         "nodeType": "ContractDefinition",
         "nodes": [],
-        "scope": 9318,
+        "scope": 9469,
         "src": "159:42:29",
         "usedErrors": []
       }
@@ -90,7 +90,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-03-06T23:34:50.165Z",
+  "updatedAt": "2023-03-07T22:43:33.215Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

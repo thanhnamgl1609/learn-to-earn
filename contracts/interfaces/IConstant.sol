@@ -17,14 +17,6 @@ interface IConstant {
         TEACHER
     }
 
-    enum ScoreType {
-        Midterm,
-        Practice,
-        Plus,
-        Final,
-        Other
-    }
-
     struct NftRequirement {
         uint256 tokenId;
         uint256 credits;
@@ -48,10 +40,12 @@ interface IConstant {
     struct NftClass {
         uint256 tokenId;
         uint256 courseTemplateId; // courseId - requirementId
+        uint256 requirementId; // courseId - requirementId
         uint256 credits;
+        uint256 registeredStartAt;
+        uint256 registeredEndAt;
         uint256 completeAt; // end time - editable
         uint256[] requiredScore; // 1, 2, 3, 4, 5 - some score (like pracice can be unused)
-        address[] studentAddresses;
         uint256 maxSize;
         address teacherAddr;
         /* Metadata:
@@ -68,6 +62,9 @@ interface IConstant {
     struct NftScoreBoard {
         uint256 tokenId;
         uint256 classId;
+        uint256 courseTemplateId;
+        uint256 requirementId;
+        uint256 credits;
         address studentAddr;
         uint256[] requiredScore; // accumulate all score and divide by length to get avarage
         uint256[] scores; // type => score value (GK: 5)
@@ -81,6 +78,8 @@ interface IConstant {
 
     struct NftCompleteCourse {
         uint256 tokenId;
+        uint256 courseTemplateId;
+        uint256 requirementId;
         uint256 credits;
         uint256 avgScore; // * 100 to keep 2 digits after comma
         /* Metadata:

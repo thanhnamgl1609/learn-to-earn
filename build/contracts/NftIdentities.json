@@ -146,7 +146,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -170,7 +171,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -194,7 +196,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -207,7 +210,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -310,7 +314,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -329,7 +334,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -370,7 +376,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -406,7 +413,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -424,7 +432,8 @@
       "name": "registerNft",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function"
+      "type": "function",
+      "payable": true
     },
     {
       "inputs": [],
@@ -455,7 +464,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -490,7 +500,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -602,7 +613,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -615,7 +627,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -27536,7 +27549,7 @@
         3439
       ],
       "IConstant": [
-        9311
+        9462
       ],
       "IERC1155": [
         1457
@@ -27551,7 +27564,7 @@
         3451
       ],
       "INftIdentities": [
-        9332
+        9483
       ],
       "Math": [
         4316
@@ -27563,7 +27576,7 @@
         112
       ],
       "Registration": [
-        8477
+        8628
       ],
       "Strings": [
         3415
@@ -27627,7 +27640,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 7207,
-        "sourceUnit": 8478,
+        "sourceUnit": 8629,
         "src": "322:28:23",
         "symbolAliases": [],
         "unitAlias": ""
@@ -27639,7 +27652,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 7207,
-        "sourceUnit": 9333,
+        "sourceUnit": 9484,
         "src": "352:41:23",
         "symbolAliases": [],
         "unitAlias": ""
@@ -27664,7 +27677,7 @@
               "id": 5941,
               "name": "Registration",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 8477,
+              "referencedDeclaration": 8628,
               "src": "442:12:23"
             },
             "id": 5942,
@@ -27676,7 +27689,7 @@
               "id": 5943,
               "name": "INftIdentities",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 9332,
+              "referencedDeclaration": 9483,
               "src": "456:14:23"
             },
             "id": 5944,
@@ -27691,9 +27704,9 @@
         "id": 7206,
         "linearizedBaseContracts": [
           7206,
-          9332,
-          9311,
-          8477,
+          9483,
+          9462,
+          8628,
           1586,
           1335,
           1601,
@@ -29936,7 +29949,7 @@
                         "name": "_hasRole",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 8328,
+                        "referencedDeclaration": 8479,
                         "src": "2474:8:23",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_uint256_$_t_bool_$",
@@ -29952,10 +29965,10 @@
                               "name": "ROLE",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 9250,
+                              "referencedDeclaration": 9401,
                               "src": "2488:4:23",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_enum$_ROLE_$9250_$",
+                                "typeIdentifier": "t_type$_t_enum$_ROLE_$9401_$",
                                 "typeString": "type(enum IConstant.ROLE)"
                               }
                             },
@@ -29966,10 +29979,10 @@
                             "lValueRequested": false,
                             "memberName": "STUDENT",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 9248,
+                            "referencedDeclaration": 9399,
                             "src": "2488:12:23",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_enum$_ROLE_$9250",
+                              "typeIdentifier": "t_enum$_ROLE_$9401",
                               "typeString": "enum IConstant.ROLE"
                             }
                           }
@@ -29977,7 +29990,7 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_enum$_ROLE_$9250",
+                              "typeIdentifier": "t_enum$_ROLE_$9401",
                               "typeString": "enum IConstant.ROLE"
                             }
                           ],
@@ -30067,7 +30080,7 @@
                         "name": "_hasRole",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 8328,
+                        "referencedDeclaration": 8479,
                         "src": "2520:8:23",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_uint256_$_t_bool_$",
@@ -30083,10 +30096,10 @@
                               "name": "ROLE",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 9250,
+                              "referencedDeclaration": 9401,
                               "src": "2534:4:23",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_enum$_ROLE_$9250_$",
+                                "typeIdentifier": "t_type$_t_enum$_ROLE_$9401_$",
                                 "typeString": "type(enum IConstant.ROLE)"
                               }
                             },
@@ -30097,10 +30110,10 @@
                             "lValueRequested": false,
                             "memberName": "TEACHER",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 9249,
+                            "referencedDeclaration": 9400,
                             "src": "2534:12:23",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_enum$_ROLE_$9250",
+                              "typeIdentifier": "t_enum$_ROLE_$9401",
                               "typeString": "enum IConstant.ROLE"
                             }
                           }
@@ -30108,7 +30121,7 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_enum$_ROLE_$9250",
+                              "typeIdentifier": "t_enum$_ROLE_$9401",
                               "typeString": "enum IConstant.ROLE"
                             }
                           ],
@@ -31508,7 +31521,7 @@
                       "name": "_register",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8389,
+                      "referencedDeclaration": 8540,
                       "src": "3618:9:23",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$_t_address_$returns$__$",
@@ -31562,7 +31575,7 @@
                   "id": 6220,
                   "name": "allowedRole",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 8360,
+                  "referencedDeclaration": 8511,
                   "src": "3339:11:23"
                 },
                 "nodeType": "ModifierInvocation",
@@ -32046,7 +32059,7 @@
                             "name": "_isRegister",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 8476,
+                            "referencedDeclaration": 8627,
                             "src": "4293:11:23",
                             "typeDescriptions": {
                               "typeIdentifier": "t_function_internal_view$_t_uint256_$_t_address_$returns$_t_bool_$",
@@ -32685,7 +32698,7 @@
           },
           {
             "baseFunctions": [
-              9331
+              9482
             ],
             "body": {
               "id": 6381,
@@ -35400,7 +35413,7 @@
                           "name": "_isRegister",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8476,
+                          "referencedDeclaration": 8627,
                           "src": "7261:11:23",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_uint256_$_t_address_$returns$_t_bool_$",
@@ -35575,7 +35588,7 @@
                       "name": "_removeFromRegistersList",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8458,
+                      "referencedDeclaration": 8609,
                       "src": "7357:24:23",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$_t_address_$returns$__$",
@@ -36150,7 +36163,7 @@
                           "name": "_isRegister",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 8476,
+                          "referencedDeclaration": 8627,
                           "src": "7752:11:23",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_uint256_$_t_address_$returns$_t_bool_$",
@@ -36256,7 +36269,7 @@
                       "name": "_removeFromRegistersList",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8458,
+                      "referencedDeclaration": 8609,
                       "src": "7797:24:23",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_uint256_$_t_address_$returns$__$",
@@ -37679,7 +37692,7 @@
                       "name": "_isRegister",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8476,
+                      "referencedDeclaration": 8627,
                       "src": "8993:11:23",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_view$_t_uint256_$_t_address_$returns$_t_bool_$",
@@ -41683,7 +41696,7 @@
                   "id": 6998,
                   "name": "allowedRole",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 8360,
+                  "referencedDeclaration": 8511,
                   "src": "11445:11:23"
                 },
                 "nodeType": "ModifierInvocation",
@@ -43657,12 +43670,13 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xaaaad0F661A4FF1904Ac575DB0F32ebe7F766fEe",
-      "transactionHash": "0x8f1a549c274d670dea4962782822b7943c2eb46f59b1ea88bb9155bfb58d2c51"
+      "address": "0xf6B308C920D8B6d956E5FE36655451f2943Eba50",
+      "transactionHash": "0x639a4dc833511297dca6fb39164140911e6715baeeb46204eea7f8a56ef66ff3"
     }
   },
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-03-06T23:34:50.115Z",
+  "updatedAt": "2023-03-07T22:43:44.047Z",
+  "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
     "methods": {

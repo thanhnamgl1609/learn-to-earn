@@ -31,13 +31,13 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
     uint256 public registeredEndAt;
     uint256 public yearId;
 
-    mapping(uint256 => bool) private _usableScores;
-
     NftScoreBoard[] private _allNftScoreBoards;
     NftCompleteCourse[] private _allNftCompleteCourses;
     NftGraduation[] private _allNftGraduations;
     mapping(uint256 => mapping(uint256 => uint256)) _posOfTokenIdOfNftType;
 
+    mapping(uint256 => address[]) _studentsOfClass;
+    mapping(uint256 => mapping(address => uint256)) _posOfStudentInClass;
     mapping(address => uint256[]) private _studentOwnedCompleteCourseNfts;
     mapping(address => uint256) private _studentOwnedNftGraduation;
 
@@ -63,12 +63,6 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
         _nftIdentities = INftIdentities(nftIdentities);
         _nftSchool = INftSchool(nftSchool);
         schoolYearEnd = block.timestamp;
-
-        _usableScores[uint256(ScoreType.Midterm)] = true;
-        _usableScores[uint256(ScoreType.Practice)] = true;
-        _usableScores[uint256(ScoreType.Plus)] = true;
-        _usableScores[uint256(ScoreType.Final)] = true;
-        _usableScores[uint256(ScoreType.Other)] = true;
     }
 
     /*
@@ -137,24 +131,12 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
         return (_allNftGraduations[pos - 1], uri(tokenId));
     }
 
+    function registerClass(uint256 classId) payable public {
+        // TODO
+    }
     // (everyone)
 
     // onlyOwner
-    function _checkValidScores(uint256[] memory scores)
-        private
-        view
-        returns (bool)
-    {
-        uint256 numberOfChecks = scores.length;
-        for (uint256 idx = 0; idx <= numberOfChecks; ++idx) {
-            if (!_usableScores[scores[idx]]) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     function _beforeTokenTransfer(
         address operator,
         address from,
@@ -184,11 +166,10 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
     function _mintNftScoreBoard(
         uint256 classId,
         address studentAddr,
-        uint256[] memory requiredScore,
         string memory tokenURI
     ) private returns (uint256) {
         uint256 tokenId = _mintToken(NFT_SCORE_BOARD, tokenURI);
-        _createNftScoreBoard(tokenId, classId, studentAddr, requiredScore);
+        _createNftScoreBoard(tokenId, classId, studentAddr);
 
         return tokenId;
     }
@@ -196,22 +177,23 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
     function _createNftScoreBoard(
         uint256 tokenId,
         uint256 classId,
-        address studentAddr,
-        uint256[] memory requiredScore
+        address studentAddr
     ) private {
-        bool classExists = _nftSchool.checkTokenOfTypeExists(tokenId, NFT_CLASS);
-        require(
-            classExists,
-            "Nft requirement must be created before creating nft course template for it"
-        );
+        (NftClass memory classInfo,) = _nftSchool.getNftClass(tokenId);
+        // TODO: position of student in class = 0
+        require(_studentsOfClass[classId].length < classInfo.maxSize);
         NftScoreBoard memory nftScoreBoard = NftScoreBoard(
             tokenId,
             classId,
+            classInfo.courseTemplateId,
+            classInfo.requirementId,
+            classInfo.credits,
             studentAddr,
-            requiredScore,
-            new uint256[](requiredScore.length)
+            classInfo.requiredScore,
+            new uint256[](classInfo.requiredScore.length)
         );
         _allNftScoreBoards.push(nftScoreBoard);
+        _studentsOfClass[classId].push(studentAddr);
         _posOfTokenIdOfNftType[NFT_SCORE_BOARD][tokenId] = _allNftScoreBoards
             .length;
     }
@@ -232,6 +214,7 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
         uint256 credits,
         uint256 avgScore
     ) private {
+        // TODO: transfer from nft scoreboard to this
         NftCompleteCourse memory nftCompleteCourse = NftCompleteCourse(
             tokenId,
             credits,
