@@ -23,10 +23,10 @@ contract ERC1155BaseContract is ERC1155URIStorage {
 
     mapping(uint256 => address) internal _ownerOfNft;
 
-    function _mintToken(uint256 nftType, string memory tokenURI) internal returns (uint256) { 
+    function _mintToken(address tokenOwner, uint256 nftType, string memory tokenURI) internal returns (uint256) { 
         require(!_usedTokenURI[tokenURI], "URI has been used");
         uint256 tokenId = _generateNewTokenId(nftType);
-        _mint(_owner, tokenId, ONE_NFT, msg.data);
+        _mint(tokenOwner, tokenId, ONE_NFT, msg.data);
         _setURI(tokenId, tokenURI);
         _usedTokenURI[tokenURI] = true;
 

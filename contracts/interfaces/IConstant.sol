@@ -65,7 +65,9 @@ interface IConstant {
         uint256 courseTemplateId;
         uint256 requirementId;
         uint256 credits;
+        uint256 completeAt; // end time - editable
         address studentAddr;
+        address teacherAddr;
         uint256[] requiredScore; // accumulate all score and divide by length to get avarage
         uint256[] scores; // type => score value (GK: 5)
         /*

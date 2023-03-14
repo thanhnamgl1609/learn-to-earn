@@ -14,12 +14,18 @@ import "./interfaces/IScore.sol";
     Course end: Mint Nft complete course <-- Transfer info from Nft Scoreboard to this
     Enough course: Exchange nft graduation from nft courses (payable)
 */
+/*
+    - Initial year
+    - Requirements, course templates, classes
+*/
 contract NftSchool is ERC1155BaseContract, INftSchool {
+    using Counters for Counters.Counter;
+
     uint256 constant NFT_REQUIREMENT = 1;
     uint256 constant NFT_COURSE_TEMPLATE = 2;
     uint256 constant NFT_CLASS = 3;
 
-    using Counters for Counters.Counter;
+    uint256 public minimumGraduationScore = 500;
 
     string[] private courseURIs;
 
@@ -71,7 +77,10 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         _;
     }
 
-    constructor(address nftIdentities, address scoreAddr) ERC1155BaseContract("") {
+    constructor(
+        address nftIdentities,
+        address scoreAddr
+    ) ERC1155BaseContract("") {
         _nftIdentities = INftIdentities(nftIdentities);
         _scoreContract = IScore(scoreAddr);
         schoolYearEnd = block.timestamp;
@@ -155,11 +164,10 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         registeredEndAt = _registeredEndAt;
     }
 
-    function createRequirement(uint256 credits, string memory tokenURI)
-        public
-        onlyOwner
-        afterYearEnd
-    {
+    function createRequirement(
+        uint256 credits,
+        string memory tokenURI
+    ) public onlyOwner afterYearEnd {
         require(
             _isInitializeRequirement,
             "Requirement must be initialized before creating new"
@@ -167,11 +175,10 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         _mintNftRequirement(credits, tokenURI);
     }
 
-    function updateRequirement(uint256 tokenId, uint256 credits)
-        external
-        onlyOwner
-        afterYearEnd
-    {
+    function updateRequirement(
+        uint256 tokenId,
+        uint256 credits
+    ) external onlyOwner afterYearEnd {
         require(credits > 0, "Credit must be a positive number");
         uint256 pos = _posOfTokenIdOfNftType[NFT_REQUIREMENT][tokenId];
         require(pos > 0, "Nft does not exist");
@@ -191,11 +198,10 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         _mintNftCourseTemplate(requirementId, credits, tokenURI);
     }
 
-    function updateCourseTemplate(uint256 tokenId, uint256 credits)
-        external
-        onlyOwner
-        afterYearEnd
-    {
+    function updateCourseTemplate(
+        uint256 tokenId,
+        uint256 credits
+    ) external onlyOwner afterYearEnd {
         require(credits > 0, "Credit must be a positive number");
         uint256 pos = _posOfTokenIdOfNftType[NFT_COURSE_TEMPLATE][tokenId];
         require(pos > 0, "Nft does not exist");
@@ -203,12 +209,9 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         _allNftCourseTemplates[pos - 1].credits = credits;
     }
 
-    function burnToken(uint256 tokenId)
-        external
-        onlyOwner
-        afterYearEnd
-        tokenExist(tokenId)
-    {
+    function burnToken(
+        uint256 tokenId
+    ) external onlyOwner afterYearEnd tokenExist(tokenId) {
         _burn(_owner, tokenId, ONE_NFT);
     }
 
@@ -241,34 +244,27 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         return (_allNftRequirements, tokenURIs);
     }
 
-    function getNftRequirement(uint256 tokenId)
-        external
-        view
-        returns (NftRequirement memory, string memory)
-    {
+    function getNftRequirement(
+        uint256 tokenId
+    ) external view returns (NftRequirement memory, string memory) {
         uint256 pos = _posOfTokenIdOfNftType[NFT_REQUIREMENT][tokenId];
         require(pos > 0, "Nft does not exist");
 
         return (_allNftRequirements[pos - 1], uri(tokenId));
     }
 
-    function getNftClass(uint256 tokenId)
-        public
-        view
-        returns (NftClass memory, string memory)
-    {
+    function getNftClass(
+        uint256 tokenId
+    ) public view returns (NftClass memory, string memory) {
         uint256 pos = _posOfTokenIdOfNftType[NFT_CLASS][tokenId];
         require(pos > 0, "Nft does not exist");
 
         return (_allNftClasses[pos - 1], uri(tokenId));
     }
 
-    function getAllNftClasses(uint256 _yearId)
-        external
-        view
-        onlyOwner
-        returns (NftClass[] memory, string[] memory)
-    {
+    function getAllNftClasses(
+        uint256 _yearId
+    ) external view onlyOwner returns (NftClass[] memory, string[] memory) {
         require(_yearId <= yearId, "Desired year is not valid");
 
         return _getAllNftClasses(_yearId);
@@ -283,11 +279,9 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         return _allNftCourseTemplates;
     }
 
-    function getNftCourseTemplate(uint256 tokenId)
-        public
-        view
-        returns (NftCourseTemplate memory, string memory)
-    {
+    function getNftCourseTemplate(
+        uint256 tokenId
+    ) public view returns (NftCourseTemplate memory, string memory) {
         uint256 pos = _posOfTokenIdOfNftType[NFT_COURSE_TEMPLATE][tokenId];
         require(pos > 0, "Nft does not exist");
 
@@ -300,11 +294,10 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         return pos > 0;
     }
 
-    function checkTokenOfTypeExists(uint256 tokenId, uint256 requiredType)
-        external
-        view
-        returns (bool)
-    {
+    function checkTokenOfTypeExists(
+        uint256 tokenId,
+        uint256 requiredType
+    ) external view returns (bool) {
         uint256 nftType = _getNftType(tokenId);
         uint256 pos = _posOfTokenIdOfNftType[nftType][tokenId];
         return pos > 0 && nftType == requiredType;
@@ -316,12 +309,9 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
             block.timestamp <= registeredEndAt;
     }
 
-    function _getAllNftClasses(uint256 _yearId)
-        private
-        view
-        onlyOwner
-        returns (NftClass[] memory, string[] memory)
-    {
+    function _getAllNftClasses(
+        uint256 _yearId
+    ) private view onlyOwner returns (NftClass[] memory, string[] memory) {
         uint256 numberOfClasses = _classTokenIdsOfYear[_yearId].length;
         NftClass[] memory nftClasses = new NftClass[](numberOfClasses);
         string[] memory tokenURIs = new string[](numberOfClasses);
@@ -335,11 +325,11 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         return (nftClasses, tokenURIs);
     }
 
-    function _mintNftRequirement(uint256 credits, string memory tokenURI)
-        public
-        returns (uint256)
-    {
-        uint256 tokenId = _mintToken(NFT_REQUIREMENT, tokenURI);
+    function _mintNftRequirement(
+        uint256 credits,
+        string memory tokenURI
+    ) public returns (uint256) {
+        uint256 tokenId = _mintToken(_owner, NFT_REQUIREMENT, tokenURI);
         _createNftRequirement(tokenId, credits);
         _mint(_owner, tokenId, ONE_NFT, msg.data);
 
@@ -359,7 +349,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         uint256 credits,
         string memory tokenURI
     ) private returns (uint256) {
-        uint256 tokenId = _mintToken(NFT_COURSE_TEMPLATE, tokenURI);
+        uint256 tokenId = _mintToken(_owner, NFT_COURSE_TEMPLATE, tokenURI);
         _createNftCourseTemplate(tokenId, requirementId, credits);
 
         return tokenId;
@@ -396,7 +386,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         address teacher,
         string memory tokenURI
     ) private returns (uint256) {
-        uint256 tokenId = _mintToken(NFT_COURSE_TEMPLATE, tokenURI);
+        uint256 tokenId = _mintToken(_owner, NFT_COURSE_TEMPLATE, tokenURI);
         _createNftClass(
             tokenId,
             courseTemplateId,
@@ -419,10 +409,18 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         uint256 maxSize,
         address teacher
     ) private {
-        require(registeredStartAt > block.timestamp, "Update registered date before creating class");
-        (NftCourseTemplate memory nftCourseTemplate,) = getNftCourseTemplate(tokenId);
+        require(
+            registeredStartAt > block.timestamp,
+            "Update registered date before creating class"
+        );
+        (NftCourseTemplate memory nftCourseTemplate, ) = getNftCourseTemplate(
+            tokenId
+        );
         require(credits > 0, "Credits must be a positive number");
-        require(_scoreContract.checkValidScores(requiredScores), "Required scores are not valid");
+        require(
+            _scoreContract.checkValidScores(requiredScores),
+            "Required scores are not valid"
+        );
         NftClass memory nftClass = NftClass(
             tokenId,
             courseTemplateId,
