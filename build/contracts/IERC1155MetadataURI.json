@@ -334,7 +334,7 @@
         1601
       ],
       "IERC165": [
-        3451
+        2238
       ]
     },
     "id": 1602,
@@ -394,7 +394,7 @@
         "linearizedBaseContracts": [
           1601,
           1457,
-          3451
+          2238
         ],
         "name": "IERC1155MetadataURI",
         "nameLocation": "374:19:5",
@@ -503,7 +503,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-03-04T00:51:20.466Z",
+  "updatedAt": "2023-03-14T06:04:41.178Z",
   "devdoc": {
     "details": "Interface of the optional ERC1155MetadataExtension interface, as defined in the https://eips.ethereum.org/EIPS/eip-1155#metadata-extensions[EIP]. _Available since v3.1._",
     "kind": "dev",

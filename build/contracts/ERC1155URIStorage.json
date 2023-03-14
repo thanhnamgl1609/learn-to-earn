@@ -328,10 +328,10 @@
     "absolutePath": "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol",
     "exportedSymbols": {
       "Address": [
-        3144
+        1931
       ],
       "Context": [
-        3166
+        1953
       ],
       "ERC1155": [
         1335
@@ -340,7 +340,7 @@
         1586
       ],
       "ERC165": [
-        3439
+        2226
       ],
       "IERC1155": [
         1457
@@ -352,13 +352,13 @@
         1498
       ],
       "IERC165": [
-        3451
+        2238
       ],
       "Math": [
-        4316
+        3103
       ],
       "Strings": [
-        3415
+        2202
       ]
     },
     "id": 1587,
@@ -383,7 +383,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 1587,
-        "sourceUnit": 3416,
+        "sourceUnit": 2203,
         "src": "155:36:4",
         "symbolAliases": [],
         "unitAlias": ""
@@ -432,9 +432,9 @@
           1335,
           1601,
           1457,
-          3439,
-          3451,
-          3166
+          2226,
+          2238,
+          1953
         ],
         "name": "ERC1155URIStorage",
         "nameLocation": "383:17:4",
@@ -447,7 +447,7 @@
               "id": 1506,
               "name": "Strings",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 3415,
+              "referencedDeclaration": 2202,
               "src": "424:7:4"
             },
             "nodeType": "UsingForDirective",
@@ -1432,7 +1432,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-03-04T00:51:20.464Z",
+  "updatedAt": "2023-03-14T06:04:41.170Z",
   "devdoc": {
     "details": "ERC1155 token with storage based token URI management. Inspired by the ERC721URIStorage extension _Available since v4.6._",
     "kind": "dev",

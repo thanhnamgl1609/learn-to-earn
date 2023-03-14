@@ -1,0 +1,233 @@
+{
+  "contractName": "IScore",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "scores",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "checkValidScores",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"scores\",\"type\":\"uint256[]\"}],\"name\":\"checkValidScores\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/IScore.sol\":\"IScore\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces/IScore.sol\":{\"keccak256\":\"0x67b348782f7c1552c4445bd6305b970722bf58011d5ab6ba2e4e429d6d219f17\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6563ba9ebf20e9994cd136dbd5d3f7268da1de9310b9d9b8c21773683516e5f0\",\"dweb:/ipfs/Qmadj5JTNEw89q66k1pdNAdooKjTmfPpCSZR4nwyxe14ha\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\r\n// Tells the Solidity compiler to compile only from v0.8.13 to v0.9.0\r\npragma solidity ^0.8.13;\r\n\r\n/*\r\n    Core creation flows: Requirement => Course template => class => complete course => graduation\r\n    Removable:\r\n        - Requirement <- need course template remove before\r\n        - Course Template <- need all class belongs to done\r\n        - Class <- Need to complete\r\n    Editable:\r\n        - Requirement {}\r\n*/\r\ninterface IScore {\r\n    enum ScoreType {\r\n        Midterm,\r\n        Practice,\r\n        Plus,\r\n        Final,\r\n        Other\r\n    }\r\n\r\n    function checkValidScores(uint256[] memory scores)\r\n        external\r\n        view\r\n        returns (bool);\r\n}\r\n",
+  "sourcePath": "E:\\learn\\learn-to-earn\\contracts\\interfaces\\IScore.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/interfaces/IScore.sol",
+    "exportedSymbols": {
+      "IScore": [
+        7216
+      ]
+    },
+    "id": 7217,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 7201,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".13"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "104:24:23"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IScore",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "id": 7216,
+        "linearizedBaseContracts": [
+          7216
+        ],
+        "name": "IScore",
+        "nameLocation": "465:6:23",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "IScore.ScoreType",
+            "id": 7207,
+            "members": [
+              {
+                "id": 7202,
+                "name": "Midterm",
+                "nameLocation": "505:7:23",
+                "nodeType": "EnumValue",
+                "src": "505:7:23"
+              },
+              {
+                "id": 7203,
+                "name": "Practice",
+                "nameLocation": "523:8:23",
+                "nodeType": "EnumValue",
+                "src": "523:8:23"
+              },
+              {
+                "id": 7204,
+                "name": "Plus",
+                "nameLocation": "542:4:23",
+                "nodeType": "EnumValue",
+                "src": "542:4:23"
+              },
+              {
+                "id": 7205,
+                "name": "Final",
+                "nameLocation": "557:5:23",
+                "nodeType": "EnumValue",
+                "src": "557:5:23"
+              },
+              {
+                "id": 7206,
+                "name": "Other",
+                "nameLocation": "573:5:23",
+                "nodeType": "EnumValue",
+                "src": "573:5:23"
+              }
+            ],
+            "name": "ScoreType",
+            "nameLocation": "484:9:23",
+            "nodeType": "EnumDefinition",
+            "src": "479:106:23"
+          },
+          {
+            "functionSelector": "4cecbc28",
+            "id": 7215,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "checkValidScores",
+            "nameLocation": "602:16:23",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 7211,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7210,
+                  "mutability": "mutable",
+                  "name": "scores",
+                  "nameLocation": "636:6:23",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 7215,
+                  "src": "619:23:23",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 7208,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "619:7:23",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 7209,
+                    "nodeType": "ArrayTypeName",
+                    "src": "619:9:23",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "618:25:23"
+            },
+            "returnParameters": {
+              "id": 7214,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7213,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 7215,
+                  "src": "694:4:23",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 7212,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "694:4:23",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "693:6:23"
+            },
+            "scope": 7216,
+            "src": "593:107:23",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 7217,
+        "src": "455:248:23",
+        "usedErrors": []
+      }
+    ],
+    "src": "104:601:23"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.13+commit.abaa5c0e.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.11",
+  "updatedAt": "2023-03-14T06:04:41.845Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}
