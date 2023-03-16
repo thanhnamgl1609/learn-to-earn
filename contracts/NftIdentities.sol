@@ -270,17 +270,17 @@ contract NftIdentities is ERC1155URIStorage, Registration, INftIdentities {
 
     function getRole() public view returns (uint256) {
         if (msg.sender == _owner) {
-            return HIGHEST_OPERATOR_ID;
+            return uint256(HIGHEST_OPERATOR_ID);
         }
 
         uint256 tokenId = _tokenIdOfRegisters[msg.sender];
         if (tokenId == 0) {
-            return VISITOR_ID;
+            return uint256(VISITOR_ID);
         }
 
         uint256 role = _getNftType(tokenId);
         if (_isRegister(role, msg.sender)) {
-            return REGISTERED_ID;
+            return uint256(REGISTERED_ID);
         }
 
         return role;
