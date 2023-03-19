@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 import type { Session } from 'next-iron-session';
 import { v4 as uuidv4 } from 'uuid';
+import PINATA_CONST from '@config/pinata.json';
 import {
   withSession,
   contractAddress,
@@ -9,7 +10,6 @@ import {
   pinataApiKey,
   pinataSecretApiKey,
 } from './utils';
-import { NftMeta } from '@_types/nft';
 
 export default withSession(
   async (
@@ -19,7 +19,7 @@ export default withSession(
     if (req.method === 'POST') {
       try {
         const { body } = req;
-        const nft = body.nft as NftMeta;
+        const nft = body.data;
         if (!nft.name || !nft.description || !nft.attributes) {
           return res.status(422).json({ message: 'data are missing' });
         }
@@ -27,7 +27,7 @@ export default withSession(
         await addressCheckMiddleware(req, res);
 
         const jsonRes = await axios.post(
-          'https://api.pinata.cloud/pinning/pinJSONToIPFS',
+          PINATA_CONST.PINNING,
           {
             pinataMetadata: {
               name: uuidv4(),
@@ -44,7 +44,6 @@ export default withSession(
 
         return res.status(200).json(jsonRes.data);
       } catch (e) {
-        console.log("🚀 ~ file: verify.ts:47 ~ e", e)
         return res.status(422).json({ message: 'cannot create json' });
       }
     } else if (req.method === 'GET') {

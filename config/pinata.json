@@ -1,0 +1,5 @@
+{
+  "PINNING": "https://api.pinata.cloud/pinning/pinFileToIPFS",
+  "PINNING_JSON": "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+  "CLOUD": "https://gateway.pinata.cloud"
+}

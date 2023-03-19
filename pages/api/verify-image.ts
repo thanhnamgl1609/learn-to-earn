@@ -2,21 +2,25 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 import type { Session } from 'next-iron-session';
 import { v4 as uuidv4 } from 'uuid';
+import FormData from 'form-data';
+import { FileReq } from '@_types/common';
+import PINATA from '@config/pinata.json';
+import REQUEST_CONST from '@config/request.json';
 import {
   withSession,
-  addressCheckMiddleware,
   pinataApiKey,
   pinataSecretApiKey,
 } from './utils';
-import { FileReq } from '@_types/nft';
-import FormData from 'form-data';
+import addressCheckMiddleware from './middleware/address-check';
+
+const { METHOD } = REQUEST_CONST;
 
 export default withSession(
   async (
     req: NextApiRequest & { session: Session },
     res: NextApiResponse<any>
   ) => {
-    if (req.method === 'POST') {
+    if (req.method === METHOD.POST) {
       try {
         const { bytes, fileName, contentType } = req.body as FileReq;
 
@@ -33,7 +37,7 @@ export default withSession(
         });
 
         const fileRes = await axios.post(
-          'https://api.pinata.cloud/pinning/pinFileToIPFS',
+          PINATA.PINNING,
           formData,
           {
             maxBodyLength: Infinity,
@@ -47,7 +51,6 @@ export default withSession(
 
         return res.status(200).json(fileRes.data);
       } catch (e) {
-        console.log('🚀 ~ file: verify.ts:47 ~ e', e);
         return res.status(422).json({ message: 'cannot create json' });
       }
     } else {

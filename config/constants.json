@@ -1,0 +1,9 @@
+{
+  "ROLES": {
+    "STUDENT": 0,
+    "TEACHER": 1,
+    "VISITOR": 99,
+    "REGISTERED": 100,
+    "COUNCIL": 101
+  }
+}

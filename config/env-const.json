@@ -1,0 +1,8 @@
+{
+  "development": {
+    "RPC_PROVIDER_URL": "http://127.0.0.1:7545"
+  },
+  "production": {
+    "RPC_PROVIDER_URL": "http://127.0.0.1:7545"
+  }
+}

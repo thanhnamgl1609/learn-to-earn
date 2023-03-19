@@ -2643,24 +2643,24 @@
         2238
       ],
       "IScore": [
-        7225
+        6925
       ],
       "Math": [
         3103
       ],
       "Score": [
-        7070
+        6769
       ],
       "Strings": [
         2202
       ]
     },
-    "id": 7071,
+    "id": 6770,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 6969,
+        "id": 6668,
         "literals": [
           "solidity",
           "^",
@@ -2673,10 +2673,10 @@
       {
         "absolutePath": "project:/contracts/ERC1155BaseContract.sol",
         "file": "./ERC1155BaseContract.sol",
-        "id": 6970,
+        "id": 6669,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 7071,
+        "scope": 6770,
         "sourceUnit": 3248,
         "src": "132:35:18",
         "symbolAliases": [],
@@ -2685,11 +2685,11 @@
       {
         "absolutePath": "project:/contracts/interfaces/IScore.sol",
         "file": "./interfaces/IScore.sol",
-        "id": 6971,
+        "id": 6670,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 7071,
-        "sourceUnit": 7226,
+        "scope": 6770,
+        "sourceUnit": 6926,
         "src": "169:33:18",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2699,13 +2699,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 6972,
+              "id": 6671,
               "name": "IScore",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 7225,
+              "referencedDeclaration": 6925,
               "src": "572:6:18"
             },
-            "id": 6973,
+            "id": 6672,
             "nodeType": "InheritanceSpecifier",
             "src": "572:6:18"
           }
@@ -2714,10 +2714,10 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 7070,
+        "id": 6769,
         "linearizedBaseContracts": [
-          7070,
-          7225
+          6769,
+          6925
         ],
         "name": "Score",
         "nameLocation": "563:5:18",
@@ -2725,12 +2725,12 @@
         "nodes": [
           {
             "constant": false,
-            "id": 6977,
+            "id": 6676,
             "mutability": "mutable",
             "name": "_usableScores",
             "nameLocation": "619:13:18",
             "nodeType": "VariableDeclaration",
-            "scope": 7070,
+            "scope": 6769,
             "src": "586:46:18",
             "stateVariable": true,
             "storageLocation": "default",
@@ -2739,9 +2739,9 @@
               "typeString": "mapping(uint256 => bool)"
             },
             "typeName": {
-              "id": 6976,
+              "id": 6675,
               "keyType": {
-                "id": 6974,
+                "id": 6673,
                 "name": "uint256",
                 "nodeType": "ElementaryTypeName",
                 "src": "594:7:18",
@@ -2757,7 +2757,7 @@
                 "typeString": "mapping(uint256 => bool)"
               },
               "valueType": {
-                "id": 6975,
+                "id": 6674,
                 "name": "bool",
                 "nodeType": "ElementaryTypeName",
                 "src": "605:4:18",
@@ -2771,57 +2771,57 @@
           },
           {
             "body": {
-              "id": 7030,
+              "id": 6729,
               "nodeType": "Block",
               "src": "659:297:18",
               "statements": [
                 {
                   "expression": {
-                    "id": 6988,
+                    "id": 6687,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "baseExpression": {
-                        "id": 6980,
+                        "id": 6679,
                         "name": "_usableScores",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 6977,
+                        "referencedDeclaration": 6676,
                         "src": "670:13:18",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_uint256_$_t_bool_$",
                           "typeString": "mapping(uint256 => bool)"
                         }
                       },
-                      "id": 6986,
+                      "id": 6685,
                       "indexExpression": {
                         "arguments": [
                           {
                             "expression": {
-                              "id": 6983,
+                              "id": 6682,
                               "name": "ScoreType",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 7216,
+                              "referencedDeclaration": 6916,
                               "src": "692:9:18",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_enum$_ScoreType_$7216_$",
+                                "typeIdentifier": "t_type$_t_enum$_ScoreType_$6916_$",
                                 "typeString": "type(enum IScore.ScoreType)"
                               }
                             },
-                            "id": 6984,
+                            "id": 6683,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
                             "lValueRequested": false,
                             "memberName": "Midterm",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 7211,
+                            "referencedDeclaration": 6911,
                             "src": "692:17:18",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_enum$_ScoreType_$7216",
+                              "typeIdentifier": "t_enum$_ScoreType_$6916",
                               "typeString": "enum IScore.ScoreType"
                             }
                           }
@@ -2829,11 +2829,11 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_enum$_ScoreType_$7216",
+                              "typeIdentifier": "t_enum$_ScoreType_$6916",
                               "typeString": "enum IScore.ScoreType"
                             }
                           ],
-                          "id": 6982,
+                          "id": 6681,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2845,14 +2845,14 @@
                             "typeString": "type(uint256)"
                           },
                           "typeName": {
-                            "id": 6981,
+                            "id": 6680,
                             "name": "uint256",
                             "nodeType": "ElementaryTypeName",
                             "src": "684:7:18",
                             "typeDescriptions": {}
                           }
                         },
-                        "id": 6985,
+                        "id": 6684,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -2882,7 +2882,7 @@
                     "operator": "=",
                     "rightHandSide": {
                       "hexValue": "74727565",
-                      "id": 6987,
+                      "id": 6686,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -2902,57 +2902,57 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 6989,
+                  "id": 6688,
                   "nodeType": "ExpressionStatement",
                   "src": "670:48:18"
                 },
                 {
                   "expression": {
-                    "id": 6998,
+                    "id": 6697,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "baseExpression": {
-                        "id": 6990,
+                        "id": 6689,
                         "name": "_usableScores",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 6977,
+                        "referencedDeclaration": 6676,
                         "src": "729:13:18",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_uint256_$_t_bool_$",
                           "typeString": "mapping(uint256 => bool)"
                         }
                       },
-                      "id": 6996,
+                      "id": 6695,
                       "indexExpression": {
                         "arguments": [
                           {
                             "expression": {
-                              "id": 6993,
+                              "id": 6692,
                               "name": "ScoreType",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 7216,
+                              "referencedDeclaration": 6916,
                               "src": "751:9:18",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_enum$_ScoreType_$7216_$",
+                                "typeIdentifier": "t_type$_t_enum$_ScoreType_$6916_$",
                                 "typeString": "type(enum IScore.ScoreType)"
                               }
                             },
-                            "id": 6994,
+                            "id": 6693,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
                             "lValueRequested": false,
                             "memberName": "Practice",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 7212,
+                            "referencedDeclaration": 6912,
                             "src": "751:18:18",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_enum$_ScoreType_$7216",
+                              "typeIdentifier": "t_enum$_ScoreType_$6916",
                               "typeString": "enum IScore.ScoreType"
                             }
                           }
@@ -2960,11 +2960,11 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_enum$_ScoreType_$7216",
+                              "typeIdentifier": "t_enum$_ScoreType_$6916",
                               "typeString": "enum IScore.ScoreType"
                             }
                           ],
-                          "id": 6992,
+                          "id": 6691,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -2976,14 +2976,14 @@
                             "typeString": "type(uint256)"
                           },
                           "typeName": {
-                            "id": 6991,
+                            "id": 6690,
                             "name": "uint256",
                             "nodeType": "ElementaryTypeName",
                             "src": "743:7:18",
                             "typeDescriptions": {}
                           }
                         },
-                        "id": 6995,
+                        "id": 6694,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -3013,7 +3013,7 @@
                     "operator": "=",
                     "rightHandSide": {
                       "hexValue": "74727565",
-                      "id": 6997,
+                      "id": 6696,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -3033,57 +3033,57 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 6999,
+                  "id": 6698,
                   "nodeType": "ExpressionStatement",
                   "src": "729:49:18"
                 },
                 {
                   "expression": {
-                    "id": 7008,
+                    "id": 6707,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "baseExpression": {
-                        "id": 7000,
+                        "id": 6699,
                         "name": "_usableScores",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 6977,
+                        "referencedDeclaration": 6676,
                         "src": "789:13:18",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_uint256_$_t_bool_$",
                           "typeString": "mapping(uint256 => bool)"
                         }
                       },
-                      "id": 7006,
+                      "id": 6705,
                       "indexExpression": {
                         "arguments": [
                           {
                             "expression": {
-                              "id": 7003,
+                              "id": 6702,
                               "name": "ScoreType",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 7216,
+                              "referencedDeclaration": 6916,
                               "src": "811:9:18",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_enum$_ScoreType_$7216_$",
+                                "typeIdentifier": "t_type$_t_enum$_ScoreType_$6916_$",
                                 "typeString": "type(enum IScore.ScoreType)"
                               }
                             },
-                            "id": 7004,
+                            "id": 6703,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
                             "lValueRequested": false,
                             "memberName": "Plus",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 7213,
+                            "referencedDeclaration": 6913,
                             "src": "811:14:18",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_enum$_ScoreType_$7216",
+                              "typeIdentifier": "t_enum$_ScoreType_$6916",
                               "typeString": "enum IScore.ScoreType"
                             }
                           }
@@ -3091,11 +3091,11 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_enum$_ScoreType_$7216",
+                              "typeIdentifier": "t_enum$_ScoreType_$6916",
                               "typeString": "enum IScore.ScoreType"
                             }
                           ],
-                          "id": 7002,
+                          "id": 6701,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -3107,14 +3107,14 @@
                             "typeString": "type(uint256)"
                           },
                           "typeName": {
-                            "id": 7001,
+                            "id": 6700,
                             "name": "uint256",
                             "nodeType": "ElementaryTypeName",
                             "src": "803:7:18",
                             "typeDescriptions": {}
                           }
                         },
-                        "id": 7005,
+                        "id": 6704,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -3144,7 +3144,7 @@
                     "operator": "=",
                     "rightHandSide": {
                       "hexValue": "74727565",
-                      "id": 7007,
+                      "id": 6706,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -3164,57 +3164,57 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 7009,
+                  "id": 6708,
                   "nodeType": "ExpressionStatement",
                   "src": "789:45:18"
                 },
                 {
                   "expression": {
-                    "id": 7018,
+                    "id": 6717,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "baseExpression": {
-                        "id": 7010,
+                        "id": 6709,
                         "name": "_usableScores",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 6977,
+                        "referencedDeclaration": 6676,
                         "src": "845:13:18",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_uint256_$_t_bool_$",
                           "typeString": "mapping(uint256 => bool)"
                         }
                       },
-                      "id": 7016,
+                      "id": 6715,
                       "indexExpression": {
                         "arguments": [
                           {
                             "expression": {
-                              "id": 7013,
+                              "id": 6712,
                               "name": "ScoreType",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 7216,
+                              "referencedDeclaration": 6916,
                               "src": "867:9:18",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_enum$_ScoreType_$7216_$",
+                                "typeIdentifier": "t_type$_t_enum$_ScoreType_$6916_$",
                                 "typeString": "type(enum IScore.ScoreType)"
                               }
                             },
-                            "id": 7014,
+                            "id": 6713,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
                             "lValueRequested": false,
                             "memberName": "Final",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 7214,
+                            "referencedDeclaration": 6914,
                             "src": "867:15:18",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_enum$_ScoreType_$7216",
+                              "typeIdentifier": "t_enum$_ScoreType_$6916",
                               "typeString": "enum IScore.ScoreType"
                             }
                           }
@@ -3222,11 +3222,11 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_enum$_ScoreType_$7216",
+                              "typeIdentifier": "t_enum$_ScoreType_$6916",
                               "typeString": "enum IScore.ScoreType"
                             }
                           ],
-                          "id": 7012,
+                          "id": 6711,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -3238,14 +3238,14 @@
                             "typeString": "type(uint256)"
                           },
                           "typeName": {
-                            "id": 7011,
+                            "id": 6710,
                             "name": "uint256",
                             "nodeType": "ElementaryTypeName",
                             "src": "859:7:18",
                             "typeDescriptions": {}
                           }
                         },
-                        "id": 7015,
+                        "id": 6714,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -3275,7 +3275,7 @@
                     "operator": "=",
                     "rightHandSide": {
                       "hexValue": "74727565",
-                      "id": 7017,
+                      "id": 6716,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -3295,57 +3295,57 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 7019,
+                  "id": 6718,
                   "nodeType": "ExpressionStatement",
                   "src": "845:46:18"
                 },
                 {
                   "expression": {
-                    "id": 7028,
+                    "id": 6727,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "baseExpression": {
-                        "id": 7020,
+                        "id": 6719,
                         "name": "_usableScores",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 6977,
+                        "referencedDeclaration": 6676,
                         "src": "902:13:18",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_uint256_$_t_bool_$",
                           "typeString": "mapping(uint256 => bool)"
                         }
                       },
-                      "id": 7026,
+                      "id": 6725,
                       "indexExpression": {
                         "arguments": [
                           {
                             "expression": {
-                              "id": 7023,
+                              "id": 6722,
                               "name": "ScoreType",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 7216,
+                              "referencedDeclaration": 6916,
                               "src": "924:9:18",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_type$_t_enum$_ScoreType_$7216_$",
+                                "typeIdentifier": "t_type$_t_enum$_ScoreType_$6916_$",
                                 "typeString": "type(enum IScore.ScoreType)"
                               }
                             },
-                            "id": 7024,
+                            "id": 6723,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
                             "lValueRequested": false,
                             "memberName": "Other",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 7215,
+                            "referencedDeclaration": 6915,
                             "src": "924:15:18",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_enum$_ScoreType_$7216",
+                              "typeIdentifier": "t_enum$_ScoreType_$6916",
                               "typeString": "enum IScore.ScoreType"
                             }
                           }
@@ -3353,11 +3353,11 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_enum$_ScoreType_$7216",
+                              "typeIdentifier": "t_enum$_ScoreType_$6916",
                               "typeString": "enum IScore.ScoreType"
                             }
                           ],
-                          "id": 7022,
+                          "id": 6721,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -3369,14 +3369,14 @@
                             "typeString": "type(uint256)"
                           },
                           "typeName": {
-                            "id": 7021,
+                            "id": 6720,
                             "name": "uint256",
                             "nodeType": "ElementaryTypeName",
                             "src": "916:7:18",
                             "typeDescriptions": {}
                           }
                         },
-                        "id": 7025,
+                        "id": 6724,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -3406,7 +3406,7 @@
                     "operator": "=",
                     "rightHandSide": {
                       "hexValue": "74727565",
-                      "id": 7027,
+                      "id": 6726,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -3426,13 +3426,13 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 7029,
+                  "id": 6728,
                   "nodeType": "ExpressionStatement",
                   "src": "902:46:18"
                 }
               ]
             },
-            "id": 7031,
+            "id": 6730,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [],
@@ -3440,18 +3440,18 @@
             "nameLocation": "-1:-1:-1",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 6978,
+              "id": 6677,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "656:2:18"
             },
             "returnParameters": {
-              "id": 6979,
+              "id": 6678,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "659:0:18"
             },
-            "scope": 7070,
+            "scope": 6769,
             "src": "645:311:18",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -3459,26 +3459,26 @@
           },
           {
             "baseFunctions": [
-              7224
+              6924
             ],
             "body": {
-              "id": 7068,
+              "id": 6767,
               "nodeType": "Block",
               "src": "1076:249:18",
               "statements": [
                 {
                   "assignments": [
-                    7040
+                    6739
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 7040,
+                      "id": 6739,
                       "mutability": "mutable",
                       "name": "numberOfChecks",
                       "nameLocation": "1095:14:18",
                       "nodeType": "VariableDeclaration",
-                      "scope": 7068,
+                      "scope": 6767,
                       "src": "1087:22:18",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -3487,7 +3487,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 7039,
+                        "id": 6738,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "1087:7:18",
@@ -3499,21 +3499,21 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 7043,
+                  "id": 6742,
                   "initialValue": {
                     "expression": {
-                      "id": 7041,
+                      "id": 6740,
                       "name": "scores",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7034,
+                      "referencedDeclaration": 6733,
                       "src": "1112:6:18",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
                         "typeString": "uint256[] memory"
                       }
                     },
-                    "id": 7042,
+                    "id": 6741,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3531,13 +3531,13 @@
                 },
                 {
                   "body": {
-                    "id": 7064,
+                    "id": 6763,
                     "nodeType": "Block",
                     "src": "1188:106:18",
                     "statements": [
                       {
                         "condition": {
-                          "id": 7059,
+                          "id": 6758,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -3548,38 +3548,38 @@
                           "src": "1207:27:18",
                           "subExpression": {
                             "baseExpression": {
-                              "id": 7054,
+                              "id": 6753,
                               "name": "_usableScores",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 6977,
+                              "referencedDeclaration": 6676,
                               "src": "1208:13:18",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_mapping$_t_uint256_$_t_bool_$",
                                 "typeString": "mapping(uint256 => bool)"
                               }
                             },
-                            "id": 7058,
+                            "id": 6757,
                             "indexExpression": {
                               "baseExpression": {
-                                "id": 7055,
+                                "id": 6754,
                                 "name": "scores",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 7034,
+                                "referencedDeclaration": 6733,
                                 "src": "1222:6:18",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
                                   "typeString": "uint256[] memory"
                                 }
                               },
-                              "id": 7057,
+                              "id": 6756,
                               "indexExpression": {
-                                "id": 7056,
+                                "id": 6755,
                                 "name": "idx",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 7045,
+                                "referencedDeclaration": 6744,
                                 "src": "1229:3:18",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_uint256",
@@ -3613,18 +3613,18 @@
                             "typeString": "bool"
                           }
                         },
-                        "id": 7063,
+                        "id": 6762,
                         "nodeType": "IfStatement",
                         "src": "1203:80:18",
                         "trueBody": {
-                          "id": 7062,
+                          "id": 6761,
                           "nodeType": "Block",
                           "src": "1236:47:18",
                           "statements": [
                             {
                               "expression": {
                                 "hexValue": "66616c7365",
-                                "id": 7060,
+                                "id": 6759,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": true,
@@ -3638,8 +3638,8 @@
                                 },
                                 "value": "false"
                               },
-                              "functionReturnParameters": 7038,
-                              "id": 7061,
+                              "functionReturnParameters": 6737,
+                              "id": 6760,
                               "nodeType": "Return",
                               "src": "1255:12:18"
                             }
@@ -3653,17 +3653,17 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 7050,
+                    "id": 6749,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
-                      "id": 7048,
+                      "id": 6747,
                       "name": "idx",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7045,
+                      "referencedDeclaration": 6744,
                       "src": "1158:3:18",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3673,11 +3673,11 @@
                     "nodeType": "BinaryOperation",
                     "operator": "<=",
                     "rightExpression": {
-                      "id": 7049,
+                      "id": 6748,
                       "name": "numberOfChecks",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7040,
+                      "referencedDeclaration": 6739,
                       "src": "1165:14:18",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -3690,20 +3690,20 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 7065,
+                  "id": 6764,
                   "initializationExpression": {
                     "assignments": [
-                      7045
+                      6744
                     ],
                     "declarations": [
                       {
                         "constant": false,
-                        "id": 7045,
+                        "id": 6744,
                         "mutability": "mutable",
                         "name": "idx",
                         "nameLocation": "1149:3:18",
                         "nodeType": "VariableDeclaration",
-                        "scope": 7065,
+                        "scope": 6764,
                         "src": "1141:11:18",
                         "stateVariable": false,
                         "storageLocation": "default",
@@ -3712,7 +3712,7 @@
                           "typeString": "uint256"
                         },
                         "typeName": {
-                          "id": 7044,
+                          "id": 6743,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
                           "src": "1141:7:18",
@@ -3724,10 +3724,10 @@
                         "visibility": "internal"
                       }
                     ],
-                    "id": 7047,
+                    "id": 6746,
                     "initialValue": {
                       "hexValue": "30",
-                      "id": 7046,
+                      "id": 6745,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -3746,7 +3746,7 @@
                   },
                   "loopExpression": {
                     "expression": {
-                      "id": 7052,
+                      "id": 6751,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -3756,11 +3756,11 @@
                       "prefix": true,
                       "src": "1181:5:18",
                       "subExpression": {
-                        "id": 7051,
+                        "id": 6750,
                         "name": "idx",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 7045,
+                        "referencedDeclaration": 6744,
                         "src": "1183:3:18",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -3772,7 +3772,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 7053,
+                    "id": 6752,
                     "nodeType": "ExpressionStatement",
                     "src": "1181:5:18"
                   },
@@ -3782,7 +3782,7 @@
                 {
                   "expression": {
                     "hexValue": "74727565",
-                    "id": 7066,
+                    "id": 6765,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -3796,15 +3796,15 @@
                     },
                     "value": "true"
                   },
-                  "functionReturnParameters": 7038,
-                  "id": 7067,
+                  "functionReturnParameters": 6737,
+                  "id": 6766,
                   "nodeType": "Return",
                   "src": "1306:11:18"
                 }
               ]
             },
             "functionSelector": "4cecbc28",
-            "id": 7069,
+            "id": 6768,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -3812,17 +3812,17 @@
             "nameLocation": "973:16:18",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7035,
+              "id": 6734,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7034,
+                  "id": 6733,
                   "mutability": "mutable",
                   "name": "scores",
                   "nameLocation": "1007:6:18",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7069,
+                  "scope": 6768,
                   "src": "990:23:18",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -3832,7 +3832,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 7032,
+                      "id": 6731,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "990:7:18",
@@ -3841,7 +3841,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 7033,
+                    "id": 6732,
                     "nodeType": "ArrayTypeName",
                     "src": "990:9:18",
                     "typeDescriptions": {
@@ -3855,17 +3855,17 @@
               "src": "989:25:18"
             },
             "returnParameters": {
-              "id": 7038,
+              "id": 6737,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7037,
+                  "id": 6736,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7069,
+                  "scope": 6768,
                   "src": "1065:4:18",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3874,7 +3874,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 7036,
+                    "id": 6735,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "1065:4:18",
@@ -3888,14 +3888,14 @@
               ],
               "src": "1064:6:18"
             },
-            "scope": 7070,
+            "scope": 6769,
             "src": "964:361:18",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 7071,
+        "scope": 6770,
         "src": "554:776:18",
         "usedErrors": []
       }
@@ -3910,12 +3910,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xAcc3f7d6e92085349dce69FAE85f9720dDFb7053",
-      "transactionHash": "0xc180d837ed2fe8ac744577678fce90462cab8c9f3f00bb81f97914cadeeb27de"
+      "address": "0x7Ab7a2A530C4bB9dC9cab401fc528723FFAAB53d",
+      "transactionHash": "0x9fb791ed6595757a11dd1568c87febce302d07277d0fdba53f19cef8f2826b18"
     }
   },
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-03-16T23:08:48.196Z",
+  "updatedAt": "2023-03-19T14:27:56.736Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

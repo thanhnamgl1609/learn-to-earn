@@ -26,7 +26,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"registerAddr\",\"type\":\"address\"}],\"name\":\"isAbleToOperate\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/INftIdentities.sol\":\"INftIdentities\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces/IConstant.sol\":{\"keccak256\":\"0x7fe3c15280c7fa07b38870717120b16291a9f81b342a9fa3134ec97d5e2bb005\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7fede686b4cd5bc4278634caf1d1c45f336262123f9f203cca8621861e30b5d3\",\"dweb:/ipfs/QmSjMvoYnapRkPRfw9LPrLjQdVBCPXMy1QnRUCxkueJwis\"]},\"project:/contracts/interfaces/INftIdentities.sol\":{\"keccak256\":\"0xdd92c420fc12ac0cdff10f0b9a842c3a0f79acdde8df99e743fb61475b78bd92\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8d06a9cec6e57c518b8b8582191c03bbe7da751f4358cf45f50967e25784267a\",\"dweb:/ipfs/QmTCzsyGcfzCCqXxg4jzkYphSzA3AAbiBUUvkCQgMoBSUD\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"registerAddr\",\"type\":\"address\"}],\"name\":\"isAbleToOperate\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/INftIdentities.sol\":\"INftIdentities\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces/IConstant.sol\":{\"keccak256\":\"0xf331a5290f07a2167782c35cdad6937bfd93f6115f51e66eb0aae742dc8b21b9\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://55fecebec866395ca42e064a94488804ab9a848b84fa8156bce72c3546486d86\",\"dweb:/ipfs/QmeP3aVBTDfesypJdoohp6dEJYuwqNkXradDxc6XvcDiNZ\"]},\"project:/contracts/interfaces/INftIdentities.sol\":{\"keccak256\":\"0xdd92c420fc12ac0cdff10f0b9a842c3a0f79acdde8df99e743fb61475b78bd92\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8d06a9cec6e57c518b8b8582191c03bbe7da751f4358cf45f50967e25784267a\",\"dweb:/ipfs/QmTCzsyGcfzCCqXxg4jzkYphSzA3AAbiBUUvkCQgMoBSUD\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -40,18 +40,18 @@
     "absolutePath": "project:/contracts/interfaces/INftIdentities.sol",
     "exportedSymbols": {
       "IConstant": [
-        7147
+        6850
       ],
       "INftIdentities": [
-        7168
+        6871
       ]
     },
-    "id": 7169,
+    "id": 6872,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 7155,
+        "id": 6858,
         "literals": [
           "solidity",
           "^",
@@ -64,11 +64,11 @@
       {
         "absolutePath": "project:/contracts/interfaces/IConstant.sol",
         "file": "./IConstant.sol",
-        "id": 7156,
+        "id": 6859,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 7169,
-        "sourceUnit": 7148,
+        "scope": 6872,
+        "sourceUnit": 6851,
         "src": "130:25:21",
         "symbolAliases": [],
         "unitAlias": ""
@@ -78,13 +78,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 7157,
+              "id": 6860,
               "name": "IConstant",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 7147,
+              "referencedDeclaration": 6850,
               "src": "187:9:21"
             },
-            "id": 7158,
+            "id": 6861,
             "nodeType": "InheritanceSpecifier",
             "src": "187:9:21"
           }
@@ -93,10 +93,10 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 7168,
+        "id": 6871,
         "linearizedBaseContracts": [
-          7168,
-          7147
+          6871,
+          6850
         ],
         "name": "INftIdentities",
         "nameLocation": "169:14:21",
@@ -104,7 +104,7 @@
         "nodes": [
           {
             "functionSelector": "ce268f69",
-            "id": 7167,
+            "id": 6870,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -112,17 +112,17 @@
             "nameLocation": "213:15:21",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 7161,
+              "id": 6864,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7160,
+                  "id": 6863,
                   "mutability": "mutable",
                   "name": "registerAddr",
                   "nameLocation": "237:12:21",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7167,
+                  "scope": 6870,
                   "src": "229:20:21",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -131,7 +131,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 7159,
+                    "id": 6862,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "229:7:21",
@@ -147,17 +147,17 @@
               "src": "228:22:21"
             },
             "returnParameters": {
-              "id": 7166,
+              "id": 6869,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 7163,
+                  "id": 6866,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7167,
+                  "scope": 6870,
                   "src": "301:4:21",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -166,7 +166,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 7162,
+                    "id": 6865,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "301:4:21",
@@ -179,12 +179,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 7165,
+                  "id": 6868,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 7167,
+                  "scope": 6870,
                   "src": "307:7:21",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -193,7 +193,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 7164,
+                    "id": 6867,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "307:7:21",
@@ -207,14 +207,14 @@
               ],
               "src": "300:15:21"
             },
-            "scope": 7168,
+            "scope": 6871,
             "src": "204:112:21",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 7169,
+        "scope": 6872,
         "src": "159:160:21",
         "usedErrors": []
       }
@@ -227,7 +227,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-03-16T23:08:40.963Z",
+  "updatedAt": "2023-03-19T14:27:48.683Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

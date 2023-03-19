@@ -18,11 +18,11 @@ export const useNetwork = () => {
   };
 };
 
-export const useRole = () => {
-  const { useRole } = useHooks();
-  const swrResponse = useRole();
+export const useUserInfo = () => {
+  const { useUserInfo } = useHooks();
+  const swrResponse = useUserInfo();
 
   return {
-    role: swrResponse,
+    userInfo: swrResponse,
   };
 };

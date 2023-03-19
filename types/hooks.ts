@@ -1,7 +1,7 @@
 import { MetaMaskInpageProvider } from '@metamask/providers';
 import { providers } from 'ethers';
 import { SWRResponse } from 'swr';
-import { NftIdentities, NftSchool, NftCertificates } from './nfts';
+import { NftIdentities, NftSchool, NftCertificates } from './contracts';
 
 export type ContractLists = {
   nftIdentities: NftIdentities;

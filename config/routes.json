@@ -1,0 +1,11 @@
+{
+  "home": "/",
+  "manage": "/manage",
+  "profile": "/profile",
+  "applyTeacher": "/teacher/apply",
+  "teacherList": "/teacher/list",
+  "teacherApplication": "/teacher/application",
+  "teacherApplicationDetail": "/teacher/application/:id",
+  "registerStudent": "/register-student",
+  "applicationDetail": "/application/detail"
+}

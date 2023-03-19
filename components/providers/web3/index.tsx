@@ -14,7 +14,7 @@ import {
 } from './utils';
 import { ethers } from 'ethers';
 import { MetaMaskInpageProvider } from '@metamask/providers';
-import { NftCertificates, NftIdentities, NftSchool } from '@_types/nfts';
+import { NftCertificates, NftIdentities, NftSchool } from '@_types/contracts';
 
 const pageReload = () => window.location.reload();
 
@@ -25,8 +25,8 @@ const Web3Provider: FC<PropsWithChildren> = ({ children }) => {
 
   const handleAccountChange =
     (ethereum: MetaMaskInpageProvider) => async () => {
-      const isLocked = !(await ethereum._metamask.isUnlocked());
-      if (isLocked) pageReload();
+      // const isLocked = !(await ethereum._metamask.isUnlocked());
+      pageReload();
     };
   const setGlobalListeners = (ethereum: MetaMaskInpageProvider) => {
     ethereum.on('chainChanged', pageReload);

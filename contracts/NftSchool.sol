@@ -21,9 +21,8 @@ import "./interfaces/IScore.sol";
 contract NftSchool is ERC1155BaseContract, INftSchool {
     using Counters for Counters.Counter;
 
-    uint256 constant NFT_REQUIREMENT = 1;
-    uint256 constant NFT_COURSE_TEMPLATE = 2;
-    uint256 constant NFT_CLASS = 3;
+    uint256 constant NFT_COURSE = 1;
+    uint256 constant NFT_CLASS = 2;
 
     uint256 public minimumGraduationScore = 500;
 
@@ -33,9 +32,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
     INftCertificates private _nftCertificates;
     IScore private _scoreContract;
 
-    bool private _isInitialize;
-    bool private _isInitializeRequirement;
-    bool private _isInitializeCourse;
+    bool public _isInitialize;
 
     uint256 public schoolYearEnd;
     uint256 public registeredStartAt;
@@ -44,8 +41,8 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
 
     mapping(uint256 => uint256[]) private _classTokenIdsOfYear;
 
-    NftRequirement[] private _allNftRequirements;
-    NftCourseTemplate[] private _allNftCourseTemplates;
+    KnowledgeBlock[] private _knowledgeBlocks;
+    NftCourse[] private _allNftCourses;
     NftClass[] private _allNftClasses;
     mapping(uint256 => mapping(uint256 => uint256)) _posOfTokenIdOfNftType;
 
@@ -79,54 +76,30 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
 
     constructor(
         address nftIdentities,
-        address scoreAddr
+        address scoreAddr,
+        string[] memory knowledgeBlockNames,
+        uint256[] memory knowledgeBlockCredits
     ) ERC1155BaseContract("") {
         _nftIdentities = INftIdentities(nftIdentities);
         _scoreContract = IScore(scoreAddr);
         schoolYearEnd = block.timestamp;
+
+        uint256 knowledgeBlockCount = knowledgeBlockNames.length;
+        for (uint256 idx = 0; idx < knowledgeBlockCount; ++idx) {
+            _knowledgeBlocks.push(
+                KnowledgeBlock(
+                    idx + 1,
+                    knowledgeBlockNames[idx],
+                    knowledgeBlockCredits[idx]
+                )
+            );
+        }
     }
 
     function initialize(address nftCertificates) public onlyOwner {
         require(!_isInitialize);
         _isInitialize = true;
         _nftCertificates = INftCertificates(nftCertificates);
-    }
-
-    /*
-        Initialize requirement before any operation in the system including
-        - Requirement
-        - Course template
-    */
-    function initializeRequirement(
-        uint256[] memory credits,
-        string[] memory tokenURIs
-    ) public onlyOwner {
-        require(!_isInitializeRequirement, "Requirement has been initialized");
-        require(credits.length == tokenURIs.length);
-        uint256 numberOfTokens = credits.length;
-
-        for (uint256 idx = 0; idx <= numberOfTokens; ++idx) {
-            _mintNftRequirement(credits[idx], tokenURIs[idx]);
-        }
-    }
-
-    function initializeCourseTemplate(
-        uint256[] memory requirementIds,
-        uint256[] memory credits,
-        string[] memory tokenURIs
-    ) public onlyOwner {
-        require(!_isInitializeCourse, "Course has been initialized");
-        require(requirementIds.length == tokenURIs.length);
-        require(requirementIds.length == tokenURIs.length);
-        uint256 numberOfTokens = credits.length;
-
-        for (uint256 idx = 0; idx <= numberOfTokens; ++idx) {
-            _mintNftCourseTemplate(
-                requirementIds[idx],
-                credits[idx],
-                tokenURIs[idx]
-            );
-        }
     }
 
     function initializeYear(
@@ -164,49 +137,23 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         registeredEndAt = _registeredEndAt;
     }
 
-    function createRequirement(
+    function createCourse(
+        uint256 knowledgeBlock,
         uint256 credits,
         string memory tokenURI
     ) public onlyOwner afterYearEnd {
-        require(
-            _isInitializeRequirement,
-            "Requirement must be initialized before creating new"
-        );
-        _mintNftRequirement(credits, tokenURI);
+        _mintNftCourse(knowledgeBlock, credits, tokenURI);
     }
 
-    function updateRequirement(
+    function updateCourse(
         uint256 tokenId,
         uint256 credits
     ) external onlyOwner afterYearEnd {
         require(credits > 0, "Credit must be a positive number");
-        uint256 pos = _posOfTokenIdOfNftType[NFT_REQUIREMENT][tokenId];
+        uint256 pos = _posOfTokenIdOfNftType[NFT_COURSE][tokenId];
         require(pos > 0, "Nft does not exist");
 
-        _allNftRequirements[pos - 1].credits = credits;
-    }
-
-    function createCourseTemplate(
-        uint256 requirementId,
-        uint256 credits,
-        string memory tokenURI
-    ) public onlyOwner afterYearEnd {
-        require(
-            _isInitializeCourse,
-            "Course must be initialized before creating new"
-        );
-        _mintNftCourseTemplate(requirementId, credits, tokenURI);
-    }
-
-    function updateCourseTemplate(
-        uint256 tokenId,
-        uint256 credits
-    ) external onlyOwner afterYearEnd {
-        require(credits > 0, "Credit must be a positive number");
-        uint256 pos = _posOfTokenIdOfNftType[NFT_COURSE_TEMPLATE][tokenId];
-        require(pos > 0, "Nft does not exist");
-
-        _allNftCourseTemplates[pos - 1].credits = credits;
+        _allNftCourses[pos - 1].credits = credits;
     }
 
     function burnToken(
@@ -229,28 +176,18 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         return _getAllNftClasses(yearId);
     }
 
-    function getAllNftRequirements()
+    function getAllKnowledgeBlocks()
         external
         view
-        returns (NftRequirement[] memory, string[] memory)
+        returns (KnowledgeBlock[] memory)
     {
-        uint256 numberOfNft = _allNftRequirements.length;
-        string[] memory tokenURIs = new string[](numberOfNft);
-
-        for (uint256 idx = 0; idx <= numberOfNft; ++idx) {
-            tokenURIs[idx] = uri(_allNftRequirements[idx].tokenId);
-        }
-
-        return (_allNftRequirements, tokenURIs);
+        return _knowledgeBlocks;
     }
 
-    function getNftRequirement(
-        uint256 tokenId
-    ) external view returns (NftRequirement memory, string memory) {
-        uint256 pos = _posOfTokenIdOfNftType[NFT_REQUIREMENT][tokenId];
-        require(pos > 0, "Nft does not exist");
-
-        return (_allNftRequirements[pos - 1], uri(tokenId));
+    function getKnowledgeBlockById(
+        uint256 id
+    ) external view returns (KnowledgeBlock memory) {
+        return _knowledgeBlocks[id - 1];
     }
 
     function getNftClass(
@@ -270,22 +207,22 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         return _getAllNftClasses(_yearId);
     }
 
-    function getAllNftCourseTemplate()
+    function getAllCourses()
         external
         view
         onlyOwner
-        returns (NftCourseTemplate[] memory)
+        returns (NftCourse[] memory)
     {
-        return _allNftCourseTemplates;
+        return _allNftCourses;
     }
 
-    function getNftCourseTemplate(
+    function getCourse(
         uint256 tokenId
-    ) public view returns (NftCourseTemplate memory, string memory) {
-        uint256 pos = _posOfTokenIdOfNftType[NFT_COURSE_TEMPLATE][tokenId];
+    ) public view returns (NftCourse memory, string memory) {
+        uint256 pos = _posOfTokenIdOfNftType[NFT_COURSE][tokenId];
         require(pos > 0, "Nft does not exist");
 
-        return (_allNftCourseTemplates[pos - 1], uri(tokenId));
+        return (_allNftCourses[pos - 1], uri(tokenId));
     }
 
     function checkTokenExists(uint256 tokenId) public view returns (bool) {
@@ -325,60 +262,39 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         return (nftClasses, tokenURIs);
     }
 
-    function _mintNftRequirement(
-        uint256 credits,
-        string memory tokenURI
-    ) public returns (uint256) {
-        uint256 tokenId = _mintToken(_owner, NFT_REQUIREMENT, tokenURI);
-        _createNftRequirement(tokenId, credits);
-        _mint(_owner, tokenId, ONE_NFT, msg.data);
-
-        return tokenId;
-    }
-
-    function _createNftRequirement(uint256 tokenId, uint256 credits) private {
-        require(credits > 0, "Credits must be a positive number");
-        NftRequirement memory nftRequirement = NftRequirement(tokenId, credits);
-        _allNftRequirements.push(nftRequirement);
-        _posOfTokenIdOfNftType[NFT_REQUIREMENT][tokenId] = _allNftRequirements
-            .length;
-    }
-
-    function _mintNftCourseTemplate(
-        uint256 requirementId,
+    function _mintNftCourse(
+        uint256 knowledgeBlockId,
         uint256 credits,
         string memory tokenURI
     ) private returns (uint256) {
-        uint256 tokenId = _mintToken(_owner, NFT_COURSE_TEMPLATE, tokenURI);
-        _createNftCourseTemplate(tokenId, requirementId, credits);
+        uint256 tokenId = _mintToken(_owner, NFT_COURSE, tokenURI);
+        _createNftCourse(tokenId, knowledgeBlockId, credits);
 
         return tokenId;
     }
 
-    function _createNftCourseTemplate(
+    function _createNftCourse(
         uint256 tokenId,
-        uint256 requirementId,
+        uint256 knowledgeBlockId,
         uint256 credits
     ) private {
-        uint256 pos = _posOfTokenIdOfNftType[NFT_REQUIREMENT][requirementId];
         require(
-            pos > 0,
-            "Nft requirement must be created before creating nft course template for it"
+            knowledgeBlockId <= _knowledgeBlocks.length,
+            "Knowledge block doesn't exist"
         );
         require(credits > 0, "Credits must be a positive number");
-        NftCourseTemplate memory nftCourseTemplate = NftCourseTemplate(
+        NftCourse memory nftCourse = NftCourse(
             tokenId,
-            requirementId,
-            credits
+            knowledgeBlockId,
+            credits,
+            1
         );
-        _allNftCourseTemplates.push(nftCourseTemplate);
-        _posOfTokenIdOfNftType[NFT_COURSE_TEMPLATE][
-            tokenId
-        ] = _allNftCourseTemplates.length;
+        _allNftCourses.push(nftCourse);
+        _posOfTokenIdOfNftType[NFT_COURSE][tokenId] = _allNftCourses.length;
     }
 
     function _mintNftClass(
-        uint256 courseTemplateId,
+        uint256 courseId,
         uint256 credits,
         uint256 completeAt,
         uint256[] memory requiredScores,
@@ -386,10 +302,10 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         address teacher,
         string memory tokenURI
     ) private returns (uint256) {
-        uint256 tokenId = _mintToken(_owner, NFT_COURSE_TEMPLATE, tokenURI);
+        uint256 tokenId = _mintToken(_owner, NFT_CLASS, tokenURI);
         _createNftClass(
             tokenId,
-            courseTemplateId,
+            courseId,
             credits,
             completeAt,
             requiredScores,
@@ -402,7 +318,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
 
     function _createNftClass(
         uint256 tokenId,
-        uint256 courseTemplateId,
+        uint256 courseId,
         uint256 credits,
         uint256 completeAt,
         uint256[] memory requiredScores,
@@ -413,7 +329,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
             registeredStartAt > block.timestamp,
             "Update registered date before creating class"
         );
-        (NftCourseTemplate memory nftCourseTemplate, ) = getNftCourseTemplate(
+        (NftCourse memory nftCourse, ) = getCourse(
             tokenId
         );
         require(credits > 0, "Credits must be a positive number");
@@ -423,8 +339,8 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
         );
         NftClass memory nftClass = NftClass(
             tokenId,
-            courseTemplateId,
-            nftCourseTemplate.requirementId,
+            courseId,
+            nftCourse.knowledgeBlockId,
             credits,
             registeredStartAt,
             registeredEndAt,
@@ -434,7 +350,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
             teacher
         );
         _allNftClasses.push(nftClass);
-        _posOfTokenIdOfNftType[NFT_COURSE_TEMPLATE][tokenId] = _allNftClasses
+        _posOfTokenIdOfNftType[NFT_CLASS][tokenId] = _allNftClasses
             .length;
     }
 }

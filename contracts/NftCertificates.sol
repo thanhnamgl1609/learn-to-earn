@@ -178,11 +178,11 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
         require(msg.value == graduationPrice);
         require(_studentOwnedNftGraduation[msg.sender] == 0);
         uint256 numOfCompleteCourses = nftCompleteCourseIds.length;
-        (NftRequirement[] memory nftRequirements, ) = _nftSchool
-            .getAllNftRequirements();
-        uint256 numOfRequirements = nftRequirements.length;
-        uint256[] memory acquiredCreditsByRequirementId = new uint256[](
-            numOfRequirements
+        KnowledgeBlock[] memory knowledgeBlocks = _nftSchool
+            .getAllKnowledgeBlocks();
+        uint256 numOfKnowledgeBlocks = knowledgeBlocks.length;
+        uint256[] memory acquiredCreditsByKnowledgeBlockId = new uint256[](
+            numOfKnowledgeBlocks
         );
         uint256 acquiredCredits;
         uint256 totalScore;
@@ -191,23 +191,25 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
             if (_ownerOfNft[nftCompleteCourseIds[idx]] != msg.sender) {
                 revert();
             }
+            // _TODO: Check duplicate course
             (
                 NftCompleteCourse memory nftCompleteCourse,
 
             ) = getNftCompleteCourse(nftCompleteCourseIds[idx]);
-            acquiredCreditsByRequirementId[
-                nftCompleteCourse.requirementId
+            acquiredCreditsByKnowledgeBlockId[
+                nftCompleteCourse.knowledgeBlockId 
             ] += nftCompleteCourse.credits;
             acquiredCredits += nftCompleteCourse.credits;
             totalScore += (nftCompleteCourse.avgScore *
                 nftCompleteCourse.credits);
         }
 
-        for (uint256 idx = 0; idx < numOfRequirements; ++idx) {
+        for (uint256 idx = 0; idx < numOfKnowledgeBlocks; ++idx) {
             if (
-                acquiredCreditsByRequirementId[nftRequirements[idx].tokenId] <
-                nftRequirements[idx].credits
+                acquiredCreditsByKnowledgeBlockId[knowledgeBlocks[idx].id] <
+                knowledgeBlocks[idx].credits
             ) {
+                // If not enough credits of this knowledge block, revert
                 revert();
             }
         }
@@ -276,8 +278,8 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
         NftScoreBoard memory nftScoreBoard = NftScoreBoard(
             tokenId,
             classId,
-            classInfo.courseTemplateId,
-            classInfo.requirementId,
+            classInfo.courseId,
+            classInfo.knowledgeBlockId,
             classInfo.credits,
             classInfo.completeAt,
             studentAddr,
@@ -324,11 +326,11 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
         uint256 tokenId,
         NftScoreBoard memory nftScoreBoard
     ) private {
-        // TODO: transfer from nft scoreboard to this
+        // TODO: CHECK average satisfied minimum score
         NftCompleteCourse memory nftCompleteCourse = NftCompleteCourse(
             tokenId,
-            nftScoreBoard.courseTemplateId,
-            nftScoreBoard.requirementId,
+            nftScoreBoard.courseId,
+            nftScoreBoard.knowledgeBlockId,
             nftScoreBoard.credits,
             nftScoreBoard.scores.average()
         );

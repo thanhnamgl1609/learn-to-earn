@@ -17,19 +17,17 @@ interface IConstant {
         TEACHER
     }
 
-    struct NftRequirement {
-        uint256 tokenId;
+    struct KnowledgeBlock {
+        uint256 id;
+        string name;
         uint256 credits;
-        /*
-            Metadata:
-                - name
-        */
     }
 
-    struct NftCourseTemplate { // cannot be burn if exist any nft classes belongs to it
+    struct NftCourse { // cannot be burn if exist any nft classes belongs to it
         uint256 tokenId;
-        uint256 requirementId; // cannot be updated
+        uint256 knowledgeBlockId; // cannot be updated
         uint256 credits;
+        uint256 status; // 0: opened, 1: closed
         /*
             Metadata:
                 - Requirement name
@@ -39,8 +37,8 @@ interface IConstant {
     
     struct NftClass {
         uint256 tokenId;
-        uint256 courseTemplateId; // courseId - requirementId
-        uint256 requirementId; // courseId - requirementId
+        uint256 courseId; // courseId - requirementId
+        uint256 knowledgeBlockId; // courseId - requirementId
         uint256 credits;
         uint256 registeredStartAt;
         uint256 registeredEndAt;
@@ -62,8 +60,8 @@ interface IConstant {
     struct NftScoreBoard {
         uint256 tokenId;
         uint256 classId;
-        uint256 courseTemplateId;
-        uint256 requirementId;
+        uint256 courseId;
+        uint256 knowledgeBlockId;
         uint256 credits;
         uint256 completeAt; // end time - editable
         address studentAddr;
@@ -80,8 +78,8 @@ interface IConstant {
 
     struct NftCompleteCourse {
         uint256 tokenId;
-        uint256 courseTemplateId;
-        uint256 requirementId;
+        uint256 courseId;
+        uint256 knowledgeBlockId;
         uint256 credits;
         uint256 avgScore; // * 100 to keep 2 digits after comma
         /* Metadata:

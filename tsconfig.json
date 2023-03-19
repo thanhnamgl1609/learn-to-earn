@@ -19,11 +19,17 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@ui": [
-        "components/ui"
+      "@atoms": [
+        "components/ui/atoms"
       ],
-      "@ui/*": [
-        "components/ui/*"
+      "@molecules": [
+        "components/ui/molecules"
+      ],
+      "@organisms": [
+        "components/ui/organisms"
+      ],
+      "@templates": [
+        "components/ui/templates"
       ],
       "@providers": [
         "components/providers"
@@ -37,8 +43,17 @@
       "@hooks/*": [
         "components/hooks/*"
       ],
+      "@store": [
+        "components/store"
+      ],
+      "@store/*": [
+        "components/store/*"
+      ],
       "@_types/*": [
         "types/*"
+      ],
+      "@config/*": [
+        "config/*"
       ]
     },
     "target": "es5"
