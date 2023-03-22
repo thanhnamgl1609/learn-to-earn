@@ -67,13 +67,10 @@ export interface NftIdentitiesEventsContext {
 }
 export type NftIdentitiesMethodNames =
   | 'new'
-  | '_getRegisteredRole'
   | 'balanceOf'
   | 'balanceOfBatch'
-  | 'getRegisteredInfo'
   | 'isApprovedForAll'
   | 'registerFee'
-  | 'reject'
   | 'safeBatchTransferFrom'
   | 'safeTransferFrom'
   | 'setApprovalForAll'
@@ -81,11 +78,14 @@ export type NftIdentitiesMethodNames =
   | 'uri'
   | 'getNftInfo'
   | 'getNftOfTokenId'
+  | 'getAllNftIdentityRegistration'
+  | 'getRegisteredInfo'
+  | 'getAllExtendExpiredRequest'
   | 'requestExtendExpiredNft'
   | 'isAbleToOperate'
   | 'registerNftIdentity'
   | 'grantNftIdentity'
-  | 'getAllExtendExpiredRequest'
+  | 'rejectNftIdentityRegistration'
   | 'extendExpiredNft'
   | 'burnNft'
   | 'getOwnedNft'
@@ -115,12 +115,6 @@ export interface URIEventEmittedResponse {
   value: string;
   id: BigNumberish;
 }
-export interface RegistrationinfoResponse {
-  applicant: string;
-  0: string;
-  documentURI: string;
-  1: string;
-}
 export interface NftidentityResponse {
   tokenId: BigNumber;
   0: BigNumber;
@@ -136,18 +130,24 @@ export interface GetNftInfoResponse {
   1: string;
   length: 2;
 }
-export interface IsAbleToOperateResponse {
-  result0: boolean;
-  0: boolean;
-  result1: BigNumber;
-  1: BigNumber;
-  length: 2;
+export interface RegistrationinfoResponse {
+  applicant: string;
+  0: string;
+  documentURI: string;
+  1: string;
 }
 export interface GetAllExtendExpiredRequestResponse {
   result0: NftidentityResponse[];
   0: NftidentityResponse[];
   result1: string[];
   1: string[];
+  length: 2;
+}
+export interface IsAbleToOperateResponse {
+  result0: boolean;
+  0: boolean;
+  result1: BigNumber;
+  1: BigNumber;
   length: 2;
 }
 export interface GetOwnedNftResponse {
@@ -169,17 +169,6 @@ export interface NftIdentities {
    * Type: constructor
    */
   'new'(overrides?: ContractTransactionOverrides): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param addr Type: address, Indexed: false
-   */
-  _getRegisteredRole(
-    addr: string,
-    overrides?: ContractCallOverrides
-  ): Promise<BigNumber>;
   /**
    * Payable: false
    * Constant: true
@@ -211,15 +200,6 @@ export interface NftIdentities {
    * Constant: true
    * StateMutability: view
    * Type: function
-   */
-  getRegisteredInfo(
-    overrides?: ContractCallOverrides
-  ): Promise<RegistrationinfoResponse>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
    * @param account Type: address, Indexed: false
    * @param operator Type: address, Indexed: false
    */
@@ -235,15 +215,6 @@ export interface NftIdentities {
    * Type: function
    */
   registerFee(overrides?: ContractCallOverrides): Promise<BigNumber>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   */
-  reject(
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
   /**
    * Payable: false
    * Constant: false
@@ -341,6 +312,35 @@ export interface NftIdentities {
   ): Promise<NftidentityResponse>;
   /**
    * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param role Type: uint256, Indexed: false
+   */
+  getAllNftIdentityRegistration(
+    role: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<RegistrationinfoResponse[]>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   */
+  getRegisteredInfo(
+    overrides?: ContractCallOverrides
+  ): Promise<RegistrationinfoResponse>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   */
+  getAllExtendExpiredRequest(
+    overrides?: ContractCallOverrides
+  ): Promise<GetAllExtendExpiredRequestResponse>;
+  /**
+   * Payable: false
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
@@ -389,13 +389,13 @@ export interface NftIdentities {
   ): Promise<ContractTransaction>;
   /**
    * Payable: false
-   * Constant: true
-   * StateMutability: view
+   * Constant: false
+   * StateMutability: nonpayable
    * Type: function
    */
-  getAllExtendExpiredRequest(
-    overrides?: ContractCallOverrides
-  ): Promise<GetAllExtendExpiredRequestResponse>;
+  rejectNftIdentityRegistration(
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
   /**
    * Payable: false
    * Constant: false

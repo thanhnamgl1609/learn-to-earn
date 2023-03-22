@@ -1,6 +1,7 @@
 {
   "home": "/",
   "manage": "/manage",
+  "manageTeacherRegistration": "/manage/teacher/registration",
   "profile": "/profile",
   "applyTeacher": "/teacher/apply",
   "teacherList": "/teacher/list",

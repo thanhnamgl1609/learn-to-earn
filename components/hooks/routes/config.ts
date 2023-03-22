@@ -25,6 +25,7 @@ const RouteConfig = {
   [ROLES.COUNCIL]: {
     default: Routes.manage,
     [Routes.manage]: Routes.manage,
+    [Routes.manageTeacherRegistration]: Routes.manageTeacherRegistration,
     [Routes.teacherApplication]: Routes.teacherApplication,
     [Routes.teacherApplicationDetail]: Routes.teacherApplicationDetail,
   },

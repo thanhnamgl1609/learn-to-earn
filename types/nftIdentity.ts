@@ -1,7 +1,11 @@
-export type RegistrationInfo = {
-  fullName: string;
-  documentURIs: string[];
+export type RegistrationInfoRaw = {
+  applicant: string;
+  documentURI: string;
 };
+
+export type RegistrationInfo = {
+  meta: TeacherMeta;
+} & RegistrationInfoRaw;
 
 export type StudentMeta = {
   fullName: string;

@@ -52,13 +52,8 @@ contract Registration {
         delete _positionOfRegisters[role][addr];
     }
 
-    function reject() public {
-        require(_registeredAddr[msg.sender] > 0);
-        _removeFromRegistersList(msg.sender);
-    }
-
-    function getRegisteredInfo()
-        public
+    function _getRegisteredInfo()
+        internal
         view
         hasRegistered(msg.sender)
         returns (RegistrationInfo memory)
@@ -67,6 +62,12 @@ contract Registration {
         uint256 position = _positionOfRegisters[role][msg.sender];
 
         return _registers[role][position - 1];
+    }
+
+    function _getAllRegistration(
+        uint256 role
+    ) internal view returns (RegistrationInfo[] memory) {
+        return _registers[role];
     }
 
     function _getRegisteredRole(address addr) internal view returns (uint256) {
