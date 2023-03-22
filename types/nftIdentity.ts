@@ -4,8 +4,10 @@ export type RegistrationInfoRaw = {
 };
 
 export type RegistrationInfo = {
-  meta: TeacherMeta;
+  meta: RegistrationInfoMeta;
 } & RegistrationInfoRaw;
+
+export type RegistrationInfoMeta = TeacherMeta;
 
 export type StudentMeta = {
   fullName: string;

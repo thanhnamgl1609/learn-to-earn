@@ -1,8 +1,7 @@
 import { CryptoHookFactory } from '@_types/hooks';
-import { RegistrationInfo } from '@_types/nftIdentity';
+import { RegistrationInfo, RegistrationInfoMeta } from '@_types/nftIdentity';
 import { useCallback, useState } from 'react';
 import useSWR from 'swr';
-import CONST from '@config/constants.json';
 import { ethers } from 'ethers';
 
 type UseRegistrationListResponse = {
@@ -13,7 +12,7 @@ type RegistrationList = {
   applications: RegistrationInfo[];
 };
 
-type UseRegistrationListParams = {
+export type UseRegistrationListParams = {
   role: number;
 };
 
@@ -24,8 +23,6 @@ type RegistrationListHookFactory = CryptoHookFactory<
 >;
 
 export type UseRegistrationListHook = ReturnType<RegistrationListHookFactory>;
-
-const { ROLES } = CONST;
 
 export const hookFactory: RegistrationListHookFactory =
   ({ contracts }) =>
@@ -39,11 +36,22 @@ export const hookFactory: RegistrationListHookFactory =
       contracts ? 'web3/useRegistrationList' : null,
       async () => {
         const applicationsRes =
-          (await contracts!.nftIdentities.getAllNftIdentityRegistration(
-            role
-          ));
+          await contracts!.nftIdentities.getAllNftIdentityRegistration(role);
+        const applicationsPromises = applicationsRes.map(
+          async (applicationRes) => {
+            const applicationMetadata = (await fetch(
+              applicationRes.documentURI
+            ).then((res) => res.json())) as RegistrationInfoMeta;
 
-        return applicationsRes;
+            return {
+              ...applicationRes,
+              meta: applicationMetadata,
+            };
+          }
+        );
+        const applications = await Promise.all(applicationsPromises);
+
+        return { applications };
       }
     );
 

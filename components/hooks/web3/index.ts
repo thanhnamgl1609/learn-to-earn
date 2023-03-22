@@ -1,4 +1,5 @@
 import { useHooks } from '@providers/web3';
+import { UseRegistrationListHook, UseRegistrationListParams } from './useRegistrationList';
 
 export const useAccount = () => {
   const { useAccount } = useHooks();
@@ -24,5 +25,14 @@ export const useUserInfo = () => {
 
   return {
     userInfo: swrResponse,
+  };
+};
+
+export const useRegistrationList = (params: UseRegistrationListParams) => {
+  const { useRegistrationList } = useHooks();
+  const swrResponse = useRegistrationList(params);
+
+  return {
+    registrationList: swrResponse,
   };
 };
