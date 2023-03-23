@@ -2,14 +2,9 @@ import { CryptoHookFactory } from '@_types/hooks';
 import { RegistrationInfo, RegistrationInfoMeta } from '@_types/nftIdentity';
 import { useCallback, useState } from 'react';
 import useSWR from 'swr';
-import { ethers } from 'ethers';
 
 type UseRegistrationListResponse = {
   grantNftIdentity: (addr: string) => Promise<void>;
-};
-
-type RegistrationList = {
-  applications: RegistrationInfo[];
 };
 
 export type UseRegistrationListParams = {
@@ -17,7 +12,7 @@ export type UseRegistrationListParams = {
 };
 
 type RegistrationListHookFactory = CryptoHookFactory<
-  RegistrationList,
+  RegistrationInfo[],
   UseRegistrationListResponse,
   UseRegistrationListParams
 >;
@@ -28,36 +23,36 @@ export const hookFactory: RegistrationListHookFactory =
   ({ contracts }) =>
   ({ role }) => {
     const _contracts = contracts;
-    const [applyTeacherFee, setApplyTeacherFee] = useState(
-      ethers.BigNumber.from(0)
-    );
 
     const { data, ...swr } = useSWR(
       contracts ? 'web3/useRegistrationList' : null,
       async () => {
         const applicationsRes =
           await contracts!.nftIdentities.getAllNftIdentityRegistration(role);
+          console.log("🚀 ~ file: useRegistrationList.ts:37 ~ role:", role)
+        console.log("🚀 ~ file: useRegistrationList.ts:36 ~ applicationsRes:", applicationsRes)
         const applicationsPromises = applicationsRes.map(
-          async (applicationRes) => {
+          async ({ documentURI, applicant }) => {
             const applicationMetadata = (await fetch(
-              applicationRes.documentURI
+              documentURI
             ).then((res) => res.json())) as RegistrationInfoMeta;
 
             return {
-              ...applicationRes,
+              documentURI,
+              applicant,
               meta: applicationMetadata,
             };
           }
         );
         const applications = await Promise.all(applicationsPromises);
 
-        return { applications };
-      }
+        return applications;
+      },
     );
 
     const grantNftIdentity = useCallback(
       async (addr: string) => {},
-      [_contracts, applyTeacherFee]
+      [_contracts]
     );
 
     return {
