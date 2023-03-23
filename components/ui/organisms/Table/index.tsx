@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren, useCallback } from 'react';
 import _ from 'lodash';
 
 type Props = {
@@ -10,11 +10,13 @@ type Props = {
     field: string;
     name: string;
   }[];
-  onRowClick: (idx: number) => void;
+  onRowClick?: (idx: number) => void;
 };
 
 const Table: FC<PropsWithChildren<Props>> = (props) => {
-  const { data, headers, onRowClick } = props;
+  const { data, headers, onRowClick = (idx: number) => {} } = props;
+
+  const _onRowClick = useCallback((idx: number) => () => onRowClick(idx), []);
 
   return (
     <table>
@@ -25,10 +27,10 @@ const Table: FC<PropsWithChildren<Props>> = (props) => {
         ))}
       </tr>
       {data.map(({ id, ...item }, idx) => (
-        <tr key={id}>
+        <tr key={`item_${id}`} onClick={_onRowClick(idx)}>
           <td>{idx + 1}</td>
           {headers.map(({ field }) => (
-            <td>{_.get(item, field)}</td>
+            <td key={`item_${id}_${field}`}>{_.get(item, field)}</td>
           ))}
         </tr>
       ))}
