@@ -3,6 +3,7 @@ import { FC, useMemo } from 'react';
 type StyleProps = {
   className?: string;
   flex?: boolean;
+  flexWrap?: boolean;
   center?: boolean;
   centerX?: boolean;
   centerY?: boolean;
@@ -24,6 +25,7 @@ const STYLE_SHEETS = {
   centerX: ['justify-center'],
   centerY: ['items-center'],
   rightX: ['justify-end'],
+  flexWrap: ['flex-wrap'],
 };
 
 const STYLESHEETS_WITH_VAL = {
@@ -77,6 +79,6 @@ const withStyles = <T,>(Component: FC<T>, baseClass?: string) => {
 
     return <Component {...props} />;
   };
-}
+};
 
 export default withStyles;

@@ -36,3 +36,10 @@ export const useRegistrationList = (params: UseRegistrationListParams) => {
     registrationList: swrResponse,
   };
 };
+
+export const useManagement = () => {
+  const { useManagement } = useHooks();
+  const actions = useManagement();
+
+  return actions
+};

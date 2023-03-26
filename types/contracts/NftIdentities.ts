@@ -392,8 +392,10 @@ export interface NftIdentities {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
+   * @param to Type: address, Indexed: false
    */
   rejectNftIdentityRegistration(
+    to: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**

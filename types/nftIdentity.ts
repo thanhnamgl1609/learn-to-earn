@@ -22,7 +22,7 @@ export type MetaType = TeacherMeta | StudentMeta;
 
 export type NftIdentityCore = {
   tokenId: number;
-  expiredAt: number;
+  expiredAt: Date;
   register: string;
 };
 

@@ -1,15 +1,18 @@
 import NextImage from 'next/image';
-import { memo, useCallback, useEffect, useState } from 'react';
+import {
+  ComponentProps,
+  ImgHTMLAttributes,
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 type Props = {
-  src: string;
-  width?: number;
-  height?: number;
-  alt: string;
   canZoomIn?: boolean;
-};
+} & ComponentProps<typeof NextImage>;
 
-const Image = ({ src, width, height, alt, canZoomIn = false }: Props) => {
+const Image = ({ canZoomIn = false, width, height, ...props }: Props) => {
   const [zoomIn, setZoomIn] = useState(false);
   const [visible, setVisible] = useState('invisible');
 
@@ -33,11 +36,10 @@ const Image = ({ src, width, height, alt, canZoomIn = false }: Props) => {
   return (
     <>
       <NextImage
-        className={`${canZoomIn && 'cursor-zoom-in'}`}
-        src={src}
+        {...props}
         width={width || '500'}
         height={height || '500'}
-        alt={alt || ''}
+        className={`${canZoomIn && 'cursor-zoom-in'} ${props.className}`}
         onClick={toggleZoom}
         onDragStart={(e) => e.preventDefault()}
       />
@@ -58,7 +60,7 @@ const Image = ({ src, width, height, alt, canZoomIn = false }: Props) => {
           className={`${zoomIn ? 'animate-zoomIn' : 'animate-zoomOut'}
           bg-white cursor-zoom-out select-none`}
         >
-          <img src={src} alt={alt || ''} />
+          <img src={props.src as string} alt={props.alt || ''} />
         </div>
       </div>
     </>

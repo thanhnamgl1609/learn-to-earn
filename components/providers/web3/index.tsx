@@ -92,6 +92,12 @@ export function useWeb3() {
   return useContext(Web3Context);
 }
 
+export function useContracts() {
+  const { contracts } = useWeb3();
+
+  return contracts;
+}
+
 export function useHooks() {
   const { hooks } = useWeb3();
 

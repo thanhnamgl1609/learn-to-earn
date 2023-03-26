@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@store';
-import { NftIdentity, RegistrationInfo } from '@_types/nftIdentity';
+import { NftIdentity, RegistrationInfoMeta } from '@_types/nftIdentity';
 import CONST from '@config/constants.json';
 
 type UserState = {
@@ -8,7 +8,7 @@ type UserState = {
   nftIdentity?: NftIdentity;
   isExpired?: boolean;
   isRequestSent?: boolean;
-  registration?: RegistrationInfo;
+  registration?: RegistrationInfoMeta;
 };
 
 const { ROLES } = CONST;

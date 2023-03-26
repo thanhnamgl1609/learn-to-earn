@@ -1,15 +1,19 @@
-import { ChangeEvent, memo } from 'react';
+import { ChangeEvent, InputHTMLAttributes, memo, useMemo } from 'react';
 import { Input } from '@atoms';
 
 type Props = {
   label: string;
-  name: string;
-  placeholder: string;
-  value: string | number;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-};
+} & InputHTMLAttributes<HTMLInputElement>;
 
-const InputField = ({ label, name, placeholder, value, onChange }: Props) => {
+const InputField = ({ label, ...props }: Props) => {
+  const inputProps = useMemo(() => {
+    const { ...defaultProps } = props;
+
+    if (defaultProps.readOnly) delete defaultProps.onChange;
+
+    return defaultProps;
+  }, [props]);
+
   return (
     <div>
       <label
@@ -18,14 +22,7 @@ const InputField = ({ label, name, placeholder, value, onChange }: Props) => {
       >
         {label}
       </label>
-      <Input
-        id={`field_${name}`}
-        className="mt-1"
-        placeholder={placeholder}
-        name={name}
-        value={value}
-        onChange={onChange}
-      />
+      <Input id={`field_${inputProps.name}`} className="mt-1" {...inputProps} />
     </div>
   );
 };

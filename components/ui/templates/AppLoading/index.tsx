@@ -14,7 +14,13 @@ const AppLoading: NextPage = () => {
 
   useEffect(() => {
     if (!userInfo.error && userInfo.data) {
-      dispatch(updateUser(userInfo.data));
+      dispatch(updateUser({
+        role: userInfo.data.role,
+        isExpired: userInfo.data.isExpired,
+        isRequestSent: userInfo.data.isRequestSent,
+        nftIdentity: userInfo.data.nftIdentity,
+        registration: userInfo.data.registration,
+      }));
       dispatch(updateState({ initialUser: true }));
     }
   }, [userInfo]);

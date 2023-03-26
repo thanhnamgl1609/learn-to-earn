@@ -25,3 +25,11 @@ export type CryptoHandlerHook<D = any, R = any, P = any> = (
 export type CryptoHookFactory<D = any, R = any, P = any> = {
   (d: Partial<Web3Dependencies>): CryptoHandlerHook<D, R, P>;
 };
+
+export type HandlerHookWithoutSWR<D = any, P = any> = (
+  params?: P
+) => D;
+
+export type HookFactoryWithoutSWR<D = any, P = any> = {
+  (d: Partial<Web3Dependencies>): HandlerHookWithoutSWR<D, P>;
+};

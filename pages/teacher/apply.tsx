@@ -1,11 +1,11 @@
 import type { NextPage } from 'next';
-import { ChangeEvent, useCallback, useState } from 'react';
+import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import CONST from '@config/constants.json';
 import { useAccount, useUserInfo } from '@hooks/web3';
 import { InputImage, InputField } from '@molecules';
-import { Form } from '@organisms';
+import { FullPageForm } from '@organisms';
 import { useWeb3 } from '@providers/web3';
 import { BaseLayout } from '@templates';
 import { TeacherMeta } from '@_types/nftIdentity';
@@ -90,7 +90,8 @@ const ApplyTeacher: NextPage = () => {
     []
   );
 
-  const uploadMetadata = useCallback(async () => {
+  const uploadMetadata = useCallback(async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
       dispatch(loading());
       
@@ -119,7 +120,7 @@ const ApplyTeacher: NextPage = () => {
 
   return (
     <BaseLayout>
-      <Form
+      <FullPageForm
         title="Apply teacher"
         description="You have to pay"
         submitText="Upload"
@@ -138,7 +139,7 @@ const ApplyTeacher: NextPage = () => {
           onChange={handleImage}
           onRemove={handleRemoveImage}
         />
-      </Form>
+      </FullPageForm>
     </BaseLayout>
   );
 };

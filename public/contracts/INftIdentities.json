@@ -40,18 +40,18 @@
     "absolutePath": "project:/contracts/interfaces/INftIdentities.sol",
     "exportedSymbols": {
       "IConstant": [
-        6892
+        6897
       ],
       "INftIdentities": [
-        6913
+        6918
       ]
     },
-    "id": 6914,
+    "id": 6919,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 6900,
+        "id": 6905,
         "literals": [
           "solidity",
           "^",
@@ -64,11 +64,11 @@
       {
         "absolutePath": "project:/contracts/interfaces/IConstant.sol",
         "file": "./IConstant.sol",
-        "id": 6901,
+        "id": 6906,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 6914,
-        "sourceUnit": 6893,
+        "scope": 6919,
+        "sourceUnit": 6898,
         "src": "130:25:21",
         "symbolAliases": [],
         "unitAlias": ""
@@ -78,13 +78,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 6902,
+              "id": 6907,
               "name": "IConstant",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 6892,
+              "referencedDeclaration": 6897,
               "src": "187:9:21"
             },
-            "id": 6903,
+            "id": 6908,
             "nodeType": "InheritanceSpecifier",
             "src": "187:9:21"
           }
@@ -93,10 +93,10 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 6913,
+        "id": 6918,
         "linearizedBaseContracts": [
-          6913,
-          6892
+          6918,
+          6897
         ],
         "name": "INftIdentities",
         "nameLocation": "169:14:21",
@@ -104,7 +104,7 @@
         "nodes": [
           {
             "functionSelector": "ce268f69",
-            "id": 6912,
+            "id": 6917,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -112,17 +112,17 @@
             "nameLocation": "213:15:21",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 6906,
+              "id": 6911,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6905,
+                  "id": 6910,
                   "mutability": "mutable",
                   "name": "registerAddr",
                   "nameLocation": "237:12:21",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6912,
+                  "scope": 6917,
                   "src": "229:20:21",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -131,7 +131,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 6904,
+                    "id": 6909,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "229:7:21",
@@ -147,17 +147,17 @@
               "src": "228:22:21"
             },
             "returnParameters": {
-              "id": 6911,
+              "id": 6916,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6908,
+                  "id": 6913,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6912,
+                  "scope": 6917,
                   "src": "301:4:21",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -166,7 +166,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 6907,
+                    "id": 6912,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "301:4:21",
@@ -179,12 +179,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6910,
+                  "id": 6915,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6912,
+                  "scope": 6917,
                   "src": "307:7:21",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -193,7 +193,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 6909,
+                    "id": 6914,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "307:7:21",
@@ -207,14 +207,14 @@
               ],
               "src": "300:15:21"
             },
-            "scope": 6913,
+            "scope": 6918,
             "src": "204:112:21",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 6914,
+        "scope": 6919,
         "src": "159:160:21",
         "usedErrors": []
       }
@@ -227,7 +227,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-03-22T23:16:56.174Z",
+  "updatedAt": "2023-03-26T22:49:54.513Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

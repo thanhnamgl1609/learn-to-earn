@@ -3,6 +3,7 @@ import Routes from '@config/routes.json';
 
 const { ROLES } = CONST;
 const DEFAULT_ROUTE = Routes.home;
+const withParam = (path: string, param = '[param]') => `${path}/${param}`;
 
 const RouteConfig = {
   [ROLES.STUDENT]: {
@@ -17,6 +18,7 @@ const RouteConfig = {
     default: Routes.home,
     [Routes.home]: Routes.home,
     [Routes.applyTeacher]: Routes.applyTeacher,
+    [Routes.registerStudent]: Routes.registerStudent,
   },
   [ROLES.REGISTERED]: {
     default: Routes.applicationDetail,
@@ -26,6 +28,9 @@ const RouteConfig = {
     default: Routes.manage,
     [Routes.manage]: Routes.manage,
     [Routes.manageTeacherRegistration]: Routes.manageTeacherRegistration,
+    [withParam(Routes.manageTeacherRegistration, '[address]')]: withParam(
+      Routes.manageTeacherRegistration
+    ),
     [Routes.teacherApplication]: Routes.teacherApplication,
     [Routes.teacherApplicationDetail]: Routes.teacherApplicationDetail,
   },

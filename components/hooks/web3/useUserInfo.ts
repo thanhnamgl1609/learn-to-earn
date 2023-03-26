@@ -1,10 +1,17 @@
 import { CryptoHookFactory } from '@_types/hooks';
-import { MetaType, NftIdentity, TeacherMeta } from '@_types/nftIdentity';
+import {
+  MetaType,
+  NftIdentity,
+  RegistrationInfo,
+  RegistrationInfoMeta,
+  TeacherMeta,
+} from '@_types/nftIdentity';
 import { useCallback, useState } from 'react';
 import useSWR from 'swr';
 import CONST from '@config/constants.json';
 import { ethers } from 'ethers';
 import { toast } from 'react-toastify';
+import moment from 'moment';
 
 type UseUserInfoResponse = {
   applyTeacher: (metadata: string) => void;
@@ -13,10 +20,10 @@ type UseUserInfoResponse = {
 type UserInfo = {
   role: number;
   registerFee?: number;
-  nft?: NftIdentity;
+  nftIdentity?: NftIdentity;
   isExpired?: boolean;
   isRequestSent?: boolean;
-  registration?: TeacherMeta;
+  registration?: RegistrationInfoMeta;
 };
 
 type UserInfoHookFactory = CryptoHookFactory<UserInfo, UseUserInfoResponse>;
@@ -40,17 +47,18 @@ export const hookFactory: UserInfoHookFactory =
         const hasNftIdentity = [ROLES.STUDENT, ROLES.TEACHER].includes(role);
 
         if (hasNftIdentity) {
+          const response = await contracts!.nftIdentities.getOwnedNft();
           const {
-            result0: nftIdentityRes,
-            result1: metadataURI,
-            result2: isExpired,
-            result3: isRequestSent,
-          } = await contracts!.nftIdentities.getOwnedNft();
+            0: nftIdentityRes,
+            1: metadataURI,
+            2: isExpired,
+            3: isRequestSent,
+          } = response;
           const metaRes = await fetch(metadataURI);
           const meta = (await metaRes.json()) as MetaType;
           const nftIdentity: NftIdentity = {
             tokenId: nftIdentityRes.tokenId.toNumber(),
-            expiredAt: nftIdentityRes.expiredAt.toNumber(),
+            expiredAt: moment.unix(nftIdentityRes.expiredAt.toNumber()).toDate(),
             register: nftIdentityRes.register,
             meta,
           };
@@ -62,14 +70,15 @@ export const hookFactory: UserInfoHookFactory =
             isRequestSent,
           };
         } else if (role === ROLES.REGISTERED) {
-          const { documentURI } = await contracts.nftIdentities.getRegisteredInfo()
+          const { documentURI } =
+            await contracts.nftIdentities.getRegisteredInfo();
           const documentRes = await fetch(documentURI);
           const registration = await documentRes.json();
-          
+
           return {
             role,
             registration,
-          }
+          };
         } else {
           const _applyTeacherFee = await contracts!.nftIdentities.registerFee();
           setApplyTeacherFee(_applyTeacherFee);

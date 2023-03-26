@@ -192,15 +192,16 @@ contract NftIdentities is ERC1155URIStorage, Registration, INftIdentities {
     ) public hasRegistered(targetAccount) onlyOwner {
         uint256 role = _getRegisteredRole(targetAccount);
         _mintToken(role, targetAccount, expiredAt, tokenURI);
+        _removeFromRegistersList(targetAccount);
     }
 
-    function rejectNftIdentityRegistration()
+    function rejectNftIdentityRegistration(address to)
         public
         onlyOwner
-        hasRegistered(msg.sender)
+        hasRegistered(to)
     {
-        require(_registeredAddr[msg.sender] > 0);
-        _removeFromRegistersList(msg.sender);
+        require(_registeredAddr[to] > 0);
+        _removeFromRegistersList(to);
     }
 
     function extendExpiredNft(
@@ -354,13 +355,13 @@ contract NftIdentities is ERC1155URIStorage, Registration, INftIdentities {
         uint256 tokenId = _generateNewTokenId(role);
         _setURI(tokenId, tokenURI);
 
-        _createNftIdentity(tokenId, expiredAt);
+        _createNftIdentity(to, tokenId, expiredAt);
         _mint(to, tokenId, ONE_NFT, msg.data);
 
         return tokenId;
     }
 
-    function _createNftIdentity(uint256 tokenId, uint256 expiredAt) private {
+    function _createNftIdentity(address to, uint256 tokenId, uint256 expiredAt) private {
         uint256 nftType = _getNftType(tokenId);
         NftIdentity memory nftIdentity = NftIdentity(
             tokenId,
@@ -370,7 +371,7 @@ contract NftIdentities is ERC1155URIStorage, Registration, INftIdentities {
 
         _nftsOfRole[nftType].push(nftIdentity);
         _nftPosOfTokenId[tokenId] = _nftsOfRole[nftType].length;
-        _tokenIdOfRegisters[msg.sender] = tokenId;
+        _tokenIdOfRegisters[to] = tokenId;
     }
 
     function _getNftType(uint256 tokenId) private pure returns (uint256) {

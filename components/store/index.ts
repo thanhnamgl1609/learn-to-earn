@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import user from '@store/userSlice';
 import app from '@store/appSlice';
+import manage from '@store/manageSlice';
 
 const middleware = [];
 if (process.env.NODE_ENV === `development`) {
@@ -13,6 +14,7 @@ export const store = configureStore({
   reducer: {
     user,
     app,
+    manage,
   },
   middleware,
 });

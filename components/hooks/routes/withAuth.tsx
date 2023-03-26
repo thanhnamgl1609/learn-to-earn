@@ -13,7 +13,7 @@ const withAuth =
     const { role } = data || { role: null };
     const router = useRouter();
     const isValidRoute = useMemo(
-      () => RouteConfig[role][router.pathname.replace(/\/[0-9]+\/?$/, '/:id/')],
+      () => RouteConfig[role][router.pathname],
       [router.pathname]
     );
 
