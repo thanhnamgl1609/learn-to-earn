@@ -1,14 +1,14 @@
 import { memo } from 'react';
-import { XCircleIcon } from '@heroicons/react/solid';
-import { Image } from '@atoms';
+import { RemovableImage } from '@atoms';
 
 type Props = {
   containerClassName: string;
+  className?: string;
   images: string[];
   onRemove: (image: string) => () => void;
 };
 
-const PreviewImages = ({ containerClassName, images, onRemove }: Props) => (
+const PreviewImages = ({ containerClassName, className, images, onRemove }: Props) => (
   <div
     className={`
     ${containerClassName}
@@ -16,13 +16,14 @@ const PreviewImages = ({ containerClassName, images, onRemove }: Props) => (
     `}
   >
     {images.map((image) => (
-      <div className="group relative cursor-zoom-in" key={image}>
-        <Image src={image} alt="" canZoomIn />
-        <XCircleIcon
-          className="cursor-pointer opacity-0 group-hover:opacity-100 absolute top-1 right-1 w-[32px] h-[32px] transition-opacity duration-300"
-          onClick={onRemove(image)}
-        />
-      </div>
+      <RemovableImage
+        alt=""
+        className={className}
+        key={image}
+        src={image}
+        onRemove={onRemove(image)}
+        canZoomIn
+      />
     ))}
   </div>
 );

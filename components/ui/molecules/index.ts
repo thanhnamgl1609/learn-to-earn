@@ -1,6 +1,9 @@
 export { default as WalletBar } from './WalletBar';
 export { default as InputImage } from './InputImage';
+export { default as InputSingleImage } from './InputSingleImage';
+export { default as InputMultipleImages } from './InputMultipleImages';
 export { default as InputField } from './InputField';
 export { default as PreviewImages } from './PreviewImages';
 export { default as Box } from './Box';
 export { default as GroupTwoButtons } from './GroupTwoButtons';
+export { default as ProfileImage } from './ProfileImage';

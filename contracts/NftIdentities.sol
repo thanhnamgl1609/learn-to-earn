@@ -180,8 +180,8 @@ contract NftIdentities is ERC1155URIStorage, Registration, INftIdentities {
         uint256 role,
         string memory documentURI
     ) public payable {
-        require(msg.value == registerFee);
-        require(role == uint256(ROLE.TEACHER));
+        require(msg.value == registerFee, "fee required");
+        require(role == uint256(ROLE.TEACHER), "role teacher");
         _register(role, documentURI);
     }
 

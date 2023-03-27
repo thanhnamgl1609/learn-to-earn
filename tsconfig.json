@@ -57,6 +57,9 @@
       ],
       "@styles/*": [
         "styles/*"
+      ],
+      "@validators/*": [
+        "validators/*"
       ]
     },
     "target": "es2020"

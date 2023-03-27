@@ -1,7 +1,24 @@
 import { FC, PropsWithChildren } from 'react';
 
-const Box: FC<PropsWithChildren> = ({ children }) => (
-  <div className="shadow sm:rounded-md sm:overflow-hidden p-6 bg-white space-y-6">
+type Props = {
+  className?: string;
+  autoLayout?: boolean;
+};
+
+const Box: FC<PropsWithChildren<Props>> = ({
+  className,
+  autoLayout,
+  children,
+}) => (
+  <div
+    className={[
+      'shadow sm:rounded-md bg-white',
+      className,
+      autoLayout && 'p-6 space-y-6',
+    ]
+      .filter(Boolean)
+      .join(' ')}
+  >
     {children}
   </div>
 );

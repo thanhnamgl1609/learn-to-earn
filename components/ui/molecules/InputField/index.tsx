@@ -3,9 +3,10 @@ import { Input } from '@atoms';
 
 type Props = {
   label: string;
+  containerClassName?: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
-const InputField = ({ label, ...props }: Props) => {
+const InputField = ({ label, containerClassName, ...props }: Props) => {
   const inputProps = useMemo(() => {
     const { ...defaultProps } = props;
 
@@ -15,7 +16,7 @@ const InputField = ({ label, ...props }: Props) => {
   }, [props]);
 
   return (
-    <div>
+    <div className={containerClassName}>
       <label
         htmlFor={`field_${name}`}
         className="block text-sm font-medium text-gray-700"

@@ -6,12 +6,9 @@ import CONST from '@config/constants.json';
 import REQUEST_CONST from '@config/request.json';
 import PINATA_CONST from '@config/pinata.json';
 import addressCheckMiddleware from './middleware/address-check';
-import {
-  withSession,
-  contractAddress,
-  pinataApiKey,
-  pinataSecretApiKey,
-} from './utils';
+import { withSession, pinataApiKey, pinataSecretApiKey } from './utils';
+import { APPLY_TEACHER_VALIDATOR } from '@validators/schemas';
+import { TeacherMeta } from '@_types/nftIdentity';
 
 const { ROLES } = CONST;
 const { METHOD } = REQUEST_CONST;
@@ -26,10 +23,15 @@ export default withSession(
         await addressCheckMiddleware(req, res);
 
         const { body } = req;
-        const { role, fullName, documentURIs } = body.data;
+        const { role, ...data } = body.data;
+        let pinataContent: TeacherMeta;
         switch (role) {
           case ROLES.TEACHER:
-            if (!fullName || !documentURIs?.length) {
+            try {
+              pinataContent = APPLY_TEACHER_VALIDATOR.parse(
+                data
+              ) as TeacherMeta;
+            } catch {
               return res.status(400).json({ message: 'data are missing' });
             }
             break;
@@ -43,10 +45,7 @@ export default withSession(
             pinataMetadata: {
               name: uuidv4(),
             },
-            pinataContent: {
-              fullName,
-              documentURIs,
-            },
+            pinataContent,
           },
           {
             headers: {

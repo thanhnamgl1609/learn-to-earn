@@ -58,7 +58,9 @@ export const hookFactory: UserInfoHookFactory =
           const meta = (await metaRes.json()) as MetaType;
           const nftIdentity: NftIdentity = {
             tokenId: nftIdentityRes.tokenId.toNumber(),
-            expiredAt: moment.unix(nftIdentityRes.expiredAt.toNumber()).toDate(),
+            expiredAt: moment
+              .unix(nftIdentityRes.expiredAt.toNumber())
+              .toDate(),
             register: nftIdentityRes.register,
             meta,
           };
@@ -92,23 +94,19 @@ export const hookFactory: UserInfoHookFactory =
 
     const applyTeacher = useCallback(
       async (metadataURI: string) => {
-        try {
-          const tx = await _contracts.nftIdentities?.registerNftIdentity(
-            ROLES.TEACHER,
-            metadataURI,
-            {
-              value: applyTeacherFee,
-            }
-          );
+        const tx = await _contracts.nftIdentities?.registerNftIdentity(
+          ROLES.TEACHER,
+          metadataURI,
+          {
+            value: applyTeacherFee,
+          }
+        );
 
-          await toast.promise(tx!.wait(), {
-            pending: 'Processing transaction...',
-            success: 'Request sent! Waiting for validating!',
-            error: 'Processing error!',
-          });
-        } catch (e: any) {
-          console.error(e);
-        }
+        await toast.promise(tx!.wait(), {
+          pending: 'Processing transaction...',
+          success: 'Request sent! Waiting for validating!',
+          error: 'Error when sending request!',
+        });
       },
       [_contracts, applyTeacherFee]
     );

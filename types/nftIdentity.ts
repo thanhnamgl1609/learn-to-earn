@@ -15,6 +15,7 @@ export type StudentMeta = {
 
 export type TeacherMeta = {
   fullName: string;
+  profileImage: string;
   documentURIs: string[];
 };
 

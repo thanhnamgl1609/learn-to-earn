@@ -1,7 +1,6 @@
 import NextImage from 'next/image';
 import {
   ComponentProps,
-  ImgHTMLAttributes,
   memo,
   useCallback,
   useEffect,
@@ -12,7 +11,7 @@ type Props = {
   canZoomIn?: boolean;
 } & ComponentProps<typeof NextImage>;
 
-const Image = ({ canZoomIn = false, width, height, ...props }: Props) => {
+const Image = ({ className, canZoomIn = false, width, height, ...props }: Props) => {
   const [zoomIn, setZoomIn] = useState(false);
   const [visible, setVisible] = useState('invisible');
 
@@ -39,7 +38,7 @@ const Image = ({ canZoomIn = false, width, height, ...props }: Props) => {
         {...props}
         width={width || '500'}
         height={height || '500'}
-        className={`${canZoomIn && 'cursor-zoom-in'} ${props.className}`}
+        className={`${canZoomIn && 'cursor-zoom-in'} ${className}`}
         onClick={toggleZoom}
         onDragStart={(e) => e.preventDefault()}
       />

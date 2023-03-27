@@ -2,6 +2,7 @@ import { Button, FlexDiv } from '@atoms';
 import { FC, memo, useMemo } from 'react';
 
 type Props = {
+  className?: string;
   firstLabel: string;
   secondLabel: string;
   firstClassName?: string;
@@ -38,6 +39,7 @@ const getClassList = ({
 };
 
 const GroupTwoButtons: FC<Props> = ({
+  className,
   firstLabel,
   secondLabel,
   firstClassName,
@@ -65,7 +67,7 @@ const GroupTwoButtons: FC<Props> = ({
   );
 
   return (
-    <FlexDiv center>
+    <FlexDiv className={className} center>
       <Button
         onClick={onClickFirst}
         className={_classList.first}

@@ -70,7 +70,7 @@ const TeacherRegistration = () => {
   return (
     <BaseLayout>
       <Breadcrumb links={breadcrumbs} />
-      <Box>
+      <Box autoLayout>
         <Table
           title="List registered teacher"
           data={tableItems}

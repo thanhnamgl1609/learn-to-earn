@@ -12,7 +12,7 @@ const Input = ({ className, ...props }: Props) => {
         className={`focus:ring-indigo-500 focus:border-indigo-500
         flex-1 block w-full sm:text-sm px-2 py-1
         border-gray-300 border rounded outline-none
-        read-only:bg-gray-700 read-only:text-white
+        read-only:bg-gray-200 read-only:text-black
         read-only:border-none read-only:outline-none
         read-only:cursor-default`}
         {...props}

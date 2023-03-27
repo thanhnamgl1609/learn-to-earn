@@ -33,6 +33,7 @@ const createFormStateInit = (): RegistrationInfo & NftIdentityInfo => ({
   expiredAt: moment().format('YYYY-MM-DD'),
   meta: {
     fullName: '',
+    profileImage: '',
     documentURIs: [],
   },
 });
@@ -112,18 +113,18 @@ const TeacherRegistration = () => {
     <>
       <BaseLayout>
         <Breadcrumb links={breadcrumbs} />
-        <Box>
-          {application && (
-            <RegistrationDetail registration={application.meta} />
-          )}
-          <GroupTwoButtons
-            firstLabel="Approve"
-            secondLabel="Reject"
-            onClickFirst={onOpenApprovalModal}
-            onClickSecond={onReject}
-            main={1}
-          />
-        </Box>
+        {application && (
+          <RegistrationDetail registration={application.meta}>
+            <GroupTwoButtons
+              className="mt-4"
+              firstLabel="Approve"
+              secondLabel="Reject"
+              onClickFirst={onOpenApprovalModal}
+              onClickSecond={onReject}
+              main={1}
+            />
+          </RegistrationDetail>
+        )}
       </BaseLayout>
 
       <Modal
