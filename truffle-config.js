@@ -1,4 +1,3 @@
-
 // require('dotenv').config();
 // const mnemonic = process.env["MNEMONIC"];
 // const infuraProjectId = process.env["INFURA_PROJECT_ID"];
@@ -7,9 +6,12 @@
 
 module.exports = {
   contracts_build_directory: "./public/contracts",
+  contracts_directory: "./blockchain/contracts",
+  test_directory: "./blockchain/test",
+  migrations_directory: "./blockchain/migrations",
   networks: {
     development: {
-     host: "127.0.0.1",     // Localhost (default: none)
+     host: "127.0.0.1",    // Localhost (default: none)
      port: 7545,            // Standard Ethereum port (default: none)
      network_id: "5777",       // Any network (default: none)
     },
@@ -24,7 +26,3 @@ module.exports = {
     }
   }
 };
-
-/*
-art toward film solve tongue girl rotate arrest label actress split phone
-*/

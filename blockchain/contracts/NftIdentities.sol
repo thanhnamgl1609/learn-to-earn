@@ -180,8 +180,8 @@ contract NftIdentities is ERC1155URIStorage, Registration, INftIdentities {
         uint256 role,
         string memory documentURI
     ) public payable {
-        require(msg.value == registerFee, "fee required");
-        require(role == uint256(ROLE.TEACHER), "role teacher");
+        require(msg.value == registerFee);
+        require(role == uint256(ROLE.TEACHER) || role == uint256(ROLE.STUDENT));
         _register(role, documentURI);
     }
 
@@ -195,11 +195,9 @@ contract NftIdentities is ERC1155URIStorage, Registration, INftIdentities {
         _removeFromRegistersList(targetAccount);
     }
 
-    function rejectNftIdentityRegistration(address to)
-        public
-        onlyOwner
-        hasRegistered(to)
-    {
+    function rejectNftIdentityRegistration(
+        address to
+    ) public onlyOwner hasRegistered(to) {
         require(_registeredAddr[to] > 0);
         _removeFromRegistersList(to);
     }
@@ -361,7 +359,11 @@ contract NftIdentities is ERC1155URIStorage, Registration, INftIdentities {
         return tokenId;
     }
 
-    function _createNftIdentity(address to, uint256 tokenId, uint256 expiredAt) private {
+    function _createNftIdentity(
+        address to,
+        uint256 tokenId,
+        uint256 expiredAt
+    ) private {
         uint256 nftType = _getNftType(tokenId);
         NftIdentity memory nftIdentity = NftIdentity(
             tokenId,
