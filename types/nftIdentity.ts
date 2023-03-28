@@ -7,7 +7,7 @@ export type RegistrationInfo = {
   meta: RegistrationInfoMeta;
 } & RegistrationInfoRaw;
 
-export type RegistrationInfoMeta = TeacherMeta;
+export type RegistrationInfoMeta = TeacherMeta; // | EducationManagerMeta
 
 export type StudentMeta = {
   fullName: string;
@@ -19,7 +19,7 @@ export type TeacherMeta = {
   documentURIs: string[];
 };
 
-export type MetaType = TeacherMeta | StudentMeta;
+export type MetaType = TeacherMeta | StudentMeta; // | EducationManagerMeta
 
 export type NftIdentityCore = {
   tokenId: number;

@@ -223,21 +223,20 @@ contract NftIdentities is ERC1155URIStorage, Registration, INftIdentities {
     // Used for members: Section start
     function getOwnedNft(
         uint256 role
-    ) public view returns (NftIdentity memory, string memory, bool, bool) {
+    ) public view returns (NftIdentity memory, string memory, bool) {
         uint256 tokenId = _mappingRoleToTokenIdOfOwner[msg.sender][role];
         require(tokenId > 0);
         NftIdentity memory nftIdentity = getNftOfTokenId(tokenId);
         string memory tokenURI = uri(tokenId);
-        bool isExpired = nftIdentity.expiredAt <= block.timestamp;
         bool isExpiredRequest = _positionOfRequestTokenId[tokenId] > 0;
 
-        return (nftIdentity, tokenURI, isExpired, isExpiredRequest);
+        return (nftIdentity, tokenURI, isExpiredRequest);
     }
 
     /**
      * @dev Returns the list of roles and list of nft tokens if exist;
      */
-    function getRole() public view returns (uint256[] memory) {
+    function getRoles() public view returns (uint256[] memory) {
         uint256[] memory roles;
         if (msg.sender == _owner) {
             roles = new uint256[](1);

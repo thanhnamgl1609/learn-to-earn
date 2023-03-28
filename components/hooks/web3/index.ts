@@ -19,12 +19,12 @@ export const useNetwork = () => {
   };
 };
 
-export const useUserInfo = () => {
-  const { useUserInfo } = useHooks();
-  const swrResponse = useUserInfo();
+export const useRoles = () => {
+  const { useRoles } = useHooks();
+  const swrResponse = useRoles();
 
   return {
-    userInfo: swrResponse,
+    roles: swrResponse,
   };
 };
 
@@ -41,5 +41,5 @@ export const useManagement = () => {
   const { useManagement } = useHooks();
   const actions = useManagement();
 
-  return actions
+  return actions;
 };

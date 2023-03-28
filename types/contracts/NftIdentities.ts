@@ -81,17 +81,13 @@ export type NftIdentitiesMethodNames =
   | 'getAllNftIdentityRegistration'
   | 'getRegisteredInfo'
   | 'getAllExtendExpiredRequest'
-  | 'requestExtendExpiredNft'
   | 'isAbleToOperate'
   | 'registerNftIdentity'
   | 'grantNftIdentity'
   | 'rejectNftIdentityRegistration'
-  | 'extendExpiredNft'
   | 'burnNft'
   | 'getOwnedNft'
-  | 'getRole'
-  | 'depositNftIdentity'
-  | 'withdrawNftIdentity';
+  | 'getRoles';
 export interface ApprovalForAllEventEmittedResponse {
   account: string;
   operator: string;
@@ -143,13 +139,6 @@ export interface GetAllExtendExpiredRequestResponse {
   1: string[];
   length: 2;
 }
-export interface IsAbleToOperateResponse {
-  result0: boolean;
-  0: boolean;
-  result1: BigNumber;
-  1: BigNumber;
-  length: 2;
-}
 export interface GetOwnedNftResponse {
   result0: NftidentityResponse;
   0: NftidentityResponse;
@@ -157,9 +146,7 @@ export interface GetOwnedNftResponse {
   1: string;
   result2: boolean;
   2: boolean;
-  result3: boolean;
-  3: boolean;
-  length: 4;
+  length: 3;
 }
 export interface NftIdentities {
   /**
@@ -341,24 +328,17 @@ export interface NftIdentities {
   ): Promise<GetAllExtendExpiredRequestResponse>;
   /**
    * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   */
-  requestExtendExpiredNft(
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    * @param registerAddr Type: address, Indexed: false
+   * @param role Type: uint256, Indexed: false
    */
   isAbleToOperate(
     registerAddr: string,
+    role: BigNumberish,
     overrides?: ContractCallOverrides
-  ): Promise<IsAbleToOperateResponse>;
+  ): Promise<boolean>;
   /**
    * Payable: true
    * Constant: false
@@ -404,19 +384,6 @@ export interface NftIdentities {
    * StateMutability: nonpayable
    * Type: function
    * @param tokenId Type: uint256, Indexed: false
-   * @param nextExpiredAt Type: uint256, Indexed: false
-   */
-  extendExpiredNft(
-    tokenId: BigNumberish,
-    nextExpiredAt: BigNumberish,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param tokenId Type: uint256, Indexed: false
    */
   burnNft(
     tokenId: BigNumberish,
@@ -427,31 +394,17 @@ export interface NftIdentities {
    * Constant: true
    * StateMutability: view
    * Type: function
+   * @param role Type: uint256, Indexed: false
    */
-  getOwnedNft(overrides?: ContractCallOverrides): Promise<GetOwnedNftResponse>;
+  getOwnedNft(
+    role: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<GetOwnedNftResponse>;
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  getRole(overrides?: ContractCallOverrides): Promise<BigNumber>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   */
-  depositNftIdentity(
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   */
-  withdrawNftIdentity(
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  getRoles(overrides?: ContractCallOverrides): Promise<BigNumber[]>;
 }

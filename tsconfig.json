@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -19,57 +15,27 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@atoms": [
-        "components/ui/atoms"
-      ],
-      "@molecules": [
-        "components/ui/molecules"
-      ],
-      "@organisms": [
-        "components/ui/organisms"
-      ],
-      "@templates": [
-        "components/ui/templates"
-      ],
-      "@providers": [
-        "components/providers"
-      ],
-      "@providers/*": [
-        "components/providers/*"
-      ],
-      "@hooks": [
-        "components/hooks"
-      ],
-      "@hooks/*": [
-        "components/hooks/*"
-      ],
-      "@store": [
-        "components/store"
-      ],
-      "@store/*": [
-        "components/store/*"
-      ],
-      "@_types/*": [
-        "types/*"
-      ],
-      "@config/*": [
-        "config/*"
-      ],
-      "@styles/*": [
-        "styles/*"
-      ],
-      "@validators/*": [
-        "validators/*"
-      ]
+      "@atoms": ["components/ui/atoms"],
+      "@molecules": ["components/ui/molecules"],
+      "@organisms": ["components/ui/organisms"],
+      "@templates": ["components/ui/templates"],
+      "@providers": ["components/providers"],
+      "@providers/*": ["components/providers/*"],
+      "@hooks": ["components/hooks"],
+      "@hooks/*": ["components/hooks/*"],
+      "@store": ["components/store"],
+      "@store/*": ["components/store/*"],
+      "@_types/*": ["types/*"],
+      "@config/*": ["config/*"],
+      "@styles/*": ["styles/*"],
+      "@validators/*": ["validators/*"]
     },
     "target": "es2020"
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
