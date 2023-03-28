@@ -62,10 +62,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
     }
 
     modifier canOperate(uint256 role) {
-        (bool isDeposited, uint256 __role) = _nftIdentities.isAbleToOperate(
-            msg.sender
-        );
-        require(isDeposited && role == __role);
+        require(_nftIdentities.isAbleToOperate(msg.sender, role));
         _;
     }
 
@@ -329,9 +326,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
             registeredStartAt > block.timestamp,
             "Update registered date before creating class"
         );
-        (NftCourse memory nftCourse, ) = getCourse(
-            tokenId
-        );
+        (NftCourse memory nftCourse, ) = getCourse(tokenId);
         require(credits > 0, "Credits must be a positive number");
         require(
             _scoreContract.checkValidScores(requiredScores),
@@ -350,7 +345,6 @@ contract NftSchool is ERC1155BaseContract, INftSchool {
             teacher
         );
         _allNftClasses.push(nftClass);
-        _posOfTokenIdOfNftType[NFT_CLASS][tokenId] = _allNftClasses
-            .length;
+        _posOfTokenIdOfNftType[NFT_CLASS][tokenId] = _allNftClasses.length;
     }
 }

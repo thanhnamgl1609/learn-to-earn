@@ -4,8 +4,8 @@ pragma solidity ^0.8.13;
 import "./IConstant.sol";
 
 interface INftIdentities is IConstant {
-    function isAbleToOperate(address registerAddr)
-        external
-        view
-        returns (bool, uint256);
+    function isAbleToOperate(
+        address registerAddr,
+        uint256 role
+    ) external view returns (bool);
 }

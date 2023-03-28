@@ -8,9 +8,9 @@ contract Registration {
         string documentURI;
     }
 
-    mapping(uint256 => RegistrationInfo[]) private _registers; // Role => address
+    mapping(uint256 => RegistrationInfo[]) internal _registers; // Role => address
     mapping(uint256 => mapping(address => uint256))
-        private _positionOfRegisters; // Role => address => position
+        internal _positionOfRegisters; // Role => address => position
 
     mapping(uint256 => bool) internal _hasRole;
     mapping(address => uint256) internal _registeredAddr;

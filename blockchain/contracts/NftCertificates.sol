@@ -55,10 +55,7 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
     }
 
     modifier canOperate(uint256 role) {
-        (bool isDeposited, uint256 __role) = _nftIdentities.isAbleToOperate(
-            msg.sender
-        );
-        require(isDeposited && role == __role);
+        require(_nftIdentities.isAbleToOperate(msg.sender, role));
         _;
     }
 
@@ -197,7 +194,7 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
 
             ) = getNftCompleteCourse(nftCompleteCourseIds[idx]);
             acquiredCreditsByKnowledgeBlockId[
-                nftCompleteCourse.knowledgeBlockId 
+                nftCompleteCourse.knowledgeBlockId
             ] += nftCompleteCourse.credits;
             acquiredCredits += nftCompleteCourse.credits;
             totalScore += (nftCompleteCourse.avgScore *
