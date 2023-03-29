@@ -1,9 +1,12 @@
+import { MetaMaskInpageProvider } from '@metamask/providers';
 import { CryptoHookFactory, Web3Dependencies } from '@_types/hooks';
-import { useEffect } from 'react';
+import axios from 'axios';
+import { useCallback, useEffect } from 'react';
 import useSWR from 'swr';
 
 type UseAccountResponse = {
   connect: () => void;
+  // getSignedData: () => Promise<string>;
   isLoading: boolean;
   isInstalled: boolean;
 };
@@ -56,11 +59,23 @@ export const hookFactory: AccountHookFactory =
       }
     };
 
+    // const getSignedData = useCallback(async () => {
+    //   const { data: messageToSign } = await axios.get('/api/verify');
+
+    //   const signedData = await ethereum?.request({
+    //     method: 'personal_sign',
+    //     params: [JSON.stringify(messageToSign), data, messageToSign.id],
+    //   });
+
+    //   return signedData;
+    // }, [data]);
+
     return {
       ...swr,
       data,
       mutate,
       connect,
+      // getSignedData,
       isLoading: !!isLoading,
       isInstalled: ethereum?.isMetaMask || false,
     };

@@ -16,11 +16,7 @@ const { ROLES } = CONST;
 const navigation = {
   [ROLES.TEACHER]: [],
   [ROLES.STUDENT]: [],
-  [ROLES.VISITOR]: [
-    { name: 'Home', href: Routes.home, current: true },
-    { name: 'Teacher', href: Routes.applyTeacher, current: false },
-    { name: 'Student', href: Routes.registerStudent, current: false },
-  ],
+  [ROLES.VISITOR]: [],
   [ROLES.REGISTERED]: [],
   [ROLES.COUNCIL]: [],
 };
@@ -93,12 +89,7 @@ function Navbar() {
                       : 'Install Web3 Wallet'}
                   </span>
                 </div>
-                <WalletBar
-                  isLoading={account.isLoading}
-                  isInstalled={account.isInstalled}
-                  connect={account.connect}
-                  account={account.data}
-                />
+                {account.data && <WalletBar account={account.data} />}
               </div>
             </div>
           </div>

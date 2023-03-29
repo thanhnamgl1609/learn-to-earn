@@ -1,3 +1,4 @@
+const { assert } = require('console');
 const ethers = require('ethers');
 const NftIdentities = artifacts.require('NftIdentities');
 
@@ -7,7 +8,9 @@ const uris = Array(10)
   .map((_, idx) => `http://teacher-info.com/${idx + 1}`);
 
 contract('NftIdentities register teacher', (accounts) => {
+  let teacherInfo;
   const smartContractOwner = accounts[0];
+  const teacherAddress = accounts[1];
   const _registerPrice = ethers.utils.parseEther('0.05').toString();
   let _contract = null;
 
@@ -16,9 +19,6 @@ contract('NftIdentities register teacher', (accounts) => {
   });
 
   describe('teacher registration', () => {
-    let teacherInfo;
-    const teacherAddress = accounts[1];
-
     describe('should register successful', () => {
       before(async () => {
         await _contract.registerNftIdentity(ROLES.TEACHER, uris[0], {
@@ -88,9 +88,78 @@ contract('NftIdentities register teacher', (accounts) => {
   });
 
   describe('grant NFT Identity for teacher', () => {
+    const expiredAt = 1711640060;
+    let nftIdentity;
+    let roles;
+    let error;
+
     describe('should approve successful', () => {
-      beforeAll(() => {
-         
+      before(async () => {
+        await _contract.grantNftIdentity(teacherAddress, expiredAt, uris[0]);
+        roles = await _contract.getRoles();
+        nftIdentity = await _contract.getOwnedNft(ROLES.TEACHER, {
+          from: teacherAddress,
+        });
+      });
+
+      it('should get nft identity', () => {
+        assert(!!nftIdentity);
+      });
+
+      it('should has role teacher', () => {
+        assert(roles.some((role) => role === ROLES.TEACHER));
+      });
+    });
+
+    describe('should approve fail when try to approve no existed registration', () => {
+      before(async () => {
+        error = null;
+        try {
+          await _contract.grantNftIdentity(teacherAddress, expiredAt, uris[0]);
+        } catch (e) {
+          error = e;
+        }
+      });
+
+      it('should throw error', () => {
+        assert(!!error);
+      });
+    });
+  });
+
+  describe('reject NFT Identity for teacher', () => {
+    const rejectedTeacher = accounts[2];
+    const expiredAt = 1711640060;
+    let roles;
+    let error;
+
+    describe('should reject successful', () => {
+      before(async () => {
+        await _contract.registerNftIdentity(ROLES.TEACHER, uris[2], {
+          from: rejectedTeacher,
+          value: _registerPrice,
+        });
+        await _contract.rejectNftIdentityRegistration(rejectedTeacher);
+        roles = await _contract.getRoles();
+      });
+
+      it('should not have role teacher', () => {
+        assert(roles.every((role) => role !== ROLES.TEACHER));
+      });
+    });
+
+    describe('should reject fail when try to approve no existed registration', () => {
+      before(async () => {
+        error = null;
+        try {
+          await _contract.rejectNftIdentityRegistration(rejectedTeacher);
+        } catch (e) {
+          error = e;
+        }
+      });
+
+      it('should throw error', () => {
+        assert(!!error);
       });
     });
   });

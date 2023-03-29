@@ -128,7 +128,7 @@ const TeacherRegistration = () => {
       </BaseLayout>
 
       <Modal
-        className="w-[800px]"
+        className="w-[800px] overflow-auto"
         isOpen={isApprovalModalOpen}
         onClose={onCloseApprovalModal}
       >

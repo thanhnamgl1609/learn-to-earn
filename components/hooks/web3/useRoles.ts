@@ -31,7 +31,7 @@ export const hookFactory: RoleHookFactory =
         const _registerFee = await contracts!.nftIdentities.registerFee();
         setRegisterFee(_registerFee);
 
-        return roles.map((role) => role.toNumber());
+        return roles.map((role) => role.toNumber()).sort();
       },
       {
         revalidateIfStale: false,

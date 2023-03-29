@@ -3,12 +3,10 @@ import { RootState } from '@store';
 
 type AppState = {
   loading?: boolean;
-  initialUser?: boolean;
 };
 
 const initialState: AppState = {
   loading: false,
-  initialUser: false,
 };
 
 export const appSlice = createSlice({

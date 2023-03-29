@@ -13,21 +13,25 @@ import { FlexDiv } from '@atoms';
 
 type Props = {
   isOpen: boolean;
-  onClose: () => void;
+  darkPercent?: 0 | 5 | 10 | 20 | 25 | 30 | 40 | 50 | 60 | 70 | 80 | 90;
+  onClose?: () => void;
+  closable?: boolean;
 } & HTMLAttributes<HTMLDivElement>;
 
 const Modal: FC<PropsWithChildren<Props>> = ({
   children,
   className,
+  darkPercent = 20,
   onClose,
   isOpen,
+  closable = true,
   ...props
 }) => {
   const [visible, setVisible] = useState<'visible' | 'invisible'>('invisible');
   const _className = useMemo(
     () =>
       [
-        'relative z-[999] overflow-auto max-h-[100vh]',
+        'relative z-[999] max-h-[100vh]',
         className,
         !isOpen ? 'animate-zoomOut' : 'animate-zoomIn',
       ]
@@ -39,14 +43,17 @@ const Modal: FC<PropsWithChildren<Props>> = ({
     (e: MouseEvent<HTMLDivElement>) => e.stopPropagation(),
     []
   );
+  const _onClose = useCallback(
+    () => (closable ? onClose() : null),
+    [closable, onClose]
+  );
   useEffect(() => {
-    console.log(isOpen);
     if (isOpen) {
       setVisible('visible');
     } else {
       setTimeout(() => setVisible('invisible'), 300);
     }
-  }, [onClose, isOpen]);
+  }, [isOpen]);
 
   return (
     <FlexDiv
@@ -60,15 +67,17 @@ const Modal: FC<PropsWithChildren<Props>> = ({
       center
     >
       <div
-        className="absolute top-0 right-0 left-0 bottom-0 bg-black opacity-20"
-        onClick={onClose}
+        className={`absolute top-0 right-0 left-0 bottom-0 bg-black/${darkPercent}`}
+        onClick={_onClose}
       />
       <div className={_className} {...props} onClick={stopPropagation}>
         {children}
-        <XIcon
-          className="absolute top-[12px] right-[12px] w-[16px] p-[4px] box-content text-gray-600 cursor-pointer hover:opacity-80 active:opacity-60"
-          onClick={onClose}
-        />
+        {closable && (
+          <XIcon
+            className="absolute top-[12px] right-[12px] w-[16px] p-[4px] box-content text-gray-600 cursor-pointer hover:opacity-80 active:opacity-60"
+            onClick={_onClose}
+          />
+        )}
       </div>
     </FlexDiv>
   );

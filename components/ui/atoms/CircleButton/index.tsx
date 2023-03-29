@@ -3,11 +3,11 @@ import withStyles from '../Styles';
 
 type ButtonProps = PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>;
 
-const Button: FC<ButtonProps> = ({ children, className, ...props }) => (
+const CircleButton: FC<ButtonProps> = ({ children, className, ...props }) => (
   <button
     className={[
       className,
-      `text-sm px-4 py-2 rounded-md
+      `text-sm px-4 py-2 rounded-[50%]
        hover:opacity-80 active:opacity-60
        font-medium
        border border-transparent shadow-sm
@@ -19,4 +19,4 @@ const Button: FC<ButtonProps> = ({ children, className, ...props }) => (
   </button>
 );
 
-export default memo(withStyles<ButtonProps>(Button));
+export default memo(withStyles<ButtonProps>(CircleButton));

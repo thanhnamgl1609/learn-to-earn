@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useMemo } from 'react';
 import { RouteConfig, DEFAULT_ROUTE } from './config';
 import { NextComponentType, NextPageContext } from 'next';
-import { useUserInfo } from '@hooks/web3';
+import { useRoles } from '@hooks/web3';
 
 const withAuth =
   (Component: NextComponentType<NextPageContext, any, any>) =>

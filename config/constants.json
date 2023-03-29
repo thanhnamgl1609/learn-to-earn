@@ -5,5 +5,12 @@
     "VISITOR": 99,
     "REGISTERED": 100,
     "COUNCIL": 101
+  },
+  "ROLE_LABELS": {
+    "0": "Student",
+    "1": "Teacher",
+    "99": "Visitor",
+    "100": "Register",
+    "101": "Council"
   }
 }

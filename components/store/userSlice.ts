@@ -4,6 +4,7 @@ import { NftIdentity, RegistrationInfoMeta } from '@_types/nftIdentity';
 import CONST from '@config/constants.json';
 
 type UserState = {
+  roles: number[];
   role: number;
   nftIdentity?: NftIdentity;
   isExpired?: boolean;
@@ -14,6 +15,7 @@ type UserState = {
 const { ROLES } = CONST;
 
 const initialState: UserState = {
+  roles: [ROLES.VISITOR],
   role: ROLES.VISITOR,
 };
 
@@ -21,7 +23,7 @@ export const userSlice = createSlice({
   initialState,
   name: 'users',
   reducers: {
-    updateUser: (state, action: PayloadAction<UserState>) => {
+    updateUser: (state, action: PayloadAction<Partial<UserState>>) => {
       Object.assign(state, action.payload);
     },
   },
