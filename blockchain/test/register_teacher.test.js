@@ -6,9 +6,14 @@ const ROLES = { TEACHER: 1 };
 const uris = Array(10)
   .fill(' ')
   .map((_, idx) => `http://teacher-info.com/${idx + 1}`);
+const testFuncs = [
+  'registerNftIdentity',
+  'getAllOwnedRegistrationInfos',
+  'getOwnedNfts',
+  'rejectNftIdentityRegistration',
+].join(', ');
 
-contract('NftIdentities register teacher', (accounts) => {
-  let teacherInfo;
+contract(`NftIdentities register teacher ${testFuncs}`, (accounts) => {
   const smartContractOwner = accounts[0];
   const teacherAddress = accounts[1];
   const _registerPrice = ethers.utils.parseEther('0.05').toString();
@@ -20,22 +25,27 @@ contract('NftIdentities register teacher', (accounts) => {
 
   describe('teacher registration', () => {
     describe('should register successful', () => {
+      let registrationTeacherInfo;
+
       before(async () => {
         await _contract.registerNftIdentity(ROLES.TEACHER, uris[0], {
           from: teacherAddress,
           value: _registerPrice,
         });
-        const registrationInfos = await _contract.getAllNftIdentityRegistration(
-          ROLES.TEACHER,
-          { from: smartContractOwner }
-        );
-        teacherInfo = registrationInfos.find(
-          ({ documentURI }) => documentURI === uris[0]
+        const registrationInfos = await _contract.getAllOwnedRegistrationInfos({
+          from: teacherAddress,
+        });
+        registrationTeacherInfo = registrationInfos.find(
+          ({ role }) => parseInt(role) === ROLES.TEACHER
         );
       });
 
       it('should register successful', () => {
-        assert(!!teacherInfo);
+        assert(!!registrationTeacherInfo);
+      });
+
+      it('should register correct info', () => {
+        assert(registrationTeacherInfo.detail.documentURI, uris[0]);
       });
 
       it('should throw error when try to register again', async () => {
@@ -90,24 +100,36 @@ contract('NftIdentities register teacher', (accounts) => {
   describe('grant NFT Identity for teacher', () => {
     const expiredAt = 1711640060;
     let nftIdentity;
-    let roles;
+    let registrationInfo;
     let error;
 
     describe('should approve successful', () => {
       before(async () => {
-        await _contract.grantNftIdentity(teacherAddress, expiredAt, uris[0]);
-        roles = await _contract.getRoles();
-        nftIdentity = await _contract.getOwnedNft(ROLES.TEACHER, {
+        await _contract.grantNftIdentity(
+          teacherAddress,
+          ROLES.TEACHER,
+          expiredAt,
+          uris[0]
+        );
+        const registrationInfos = await _contract.getAllOwnedRegistrationInfos({
           from: teacherAddress,
         });
+        registrationInfo = registrationInfos.find(
+          ({ role }) => role === ROLES.TEACHER
+        );
+
+        const nftIdentities = await _contract.getOwnedNfts({
+          from: teacherAddress,
+        });
+        nftIdentity = nftIdentities.find(({ role }) => role === ROLES.TEACHER);
       });
 
-      it('should get nft identity', () => {
+      it('should has nft identity with teacher role', () => {
         assert(!!nftIdentity);
       });
 
-      it('should has role teacher', () => {
-        assert(roles.some((role) => role === ROLES.TEACHER));
+      it('should registration be deleted', () => {
+        assert(!registrationInfo);
       });
     });
 
@@ -115,7 +137,12 @@ contract('NftIdentities register teacher', (accounts) => {
       before(async () => {
         error = null;
         try {
-          await _contract.grantNftIdentity(teacherAddress, expiredAt, uris[0]);
+          await _contract.grantNftIdentity(
+            teacherAddress,
+            ROLES.TEACHER,
+            expiredAt,
+            uris[0]
+          );
         } catch (e) {
           error = e;
         }
@@ -129,8 +156,7 @@ contract('NftIdentities register teacher', (accounts) => {
 
   describe('reject NFT Identity for teacher', () => {
     const rejectedTeacher = accounts[2];
-    const expiredAt = 1711640060;
-    let roles;
+    let registrationInfo;
     let error;
 
     describe('should reject successful', () => {
@@ -139,12 +165,17 @@ contract('NftIdentities register teacher', (accounts) => {
           from: rejectedTeacher,
           value: _registerPrice,
         });
-        await _contract.rejectNftIdentityRegistration(rejectedTeacher);
-        roles = await _contract.getRoles();
+        await _contract.rejectNftIdentityRegistration(rejectedTeacher, ROLES.TEACHER);
+        const registrationInfos = await _contract.getAllOwnedRegistrationInfos({
+          from: rejectedTeacher,
+        });
+        registrationInfo = registrationInfos.find(
+          ({ role }) => ROLES.TEACHER === parseInt(role)
+        );
       });
 
       it('should not have role teacher', () => {
-        assert(roles.every((role) => role !== ROLES.TEACHER));
+        assert(!registrationInfo);
       });
     });
 
@@ -152,7 +183,7 @@ contract('NftIdentities register teacher', (accounts) => {
       before(async () => {
         error = null;
         try {
-          await _contract.rejectNftIdentityRegistration(rejectedTeacher);
+          await _contract.rejectNftIdentityRegistration(rejectedTeacher, ROLES.TEACHER);
         } catch (e) {
           error = e;
         }
