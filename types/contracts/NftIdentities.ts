@@ -69,25 +69,23 @@ export type NftIdentitiesMethodNames =
   | 'new'
   | 'balanceOf'
   | 'balanceOfBatch'
+  | 'getAllOwnedRegistrationInfos'
+  | 'getAllRegistrationInfosByRole'
   | 'isApprovedForAll'
+  | 'isOwner'
   | 'registerFee'
   | 'safeBatchTransferFrom'
   | 'safeTransferFrom'
   | 'setApprovalForAll'
   | 'supportsInterface'
   | 'uri'
-  | 'getNftInfo'
   | 'getNftOfTokenId'
-  | 'getAllNftIdentityRegistration'
-  | 'getRegisteredInfo'
-  | 'getAllExtendExpiredRequest'
   | 'isAbleToOperate'
   | 'registerNftIdentity'
   | 'grantNftIdentity'
   | 'rejectNftIdentityRegistration'
   | 'burnNft'
-  | 'getOwnedNft'
-  | 'getRoles';
+  | 'getOwnedNfts';
 export interface ApprovalForAllEventEmittedResponse {
   account: string;
   operator: string;
@@ -111,20 +109,17 @@ export interface URIEventEmittedResponse {
   value: string;
   id: BigNumberish;
 }
-export interface NftidentityResponse {
-  tokenId: BigNumber;
-  0: BigNumber;
-  register: string;
-  1: string;
-  expiredAt: BigNumber;
-  2: BigNumber;
+export interface DetailResponse {
+  applicant: string;
+  0: DetailResponse;
+  documentURI: string;
+  1: DetailResponse;
 }
-export interface GetNftInfoResponse {
-  result0: NftidentityResponse;
-  0: NftidentityResponse;
-  result1: string;
-  1: string;
-  length: 2;
+export interface RegistrationinforesponseResponse {
+  detail: DetailResponse;
+  0: DetailResponse;
+  role: BigNumber;
+  1: BigNumber;
 }
 export interface RegistrationinfoResponse {
   applicant: string;
@@ -132,21 +127,23 @@ export interface RegistrationinfoResponse {
   documentURI: string;
   1: string;
 }
-export interface GetAllExtendExpiredRequestResponse {
-  result0: NftidentityResponse[];
-  0: NftidentityResponse[];
-  result1: string[];
-  1: string[];
-  length: 2;
+export interface NftIdentityResponse {
+  tokenId: BigNumber;
+  0: NftIdentityResponse;
+  register: string;
+  1: NftIdentityResponse;
+  expiredAt: BigNumber;
+  2: NftIdentityResponse;
 }
-export interface GetOwnedNftResponse {
-  result0: NftidentityResponse;
-  0: NftidentityResponse;
-  result1: string;
+export interface NftidentityresponseResponse {
+  nftIdentity: NftIdentityResponse;
+  0: NftIdentityResponse;
+  tokenURI: string;
   1: string;
-  result2: boolean;
-  2: boolean;
-  length: 3;
+  role: BigNumber;
+  2: BigNumber;
+  isExpired: boolean;
+  3: boolean;
 }
 export interface NftIdentities {
   /**
@@ -187,6 +184,26 @@ export interface NftIdentities {
    * Constant: true
    * StateMutability: view
    * Type: function
+   */
+  getAllOwnedRegistrationInfos(
+    overrides?: ContractCallOverrides
+  ): Promise<RegistrationinforesponseResponse[]>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param role Type: uint256, Indexed: false
+   */
+  getAllRegistrationInfosByRole(
+    role: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<RegistrationinfoResponse[]>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
    * @param account Type: address, Indexed: false
    * @param operator Type: address, Indexed: false
    */
@@ -195,6 +212,13 @@ export interface NftIdentities {
     operator: string,
     overrides?: ContractCallOverrides
   ): Promise<boolean>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   */
+  isOwner(overrides?: ContractCallOverrides): Promise<boolean>;
   /**
    * Payable: false
    * Constant: true
@@ -282,50 +306,10 @@ export interface NftIdentities {
    * Type: function
    * @param tokenId Type: uint256, Indexed: false
    */
-  getNftInfo(
-    tokenId: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<GetNftInfoResponse>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param tokenId Type: uint256, Indexed: false
-   */
   getNftOfTokenId(
     tokenId: BigNumberish,
     overrides?: ContractCallOverrides
-  ): Promise<NftidentityResponse>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param role Type: uint256, Indexed: false
-   */
-  getAllNftIdentityRegistration(
-    role: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<RegistrationinfoResponse[]>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   */
-  getRegisteredInfo(
-    overrides?: ContractCallOverrides
-  ): Promise<RegistrationinfoResponse>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   */
-  getAllExtendExpiredRequest(
-    overrides?: ContractCallOverrides
-  ): Promise<GetAllExtendExpiredRequestResponse>;
+  ): Promise<NftidentityresponseResponse>;
   /**
    * Payable: false
    * Constant: true
@@ -358,11 +342,13 @@ export interface NftIdentities {
    * StateMutability: nonpayable
    * Type: function
    * @param targetAccount Type: address, Indexed: false
+   * @param role Type: uint256, Indexed: false
    * @param expiredAt Type: uint256, Indexed: false
    * @param tokenURI Type: string, Indexed: false
    */
   grantNftIdentity(
     targetAccount: string,
+    role: BigNumberish,
     expiredAt: BigNumberish,
     tokenURI: string,
     overrides?: ContractTransactionOverrides
@@ -373,9 +359,11 @@ export interface NftIdentities {
    * StateMutability: nonpayable
    * Type: function
    * @param to Type: address, Indexed: false
+   * @param role Type: uint256, Indexed: false
    */
   rejectNftIdentityRegistration(
     to: string,
+    role: BigNumberish,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -394,17 +382,8 @@ export interface NftIdentities {
    * Constant: true
    * StateMutability: view
    * Type: function
-   * @param role Type: uint256, Indexed: false
    */
-  getOwnedNft(
-    role: BigNumberish,
+  getOwnedNfts(
     overrides?: ContractCallOverrides
-  ): Promise<GetOwnedNftResponse>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   */
-  getRoles(overrides?: ContractCallOverrides): Promise<BigNumber[]>;
+  ): Promise<NftidentityresponseResponse[]>;
 }

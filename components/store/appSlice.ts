@@ -16,9 +16,6 @@ export const appSlice = createSlice({
     updateState: (state, action: PayloadAction<AppState>) => {
       Object.assign(state, action.payload);
     },
-    reInitUser: (state) => {
-      state.initialUser = false;
-    },
     loading: (state) => {
       state.loading = true;
     },
@@ -28,7 +25,7 @@ export const appSlice = createSlice({
   },
 });
 
-export const { updateState, reInitUser, loading, unloading } = appSlice.actions;
+export const { updateState, loading, unloading } = appSlice.actions;
 
 // selectors
 export const selectApp = (state: RootState) => state.app;

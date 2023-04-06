@@ -6,11 +6,7 @@ import { useNetwork } from '@hooks/web3';
 import { withAuth } from '@hooks/routes';
 
 const Home: NextPage = () => {
-  return (
-    <Modal isOpen={true} darkPercent={20}>
-      Hello world
-    </Modal>
-  );
+  return <Modal isOpen={true}>Hello world</Modal>;
 };
 
 export default withAuth(Home);

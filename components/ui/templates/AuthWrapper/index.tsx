@@ -4,16 +4,16 @@ import { Modal, BaseLayout } from '@templates';
 import { AppLoading } from '..';
 import { withAuth } from '@hooks/routes';
 import { useAppSelector } from '@hooks/stores';
-import { selectApp } from '@store/appSlice';
+import { selectUser } from '@store/userSlice';
 
 const AuthWrapper = ({ Component, pageProps }: AppProps) => {
-  const appState = useAppSelector(selectApp);
+  const { role } = useAppSelector(selectUser);
   const AuthComponent = useMemo(() => withAuth(Component), [Component]);
 
-  return !appState.loading ? (
+  return role === null ? (
     <>
       <BaseLayout />
-      <Modal isOpen={true} closable={false} darkPercent={80}>
+      <Modal isOpen={true} closable={false} overlay="bg-black/80">
         <AppLoading />
       </Modal>
     </>

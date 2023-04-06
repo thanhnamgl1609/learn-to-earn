@@ -1,22 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@store';
-import { NftIdentity, RegistrationInfoMeta } from '@_types/nftIdentity';
+import { NftIdentity, RegistrationInfo } from '@_types/nftIdentity';
 import CONST from '@config/constants.json';
 
+const ALL_ROLES = Object.values(CONST.ROLES);
+export type RoleType = (typeof ALL_ROLES)[number];
+
 type UserState = {
-  roles: number[];
-  role: number;
-  nftIdentity?: NftIdentity;
-  isExpired?: boolean;
-  isRequestSent?: boolean;
-  registration?: RegistrationInfoMeta;
+  role: number | null;
+  roleType: RoleType;
+  registrationInfos: RegistrationInfo[];
+  nftIdentities: NftIdentity[];
 };
 
-const { ROLES } = CONST;
-
 const initialState: UserState = {
-  roles: [ROLES.VISITOR],
-  role: ROLES.VISITOR,
+  role: null,
+  roleType: null,
+  registrationInfos: [],
+  nftIdentities: [],
 };
 
 export const userSlice = createSlice({

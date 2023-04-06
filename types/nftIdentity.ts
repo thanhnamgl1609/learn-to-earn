@@ -4,6 +4,7 @@ export type RegistrationInfoRaw = {
 };
 
 export type RegistrationInfo = {
+  role: number;
   meta: RegistrationInfoMeta;
 } & RegistrationInfoRaw;
 
@@ -25,8 +26,11 @@ export type NftIdentityCore = {
   tokenId: number;
   expiredAt: Date;
   register: string;
+  isExpired: boolean;
 };
 
 export type NftIdentity = {
+  role: number;
+  tokenURI: string;
   meta: MetaType;
 } & NftIdentityCore;

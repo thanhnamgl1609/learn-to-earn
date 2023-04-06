@@ -12,5 +12,9 @@
     "99": "Visitor",
     "100": "Register",
     "101": "Council"
+  },
+  "REGISTRATION_ROLES": {
+    "STUDENT": 0,
+    "TEACHER": 1
   }
 }

@@ -25,7 +25,6 @@ const Web3Provider: FC<PropsWithChildren> = ({ children }) => {
 
   const handleAccountChange =
     (ethereum: MetaMaskInpageProvider) => async () => {
-      // const isLocked = !(await ethereum._metamask.isUnlocked());
       pageReload();
     };
   const setGlobalListeners = (ethereum: MetaMaskInpageProvider) => {

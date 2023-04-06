@@ -10,13 +10,13 @@ import { store } from '@store';
 
 const App = (props: AppProps) => {
   return (
-    <Provider store={store}>
-      <LoadingPage />
-      <ToastContainer />
-      <Web3Provider>
+    <Web3Provider>
+      <Provider store={store}>
+        <LoadingPage />
+        <ToastContainer />
         <AuthWrapper {...props} />
-      </Web3Provider>
-    </Provider>
+      </Provider>
+    </Web3Provider>
   );
 };
 

@@ -1,15 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 
 import React, { memo, useMemo } from 'react';
+import { useRouter } from 'next/router';
 import CONST from '@config/constants.json';
-import Routes from '@config/routes.json';
-import { ActiveLink } from '@atoms';
+import { ActiveLink, Button } from '@atoms';
 import { WalletBar } from '@molecules';
 import { Disclosure } from '@headlessui/react';
 import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import { useAccount, useNetwork } from '@hooks/web3';
-import { useAppSelector } from '@hooks/stores';
-import { selectUser } from '@store/userSlice';
+import { useAppDispatch, useAppSelector } from '@hooks/stores';
+import { selectUser, updateUser } from '@store/userSlice';
 
 const { ROLES } = CONST;
 
@@ -26,11 +26,17 @@ function classNames(...classes: string[]) {
 }
 
 function Navbar() {
+  const router = useRouter();
   const { account } = useAccount();
   const { network } = useNetwork();
-  const { role } = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
+  const { roleType: role } = useAppSelector(selectUser);
 
-  const navItems = useMemo(() => navigation[role], [role]);
+  const navItems = useMemo(() => (role ? navigation[role] : []), [role]);
+  const onSignOut = () => {
+    router.push('/');
+    dispatch(updateUser({ role: null }));
+  };
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -74,7 +80,7 @@ function Navbar() {
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <div className="text-gray-300 self-center mr-2">
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-purple-100 text-purple-800">
+                  <span className="inline-flex items-center px-2 py-1 rounded-md text-sm font-medium bg-purple-100 text-purple-800">
                     <svg
                       className="-ml-0.5 mr-1.5 h-2 w-2 text-indigo-400"
                       fill="currentColor"
@@ -89,7 +95,20 @@ function Navbar() {
                       : 'Install Web3 Wallet'}
                   </span>
                 </div>
-                {account.data && <WalletBar account={account.data} />}
+
+                {account.data && (
+                  <WalletBar role={role} account={account.data} />
+                )}
+
+                {role !== ROLES.COUNCIL && (
+                  <Button
+                    size="S"
+                    className="text-gray-300 self-center ml-2 inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-100 text-black"
+                    onClick={onSignOut}
+                  >
+                    Sign out
+                  </Button>
+                )}
               </div>
             </div>
           </div>

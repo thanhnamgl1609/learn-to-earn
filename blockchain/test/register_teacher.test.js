@@ -9,12 +9,12 @@ const uris = Array(10)
 const testFuncs = [
   'registerNftIdentity',
   'getAllOwnedRegistrationInfos',
+  'getAllRegistrationInfosByRole',
   'getOwnedNfts',
   'rejectNftIdentityRegistration',
 ].join(', ');
 
 contract(`NftIdentities register teacher ${testFuncs}`, (accounts) => {
-  const smartContractOwner = accounts[0];
   const teacherAddress = accounts[1];
   const _registerPrice = ethers.utils.parseEther('0.05').toString();
   let _contract = null;
@@ -26,6 +26,7 @@ contract(`NftIdentities register teacher ${testFuncs}`, (accounts) => {
   describe('teacher registration', () => {
     describe('should register successful', () => {
       let registrationTeacherInfo;
+      let allRegistrationInfos;
 
       before(async () => {
         await _contract.registerNftIdentity(ROLES.TEACHER, uris[0], {
@@ -35,6 +36,7 @@ contract(`NftIdentities register teacher ${testFuncs}`, (accounts) => {
         const registrationInfos = await _contract.getAllOwnedRegistrationInfos({
           from: teacherAddress,
         });
+        allRegistrationInfos = await _contract.getAllRegistrationInfosByRole(ROLES.TEACHER);
         registrationTeacherInfo = registrationInfos.find(
           ({ role }) => parseInt(role) === ROLES.TEACHER
         );
@@ -46,6 +48,10 @@ contract(`NftIdentities register teacher ${testFuncs}`, (accounts) => {
 
       it('should register correct info', () => {
         assert(registrationTeacherInfo.detail.documentURI, uris[0]);
+      });
+
+      it('should all registration infos have new application', () => {
+        assert(allRegistrationInfos.length === 1);
       });
 
       it('should throw error when try to register again', async () => {

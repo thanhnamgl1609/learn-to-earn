@@ -1,17 +1,21 @@
 import { ButtonHTMLAttributes, FC, memo, PropsWithChildren } from 'react';
 import withStyles from '../Styles';
 
-type ButtonProps = PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>;
+type ButtonProps = {
+  size?: 'S' | 'M' | 'L';
+} & PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>;
 
-const Button: FC<ButtonProps> = ({ children, className, ...props }) => (
+const Button: FC<ButtonProps> = ({ children, size = 'M', className, ...props }) => (
   <button
     className={[
       className,
-      `text-sm px-4 py-2 rounded-md
-       hover:opacity-80 active:opacity-60
-       font-medium
+      `hover:opacity-80 active:opacity-60
+       text-sm rounded-md font-medium
        border border-transparent shadow-sm
       `,
+      size === 'S' ? 'px-2 py-1' : 
+      size === 'M' ? 'px-4 py-2' :
+      'px-6 py-3' 
     ].join(' ')}
     {...props}
   >

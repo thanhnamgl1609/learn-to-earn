@@ -52,11 +52,17 @@ export const hookFactory: AccountHookFactory =
     };
 
     const connect = () => {
-      try {
-        ethereum?.request({ method: 'eth_requestAccounts' });
-      } catch (e) {
-        console.error(e);
-      }
+      ethereum
+        ?.request({
+          method: 'wallet_requestPermissions',
+          params: [{ eth_accounts: {} }],
+        })
+        .then((users) => {
+          console.log(users);
+        })
+        .catch((error) => {
+          console.log('🚀 ~ file: useAccount.ts:56 ~ connect ~ error:', error);
+        });
     };
 
     // const getSignedData = useCallback(async () => {

@@ -28,7 +28,7 @@ contract Registration {
     mapping(string => bool) internal _registeredDocumentURI;
 
     modifier onlyOwner() {
-        require(msg.sender == _owner);
+        require(isOwner());
         _;
     }
 
@@ -42,15 +42,18 @@ contract Registration {
         _;
     }
 
+    function isOwner() public view returns (bool) {
+        return msg.sender == _owner;
+    }
+
     function getAllOwnedRegistrationInfos()
         public
         view
         returns (RegistrationInfoResponse[] memory)
     {
         uint256 len = _rolesOfRegister[msg.sender].length;
-        RegistrationInfoResponse[] memory registrationInfos = new RegistrationInfoResponse[](
-            len
-        );
+        RegistrationInfoResponse[]
+            memory registrationInfos = new RegistrationInfoResponse[](len);
         for (uint256 roleIdx; roleIdx < len; ++roleIdx) {
             uint256 role = _rolesOfRegister[msg.sender][roleIdx];
             uint256 pos = _positionOfRegisters[role][msg.sender];

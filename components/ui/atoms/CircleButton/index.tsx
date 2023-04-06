@@ -1,17 +1,18 @@
 import { ButtonHTMLAttributes, FC, memo, PropsWithChildren } from 'react';
 import withStyles from '../Styles';
 
-type ButtonProps = PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>;
+type Props = ButtonHTMLAttributes<HTMLButtonElement>;
+
+type ButtonProps = PropsWithChildren<Props>;
 
 const CircleButton: FC<ButtonProps> = ({ children, className, ...props }) => (
   <button
     className={[
-      className,
-      `text-sm px-4 py-2 rounded-[50%]
+      `rounded-[50%]
        hover:opacity-80 active:opacity-60
-       font-medium
        border border-transparent shadow-sm
       `,
+      className,
     ].join(' ')}
     {...props}
   >
@@ -19,4 +20,4 @@ const CircleButton: FC<ButtonProps> = ({ children, className, ...props }) => (
   </button>
 );
 
-export default memo(withStyles<ButtonProps>(CircleButton));
+export default memo(CircleButton);

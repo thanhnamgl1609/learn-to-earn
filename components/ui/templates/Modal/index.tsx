@@ -13,7 +13,7 @@ import { FlexDiv } from '@atoms';
 
 type Props = {
   isOpen: boolean;
-  darkPercent?: 0 | 5 | 10 | 20 | 25 | 30 | 40 | 50 | 60 | 70 | 80 | 90;
+  overlay?: string;
   onClose?: () => void;
   closable?: boolean;
 } & HTMLAttributes<HTMLDivElement>;
@@ -21,7 +21,7 @@ type Props = {
 const Modal: FC<PropsWithChildren<Props>> = ({
   children,
   className,
-  darkPercent = 20,
+  overlay = "bg-black/20",
   onClose,
   isOpen,
   closable = true,
@@ -47,6 +47,7 @@ const Modal: FC<PropsWithChildren<Props>> = ({
     () => (closable ? onClose() : null),
     [closable, onClose]
   );
+
   useEffect(() => {
     if (isOpen) {
       setVisible('visible');
@@ -67,7 +68,12 @@ const Modal: FC<PropsWithChildren<Props>> = ({
       center
     >
       <div
-        className={`absolute top-0 right-0 left-0 bottom-0 bg-black/${darkPercent}`}
+        className={[
+          `absolute top-0 right-0 left-0 bottom-0`,
+          overlay,
+        ]
+          .filter(Boolean)
+          .join(' ')}
         onClick={_onClose}
       />
       <div className={_className} {...props} onClick={stopPropagation}>

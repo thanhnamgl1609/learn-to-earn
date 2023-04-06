@@ -17,8 +17,7 @@ const RouteConfig = {
   [ROLES.VISITOR]: {
     default: Routes.home,
     [Routes.home]: Routes.home,
-    [Routes.applyTeacher]: Routes.applyTeacher,
-    [Routes.registerStudent]: Routes.registerStudent,
+    [Routes.register]: Routes.register,
   },
   [ROLES.REGISTERED]: {
     default: Routes.applicationDetail,

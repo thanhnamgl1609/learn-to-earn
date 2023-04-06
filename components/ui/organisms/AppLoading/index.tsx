@@ -1,71 +1,178 @@
 import { NextPage } from 'next';
 import { useEffect, useMemo } from 'react';
-import { useAppDispatch } from '@hooks/stores';
-import { useAccount, useNetwork, useRoles } from '@hooks/web3';
-import { updateState } from '@store/appSlice';
-import { updateUser } from '@store/userSlice';
-import { CircleButton, CircleLink, Loading } from '@atoms';
+import { NftIdentity, RegistrationInfo } from '@_types/nftIdentity';
 import CONST from '@config/constants.json';
-import Link from 'next/link';
+import Routes from '@config/routes.json';
+import { RouteConfig } from '@hooks/routes/config';
+import { useAppDispatch } from '@hooks/stores';
+import { useAccount, useUserInfo } from '@hooks/web3';
+import { type RoleType, updateUser } from '@store/userSlice';
+import { Button, CircleButton, CircleLink, Loading } from '@atoms';
 import MetaMaskIcon from './MetaMaskIcon';
+import { useRouter } from 'next/router';
 
 const { ROLES, ROLE_LABELS } = CONST;
-const ALL_ROLES = [ROLES.STUDENT, ROLES.TEACHER];
 
-const AllRoleSelection = () => (
+type OnSelectRole = {
+  ({
+    role,
+    url,
+    roleType,
+  }: {
+    role: number;
+    url: string;
+    roleType: RoleType;
+  }): () => void;
+};
+
+const ALL_ROLES = [ROLES.STUDENT, ROLES.TEACHER];
+const REGISTRATION_ROLES = [ROLES.STUDENT, ROLES.TEACHER];
+const ROLE_REGISTRATION_URLS = ALL_ROLES.reduce(
+  (prev, role) => ({
+    ...prev,
+    [role]: Routes.register.replace(':role', ROLE_LABELS[role].toLowerCase()),
+  }),
+  {}
+);
+const ROLE_REGISTRATION_DETAIL_URLS = REGISTRATION_ROLES.reduce(
+  (prev, role) => ({
+    ...prev,
+    [role]: Routes.registerDetail.replace(
+      ':role',
+      ROLE_LABELS[role].toLowerCase()
+    ),
+  }),
+  {}
+);
+
+const SignInSection = ({
+  nftIdentities,
+  onSelect,
+}: {
+  nftIdentities: NftIdentity[];
+  onSelect: OnSelectRole;
+}) => (
   <div>
-    {ALL_ROLES.map((role) => (
-      <div key={role}>{ROLE_LABELS[role]}</div>
-    ))}
+    <p className="text-white capitalize text-3xl text-center">Sign In with</p>
+    <div className="mt-4 flex gap-4 justify-center">
+      {nftIdentities.map(({ role }) => (
+        <Button
+          className="bg-white text-xl uppercase text-gray-800 px-8 py-4"
+          key={role}
+          onClick={onSelect({
+            role,
+            url: RouteConfig[role].default,
+            roleType: role,
+          })}
+        >
+          {ROLE_LABELS[role]}
+        </Button>
+      ))}
+    </div>
   </div>
 );
 
-const SpecificRoleSelection = ({ roles }: { roles: number[] }) => {
-  const newRoles = useMemo(
-    () => ALL_ROLES.filter((role) => !roles.includes(role)),
-    [roles]
-  );
-
-  return (
-    <div>
-      <p> Sign in with </p>
-      <div>
-        {ALL_ROLES.map((role) => (
-          <div key={role}>{ROLE_LABELS[role]}</div>
-        ))}
-      </div>
-      {newRoles.length && (
-        <>
-          <p> or sign up with </p>
-          <div>
-            {newRoles.map((role) => (
-              <div key={role}>{ROLE_LABELS[role]}</div>
-            ))}
-          </div>
-        </>
-      )}
+const RegistrationSection = ({
+  registrationInfos,
+  onSelect,
+}: {
+  registrationInfos: RegistrationInfo[];
+  onSelect: OnSelectRole;
+}) => (
+  <div>
+    <p className="text-white capitalize text-3xl text-center">
+      View your registration detail
+    </p>
+    <div className="mt-4 flex gap-4 justify-center">
+      {registrationInfos.map(({ role }) => (
+        <Button
+          className="bg-white text-xl uppercase text-gray-800 px-8 py-4"
+          key={role}
+          onClick={onSelect({
+            role,
+            url: ROLE_REGISTRATION_DETAIL_URLS[role],
+            roleType: ROLES.REGISTERED,
+          })}
+        >
+          {ROLE_LABELS[role]}
+        </Button>
+      ))}
     </div>
-  );
-};
+  </div>
+);
+
+const SignUpSection = ({
+  roles,
+  onSelect,
+}: {
+  roles: number[];
+  onSelect: OnSelectRole;
+}) => (
+  <div>
+    <p className="text-white capitalize text-3xl text-center">Sign Up with</p>
+    <div className="mt-4 flex gap-4 justify-center">
+      {roles.map((role) => (
+        <Button
+          className="bg-white text-xl uppercase text-gray-800 px-8 py-4"
+          key={role}
+          onClick={onSelect({
+            role,
+            url: ROLE_REGISTRATION_URLS[role],
+            roleType: ROLES.VISITOR,
+          })}
+        >
+          {ROLE_LABELS[role]}
+        </Button>
+      ))}
+    </div>
+  </div>
+);
 
 const AppLoading: NextPage = () => {
-  const { roles } = useRoles();
-  const { network } = useNetwork();
+  const {
+    userInfo: { data: userInfoData },
+  } = useUserInfo();
   const { account } = useAccount();
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const otherRoles = useMemo(
+    () =>
+      userInfoData
+        ? ALL_ROLES.filter(
+            (role) =>
+              !userInfoData.nftIdentities.some(
+                ({ role: userRole }) => role === userRole
+              ) &&
+              !userInfoData.registrationInfos.some(
+                ({ role: registeredRole }) => role === registeredRole
+              )
+          )
+        : [],
+    [userInfoData]
+  );
+
+  const onSelectRole =
+    ({ role, url, roleType }) =>
+    () => {
+      dispatch(updateUser({ role, roleType }));
+      router.push(url);
+    };
 
   useEffect(() => {
-    if (!roles.error && roles.data) {
-      dispatch(
-        updateUser({
-          roles: roles.data,
-        })
-      );
-      dispatch(updateState({ initialUser: true }));
-    }
-  }, [roles]);
+    if (userInfoData) {
+      const updatedUser = userInfoData.isOwner
+        ? {
+            ...userInfoData,
+            role: ROLES.COUNCIL,
+            roleType: ROLES.COUNCIL,
+          }
+        : { ...userInfoData };
 
-  if (network.isLoading) {
+      dispatch(updateUser(updatedUser));
+    }
+  }, [userInfoData]);
+
+  if (account.isLoading) {
     return (
       <Loading width={64} height={64} className="text-white dark:text-white" />
     );
@@ -87,10 +194,11 @@ const AppLoading: NextPage = () => {
   if (!account.data) {
     return (
       <CircleButton
-        className="bg-indigo-800 text-white text-2xl pt-6 w-[320px] h-[320px]"
-        onClick={account.connect}
+        className="font-medium bg-indigo-800 text-white text-2xl pt-6 px-4 py-2 w-[320px] h-[320px]"
+        type="button"
+        onClick={() => account.connect()}
       >
-        CONNECT TO WALLET
+        CONNECT WALLET
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -109,10 +217,30 @@ const AppLoading: NextPage = () => {
     );
   }
 
-  return roles.data?.length ? (
-    <SpecificRoleSelection roles={roles.data} />
-  ) : (
-    <AllRoleSelection />
+  if (!userInfoData) {
+    return (
+      <Loading width={64} height={64} className="text-white dark:text-white" />
+    );
+  }
+
+  return (
+    <div className="grid auto-cols-auto">
+      {userInfoData.registrationInfos.length > 0 && (
+        <RegistrationSection
+          registrationInfos={userInfoData.registrationInfos}
+          onSelect={onSelectRole}
+        />
+      )}
+      {userInfoData.nftIdentities.length > 0 && (
+        <SignInSection
+          nftIdentities={userInfoData.nftIdentities}
+          onSelect={onSelectRole}
+        />
+      )}
+      {otherRoles.length && (
+        <SignUpSection roles={otherRoles} onSelect={onSelectRole} />
+      )}
+    </div>
   );
 };
 
