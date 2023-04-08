@@ -7,8 +7,9 @@ import REQUEST_CONST from '@config/request.json';
 import PINATA_CONST from '@config/pinata.json';
 import addressCheckMiddleware from './middleware/address-check';
 import { withSession, pinataApiKey, pinataSecretApiKey } from './utils';
-import { APPLY_TEACHER_VALIDATOR } from '@validators/schemas';
+import { APPLY_VALIDATOR } from '@validators/schemas';
 import { TeacherMeta } from '@_types/nftIdentity';
+import request from 'utils/request';
 
 const { ROLES } = CONST;
 const { METHOD } = REQUEST_CONST;
@@ -27,8 +28,9 @@ export default withSession(
         let pinataContent: TeacherMeta;
         switch (role) {
           case ROLES.TEACHER:
+          case ROLES.STUDENT:
             try {
-              pinataContent = APPLY_TEACHER_VALIDATOR.parse(
+              pinataContent = APPLY_VALIDATOR.parse(
                 data
               ) as TeacherMeta;
             } catch {
@@ -36,10 +38,10 @@ export default withSession(
             }
             break;
           default:
-            return res.status(400);
+            return res.status(400).json({ message: 'invalid role' });
         }
 
-        const jsonRes = await axios.post(
+        const jsonRes = await request.post(
           PINATA_CONST.PINNING_JSON,
           {
             pinataMetadata: {

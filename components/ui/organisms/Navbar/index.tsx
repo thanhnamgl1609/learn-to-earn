@@ -103,7 +103,7 @@ function Navbar() {
                 {role !== ROLES.COUNCIL && (
                   <Button
                     size="S"
-                    className="text-gray-300 self-center ml-2 inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-100 text-black"
+                    className="self-center ml-2 inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-100 text-black"
                     onClick={onSignOut}
                   >
                     Sign out

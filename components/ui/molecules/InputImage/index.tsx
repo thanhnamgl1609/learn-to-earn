@@ -1,11 +1,9 @@
-import { ChangeEvent, memo } from 'react';
+import { ChangeEvent, InputHTMLAttributes, memo } from 'react';
 import { InputFile } from '@atoms';
 
-type Props = {
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-};
+type Props = {} & InputHTMLAttributes<HTMLInputElement>;
 
-const InputImage = ({ onChange }: Props) => (
+const InputImage = (props: Props) => (
   <>
     <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
       <div className="space-y-1 text-center">
@@ -23,7 +21,7 @@ const InputImage = ({ onChange }: Props) => (
             strokeLinejoin="round"
           />
         </svg>
-        <InputFile onChange={onChange} />
+        <InputFile {...props} />
         <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
       </div>
     </div>

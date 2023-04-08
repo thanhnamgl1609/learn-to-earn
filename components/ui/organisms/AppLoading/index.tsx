@@ -52,7 +52,7 @@ const SignInSection = ({
   nftIdentities: NftIdentity[];
   onSelect: OnSelectRole;
 }) => (
-  <div>
+  <div className="flex justify-center items-center flex-col">
     <p className="text-white capitalize text-3xl text-center">Sign In with</p>
     <div className="mt-4 flex gap-4 justify-center">
       {nftIdentities.map(({ role }) => (
@@ -79,11 +79,11 @@ const RegistrationSection = ({
   registrationInfos: RegistrationInfo[];
   onSelect: OnSelectRole;
 }) => (
-  <div>
+  <div className="flex items-center flex-col">
     <p className="text-white capitalize text-3xl text-center">
-      View your registration detail
+      Registration Detail
     </p>
-    <div className="mt-4 flex gap-4 justify-center">
+    <div className="mt-4 flex flex-col gap-4 justify-center">
       {registrationInfos.map(({ role }) => (
         <Button
           className="bg-white text-xl uppercase text-gray-800 px-8 py-4"
@@ -108,7 +108,7 @@ const SignUpSection = ({
   roles: number[];
   onSelect: OnSelectRole;
 }) => (
-  <div>
+  <div className="flex justify-end items-center flex-col">
     <p className="text-white capitalize text-3xl text-center">Sign Up with</p>
     <div className="mt-4 flex gap-4 justify-center">
       {roles.map((role) => (
@@ -154,7 +154,7 @@ const AppLoading: NextPage = () => {
   const onSelectRole =
     ({ role, url, roleType }) =>
     () => {
-      dispatch(updateUser({ role, roleType }));
+      dispatch(updateUser({ account: account.data, role, roleType }));
       router.push(url);
     };
 
@@ -224,7 +224,7 @@ const AppLoading: NextPage = () => {
   }
 
   return (
-    <div className="grid auto-cols-auto">
+    <div className="flex gap-[80px] flex-wrap items-start">
       {userInfoData.registrationInfos.length > 0 && (
         <RegistrationSection
           registrationInfos={userInfoData.registrationInfos}

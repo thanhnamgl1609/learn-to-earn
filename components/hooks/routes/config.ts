@@ -15,13 +15,12 @@ const RouteConfig = {
     [Routes.profile]: Routes.profile,
   },
   [ROLES.VISITOR]: {
-    default: Routes.home,
-    [Routes.home]: Routes.home,
+    default: Routes.register,
     [Routes.register]: Routes.register,
   },
   [ROLES.REGISTERED]: {
-    default: Routes.applicationDetail,
-    [Routes.applicationDetail]: Routes.applicationDetail,
+    default: Routes.registerDetail,
+    [Routes.registerDetail]: Routes.registerDetail,
   },
   [ROLES.COUNCIL]: {
     default: Routes.manage,

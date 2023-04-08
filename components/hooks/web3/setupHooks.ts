@@ -13,6 +13,14 @@ import {
   hookFactory as createManagementHook,
   UseManagementHook,
 } from './useManagement';
+import {
+  hookFactory as createUtilitiesHook,
+  UseUtilitiesHook,
+} from './useUtilities';
+import {
+  hookFactory as createRegistrationActionsHook,
+  UseRegistrationActionsHook,
+} from './useRegistrationActions';
 
 export type Web3Hooks = {
   useAccount: UseAccountHook;
@@ -20,6 +28,8 @@ export type Web3Hooks = {
   useUserInfo: UseUserInfoHook;
   useRegistrationList: UseRegistrationListHook;
   useManagement: UseManagementHook;
+  useUtilities: UseUtilitiesHook;
+  useRegistrationActions: UseRegistrationActionsHook;
 };
 
 type SetupHooks = {
@@ -33,5 +43,7 @@ export const setupHooks: SetupHooks = (deps) => {
     useUserInfo: createUserInfoHook(deps),
     useRegistrationList: createRegistrationListHook(deps),
     useManagement: createManagementHook(deps),
+    useUtilities: createUtilitiesHook(deps),
+    useRegistrationActions: createRegistrationActionsHook(deps),
   };
 };

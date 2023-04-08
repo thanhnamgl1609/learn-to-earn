@@ -20,7 +20,7 @@ export type TeacherMeta = {
   documentURIs: string[];
 };
 
-export type MetaType = TeacherMeta | StudentMeta; // | EducationManagerMeta
+export type NftIdentityMetaType = TeacherMeta | StudentMeta; // | EducationManagerMeta
 
 export type NftIdentityCore = {
   tokenId: number;
@@ -32,5 +32,5 @@ export type NftIdentityCore = {
 export type NftIdentity = {
   role: number;
   tokenURI: string;
-  meta: MetaType;
+  meta: NftIdentityMetaType;
 } & NftIdentityCore;

@@ -5,11 +5,13 @@ import { v4 as uuidv4 } from 'uuid';
 import PINATA_CONST from '@config/pinata.json';
 import {
   withSession,
-  contractAddress,
-  addressCheckMiddleware,
   pinataApiKey,
   pinataSecretApiKey,
+  nftIdentitiesContractAddress,
+  nftSchoolsContractAddress,
+  nftCertificatesContractAddress,
 } from './utils';
+import addressCheckMiddleware from './middleware/address-check';
 
 export default withSession(
   async (
@@ -48,7 +50,12 @@ export default withSession(
       }
     } else if (req.method === 'GET') {
       try {
-        const message = { contractAddress, id: uuidv4() };
+        const message = {
+          id: uuidv4(),
+          nftIdentitiesContractAddress,
+          nftSchoolsContractAddress,
+          nftCertificatesContractAddress,
+        };
         req.session.set('message-session', message);
         await req.session.save();
         return res.json(message);

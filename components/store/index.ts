@@ -1,4 +1,5 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { Middleware, Action } from 'redux';
+import { configureStore, createAsyncThunk } from '@reduxjs/toolkit';
 import user from '@store/userSlice';
 import app from '@store/appSlice';
 import manage from '@store/manageSlice';
@@ -16,8 +17,15 @@ export const store = configureStore({
     app,
     manage,
   },
-  middleware,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(...middleware),
 });
 
-export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
+export const createAppAsyncThunk = createAsyncThunk.withTypes<{
+  state: RootState;
+  dispatch: AppDispatch;
+  rejectValue: string;
+  extra: { s: string; n: number };
+}>();

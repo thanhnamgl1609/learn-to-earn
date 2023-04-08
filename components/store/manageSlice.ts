@@ -3,7 +3,7 @@ import { RootState } from '@store';
 import { RegistrationInfo } from '@_types/nftIdentity';
 import _ from 'lodash';
 
-type ManageState = {
+export type ManageState = {
   registrations: RegistrationInfo[];
   registrationsByAddr: {
     [key: string]: RegistrationInfo;

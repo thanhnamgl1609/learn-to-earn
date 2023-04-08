@@ -43,3 +43,15 @@ export const useManagement = () => {
 
   return actions;
 };
+
+export const useUtilities = () => {
+  const { useUtilities } = useHooks();
+
+  return useUtilities();
+}
+
+export const useRegistrationActions = () => {
+  const { useRegistrationActions } = useHooks();
+
+  return useRegistrationActions();
+}

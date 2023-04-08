@@ -6,11 +6,7 @@ import FormData from 'form-data';
 import { FileReq } from '@_types/common';
 import PINATA from '@config/pinata.json';
 import REQUEST_CONST from '@config/request.json';
-import {
-  withSession,
-  pinataApiKey,
-  pinataSecretApiKey,
-} from './utils';
+import { withSession, pinataApiKey, pinataSecretApiKey } from './utils';
 import addressCheckMiddleware from './middleware/address-check';
 
 const { METHOD } = REQUEST_CONST;
@@ -36,18 +32,14 @@ export default withSession(
           contentType,
         });
 
-        const fileRes = await axios.post(
-          PINATA.PINNING,
-          formData,
-          {
-            maxBodyLength: Infinity,
-            headers: {
-              'Content-Type': `multipart/form-data; boundary=${formData.getBoundary()}`,
-              pinata_api_key: pinataApiKey,
-              pinata_secret_api_key: pinataSecretApiKey,
-            },
-          }
-        );
+        const fileRes = await axios.post(PINATA.PINNING, formData, {
+          maxBodyLength: Infinity,
+          headers: {
+            'Content-Type': `multipart/form-data; boundary=${formData.getBoundary()}`,
+            pinata_api_key: pinataApiKey,
+            pinata_secret_api_key: pinataSecretApiKey,
+          },
+        });
 
         return res.status(200).json(fileRes.data);
       } catch (e) {

@@ -1,20 +1,20 @@
-import { ChangeEvent, memo, useCallback } from 'react';
+import { InputHTMLAttributes, memo, useCallback } from 'react';
 import { InputImage, PreviewImages } from '@molecules';
 
 type Props = {
   images: string[];
   previewClassName?: string;
   label?: string;
+  id: string;
   onRemove: (image: string) => void;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-};
+} & InputHTMLAttributes<HTMLInputElement>;
 
 const InputMultipleImages = ({
   images,
   previewClassName,
   label = 'Image',
   onRemove,
-  onChange,
+  ...props
 }: Props) => {
   const _onRemove = useCallback(
     (image: string) => () => onRemove(image),
@@ -23,9 +23,14 @@ const InputMultipleImages = ({
 
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700">{label}</label>
+      <label
+        htmlFor={props.id}
+        className="block text-sm font-medium text-gray-700"
+      >
+        {label}
+      </label>
 
-      <InputImage onChange={onChange}  />
+      <InputImage {...props} />
       <PreviewImages
         images={images}
         className={previewClassName}

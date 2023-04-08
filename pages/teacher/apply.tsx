@@ -14,7 +14,7 @@ import { getSignedData } from 'utils/formHelper';
 import { getPinataLink } from 'utils/pinataHelper';
 import { useAppDispatch } from '@hooks/stores';
 import { loading, unloading } from '@store/appSlice';
-import { APPLY_TEACHER_VALIDATOR } from '@validators/schemas';
+import { APPLY_VALIDATOR } from '@validators/schemas';
 import { useRouter } from 'next/router';
 
 const { ROLES } = CONST;
@@ -125,7 +125,7 @@ const ApplyTeacher: NextPage = () => {
 
   const validateForm = () => {
     try {
-      APPLY_TEACHER_VALIDATOR.parse(nftMeta);
+      APPLY_VALIDATOR.parse(nftMeta);
       return true;
     } catch (e) {
       toast.error('Invalid input! Please make sure all fields are entered');
