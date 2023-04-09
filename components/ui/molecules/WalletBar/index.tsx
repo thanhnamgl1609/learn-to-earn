@@ -58,7 +58,7 @@ const WalletBar: FunctionComponent<WalletBarProps> = ({ role, account }) => (
         )}
       </Menu.Item>
       {(LINKS[role] || []).map(({ label, url }) => (
-        <Menu.Item>
+        <Menu.Item key={url}>
           {({ active }) => (
             <Link
               href={url}

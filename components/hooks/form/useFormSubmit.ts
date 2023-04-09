@@ -10,6 +10,6 @@ export const useFormSubmit = <SubmitFunction extends Function>(
 
       submitFunction();
     },
-    [deps]
+    deps,
   );
 };

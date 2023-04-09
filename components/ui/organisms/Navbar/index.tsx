@@ -34,8 +34,7 @@ function Navbar() {
 
   const navItems = useMemo(() => (role ? navigation[role] : []), [role]);
   const onSignOut = () => {
-    router.push('/');
-    dispatch(updateUser({ role: null }));
+    dispatch(updateUser({ role: null, roleType: null }));
   };
 
   return (

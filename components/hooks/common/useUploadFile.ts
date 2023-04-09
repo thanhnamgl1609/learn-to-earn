@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '@hooks/stores';
 import { useUtilities } from '@hooks/web3';
 import { loading, unloading } from '@store/appSlice';
 
-const useUploadFile = () => {
+export const useUploadFile = () => {
   const { getSignedData } = useUtilities();
   const { account } = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
@@ -42,5 +42,3 @@ const useUploadFile = () => {
     [account]
   );
 };
-
-export default useUploadFile;

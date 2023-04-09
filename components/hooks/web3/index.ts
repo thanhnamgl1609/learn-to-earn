@@ -52,6 +52,7 @@ export const useUtilities = () => {
 
 export const useRegistrationActions = () => {
   const { useRegistrationActions } = useHooks();
+  const actions = useRegistrationActions();
 
-  return useRegistrationActions();
+  return actions;
 }

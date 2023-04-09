@@ -1,17 +1,36 @@
-import { HookFactoryWithoutSWR, Web3Dependencies } from '@_types/hooks';
-import { ethers } from 'ethers';
-import { useRouter } from 'next/router';
+import { ContractTransaction, ethers } from 'ethers';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
-import { formatRegistrationInfos } from './formatter/registrationInfos';
+import moment from 'moment';
+
 import { RegistrationInfo } from '@_types/nftIdentity';
+import { HookFactoryWithoutSWR } from '@_types/hooks';
+import { formatRegistrationInfoResponses } from './formatter/registrationInfos';
+
+type GrantOrRejectParams = {
+  onSuccess?: () => {};
+  onError?: (error: Error) => {};
+} & RegistrationInfo & { expiredAt: string };
 
 type UseRegistrationActionsReturnTypes = {
   registerNftIdentity: (
     role: number,
     metadataURI: string
   ) => Promise<RegistrationInfo[]>;
+  grantNftIdentity: GrantNftIdentityFunc;
+  rejectNftIdentity: RejectNftIdentityFunc;
 };
+type PromiseHandlerFunc = (params: {
+  onSuccess?: (...params) => {};
+  onError?: (error: Error) => {};
+  successMsg: string;
+  errorMsg: string;
+  promise: Promise<ContractTransaction>;
+}) => Promise<void>;
+
+type GrantNftIdentityFunc = (params: GrantOrRejectParams) => Promise<void>;
+
+type RejectNftIdentityFunc = (params: GrantOrRejectParams) => Promise<void>;
 
 type UtilitiesHookFactory =
   HookFactoryWithoutSWR<UseRegistrationActionsReturnTypes>;
@@ -27,24 +46,23 @@ export const hookFactory: UtilitiesHookFactory =
     const registerNftIdentity = useCallback(
       async (role: number, metadataURI: string) => {
         try {
-          const tx = await _contracts.nftIdentities?.registerNftIdentity(
+          const promise = _contracts.nftIdentities?.registerNftIdentity(
             role,
             metadataURI,
             {
               value: registerFee,
             }
           );
-
-          await toast.promise(tx!.wait(), {
-            pending: 'Processing...',
-            success: 'Request sent! Waiting for validating!',
-            error: 'Error when sending request!',
+          await promiseHandler({
+            successMsg: 'Request sent! Waiting for validating!',
+            errorMsg: 'Error when sending request!',
+            promise,
           });
 
           const registrationInfoResponses =
             await _contracts.nftIdentities?.getAllOwnedRegistrationInfos();
 
-          return formatRegistrationInfos(registrationInfoResponses);
+          return formatRegistrationInfoResponses(registrationInfoResponses);
         } catch (error) {
           toast.error('Unexpected error');
         }
@@ -52,7 +70,85 @@ export const hookFactory: UtilitiesHookFactory =
       [_contracts]
     );
 
+    const grantNftIdentity: GrantNftIdentityFunc = useCallback(
+      async ({
+        onSuccess,
+        onError,
+        applicant,
+        role,
+        expiredAt,
+        documentURI: tokenURI,
+      }) => {
+        const params = {
+          applicant,
+          role,
+          expiredAt: moment(expiredAt).endOf('d').unix(),
+          documentURI: tokenURI,
+        };
+        const promise = _contracts.nftIdentities?.grantNftIdentity(
+          applicant,
+          role,
+          moment(expiredAt).endOf('d').unix(),
+          tokenURI
+        );
+        await promiseHandler({
+          successMsg: `Success to grant NFT for ${applicant}`,
+          errorMsg: `Fail to grant NFT for ${applicant}`,
+          onSuccess,
+          onError,
+          promise,
+        });
+      },
+      [_contracts]
+    );
+
+    const rejectNftIdentity: RejectNftIdentityFunc = useCallback(
+      async ({ role, applicant, onSuccess, onError }) => {
+        const promise = _contracts.nftIdentities.rejectNftIdentityRegistration(
+          applicant,
+          role
+        );
+        await promiseHandler({
+          successMsg: `Success to reject NFT for ${applicant}`,
+          errorMsg: `Fail to reject NFT for ${applicant}`,
+          onSuccess,
+          onError,
+          promise,
+        });
+      },
+      []
+    );
+
+    const promiseHandler: PromiseHandlerFunc = async ({
+      successMsg,
+      errorMsg,
+      promise,
+      onSuccess,
+      onError,
+    }) => {
+      try {
+        const tx = await promise;
+        console.log("🚀 ~ file: useRegistrationActions.ts:131 ~ tx:", tx)
+
+        const result = await toast.promise(
+          tx!.wait(),
+          {
+            pending: 'Processing...',
+            success: successMsg,
+            error: errorMsg,
+          }
+        );
+
+        onSuccess?.(result);
+      } catch (e) {
+        toast.error(e.message);
+        onError?.(e.message);
+      }
+    };
+
     return {
       registerNftIdentity,
+      grantNftIdentity,
+      rejectNftIdentity,
     };
   };

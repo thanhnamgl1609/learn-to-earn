@@ -18,7 +18,9 @@ export const store = configureStore({
     manage,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(...middleware),
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(...middleware),
 });
 
 export type AppDispatch = typeof store.dispatch;

@@ -4,7 +4,7 @@ import useSWR from 'swr';
 
 import { CryptoHookFactory } from '@_types/hooks';
 import { NftIdentity, RegistrationInfo } from '@_types/nftIdentity';
-import { formatRegistrationInfos } from './formatter/registrationInfos';
+import { formatRegistrationInfoResponses } from './formatter/registrationInfos';
 import { formatNftIdentities } from './formatter/nftIdentities';
 
 type SWRResponse = {
@@ -40,7 +40,7 @@ export const hookFactory: RoleHookFactory =
         ]);
 
         const registrationInfos: RegistrationInfo[] =
-          await formatRegistrationInfos(registrationInfoResponses);
+          await formatRegistrationInfoResponses(registrationInfoResponses);
         const nftIdentities: NftIdentity[] = await formatNftIdentities(
           nftResponses
         );

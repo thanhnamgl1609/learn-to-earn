@@ -9,3 +9,4 @@ export { default as CircleButton } from './CircleButton';
 export { default as CircleLink } from './CircleLink';
 export { default as Anchor } from './Anchor';
 export { default as FlexDiv } from './FlexDiv';
+export { default as Heading } from './Heading';

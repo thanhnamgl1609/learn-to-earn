@@ -1,7 +1,9 @@
+import request from 'utils/request';
+import moment from 'moment';
+
 import { NftidentityresponseResponse } from '@_types/contracts/NftIdentities';
 import { NftIdentity } from '@_types/nftIdentity';
-import axios from 'axios';
-import moment from 'moment';
+import Api from 'config/api.json';
 
 export const formatNftIdentity = async ({
   role,
@@ -9,14 +11,18 @@ export const formatNftIdentity = async ({
   isExpired,
   tokenURI,
 }: NftidentityresponseResponse): Promise<NftIdentity> => {
-  const { data: meta } = await axios.get(tokenURI);
+  const { data: meta } = await request.get(Api.proxy, {
+    params: {
+      l: tokenURI,
+    },
+  });
   const { expiredAt, register, tokenId } = nftIdentity;
 
   return {
     role: role.toNumber(),
-    expiredAt: moment(expiredAt.toNumber()).toDate(),
+    expiredAt: moment.unix(expiredAt.toNumber()).toDate(),
     register,
-    tokenId: role.toNumber(),
+    tokenId: tokenId.toNumber(),
     isExpired,
     tokenURI,
     meta,

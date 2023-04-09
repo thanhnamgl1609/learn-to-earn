@@ -1,7 +1,11 @@
-import { CryptoHookFactory } from '@_types/hooks';
-import { RegistrationInfo, RegistrationInfoMeta } from '@_types/nftIdentity';
-import { useCallback, useState } from 'react';
 import useSWR from 'swr';
+
+import CONST from 'config/constants.json';
+import { CryptoHookFactory } from '@_types/hooks';
+import { RegistrationInfo } from '@_types/nftIdentity';
+import { formatRegistrationInfos } from './formatter/registrationInfos';
+import { useAppDispatch } from '@hooks/stores';
+import { loading, unloading } from '@store/appSlice';
 
 type UseRegistrationListResponse = {};
 
@@ -17,30 +21,27 @@ type RegistrationListHookFactory = CryptoHookFactory<
 
 export type UseRegistrationListHook = ReturnType<RegistrationListHookFactory>;
 
+const { ROLES } = CONST;
+const AVAILABLE_ROLES = [ROLES.TEACHER, ROLES.STUDENT];
+
 export const hookFactory: RegistrationListHookFactory =
   ({ contracts }) =>
   ({ role }) => {
+    const dispatch = useAppDispatch();
+
     const { data, ...swr } = useSWR(
-      contracts ? 'web3/useRegistrationList' : null,
+      contracts ? `web3/useRegistrationList/${role}` : null,
       async () => {
-        const applicationsRes =
-          await contracts!.nftIdentities.getAllNftIdentityRegistration(role);
-        const applicationsPromises = applicationsRes.map(
-          async ({ documentURI, applicant }) => {
-            const applicationMetadata = (await fetch(documentURI).then((res) =>
-              res.json()
-            )) as RegistrationInfoMeta;
+        dispatch(loading());
+        if (AVAILABLE_ROLES.every((_role) => role !== _role)) return null;
 
-            return {
-              documentURI,
-              applicant,
-              meta: applicationMetadata,
-            };
-          }
-        );
-        const applications = await Promise.all(applicationsPromises);
+        const applications =
+          await contracts!.nftIdentities.getAllRegistrationInfosByRole(role);
 
-        return applications;
+        const result = await formatRegistrationInfos(applications, role);
+        dispatch(unloading());
+
+        return result;
       }
     );
 

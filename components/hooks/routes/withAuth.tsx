@@ -14,26 +14,29 @@ const withAuth =
   (Component: NextComponentType<NextPageContext, any, any>) =>
   (props: any): JSX.Element => {
     const router = useRouter();
+    console.log("🚀 ~ file: withAuth.tsx:17 ~ router:", router.pathname)
     const { roleType: role } = useAppSelector(selectUser);
+    console.log("🚀 ~ file: withAuth.tsx:19 ~ role:", role)
 
-    const isValidRoute = useMemo(() => {
+    const currentRoute = useMemo(() => {
       const pathname = router.pathname.replace(
         /\[(\w+)\]/,
         (_, paramKey) => `:${paramKey}`
       );
-      console.log("🚀 ~ file: withAuth.tsx:24 ~ isValidRoute ~ pathname:", pathname)
       const route = RouteConfig[role][pathname];
 
-      return !!route;
-    }, [router.pathname, role]);
+      return route;
+    }, [role]);
 
     useEffect(() => {
-      if (!isValidRoute) {
-        router.replace(role ? RouteConfig[role].default : DEFAULT_ROUTE);
+      if (!currentRoute) {
+        router.replace(!Number.isNaN(role) ? RouteConfig[role].default.name : DEFAULT_ROUTE);
+      } else if (currentRoute.as && router.asPath !== currentRoute.as) {
+        router.push(currentRoute.name, currentRoute.as, { shallow: false });
       }
-    }, [isValidRoute, role]);
+    }, [currentRoute, role]);
 
-    return isValidRoute ? <Component {...props} /> : null;
+    return currentRoute ? <Component {...props} /> : null;
   };
 
 export default withAuth;

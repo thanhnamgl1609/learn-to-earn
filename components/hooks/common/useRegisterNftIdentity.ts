@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 
 import { NftIdentityMetaType } from '@_types/nftIdentity';
+import CONST from '@config/constants.json';
 import { uploadData } from '@store/actions';
 import { loading, unloading } from '@store/appSlice';
 import Routes from '@config/routes.json';
@@ -10,7 +11,9 @@ import { useRegistrationActions, useUtilities } from '@hooks/web3';
 import { useValidator } from '@hooks/form';
 import { APPLY_VALIDATOR } from '@validators/schemas';
 
-const useRegisterNftIdentity = () => {
+const { ROLE_LABELS } = CONST;
+
+export const useRegisterNftIdentity = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { getSignedData } = useUtilities();
@@ -26,9 +29,7 @@ const useRegisterNftIdentity = () => {
     await registerNftIdentity(role, link);
 
     dispatch(unloading());
-    router.push(Routes.applicationDetail);
+    router.push(Routes.registerDetail.name.replace(':role', ROLE_LABELS[role]));
     return link;
   }, []);
 };
-
-export default useRegisterNftIdentity;

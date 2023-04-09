@@ -14,6 +14,7 @@ import {
 } from '@hooks/form';
 import { InputField, InputMultipleImages, InputSingleImage } from '@molecules';
 import { FullPageForm } from '@organisms';
+import { withAuth } from '@hooks/routes';
 
 const { ROLE_LABELS } = CONST;
 const FORM_FIELDS = {

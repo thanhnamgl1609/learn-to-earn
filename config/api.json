@@ -1,0 +1,6 @@
+{
+  "apply": "/api/apply",
+  "verify": "/api/verify",
+  "verifyImage": "/api/verify-image",
+  "proxy": "/api/proxy"
+}

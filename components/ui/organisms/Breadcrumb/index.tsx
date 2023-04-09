@@ -2,9 +2,11 @@ import Link from 'next/link';
 import { FC, Fragment } from 'react';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 
+import { Route } from '@hooks/routes/config';
+
 type BreadcrumbLink = {
   label: string;
-  link?: string;
+  route?: Route;
 };
 type Props = {
   links: BreadcrumbLink[];
@@ -13,13 +15,17 @@ type Props = {
 const Breadcrumb: FC<Props> = ({ links }) => {
   return (
     <div className="flex gap-2 items-center">
-      {links.map(({ label, link }, index) => (
+      {links.map(({ label, route }, index) => (
         <Fragment key={label}>
           {index > 0 && (
             <ChevronRightIcon className="text-sm w-[16px] text-gray-800" />
           )}
-          {link ? (
-            <Link href={link} className="font-semibold hover:opacity-80">
+          {route ? (
+            <Link
+              href={route.name}
+              as={route.as}
+              className="font-semibold hover:opacity-80"
+            >
               {label}
             </Link>
           ) : (

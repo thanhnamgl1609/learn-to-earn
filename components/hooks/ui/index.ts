@@ -1,0 +1,1 @@
+export { useModalController } from './useModalController';

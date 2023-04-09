@@ -1,2 +1,4 @@
-export { default as useUploadFile } from './useUploadFile';
-export { default as useRegisterNftIdentity } from './useRegisterNftIdentity';
+export { useUploadFile } from './useUploadFile';
+export { useRegisterNftIdentity } from './useRegisterNftIdentity';
+export { useGrantNftIdentity } from './useGrantNftIdentity';
+export { useRejectNftIdentity } from './useRejectNftIdentity';

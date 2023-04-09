@@ -3,7 +3,7 @@ import { useEffect, useMemo } from 'react';
 import { NftIdentity, RegistrationInfo } from '@_types/nftIdentity';
 import CONST from '@config/constants.json';
 import Routes from '@config/routes.json';
-import { RouteConfig } from '@hooks/routes/config';
+import { Route, RouteConfig } from '@hooks/routes/config';
 import { useAppDispatch } from '@hooks/stores';
 import { useAccount, useUserInfo } from '@hooks/web3';
 import { type RoleType, updateUser } from '@store/userSlice';
@@ -20,7 +20,7 @@ type OnSelectRole = {
     roleType,
   }: {
     role: number;
-    url: string;
+    url: Route;
     roleType: RoleType;
   }): () => void;
 };
@@ -30,17 +30,26 @@ const REGISTRATION_ROLES = [ROLES.STUDENT, ROLES.TEACHER];
 const ROLE_REGISTRATION_URLS = ALL_ROLES.reduce(
   (prev, role) => ({
     ...prev,
-    [role]: Routes.register.replace(':role', ROLE_LABELS[role].toLowerCase()),
+    [role]: {
+      ...Routes.register,
+      name: Routes.register.name.replace(
+        ':role',
+        ROLE_LABELS[role].toLowerCase()
+      ),
+    },
   }),
   {}
 );
 const ROLE_REGISTRATION_DETAIL_URLS = REGISTRATION_ROLES.reduce(
   (prev, role) => ({
     ...prev,
-    [role]: Routes.registerDetail.replace(
-      ':role',
-      ROLE_LABELS[role].toLowerCase()
-    ),
+    [role]: {
+      ...Routes.registerDetail,
+      name: Routes.registerDetail.name.replace(
+        ':role',
+        ROLE_LABELS[role].toLowerCase()
+      ),
+    },
   }),
   {}
 );
@@ -154,8 +163,10 @@ const AppLoading: NextPage = () => {
   const onSelectRole =
     ({ role, url, roleType }) =>
     () => {
-      dispatch(updateUser({ account: account.data, role, roleType }));
-      router.push(url);
+      const afterUpdate = () => router.push(url.name, url.as);
+      dispatch(
+        updateUser({ account: account.data, role, roleType, afterUpdate })
+      );
     };
 
   useEffect(() => {
@@ -167,10 +178,17 @@ const AppLoading: NextPage = () => {
             roleType: ROLES.COUNCIL,
           }
         : { ...userInfoData };
+      delete updatedUser.isOwner;
 
       dispatch(updateUser(updatedUser));
     }
   }, [userInfoData]);
+
+  useEffect(() => {
+    if (router.pathname !== '/') {
+      router.replace('/');
+    }
+  }, []);
 
   if (account.isLoading) {
     return (

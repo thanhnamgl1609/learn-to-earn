@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@store';
 import { RegistrationInfo } from '@_types/nftIdentity';
 import _ from 'lodash';
@@ -32,5 +32,9 @@ export const { updateRegistrations } = manageSlice.actions;
 
 // selectors
 export const selectManage = (state: RootState) => state.manage;
+export const selectRegistrationByAddr = createSelector(
+  selectManage,
+  ({ registrationsByAddr }) => registrationsByAddr
+);
 
 export default manageSlice.reducer;
