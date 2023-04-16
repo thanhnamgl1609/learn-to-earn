@@ -8,4 +8,19 @@ interface INftIdentities is IConstant {
         address registerAddr,
         uint256 role
     ) external view returns (bool);
+
+    function getNftOfTokenId(
+        uint256 tokenId
+    ) external view returns (NftIdentityResponse memory);
+
+    function ownerOf(uint256 tokenId) external view returns (address);
+
+    function getNftOfMemberWithRole(
+        uint256 role,
+        address memberAddr
+    ) external view returns (NftIdentityResponse memory);
+
+    function getTokenType(uint256 tokenId) external pure returns (uint256);
+
+    // function isRole(address checkedAddr, uint256 role) external view returns (bool);
 }

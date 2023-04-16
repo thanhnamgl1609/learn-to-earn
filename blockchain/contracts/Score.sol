@@ -28,7 +28,7 @@ contract Score is IScore {
         returns (bool)
     {
         uint256 numberOfChecks = scores.length;
-        for (uint256 idx = 0; idx <= numberOfChecks; ++idx) {
+        for (uint256 idx = 0; idx < numberOfChecks; ++idx) {
             if (!_usableScores[scores[idx]]) {
                 return false;
             }

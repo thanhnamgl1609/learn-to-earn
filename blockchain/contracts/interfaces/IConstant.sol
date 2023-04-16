@@ -23,11 +23,13 @@ interface IConstant {
         uint256 credits;
     }
 
-    struct NftCourse { // cannot be burn if exist any nft classes belongs to it
-        uint256 tokenId;
+    struct Course { // cannot be burn if exist any nft classes belongs to it
+        uint256 id;
         uint256 knowledgeBlockId; // cannot be updated
+        uint256 prevCourseId;
         uint256 credits;
         uint256 status; // 0: opened, 1: closed
+        string uri;
         /*
             Metadata:
                 - Requirement name
@@ -35,17 +37,19 @@ interface IConstant {
         */
     }
     
-    struct NftClass {
-        uint256 tokenId;
+    struct Class {
+        uint256 id;
         uint256 courseId; // courseId - requirementId
         uint256 knowledgeBlockId; // courseId - requirementId
+        uint256 prevCourseId;
         uint256 credits;
         uint256 registeredStartAt;
         uint256 registeredEndAt;
         uint256 completeAt; // end time - editable
         uint256[] requiredScore; // 1, 2, 3, 4, 5 - some score (like pracice can be unused)
         uint256 maxSize;
-        address teacherAddr;
+        uint256 teacherTokenId;
+        string uri;
         /* Metadata:
             - Teacher name - Nft Id?
             - Course name
@@ -64,8 +68,8 @@ interface IConstant {
         uint256 knowledgeBlockId;
         uint256 credits;
         uint256 completeAt; // end time - editable
-        address studentAddr;
-        address teacherAddr;
+        uint256 studentTokenId;
+        uint256 teacherTokenId;
         uint256[] requiredScore; // accumulate all score and divide by length to get avarage
         uint256[] scores; // type => score value (GK: 5)
         /*
@@ -102,5 +106,18 @@ interface IConstant {
                 - Courses + Scores (detail?)
                 - Final average score
         */
+    }
+
+    struct NftIdentity {
+        uint256 tokenId;
+        address register;
+        uint256 expiredAt;
+    }
+
+    struct NftIdentityResponse {
+        NftIdentity nftIdentity;
+        string tokenURI;
+        uint256 role;
+        bool isExpired;
     }
 }

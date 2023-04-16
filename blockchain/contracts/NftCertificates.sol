@@ -39,9 +39,11 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
     NftGraduation[] private _allNftGraduations;
     mapping(uint256 => mapping(uint256 => uint256)) _posOfTokenIdOfNftType;
 
-    mapping(uint256 => address[]) _studentsOfClass;
-    mapping(uint256 => mapping(address => uint256)) _posOfStudentInClass;
-    mapping(address => uint256[]) private _studentOwnedCompleteCourseNfts;
+    mapping(uint256 => uint256[]) _studentsOfClass;
+    mapping(uint256 => mapping(uint256 => uint256)) _posOfStudentInClass;
+    mapping(uint256 => uint256[]) private _studentOwnedCompleteCourseNfts;
+    mapping(uint256 => mapping(uint256 => bool))
+        private _completedCourseOfStudent;
     mapping(address => uint256) private _studentOwnedNftGraduation;
 
     modifier onlyOwner() {
@@ -80,8 +82,12 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
         view
         returns (NftCompleteCourse[] memory, string[] memory)
     {
+        uint256 studentTokenId = _nftIdentities
+            .getNftOfMemberWithRole(uint256(ROLE.STUDENT), msg.sender)
+            .nftIdentity
+            .tokenId;
         uint256 numberOfNftCompleteCourses = _studentOwnedCompleteCourseNfts[
-            msg.sender
+            studentTokenId
         ].length;
         require(numberOfNftCompleteCourses > 0);
 
@@ -92,7 +98,7 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
 
         for (uint256 idx = 0; idx <= numberOfNftCompleteCourses; ++idx) {
             (nfts[idx], nftURIs[idx]) = getNftCompleteCourse(
-                _studentOwnedCompleteCourseNfts[msg.sender][idx]
+                _studentOwnedCompleteCourseNfts[studentTokenId][idx]
             );
         }
 
@@ -151,9 +157,15 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
     ) public canOperate(uint256(ROLE.TEACHER)) {
         // Require time to update
         uint256 pos = _posOfTokenIdOfNftType[NFT_SCORE_BOARD][scoreBoardId];
+        uint256 nftIdentityTokenId = _nftIdentities
+            .getNftOfMemberWithRole(uint256(ROLE.TEACHER), msg.sender)
+            .nftIdentity
+            .tokenId;
         require(pos > 0);
         require(_allNftScoreBoards[pos - 1].completeAt < block.timestamp);
-        require(_allNftScoreBoards[pos - 1].teacherAddr == msg.sender);
+        require(
+            _allNftScoreBoards[pos - 1].teacherTokenId == nftIdentityTokenId
+        );
         uint256 scoreLength = requireScore.length;
 
         for (uint256 idx = 0; idx < scoreLength; ++idx) {
@@ -219,6 +231,17 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
         _mintNftGraduation(tokenURI);
     }
 
+    function checkCompleteCourse(
+        uint256 courseId,
+        address studentAddr
+    ) public view returns (bool) {
+        uint256 studentTokenId = _nftIdentities
+            .getNftOfMemberWithRole(uint256(ROLE.STUDENT), studentAddr)
+            .nftIdentity
+            .tokenId;
+        return _completedCourseOfStudent[studentTokenId][courseId];
+    }
+
     // (everyone)
 
     // onlyOwner
@@ -252,14 +275,22 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
         uint256 classId,
         string memory tokenURI
     ) private returns (uint256) {
-        require(_posOfStudentInClass[classId][msg.sender] == 0);
-        (NftClass memory classInfo, ) = _nftSchool.getNftClass(classId);
+        Class memory classInfo = _nftSchool.getClassById(classId);
         uint256 tokenId = _mintToken(
-            classInfo.teacherAddr,
+            _nftIdentities.ownerOf(classInfo.teacherTokenId),
             NFT_SCORE_BOARD,
             tokenURI
         );
-        _createNftScoreBoard(tokenId, classId, classInfo, msg.sender);
+        require(_posOfStudentInClass[classId][tokenId] == 0);
+        _createNftScoreBoard(
+            tokenId,
+            classId,
+            classInfo,
+            _nftIdentities
+                .getNftOfMemberWithRole(uint256(ROLE.STUDENT), msg.sender)
+                .nftIdentity
+                .tokenId
+        );
 
         return tokenId;
     }
@@ -267,8 +298,8 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
     function _createNftScoreBoard(
         uint256 tokenId,
         uint256 classId,
-        NftClass memory classInfo,
-        address studentAddr
+        Class memory classInfo,
+        uint256 studentTokenId
     ) private {
         // TODO: position of student in class = 0
         require(_studentsOfClass[classId].length < classInfo.maxSize);
@@ -279,17 +310,18 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
             classInfo.knowledgeBlockId,
             classInfo.credits,
             classInfo.completeAt,
-            studentAddr,
-            classInfo.teacherAddr,
+            studentTokenId,
+            classInfo.teacherTokenId,
             classInfo.requiredScore,
             new uint256[](classInfo.requiredScore.length)
         );
         _allNftScoreBoards.push(nftScoreBoard);
-        _studentsOfClass[classId].push(studentAddr);
+        _studentsOfClass[classId].push(studentTokenId);
         _posOfTokenIdOfNftType[NFT_SCORE_BOARD][tokenId] = _allNftScoreBoards
             .length;
-        _posOfStudentInClass[classId][studentAddr] = _studentsOfClass[classId]
-            .length;
+        _posOfStudentInClass[classId][studentTokenId] = _studentsOfClass[
+            classId
+        ].length;
     }
 
     function _mintNftCompleteCourse(
@@ -302,19 +334,29 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
         NftScoreBoard memory nftScoreBoard = _allNftScoreBoards[
             scoreBoardId - 1
         ];
+        uint256 teacherTokenId = _nftIdentities
+            .getNftOfMemberWithRole(uint256(ROLE.TEACHER), msg.sender)
+            .nftIdentity
+            .tokenId;
         require(scoreBoardPos > 0);
-        require(nftScoreBoard.teacherAddr == msg.sender);
+        require(nftScoreBoard.teacherTokenId == teacherTokenId);
         require(nftScoreBoard.completeAt > block.timestamp);
+        address studentAddr = _nftIdentities.ownerOf(
+            nftScoreBoard.studentTokenId
+        );
         uint256 tokenId = _mintToken(
-            nftScoreBoard.studentAddr,
+            studentAddr,
             NFT_COMPLETE_COURSE,
             tokenURI
         );
         _burn(msg.sender, scoreBoardId, ONE_NFT);
         _createNftCompleteCourse(tokenId, nftScoreBoard);
-        _studentOwnedCompleteCourseNfts[nftScoreBoard.studentAddr].push(
+        _studentOwnedCompleteCourseNfts[nftScoreBoard.studentTokenId].push(
             tokenId
         );
+        _completedCourseOfStudent[nftScoreBoard.studentTokenId][
+            nftScoreBoard.courseId
+        ] = true;
 
         return tokenId;
     }

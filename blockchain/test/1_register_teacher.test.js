@@ -1,8 +1,8 @@
-const { assert } = require('console');
+const assert = require('power-assert');
 const ethers = require('ethers');
+const { ROLES } = require('./testdata/constants');
 const NftIdentities = artifacts.require('NftIdentities');
 
-const ROLES = { TEACHER: 1 };
 const uris = Array(10)
   .fill(' ')
   .map((_, idx) => `http://teacher-info.com/${idx + 1}`);
@@ -36,7 +36,9 @@ contract(`NftIdentities register teacher ${testFuncs}`, (accounts) => {
         const registrationInfos = await _contract.getAllOwnedRegistrationInfos({
           from: teacherAddress,
         });
-        allRegistrationInfos = await _contract.getAllRegistrationInfosByRole(ROLES.TEACHER);
+        allRegistrationInfos = await _contract.getAllRegistrationInfosByRole(
+          ROLES.TEACHER
+        );
         registrationTeacherInfo = registrationInfos.find(
           ({ role }) => parseInt(role) === ROLES.TEACHER
         );
@@ -108,6 +110,7 @@ contract(`NftIdentities register teacher ${testFuncs}`, (accounts) => {
     let nftIdentity;
     let registrationInfo;
     let error;
+    let allMembers;
 
     describe('should approve successful', () => {
       before(async () => {
@@ -121,13 +124,17 @@ contract(`NftIdentities register teacher ${testFuncs}`, (accounts) => {
           from: teacherAddress,
         });
         registrationInfo = registrationInfos.find(
-          ({ role }) => role === ROLES.TEACHER
+          ({ role }) => parseInt(role) === ROLES.TEACHER
         );
 
         const nftIdentities = await _contract.getOwnedNfts({
           from: teacherAddress,
         });
-        nftIdentity = nftIdentities.find(({ role }) => role === ROLES.TEACHER);
+        nftIdentity = nftIdentities.find(
+          ({ role }) => parseInt(role) === ROLES.TEACHER
+        );
+
+        allMembers = await _contract.getAllMembers(ROLES.TEACHER);
       });
 
       it('should has nft identity with teacher role', () => {
@@ -137,6 +144,10 @@ contract(`NftIdentities register teacher ${testFuncs}`, (accounts) => {
       it('should registration be deleted', () => {
         assert(!registrationInfo);
       });
+
+      it('should have 1 member', () => {
+        assert(allMembers.length, 1);
+      })
     });
 
     describe('should approve fail when try to approve no existed registration', () => {
@@ -171,7 +182,10 @@ contract(`NftIdentities register teacher ${testFuncs}`, (accounts) => {
           from: rejectedTeacher,
           value: _registerPrice,
         });
-        await _contract.rejectNftIdentityRegistration(rejectedTeacher, ROLES.TEACHER);
+        await _contract.rejectNftIdentityRegistration(
+          rejectedTeacher,
+          ROLES.TEACHER
+        );
         const registrationInfos = await _contract.getAllOwnedRegistrationInfos({
           from: rejectedTeacher,
         });
@@ -189,7 +203,10 @@ contract(`NftIdentities register teacher ${testFuncs}`, (accounts) => {
       before(async () => {
         error = null;
         try {
-          await _contract.rejectNftIdentityRegistration(rejectedTeacher, ROLES.TEACHER);
+          await _contract.rejectNftIdentityRegistration(
+            rejectedTeacher,
+            ROLES.TEACHER
+          );
         } catch (e) {
           error = e;
         }
