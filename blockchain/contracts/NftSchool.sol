@@ -7,18 +7,7 @@ import "./utils/IdentityGenerator.sol";
 import "./interfaces/INftSchool.sol";
 import "./interfaces/INftIdentities.sol";
 import "./interfaces/INftCertificates.sol";
-import "./interfaces/IScore.sol";
 
-/*
-    Initial year: Requirements + Course Template (time available to update? --> after year end)
-    (Save endCurrentYear) -> Classes -> Register course -> Received Nft Scoreboard
-    Course end: Mint Nft complete course <-- Transfer info from Nft Scoreboard to this
-    Enough course: Exchange nft graduation from nft courses (payable)
-*/
-/*
-    - Initial year
-    - Requirements, course templates, classes
-*/
 contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
     using Counters for Counters.Counter;
 
@@ -26,7 +15,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
     uint256 constant CLASS_ID = 2;
     uint256 constant REGISTERED_TIME_ID = 3;
 
-    uint256 constant NFT_COURSE_REGISTRATION_ID = 1;
+    uint256 constant NFT_COURSE_REGISTRATION_ID = 0;
 
     uint256 public minimumGraduationScore = 500;
 
@@ -34,9 +23,9 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
 
     INftIdentities private _nftIdentities;
     INftCertificates private _nftCertificates;
-    IScore private _scoreContract;
 
     bool public _isInitialize;
+    uint256 public registerClassFee = 0.5 ether;
 
     mapping(uint256 => uint256) private _registeredStartAt;
     mapping(uint256 => uint256) private _registeredEndAt;
@@ -49,43 +38,27 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
     KnowledgeBlock[] private _knowledgeBlocks;
 
     Class[] private _allClasses;
-    mapping(uint256 => uint256) _posOfClasses;
+    mapping(uint256 => uint256) private _posOfClasses;
+
+    NftClassRegistration[] private _allNftClassRegistrations;
+    mapping(uint256 => uint256) private _posOfNftClassRegistrationTokenId;
+    mapping(uint256 => uint256[]) private _registeredClassTokenIdOfStudent; // tokenId => currentRegisterTimeId => courseId
+    mapping(uint256 => mapping(uint256 => uint256))
+        private _registeredCourseOfStudent;
 
     mapping(uint256 => mapping(uint256 => uint256)) _posOfTokenIdOfNftType;
-
-    modifier isInitialized() {
-        require(_isInitialize);
-        _;
-    }
 
     modifier onlyOwner() {
         require(_owner == msg.sender);
         _;
     }
 
-    modifier canOperate(uint256 role) {
-        require(_nftIdentities.isAbleToOperate(msg.sender, role));
-        _;
-    }
-
-    modifier tokenExist(uint256 tokenId) {
-        require(checkTokenExists(tokenId), "Token exists");
-        _;
-    }
-
-    // modifier isStudent() {
-    //     require(_nftIdentities.isRole(msg.sender, uint256(ROLE.STUDENT)));
-    //     _;
-    // }
-
     constructor(
         address nftIdentities,
-        address scoreAddr,
         string[] memory knowledgeBlockNames,
         uint256[] memory knowledgeBlockCredits
     ) ERC1155BaseContract("") {
         _nftIdentities = INftIdentities(nftIdentities);
-        _scoreContract = IScore(scoreAddr);
 
         uint256 knowledgeBlockCount = knowledgeBlockNames.length;
         for (uint256 idx = 0; idx < knowledgeBlockCount; ++idx) {
@@ -104,6 +77,23 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
         _isInitialize = true;
         _nftCertificates = INftCertificates(nftCertificates);
     }
+
+    // Knowledge Block: Start
+    function getAllKnowledgeBlocks()
+        external
+        view
+        returns (KnowledgeBlock[] memory)
+    {
+        return _knowledgeBlocks;
+    }
+
+    function getKnowledgeBlockById(
+        uint256 id
+    ) external view returns (KnowledgeBlock memory) {
+        return _knowledgeBlocks[id - 1];
+    }
+
+    // Knowledge Block: End
 
     // Register time Section: Start
     function updateRegisteredTime(
@@ -139,7 +129,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
 
     function getCourseById(uint256 id) public view returns (Course memory) {
         uint256 pos = _posOfCourses[id];
-        require(pos > 0, "Nft does not exist");
+        require(pos > 0);
 
         return _allCourses[pos - 1];
     }
@@ -150,11 +140,8 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
         uint256 credits,
         string memory uri
     ) public onlyOwner returns (uint256) {
-        require(
-            knowledgeBlockId <= _knowledgeBlocks.length,
-            "Knowledge block doesn't exist"
-        );
-        require(credits > 0, "Credits must be a positive number");
+        require(knowledgeBlockId <= _knowledgeBlocks.length);
+        require(credits > 0);
         require(prevCourseId == 0 || _posOfCourses[prevCourseId] > 0);
         uint256 id = generateNewId(COURSE_ID);
         _allCourses.push(
@@ -178,7 +165,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
     // Class Block: Start
     function getClassById(uint256 id) public view returns (Class memory) {
         uint256 pos = _posOfClasses[id];
-        require(pos > 0, "Class does not exist");
+        require(pos > 0);
 
         return _allClasses[pos - 1];
     }
@@ -194,8 +181,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
     {
         uint256 currentRegisterTimeId = getCurrentId(REGISTERED_TIME_ID);
         require(
-            msg.sender == _owner || checkInRegisterDate(currentRegisterTimeId),
-            "It's not time to register class"
+            msg.sender == _owner || checkInRegisterDate(currentRegisterTimeId)
         );
         return _getClassesByRegisteredTime(currentRegisterTimeId);
     }
@@ -203,7 +189,6 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
     function createClass(
         uint256 courseId,
         uint256 completeAt,
-        uint256[] memory requiredScores,
         uint256 maxSize,
         uint256 teacherTokenId,
         string memory uri
@@ -213,15 +198,8 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
         uint256 nftTeacherRole = _nftIdentities.getTokenType(teacherTokenId);
 
         require(completeAt > _registeredEndAt[currentRegisterTimeId]);
-        require(
-            _registeredStartAt[currentRegisterTimeId] > block.timestamp,
-            "Update registered date before creating class"
-        );
+        require(_registeredEndAt[currentRegisterTimeId] > block.timestamp);
         require(nftTeacherRole == uint256(ROLE.TEACHER));
-        require(
-            _scoreContract.checkValidScores(requiredScores),
-            "Required scores are not valid"
-        );
         uint256 id = generateNewId(CLASS_ID);
         _allClasses.push(
             Class(
@@ -233,7 +211,6 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
                 _registeredStartAt[currentRegisterTimeId],
                 _registeredEndAt[currentRegisterTimeId],
                 completeAt,
-                requiredScores,
                 maxSize,
                 teacherTokenId,
                 uri
@@ -263,44 +240,92 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
     // Class Block: End
 
     // Register class block: start
-    // function registerClass(uint256 classId) public payable isStudent {
-    //     // Require complete previous class
-    //     Class memory class = getClassById(classId);
-    //     require(
-    //         class.registeredStartAt >= block.timestamp &&
-    //             class.registeredEndAt <= block.timestamp
-    //     );
-    //     require(
-    //         class.prevCourseId == 0 ||
-    //             _nftCertificates.checkCompleteCourse(
-    //                 class.prevCourseId,
-    //                 msg.sender
-    //             )
-    //     );
-    // }
+    function getRegisteredClasses()
+        public
+        view
+        returns (NftClassRegistrationResponse[] memory)
+    {
+        NftIdentityResponse memory nftIdentityResponse = _nftIdentities
+            .getNftOfMemberWithRole(uint256(ROLE.STUDENT), msg.sender);
+        uint256 studentTokenId = nftIdentityResponse.nftIdentity.tokenId;
+        uint256[]
+            memory nftClassRegistrationTokenIds = _registeredClassTokenIdOfStudent[
+                studentTokenId
+            ];
+        uint256 count = nftClassRegistrationTokenIds.length;
+
+        NftClassRegistrationResponse[]
+            memory nftClassRegistrationResponses = new NftClassRegistrationResponse[](
+                count
+            );
+
+        for (uint256 idx = 0; idx < count; ++idx) {
+            NftClassRegistration memory nftClassRegistration = getNftClassRegistration(nftClassRegistrationTokenIds[idx]);
+            
+            nftClassRegistrationResponses[idx] = NftClassRegistrationResponse(
+                nftClassRegistration,
+                getClassById(nftClassRegistration.classId),
+                uri(nftClassRegistration.tokenId)
+            );
+        }
+
+        return nftClassRegistrationResponses;
+    }
+
+    function getNftClassRegistration(uint256 tokenId) public view returns (NftClassRegistration memory) {
+        uint256 posOfNft = _posOfNftClassRegistrationTokenId[tokenId];
+        require(posOfNft > 0);
+
+        return _allNftClassRegistrations[posOfNft - 1];
+    }
+
+    function registerClass(uint256 classId, string memory uri) public payable {
+        NftIdentityResponse memory nftIdentityResponse = _nftIdentities
+            .getNftOfMemberWithRole(uint256(ROLE.STUDENT), msg.sender);
+        uint256 studentTokenId = nftIdentityResponse.nftIdentity.tokenId;
+        Class memory class = getClassById(classId);
+
+        require(!nftIdentityResponse.isExpired);
+        require(block.timestamp >= class.registeredStartAt);
+        require(block.timestamp <= class.registeredEndAt);
+        require(
+            class.prevCourseId == 0 ||
+                _nftCertificates.checkCompleteCourse(
+                    class.prevCourseId,
+                    msg.sender
+                )
+        );
+        require(
+            _registeredCourseOfStudent[studentTokenId][class.courseId] == 0
+        );
+        require(msg.value == registerClassFee);
+        uint256 tokenId = _mintToken(
+            msg.sender,
+            NFT_COURSE_REGISTRATION_ID,
+            uri
+        );
+        _allNftClassRegistrations.push(
+            NftClassRegistration(tokenId, classId, studentTokenId)
+        );
+        _posOfNftClassRegistrationTokenId[tokenId] = _allNftClassRegistrations
+            .length;
+        _registeredClassTokenIdOfStudent[studentTokenId].push(tokenId);
+        _registeredCourseOfStudent[studentTokenId][class.courseId] = tokenId;
+    }
 
     // Register class block: end
 
-    // Knowledge Block: Start
-    function getAllKnowledgeBlocks()
-        external
-        view
-        returns (KnowledgeBlock[] memory)
-    {
-        return _knowledgeBlocks;
-    }
+    // Update score and grant nft
+    function grantNftCompleteCourse(
+        uint256 nftRegistrationClassId,
+        string memory tokenURI
+    ) public returns (uint256) {
+        require(_ownerOfNft[NFT_COURSE_REGISTRATION_ID][nftRegistrationClassId] == msg.sender);
+        NftClassRegistration memory nftRegistrationClass = getNftClassRegistration(nftRegistrationClassId);
+        Class memory class = getClassById(nftRegistrationClass.classId);
+        // return _nftCertificates.mintNftCompleteCourse(tokenURI, class.id, class.courseId);
 
-    function getKnowledgeBlockById(
-        uint256 id
-    ) external view returns (KnowledgeBlock memory) {
-        return _knowledgeBlocks[id - 1];
-    }
-
-    // Knowledge Block: End
-    function checkTokenExists(uint256 tokenId) public view returns (bool) {
-        uint256 nftType = _getNftType(tokenId);
-        uint256 pos = _posOfTokenIdOfNftType[nftType][tokenId];
-        return pos > 0;
+        return nftRegistrationClassId;
     }
 
     function checkTokenOfTypeExists(

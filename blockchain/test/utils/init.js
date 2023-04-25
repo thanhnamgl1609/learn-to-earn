@@ -1,19 +1,44 @@
-const { teacherInfoURLs, registerPrice } = require('../testdata/common');
+const { getUnixTime, dateAdd } = require('.');
+const {
+  teacherInfoURLs,
+  registerPrice,
+  studentInfoURLs,
+} = require('../testdata/common');
 const { ROLES } = require('../testdata/constants');
 
-exports.initTeacher = async (nftIdentityContract, accounts) => {
-  await nftIdentityContract.registerNftIdentity(
-    ROLES.TEACHER,
-    teacherInfoURLs[1],
-    {
-      from: accounts[1],
-      value: registerPrice,
-    }
+exports.initStudent = async (nftIdentityContract, accounts) =>
+  Promise.all(
+    accounts.map((account, idx) =>
+      this.initByRole(
+        nftIdentityContract,
+        account,
+        ROLES.STUDENT,
+        studentInfoURLs[idx]
+      )
+    )
   );
+
+exports.initTeacher = async (nftIdentityContract, accounts) =>
+  Promise.all(
+    accounts.map((account, idx) =>
+      this.initByRole(
+        nftIdentityContract,
+        account,
+        ROLES.TEACHER,
+        teacherInfoURLs[idx]
+      )
+    )
+  );
+
+exports.initByRole = async (nftIdentityContract, account, role, url) => {
+  await nftIdentityContract.registerNftIdentity(role, url, {
+    from: account,
+    value: registerPrice,
+  });
   await nftIdentityContract.grantNftIdentity(
-    accounts[1],
-    ROLES.TEACHER,
-    1711640060,
-    teacherInfoURLs[1]
+    account,
+    role,
+    getUnixTime(dateAdd(new Date(), 1, 'y')),
+    url
   );
 };

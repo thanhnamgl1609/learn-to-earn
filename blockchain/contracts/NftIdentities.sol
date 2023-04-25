@@ -241,6 +241,15 @@ contract NftIdentities is INftIdentities, ERC1155URIStorage, Registration {
         return getNftOfTokenId(tokenId);
     }
 
+    // Checker Section: Start
+    function getNftTokenIdOfRole(
+        address checkedAddr,
+        uint256 role
+    ) public view returns (uint256) {
+        return _mappingRoleToTokenIdOfOwner[checkedAddr][role];
+    }
+    // Checker Section: End
+
     // Used for members: Section end
     function _beforeTokenTransfer(
         address operator,

@@ -19,16 +19,13 @@ contract ERC1155BaseContract is ERC1155URIStorage {
     }
 
     mapping(uint256 => Counters.Counter) internal _maxTokenIdIndexOfRole; // type => max token id
-    mapping(string => bool) internal _usedTokenURI;
 
-    mapping(uint256 => address) internal _ownerOfNft;
+    mapping(uint256 => mapping(uint256 => address)) internal _ownerOfNft;
 
     function _mintToken(address tokenOwner, uint256 nftType, string memory tokenURI) internal returns (uint256) { 
-        require(!_usedTokenURI[tokenURI], "URI has been used");
         uint256 tokenId = _generateNewTokenId(nftType);
         _mint(tokenOwner, tokenId, ONE_NFT, msg.data);
         _setURI(tokenId, tokenURI);
-        _usedTokenURI[tokenURI] = true;
 
         return tokenId;
     }
@@ -42,5 +39,42 @@ contract ERC1155BaseContract is ERC1155URIStorage {
         uint256 tokenId = _maxTokenIdIndexOfRole[nftType].current();
 
         return (nftType << INDEX_BITS) | tokenId;
+    }
+
+    function _beforeTokenTransfer(
+        address operator,
+        address from,
+        address to,
+        uint256[] memory ids,
+        uint256[] memory amounts,
+        bytes memory data
+    ) internal virtual override {
+        super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
+        uint256 numberOfTokens = ids.length;
+
+        if (from == address(0)) {
+            // mint token
+            for (uint256 idx = 0; idx < numberOfTokens; ++idx) {
+                uint256 nftType = _getNftType(ids[idx]);
+                _ownerOfNft[nftType][ids[idx]] = to;
+            }
+            return;
+        }
+
+        if (to == address(0)) {
+            // burn token
+            for (uint256 idx = 0; idx <= numberOfTokens; ++idx) {
+                uint256 nftType = _getNftType(ids[idx]);
+                delete _ownerOfNft[nftType][ids[idx]];
+            }
+            return;
+        }
+
+        if (from != address(0) && to != address(0)) {
+            for (uint256 idx = 0; idx <= numberOfTokens; ++idx) {
+                uint256 nftType = _getNftType(ids[idx]);
+                _ownerOfNft[nftType][ids[idx]] = to;
+            }
+        }
     }
 }

@@ -22,5 +22,8 @@ interface INftIdentities is IConstant {
 
     function getTokenType(uint256 tokenId) external pure returns (uint256);
 
-    // function isRole(address checkedAddr, uint256 role) external view returns (bool);
+    function getNftTokenIdOfRole(
+        address checkedAddr,
+        uint256 role
+    ) external view returns (uint256);
 }

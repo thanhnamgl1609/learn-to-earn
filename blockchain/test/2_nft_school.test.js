@@ -1,14 +1,21 @@
 const assert = require('power-assert');
-const ethers = require('ethers');
 const NftSchool = artifacts.require('NftSchool');
 const NftIdentities = artifacts.require('NftIdentities');
-const { getUnixTime, dateAdd } = require('./utils');
+const { getUnixTime, dateAdd, sleep } = require('./utils');
 
-const { KNOWLEDGE_BLOCKS, SCORE_TYPES } = require('./testdata/constants');
+const { registerClassFee, classRegistrationInfoURLs } = require('./testdata/common');
+const { KNOWLEDGE_BLOCKS } = require('./testdata/constants');
 const { courseInfoURIs, classInfos } = require('./testdata/2_nft_school');
-const { initTeacher } = require('./utils/init');
+const { initTeacher, initStudent } = require('./utils/init');
 
-const testFuncs = [].join(', ');
+const testFuncs = [
+  'createCourse',
+  'getAllCourses',
+  'updateRegisteredTime',
+  'createClass',
+  'getRegisterTime',
+  'getCurrentRegisteredClasses',
+].join(', ');
 
 contract(`NftSchool ${testFuncs}`, (accounts) => {
   let _nftSchoolContract;
@@ -29,8 +36,8 @@ contract(`NftSchool ${testFuncs}`, (accounts) => {
   ];
 
   const registeredTime = {
-    start: dateAdd(new Date(), 1, 'month'),
-    end: dateAdd(dateAdd(new Date(), 1, 'month'), 10, 'd'),
+    start: dateAdd(new Date(), 1, 's'),
+    end: dateAdd(dateAdd(new Date(), 5, 's'), 10, 'd'),
   };
   const registeredTimeUnix = {
     start: getUnixTime(registeredTime.start),
@@ -43,21 +50,19 @@ contract(`NftSchool ${testFuncs}`, (accounts) => {
       completeAt: getUnixTime(
         dateAdd(dateAdd(registeredTime.end, 10, 'd'), 2, 'm')
       ),
-      requiredScores: [
-        SCORE_TYPES.Midterm.id,
-        SCORE_TYPES.Practice.id,
-        SCORE_TYPES.Final.id,
-      ],
       maxSize: 40,
       teacherTokenId: 65537,
       uri: classInfos[0],
+      registeredStartAt: registeredTimeUnix.start,
+      registeredEndAt: registeredTimeUnix.end,
     },
   ];
 
   before(async () => {
     _nftSchoolContract = await NftSchool.deployed();
     _nftIdentitiesContract = await NftIdentities.deployed();
-    await initTeacher(_nftIdentitiesContract, accounts);
+    await initTeacher(_nftIdentitiesContract, [accounts[1], accounts[2]]);
+    await initStudent(_nftIdentitiesContract, [accounts[3], accounts[4]]);
   });
 
   describe('test NftSchool.createCourse', () => {
@@ -207,7 +212,6 @@ contract(`NftSchool ${testFuncs}`, (accounts) => {
           await _nftSchoolContract.createClass(
             classInfo[0].courseId,
             classInfo[0].completeAt,
-            classInfo[0].requiredScores,
             classInfo[0].maxSize,
             classInfo[0].teacherTokenId,
             classInfo[0].uri
@@ -261,7 +265,6 @@ contract(`NftSchool ${testFuncs}`, (accounts) => {
           await _nftSchoolContract.createClass(
             classInfo[0].courseId,
             classInfo[0].completeAt,
-            classInfo[0].requiredScores,
             classInfo[0].maxSize,
             classInfo[0].teacherTokenId,
             classInfo[0].uri,
@@ -286,7 +289,6 @@ contract(`NftSchool ${testFuncs}`, (accounts) => {
           await _nftSchoolContract.createClass(
             1000,
             classInfo[0].completeAt,
-            classInfo[0].requiredScores,
             classInfo[0].maxSize,
             classInfo[0].teacherTokenId,
             classInfo[0].uri
@@ -308,31 +310,8 @@ contract(`NftSchool ${testFuncs}`, (accounts) => {
           await _nftSchoolContract.createClass(
             classInfo[0].courseId,
             getUnixTime(new Date()),
-            classInfo[0].requiredScores,
             classInfo[0].maxSize,
             classInfo[0].teacherTokenId,
-            classInfo[0].uri
-          );
-        } catch (e) {
-          err = e;
-        }
-      });
-
-      it('should throw error', () => {
-        assert(!!err);
-      });
-    });
-
-    describe('cannot create class if invalid required score', () => {
-      let err;
-      before(async () => {
-        try {
-          await _nftSchoolContract.createClass(
-            classInfo[0].courseId,
-            classInfo[0].completeAt,
-            [1000],
-            classInfo[0].maxSize,
-            1000,
             classInfo[0].uri
           );
         } catch (e) {
@@ -352,7 +331,6 @@ contract(`NftSchool ${testFuncs}`, (accounts) => {
           await _nftSchoolContract.createClass(
             classInfo[0].courseId,
             classInfo[0].completeAt,
-            classInfo[0].requiredScores,
             classInfo[0].maxSize,
             1000,
             classInfo[0].uri
@@ -375,7 +353,6 @@ contract(`NftSchool ${testFuncs}`, (accounts) => {
           await _nftSchoolContract.createClass(
             classInfo[0].courseId,
             classInfo[0].completeAt,
-            classInfo[0].requiredScores,
             classInfo[0].maxSize,
             classInfo[0].teacherTokenId,
             classInfo[0].uri
@@ -396,15 +373,98 @@ contract(`NftSchool ${testFuncs}`, (accounts) => {
         const actual = {
           courseId: parseInt(actualClass.courseId),
           completeAt: parseInt(actualClass.completeAt),
-          requiredScores: actualClass.requiredScore.map((scoreType) =>
-            parseInt(scoreType)
-          ),
           maxSize: parseInt(actualClass.maxSize),
           teacherTokenId: parseInt(actualClass.teacherTokenId),
           uri: actualClass.uri,
+          registeredStartAt: parseInt(actualClass.registeredStartAt),
+          registeredEndAt: parseInt(actualClass.registeredEndAt),
         };
         assert.deepEqual(actual, classInfo[0]);
+        classInfo[0].id = actualClass.id;
       });
+    });
+  });
+
+  describe('test NftSchool.registerClass', () => {
+    describe('can register class', () => {
+      let error;
+
+      before(async () => {
+        try {
+          await sleep(async () => {
+            await _nftSchoolContract.registerClass(
+              classInfo[0].id,
+              classRegistrationInfoURLs[0],
+              {
+                from: accounts[3],
+                value: registerClassFee,
+              }
+            );
+          }, 5000);
+        } catch (e) {
+          error = e;
+        }
+      });
+
+      it('should not throw error', () => {
+        assert(!error);
+      });
+    });
+
+    describe('cannot register invalid class', () => {
+      let error;
+
+      before(async () => {
+        try {
+          await _nftSchoolContract.registerClass(1000, classRegistrationInfoURLs[0], {
+            from: accounts[3],
+            value: registerClassFee,
+          });
+        } catch (e) {
+          error = e;
+        }
+      });
+
+      it('should throw error', () => {
+        assert(!!error);
+      });
+    });
+
+    describe('cannot register the same course again', () => {
+      let error;
+
+      before(async () => {
+        try {
+          await _nftSchoolContract.registerClass(
+            classInfo[0].id,
+            classRegistrationInfoURLs[0],
+            {
+              from: accounts[3],
+              value: registerClassFee,
+            }
+          );
+        } catch (e) {
+          error = e;
+        }
+      });
+
+      it('should throw error', () => {
+        assert(!!error);
+      });
+    });
+  });
+
+  describe('test NftSchool.getRegisteredClasses', () => {
+    let result;
+
+    before(async () => {
+      result = await _nftSchoolContract.getRegisteredClasses({
+        from: accounts[3],
+      });
+    });
+
+    it('should returns 1 class', () => {
+      assert(result.length === 1);
     });
   });
 });

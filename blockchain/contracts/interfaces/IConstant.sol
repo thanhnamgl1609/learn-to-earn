@@ -46,7 +46,6 @@ interface IConstant {
         uint256 registeredStartAt;
         uint256 registeredEndAt;
         uint256 completeAt; // end time - editable
-        uint256[] requiredScore; // 1, 2, 3, 4, 5 - some score (like pracice can be unused)
         uint256 maxSize;
         uint256 teacherTokenId;
         string uri;
@@ -61,23 +60,22 @@ interface IConstant {
         */
     }
 
-    struct NftScoreBoard {
+    struct NftClassRegistration {
         uint256 tokenId;
         uint256 classId;
-        uint256 courseId;
-        uint256 knowledgeBlockId;
-        uint256 credits;
-        uint256 completeAt; // end time - editable
         uint256 studentTokenId;
-        uint256 teacherTokenId;
-        uint256[] requiredScore; // accumulate all score and divide by length to get avarage
-        uint256[] scores; // type => score value (GK: 5)
         /*
             Metadata:
                 - Student info (name + tokenId)
                 - Required Scores (GK, CK, ...)
                 - Class info
         */
+    }
+
+    struct NftClassRegistrationResponse {
+        NftClassRegistration nftClassRegistration;
+        Class class;
+        string tokenURI;
     }
 
     struct NftCompleteCourse {

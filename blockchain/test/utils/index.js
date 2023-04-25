@@ -19,7 +19,15 @@ exports.dateAdd = (date, interval, unit) => {
     case 'years':
       result.setYear(result.getFullYear() + interval);
       break;
+    case 's':
+    case 'second':
+    case 'seconds':
+      result.setSeconds(result.getSeconds() + interval);
+      break;
   }
 
   return result;
 };
+
+exports.sleep = (cb, wait) =>
+  new Promise((resolve) => setTimeout(resolve, wait)).then(cb);
