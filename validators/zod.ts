@@ -14,7 +14,8 @@ const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
 
 z.setErrorMap(customErrorMap);
 
-export const getError = (error: z.ZodError) =>
-  error.issues.map((issue) => issue.message).join(' - ');
-
+export const getError = (error: Error) =>
+  error instanceof z.ZodError
+    ? error.issues.map((issue) => issue.message).join(' - ')
+    : error.message;
 export default z;

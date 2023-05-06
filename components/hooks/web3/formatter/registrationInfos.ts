@@ -2,26 +2,45 @@ import {
   RegistrationinfoResponse,
   RegistrationinforesponseResponse,
 } from '@_types/contracts/NftIdentities';
-import { RegistrationInfo, RegistrationInfoMeta } from '@_types/nftIdentity';
-import request from 'utils/request';
+import { RegistrationInfo } from '@_types/nftIdentity';
+import { logger, request } from 'utils';
 import Api from 'config/api.json';
+import { ENV_CONST } from '@config/env-const';
+
+const defaultMeta = {
+  fullName: 'ERORR',
+  profileImage: `${ENV_CONST.IMAGE_PREFIX}/default_avatar.png`,
+  documentURIs: [],
+};
 
 export const formatRegistrationInfo = async (
-  { applicant, documentURI }: RegistrationinfoResponse,
-  role: number
+  { applicant, documentURI }: Partial<RegistrationinfoResponse>,
+  role: number,
 ): Promise<RegistrationInfo> => {
-  const { data: meta } = await request.get(Api.proxy, {
-    params: {
-      l: documentURI,
-    },
-  });
+  try {
+    const { data: meta } = await request.get(Api.proxy, {
+      params: {
+        l: documentURI,
+      },
+    });
 
-  return {
-    applicant,
-    documentURI,
-    meta,
-    role,
-  };
+    return {
+      applicant,
+      documentURI,
+      meta,
+      role,
+      isUploading: false,
+    };
+  } catch (error) {
+    logger(error);
+    return {
+      applicant,
+      documentURI,
+      meta: defaultMeta,
+      role,
+      isUploading: true,
+    };
+  }
 };
 
 export const formatRegistrationInfos = async (
@@ -36,7 +55,7 @@ export const formatRegistrationInfoResponse = (
     {
       applicant: raw.detail.applicant,
       documentURI: raw.detail.documentURI,
-    } as RegistrationinfoResponse,
+    },
     raw.role.toNumber()
   );
 

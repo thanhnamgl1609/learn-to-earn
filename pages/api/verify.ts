@@ -10,6 +10,7 @@ import {
   nftIdentitiesContractAddress,
   nftSchoolsContractAddress,
   nftCertificatesContractAddress,
+  pinataJWTKey,
 } from './utils';
 import addressCheckMiddleware from './middleware/address-check';
 
@@ -38,8 +39,7 @@ export default withSession(
           },
           {
             headers: {
-              pinata_api_key: pinataApiKey,
-              pinata_secret_api_key: pinataSecretApiKey,
+              Authorization: pinataJWTKey,
             },
           }
         );

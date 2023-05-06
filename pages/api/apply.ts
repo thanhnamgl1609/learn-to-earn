@@ -10,6 +10,7 @@ import { withSession, pinataApiKey, pinataSecretApiKey } from './utils';
 import { APPLY_VALIDATOR } from '@validators/schemas';
 import { TeacherMeta } from '@_types/nftIdentity';
 import request from 'utils/request';
+import { logger } from 'utils';
 
 const { ROLES } = CONST;
 const { METHOD } = REQUEST_CONST;
@@ -30,9 +31,7 @@ export default withSession(
           case ROLES.TEACHER:
           case ROLES.STUDENT:
             try {
-              pinataContent = APPLY_VALIDATOR.parse(
-                data
-              ) as TeacherMeta;
+              pinataContent = APPLY_VALIDATOR.parse(data) as TeacherMeta;
             } catch {
               return res.status(400).json({ message: 'data are missing' });
             }
@@ -59,7 +58,7 @@ export default withSession(
 
         return res.status(200).json(jsonRes.data);
       } catch (e) {
-        console.log('🚀 ~ file: apply.ts:59 ~ e:', e);
+        logger(e);
         return res.status(422).json({ message: 'cannot create json' });
       }
     }

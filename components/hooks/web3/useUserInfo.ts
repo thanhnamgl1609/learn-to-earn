@@ -14,15 +14,16 @@ type SWRResponse = {
 };
 type UseUserInfoResponse = {};
 
-type RoleHookFactory = CryptoHookFactory<SWRResponse, UseUserInfoResponse>;
+type UserInfoHookFactory = CryptoHookFactory<SWRResponse, UseUserInfoResponse>;
 
-export type UseUserInfoHook = ReturnType<RoleHookFactory>;
+export type UseUserInfoHook = ReturnType<UserInfoHookFactory>;
 
-export const hookFactory: RoleHookFactory =
+export const hookFactory: UserInfoHookFactory =
   ({ contracts }) =>
   () => {
+    const key = 'web3/useUserInfo';
     const { data, ...swr } = useSWR(
-      contracts ? 'web3/useUserInfo' : null,
+      contracts ? key : null,
       async () => {
         const isOwner = await contracts!.nftIdentities.isOwner();
 
@@ -60,5 +61,6 @@ export const hookFactory: RoleHookFactory =
     return {
       ...swr,
       data,
+      key,
     };
   };

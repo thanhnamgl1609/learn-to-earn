@@ -255,7 +255,7 @@ const AppLoading: NextPage = () => {
           onSelect={onSelectRole}
         />
       )}
-      {otherRoles.length && (
+      {otherRoles.length > 0 && (
         <SignUpSection roles={otherRoles} onSelect={onSelectRole} />
       )}
     </div>

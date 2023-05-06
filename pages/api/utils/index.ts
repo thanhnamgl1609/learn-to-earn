@@ -24,6 +24,7 @@ export const { address: nftCertificatesContractAddress } =
 
 export const pinataApiKey = process.env.PINATA_API_KEY;
 export const pinataSecretApiKey = process.env.PINATA_SECRET_API_KEY;
+export const pinataJWTKey = process.env.PINATA_JWT_KEY;
 
 export function withSession(handler: any) {
   return withIronSession(handler, {

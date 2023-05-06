@@ -1,7 +1,7 @@
-import ENV_CONST from './env-const.json';
+import _ENV_CONST from './env-const.json';
 
 const env = process.env.NODE_ENV || 'development';
 
-const CONST = ENV_CONST[env];
+type IEnvConst = typeof _ENV_CONST;
 
-export default CONST;
+export const ENV_CONST: IEnvConst[keyof IEnvConst] = _ENV_CONST[env];

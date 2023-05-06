@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 
 import { createAppAsyncThunk, RootState } from '@store';
-import { getPinataLink } from 'utils/pinataHelper';
+import { getIpfsLink } from 'utils/pinataHelper';
 import request from 'utils/request';
 import { loading, unloading } from '@store/appSlice';
 
@@ -32,7 +32,7 @@ export const uploadData = createAppAsyncThunk<
       error: 'Metadata upload error',
     });
 
-    return getPinataLink(res.data);
+    return getIpfsLink(res.data);
   } catch {
     dispatch(unloading());
   }
@@ -42,30 +42,18 @@ export const uploadFileData = createAppAsyncThunk<
   string,
   {
     file: File;
-    getSignedData: (account: string) => Promise<string>;
   },
   {
     state: RootState;
   }
 >('user/uploadData', async (payload, thunkAPI) => {
-  const { file, getSignedData } = payload;
-  const {
-    user: { account },
-  } = thunkAPI.getState();
+  const { file } = payload;
 
-  const buffer = await file.arrayBuffer();
-  const bytes = new Uint8Array(buffer);
+  const formData = new FormData();
+  formData.append('media', file);
 
   try {
-    const signature = await getSignedData(account);
-
-    const promise = request.post('/api/verify-image', {
-      address: account,
-      signature,
-      bytes,
-      contentType: file.type,
-      fileName: file.name.replace(/\.[^/.]+$/, ''),
-    });
+    const promise = request.post('/api/verify-image', formData);
 
     const res = await toast.promise(promise, {
       pending: 'Uploading image',
@@ -73,7 +61,7 @@ export const uploadFileData = createAppAsyncThunk<
       error: 'Image upload error',
     });
 
-    return getPinataLink(res.data);
+    return res.data?.url || '';
   } catch (e) {
     console.error(e);
   }

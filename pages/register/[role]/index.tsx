@@ -92,6 +92,7 @@ const RegisterRole = () => {
         />
         <InputMultipleImages
           id="document-uri"
+          label="Your Identity Images"
           name={FORM_FIELDS.DOCUMENT_URIS}
           images={nftMeta.documentURIs}
           onRemove={handleRemoveImage}

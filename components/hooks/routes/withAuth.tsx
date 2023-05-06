@@ -14,9 +14,7 @@ const withAuth =
   (Component: NextComponentType<NextPageContext, any, any>) =>
   (props: any): JSX.Element => {
     const router = useRouter();
-    console.log("🚀 ~ file: withAuth.tsx:17 ~ router:", router.pathname)
     const { roleType: role } = useAppSelector(selectUser);
-    console.log("🚀 ~ file: withAuth.tsx:19 ~ role:", role)
 
     const currentRoute = useMemo(() => {
       const pathname = router.pathname.replace(

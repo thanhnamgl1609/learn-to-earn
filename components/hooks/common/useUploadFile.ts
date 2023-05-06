@@ -8,7 +8,6 @@ import { useUtilities } from '@hooks/web3';
 import { loading, unloading } from '@store/appSlice';
 
 export const useUploadFile = () => {
-  const { getSignedData } = useUtilities();
   const { account } = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
@@ -28,7 +27,7 @@ export const useUploadFile = () => {
       try {
         dispatch(loading());
         const link = await dispatch(
-          uploadFileData({ file: files[0], getSignedData })
+          uploadFileData({ file: files[0] })
         ).unwrap();
 
         await callback?.(link);

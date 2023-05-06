@@ -6,7 +6,6 @@ import useSWR from 'swr';
 
 type UseAccountResponse = {
   connect: () => void;
-  // getSignedData: () => Promise<string>;
   isLoading: boolean;
   isInstalled: boolean;
 };

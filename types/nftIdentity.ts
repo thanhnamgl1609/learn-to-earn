@@ -6,12 +6,15 @@ export type RegistrationInfoRaw = {
 export type RegistrationInfo = {
   role: number;
   meta: RegistrationInfoMeta;
+  isUploading?: boolean;
 } & RegistrationInfoRaw;
 
-export type RegistrationInfoMeta = TeacherMeta; // | EducationManagerMeta
+export type RegistrationInfoMeta = TeacherMeta | StudentMeta; // | EducationManagerMeta
 
 export type StudentMeta = {
   fullName: string;
+  profileImage: string;
+  documentURIs: string[];
 };
 
 export type TeacherMeta = {

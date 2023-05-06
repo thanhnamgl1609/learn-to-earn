@@ -6,6 +6,7 @@ import Routes from '@config/routes.json';
 import { BaseLayout } from '@templates';
 import { Box } from '@molecules';
 import { Heading } from '@atoms';
+import { BoxLinks } from '@organisms';
 
 const { ROLES } = CONST;
 
@@ -17,33 +18,55 @@ const PageManage: NextPage = () => {
     registrationList: { data: studentRegistrationInfos },
   } = useRegistrationList({ role: ROLES.STUDENT });
 
+  const boxes = [
+    {
+      header: 'ĐƠN ĐĂNG KÝ',
+      links: [
+        {
+          url: `${Routes.manageRegistration.name}?r=${[ROLES.TEACHER]}`,
+          label: 'Giảng viên',
+          badge: teacherRegistrationInfos?.length,
+        },
+        {
+          url: `${Routes.manageRegistration.name}?r=${[ROLES.STUDENT]}`,
+          label: 'Sinh viên',
+          badge: studentRegistrationInfos?.length,
+        },
+      ],
+    },
+    {
+      header: 'MÔN HỌC',
+      links: [
+        {
+          url: Routes.createCourse.name,
+          label: 'Tạo môn học',
+        },
+        {
+          url: Routes.courses.name,
+          label: 'Danh sách môn học',
+        },
+      ],
+    },
+    {
+      header: 'LỚP HỌC',
+      links: [
+        {
+          url: Routes.createClass.name,
+          label: 'Tạo lớp học',
+        },
+        {
+          url: Routes.classes.name,
+          label: 'Danh sách lớp học',
+        },
+      ],
+    },
+  ];
+
   return (
     <BaseLayout>
-      <Box className="px-8 py-6">
-        <Heading className="text-indigo-900">ĐƠN ĐĂNG KÝ</Heading>
-
-        <div className="mt-4 space-y-6 md:space-y-0 md:space-x-6">
-          <Link
-            className="relative inline-block bg-gray-500 text-white border rounded p-4 hover:opacity-80 active:opacity-60"
-            href={`${Routes.manageRegistration.name}?r=${[ROLES.TEACHER]}`}
-          >
-            Giảng viên
-            <span className="absolute top-0 right-0 rounded-[50%] translate-x-[50%] translate-y-[-50%] bg-red-600 px-3 py-1">
-              {teacherRegistrationInfos?.length ?? 0}
-            </span>
-          </Link>
-
-          <Link
-            className="relative inline-block bg-gray-500 text-white border rounded p-4 hover:opacity-80 active:opacity-60"
-            href={`${Routes.manageRegistration.name}?r=${[ROLES.STUDENT]}`}
-          >
-            Sinh viên
-            <span className="absolute top-0 right-0 rounded-[50%] translate-x-[50%] translate-y-[-50%] bg-red-600 px-3 py-1">
-              {studentRegistrationInfos?.length ?? 0}
-            </span>
-          </Link>
-        </div>
-      </Box>
+      {boxes.map((box, index) => (
+        <BoxLinks box={box} key={index} />
+      ))}
     </BaseLayout>
   );
 };

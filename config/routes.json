@@ -11,5 +11,11 @@
   "teacherApplication": { "name": "/teacher/application" },
   "teacherApplicationDetail": { "name": "/teacher/application/:id" },
   "registerStudent": { "name": "/register-student" },
-  "applicationDetail": { "name": "/application/detail" }
+  "applicationDetail": { "name": "/application/detail" },
+  "courses": { "name": "course" },
+  "courseDetail": { "name": "course/:id" },
+  "createCourse": { "name": "course/create" },
+  "classes": { "name": "classes" },
+  "classDetail": { "name": "class/:id" },
+  "createClass": { "name": "class/create" }
 }
