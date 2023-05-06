@@ -1,4 +1,5 @@
 import { useHooks } from '@providers/web3';
+import { UseCourseDetailParams } from './useCourseDetail';
 import { UseRegistrationListParams } from './useRegistrationList';
 
 export const useAccount = () => {
@@ -37,22 +38,36 @@ export const useRegistrationList = (params: UseRegistrationListParams) => {
   };
 };
 
-export const useManagement = () => {
-  const { useManagement } = useHooks();
-  const actions = useManagement();
-
-  return actions;
-};
-
 export const useUtilities = () => {
   const { useUtilities } = useHooks();
 
   return useUtilities();
-}
+};
 
 export const useRegistrationActions = () => {
   const { useRegistrationActions } = useHooks();
   const actions = useRegistrationActions();
 
   return actions;
-}
+};
+
+export const useSchoolActions = () => {
+  const { useSchoolActions } = useHooks();
+  const actions = useSchoolActions();
+
+  return actions;
+};
+
+export const useCourseList = () => {
+  const { useCourseList } = useHooks();
+  const courseList = useCourseList();
+
+  return { courseList };
+};
+
+export const useCourseDetail = (params: UseCourseDetailParams) => {
+  const { useCourseDetail } = useHooks();
+  const courseDetail = useCourseDetail(params);
+
+  return { courseDetail };
+};

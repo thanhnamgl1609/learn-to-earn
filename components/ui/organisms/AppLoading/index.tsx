@@ -170,10 +170,11 @@ const AppLoading: NextPage = () => {
     };
 
   useEffect(() => {
-    if (userInfoData) {
+    if (userInfoData && account) {
       const updatedUser = userInfoData.isOwner
         ? {
             ...userInfoData,
+            account: account?.data,
             role: ROLES.COUNCIL,
             roleType: ROLES.COUNCIL,
           }
@@ -182,7 +183,7 @@ const AppLoading: NextPage = () => {
 
       dispatch(updateUser(updatedUser));
     }
-  }, [userInfoData]);
+  }, [userInfoData, account]);
 
   useEffect(() => {
     if (router.pathname !== '/') {

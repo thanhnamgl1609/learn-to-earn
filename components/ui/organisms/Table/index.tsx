@@ -16,11 +16,18 @@ type Props = {
     name: string;
     custom?: FC<CustomProp>;
   }[];
+  autoOrderId?: boolean;
   onRowClick?: (idx: number) => void;
 };
 
 const Table: FC<PropsWithChildren<Props>> = (props) => {
-  const { title, data, headers, onRowClick = (idx: number) => {} } = props;
+  const {
+    autoOrderId,
+    title,
+    data,
+    headers,
+    onRowClick = (idx: number) => {},
+  } = props;
 
   const _onRowClick = useCallback((idx: number) => () => onRowClick(idx), []);
 
@@ -30,7 +37,7 @@ const Table: FC<PropsWithChildren<Props>> = (props) => {
       <table className={`${title ? 'mt-[24px]' : 'mt-0'}`}>
         <thead>
           <tr>
-            <th className="table-heading text-center">No</th>
+            {autoOrderId && <th className="table-heading text-center">No</th>}
             {headers.map(({ name }) => (
               <th className="table-heading" key={name}>
                 {name}
@@ -41,7 +48,9 @@ const Table: FC<PropsWithChildren<Props>> = (props) => {
         <tbody>
           {data.map((item, idx) => (
             <tr key={`item_${item.id}`} onClick={_onRowClick(idx)}>
-              <td className="table-data text-center">{idx + 1}</td>
+              {autoOrderId && (
+                <td className="table-data text-center">{idx + 1}</td>
+              )}
               {headers.map(({ field, custom: Custom }) => (
                 <td className="table-data" key={`item_${item.id}_${field}`}>
                   {Custom ? <Custom item={item} /> : _.get(item, field)}

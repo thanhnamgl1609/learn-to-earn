@@ -38,6 +38,9 @@ const RouteConfig: RouteConfigType = {
     [Routes.manage.name]: Routes.manage,
     [Routes.manageRegistration.name]: Routes.manageRegistration,
     [Routes.manageRegistrationDetail.name]: Routes.manageRegistrationDetail,
+    [Routes.courses.name]: Routes.courses,
+    [Routes.createCourse.name]: Routes.createCourse,
+    [Routes.courseDetail.name]: Routes.courseDetail,
   },
 };
 

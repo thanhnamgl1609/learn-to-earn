@@ -1,4 +1,8 @@
 {
+  "UPLOAD_TARGET": {
+    "REGISTRATION": "registration",
+    "CREATE_COURSE": "create_course"
+  },
   "ROLES": {
     "STUDENT": 0,
     "TEACHER": 1,
@@ -16,5 +20,27 @@
   "REGISTRATION_ROLES": {
     "STUDENT": 0,
     "TEACHER": 1
+  },
+  "KNOWLEDGE_BLOCKS": {
+    "GENERAL": {
+      "id": 1,
+      "credits": 56,
+      "name": "General"
+    },
+    "FOUNDATION": {
+      "id": 2,
+      "credits": 38,
+      "name": "Foundation"
+    },
+    "SPECIALIZED": {
+      "id": 3,
+      "credits": 34,
+      "name": "Specialized"
+    },
+    "GRADUATION": {
+      "id": 4,
+      "credits": 10,
+      "name": "Graduation"
+    }
   }
 }

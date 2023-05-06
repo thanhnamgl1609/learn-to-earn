@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import { RegistrationInfo } from '@_types/nftIdentity';
 import { HookFactoryWithoutSWR } from '@_types/hooks';
-import { formatRegistrationInfoResponses } from './formatter/registrationInfos';
+import { formatRegistrationInfoResponses } from './formatter';
 
 type GrantParams = {
   onSuccess?: () => {};

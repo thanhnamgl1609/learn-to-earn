@@ -1,11 +1,8 @@
 import { NextPage } from 'next';
-import Link from 'next/link';
 import { useRegistrationList } from '@hooks/web3';
 import CONST from '@config/constants.json';
 import Routes from '@config/routes.json';
 import { BaseLayout } from '@templates';
-import { Box } from '@molecules';
-import { Heading } from '@atoms';
 import { BoxLinks } from '@organisms';
 
 const { ROLES } = CONST;

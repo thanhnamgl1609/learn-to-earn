@@ -8,3 +8,4 @@ export { default as Table } from './Table';
 export { default as Breadcrumb } from './Breadcrumb';
 export { default as RegistrationDetail } from './RegistrationDetail';
 export { BoxLinks } from './BoxLinks';
+export { default as AppLoading } from './AppLoading';

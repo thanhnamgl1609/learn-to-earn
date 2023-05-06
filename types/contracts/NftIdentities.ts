@@ -79,13 +79,18 @@ export type NftIdentitiesMethodNames =
   | 'setApprovalForAll'
   | 'supportsInterface'
   | 'uri'
+  | 'getTokenType'
   | 'getNftOfTokenId'
+  | 'ownerOf'
   | 'isAbleToOperate'
   | 'registerNftIdentity'
   | 'grantNftIdentity'
   | 'rejectNftIdentityRegistration'
   | 'burnNft'
-  | 'getOwnedNfts';
+  | 'getOwnedNfts'
+  | 'getAllMembers'
+  | 'getNftOfMemberWithRole'
+  | 'getNftTokenIdOfRole';
 export interface ApprovalForAllEventEmittedResponse {
   account: string;
   operator: string;
@@ -302,6 +307,17 @@ export interface NftIdentities {
   /**
    * Payable: false
    * Constant: true
+   * StateMutability: pure
+   * Type: function
+   * @param tokenId Type: uint256, Indexed: false
+   */
+  getTokenType(
+    tokenId: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<BigNumber>;
+  /**
+   * Payable: false
+   * Constant: true
    * StateMutability: view
    * Type: function
    * @param tokenId Type: uint256, Indexed: false
@@ -310,6 +326,17 @@ export interface NftIdentities {
     tokenId: BigNumberish,
     overrides?: ContractCallOverrides
   ): Promise<NftidentityresponseResponse>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param tokenId Type: uint256, Indexed: false
+   */
+  ownerOf(
+    tokenId: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<string>;
   /**
    * Payable: false
    * Constant: true
@@ -386,4 +413,41 @@ export interface NftIdentities {
   getOwnedNfts(
     overrides?: ContractCallOverrides
   ): Promise<NftidentityresponseResponse[]>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param role Type: uint256, Indexed: false
+   */
+  getAllMembers(
+    role: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<NftidentityresponseResponse[]>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param role Type: uint256, Indexed: false
+   * @param sender Type: address, Indexed: false
+   */
+  getNftOfMemberWithRole(
+    role: BigNumberish,
+    sender: string,
+    overrides?: ContractCallOverrides
+  ): Promise<NftidentityresponseResponse>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param checkedAddr Type: address, Indexed: false
+   * @param role Type: uint256, Indexed: false
+   */
+  getNftTokenIdOfRole(
+    checkedAddr: string,
+    role: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<BigNumber>;
 }

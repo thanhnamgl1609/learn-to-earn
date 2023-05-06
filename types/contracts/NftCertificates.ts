@@ -85,11 +85,9 @@ export type NftCertificatesMethodNames =
   | 'getNftCompleteCourse'
   | 'getOwnedNftGraduation'
   | 'getNftGraduation'
-  | 'getNftScoreBoard'
-  | 'registerClass'
-  | 'updateScores'
   | 'exchangeCompleteCourse'
-  | 'exchangeGraduation';
+  | 'exchangeGraduation'
+  | 'checkCompleteCourse';
 export interface ApprovalForAllEventEmittedResponse {
   account: string;
   operator: string;
@@ -153,35 +151,6 @@ export interface GetOwnedNftGraduationResponse {
 export interface GetNftGraduationResponse {
   result0: NftgraduationResponse;
   0: NftgraduationResponse;
-  result1: string;
-  1: string;
-  length: 2;
-}
-export interface NftscoreboardResponse {
-  tokenId: BigNumber;
-  0: BigNumber;
-  classId: BigNumber;
-  1: BigNumber;
-  courseId: BigNumber;
-  2: BigNumber;
-  knowledgeBlockId: BigNumber;
-  3: BigNumber;
-  credits: BigNumber;
-  4: BigNumber;
-  completeAt: BigNumber;
-  5: BigNumber;
-  studentAddr: string;
-  6: string;
-  teacherAddr: string;
-  7: string;
-  requiredScore: BigNumber[];
-  8: BigNumber[];
-  scores: BigNumber[];
-  9: BigNumber[];
-}
-export interface GetNftScoreBoardResponse {
-  result0: NftscoreboardResponse;
-  0: NftscoreboardResponse;
   result1: string;
   1: string;
   length: 2;
@@ -395,54 +364,25 @@ export interface NftCertificates {
     overrides?: ContractCallOverrides
   ): Promise<GetNftGraduationResponse>;
   /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param tokenId Type: uint256, Indexed: false
-   */
-  getNftScoreBoard(
-    tokenId: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<GetNftScoreBoardResponse>;
-  /**
    * Payable: true
    * Constant: false
    * StateMutability: payable
    * Type: function
-   * @param classId Type: uint256, Indexed: false
-   * @param tokenURI Type: string, Indexed: false
-   */
-  registerClass(
-    classId: BigNumberish,
-    tokenURI: string,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param scoreBoardId Type: uint256, Indexed: false
-   * @param requireScore Type: uint256[], Indexed: false
-   * @param scores Type: uint256[], Indexed: false
-   */
-  updateScores(
-    scoreBoardId: BigNumberish,
-    requireScore: BigNumberish[],
-    scores: BigNumberish[],
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: true
-   * Constant: false
-   * StateMutability: payable
-   * Type: function
-   * @param scoreBoardId Type: uint256, Indexed: false
+   * @param studentAddr Type: address, Indexed: false
+   * @param studentTokenId Type: uint256, Indexed: false
+   * @param courseId Type: uint256, Indexed: false
+   * @param knowledgeBlockId Type: uint256, Indexed: false
+   * @param credits Type: uint256, Indexed: false
+   * @param score Type: uint256, Indexed: false
    * @param tokenURI Type: string, Indexed: false
    */
   exchangeCompleteCourse(
-    scoreBoardId: BigNumberish,
+    studentAddr: string,
+    studentTokenId: BigNumberish,
+    courseId: BigNumberish,
+    knowledgeBlockId: BigNumberish,
+    credits: BigNumberish,
+    score: BigNumberish,
     tokenURI: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
@@ -459,4 +399,17 @@ export interface NftCertificates {
     tokenURI: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param courseId Type: uint256, Indexed: false
+   * @param studentAddr Type: address, Indexed: false
+   */
+  checkCompleteCourse(
+    courseId: BigNumberish,
+    studentAddr: string,
+    overrides?: ContractCallOverrides
+  ): Promise<boolean>;
 }

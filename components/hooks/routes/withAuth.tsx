@@ -6,10 +6,6 @@ import { useAppSelector } from '@hooks/stores';
 import { selectUser } from '@store/userSlice';
 import { RouteConfig, DEFAULT_ROUTE } from './config';
 
-type Param = {
-  role?: string;
-};
-
 const withAuth =
   (Component: NextComponentType<NextPageContext, any, any>) =>
   (props: any): JSX.Element => {

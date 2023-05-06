@@ -10,10 +10,6 @@ import {
   UseRegistrationListHook,
 } from './useRegistrationList';
 import {
-  hookFactory as createManagementHook,
-  UseManagementHook,
-} from './useManagement';
-import {
   hookFactory as createUtilitiesHook,
   UseUtilitiesHook,
 } from './useUtilities';
@@ -21,15 +17,29 @@ import {
   hookFactory as createRegistrationActionsHook,
   UseRegistrationActionsHook,
 } from './useRegistrationActions';
+import {
+  hookFactory as createSchoolActionsHook,
+  UseSchoolActionsHook,
+} from './useSchoolActions';
+import {
+  hookFactory as createCourseListHook,
+  UseCourseListHook,
+} from './useCourseList';
+import {
+  hookFactory as createCourseDetailHook,
+  UseCourseDetailHook,
+} from './useCourseDetail';
 
 export type Web3Hooks = {
   useAccount: UseAccountHook;
   useNetwork: UseNetworkHook;
   useUserInfo: UseUserInfoHook;
   useRegistrationList: UseRegistrationListHook;
-  useManagement: UseManagementHook;
   useUtilities: UseUtilitiesHook;
   useRegistrationActions: UseRegistrationActionsHook;
+  useSchoolActions: UseSchoolActionsHook;
+  useCourseList: UseCourseListHook;
+  useCourseDetail: UseCourseDetailHook;
 };
 
 type SetupHooks = {
@@ -42,8 +52,10 @@ export const setupHooks: SetupHooks = (deps) => {
     useNetwork: createNetworkHook(deps),
     useUserInfo: createUserInfoHook(deps),
     useRegistrationList: createRegistrationListHook(deps),
-    useManagement: createManagementHook(deps),
     useUtilities: createUtilitiesHook(deps),
     useRegistrationActions: createRegistrationActionsHook(deps),
+    useSchoolActions: createSchoolActionsHook(deps),
+    useCourseList: createCourseListHook(deps),
+    useCourseDetail: createCourseDetailHook(deps),
   };
 };

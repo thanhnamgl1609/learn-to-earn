@@ -1,8 +1,7 @@
-import { HookFactoryWithoutSWR, Web3Dependencies } from '@_types/hooks';
+import { HookFactoryWithoutSWR } from '@_types/hooks';
 import axios from 'axios';
 import { ContractTransaction } from 'ethers';
 import { useCallback } from 'react';
-import { toast } from 'react-toastify';
 
 type CommonParams = {
   onSuccess?: () => {};

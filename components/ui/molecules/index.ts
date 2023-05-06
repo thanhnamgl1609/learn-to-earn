@@ -3,6 +3,7 @@ export { default as InputImage } from './InputImage';
 export { default as InputSingleImage } from './InputSingleImage';
 export { default as InputMultipleImages } from './InputMultipleImages';
 export { default as InputField } from './InputField';
+export { default as SelectField } from './SelectField';
 export { default as PreviewImages } from './PreviewImages';
 export { default as Box } from './Box';
 export { default as GroupTwoButtons } from './GroupTwoButtons';

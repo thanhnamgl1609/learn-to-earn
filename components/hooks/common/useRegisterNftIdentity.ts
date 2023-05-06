@@ -15,7 +15,7 @@ import { useValidator } from '@hooks/form';
 import { APPLY_VALIDATOR } from '@validators/schemas';
 import { updateUser } from '@store/userSlice';
 
-const { ROLE_LABELS } = CONST;
+const { ROLE_LABELS, UPLOAD_TARGET } = CONST;
 
 export const useRegisterNftIdentity = () => {
   const dispatch = useAppDispatch();
@@ -33,7 +33,12 @@ export const useRegisterNftIdentity = () => {
     dispatch(loading());
 
     try {
-      const link = await dispatch(uploadData({ data, getSignedData })).unwrap();
+      const link = await dispatch(
+        uploadData({
+          data: { ...data, target: UPLOAD_TARGET.CREATE_COURSE },
+          getSignedData,
+        })
+      ).unwrap();
       await registerNftIdentity(role, link);
       const { isOwner, ...newUserInfo } = await mutate();
       dispatch(

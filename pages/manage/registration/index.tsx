@@ -95,6 +95,7 @@ const RegistrationList = () => {
           title={`List registered ${ROLE_LABELS[currentRole]}`}
           data={tableItems}
           headers={tableHeaders}
+          autoOrderId
         />
       </Box>
       {/* <DetailPage detail={} /> */}

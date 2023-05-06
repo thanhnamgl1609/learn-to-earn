@@ -8,14 +8,14 @@ import {
 } from 'react';
 
 type Props = {
-  submitText: string;
+  submitText?: string;
 } & FormHTMLAttributes<HTMLFormElement>;
 
 const Form: FC<PropsWithChildren<Props>> = ({
   className,
   children,
   onSubmit,
-  submitText,
+  submitText = 'Submit',
 }) => {
   const _className = useMemo(
     () =>
@@ -34,7 +34,7 @@ const Form: FC<PropsWithChildren<Props>> = ({
             type="submit"
             className="inline-flex justify-center  text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            {submitText ?? 'Submit'}
+            {submitText}
           </Button>
         </div>
       </div>

@@ -18,7 +18,7 @@ const InputField = ({ label, containerClassName, ...props }: Props) => {
   return (
     <div className={containerClassName}>
       <label
-        htmlFor={`field_${name}`}
+        htmlFor={`field_${inputProps.name}`}
         className="block text-sm font-medium text-gray-700"
       >
         {label}

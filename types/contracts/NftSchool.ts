@@ -72,29 +72,30 @@ export type NftSchoolMethodNames =
   | 'balanceOfBatch'
   | 'isApprovedForAll'
   | 'minimumGraduationScore'
-  | 'registeredEndAt'
-  | 'registeredStartAt'
+  | 'registerClassFee'
   | 'safeBatchTransferFrom'
   | 'safeTransferFrom'
-  | 'schoolYearEnd'
   | 'setApprovalForAll'
   | 'supportsInterface'
   | 'uri'
-  | 'yearId'
   | 'initialize'
-  | 'initializeYear'
-  | 'updateRegisteredTime'
-  | 'createCourse'
-  | 'updateCourse'
-  | 'burnToken'
-  | 'getRegisteredClasses'
   | 'getAllKnowledgeBlocks'
   | 'getKnowledgeBlockById'
-  | 'getNftClass'
-  | 'getAllNftClasses'
+  | 'updateRegisteredTime'
+  | 'getRegisterTime'
   | 'getAllCourses'
-  | 'getCourse'
-  | 'checkTokenExists'
+  | 'getCourseById'
+  | 'getCourseByURI'
+  | 'getCourseIdByURI'
+  | 'createCourse'
+  | 'updateCourse'
+  | 'getClassById'
+  | 'getAllClasses'
+  | 'getCurrentRegisteredClasses'
+  | 'createClass'
+  | 'getRegisteredClasses'
+  | 'getNftClassRegistration'
+  | 'registerClass'
   | 'checkTokenOfTypeExists'
   | 'checkInRegisterDate';
 export interface ApprovalForAllEventEmittedResponse {
@@ -120,35 +121,6 @@ export interface URIEventEmittedResponse {
   value: string;
   id: BigNumberish;
 }
-export interface NftclassResponse {
-  tokenId: BigNumber;
-  0: BigNumber;
-  courseId: BigNumber;
-  1: BigNumber;
-  knowledgeBlockId: BigNumber;
-  2: BigNumber;
-  credits: BigNumber;
-  3: BigNumber;
-  registeredStartAt: BigNumber;
-  4: BigNumber;
-  registeredEndAt: BigNumber;
-  5: BigNumber;
-  completeAt: BigNumber;
-  6: BigNumber;
-  requiredScore: BigNumber[];
-  7: BigNumber[];
-  maxSize: BigNumber;
-  8: BigNumber;
-  teacherAddr: string;
-  9: string;
-}
-export interface GetRegisteredClassesResponse {
-  result0: NftclassResponse[];
-  0: NftclassResponse[];
-  result1: string[];
-  1: string[];
-  length: 2;
-}
 export interface KnowledgeblockResponse {
   id: BigNumber;
   0: BigNumber;
@@ -157,36 +129,74 @@ export interface KnowledgeblockResponse {
   credits: BigNumber;
   2: BigNumber;
 }
-export interface GetNftClassResponse {
-  result0: NftclassResponse;
-  0: NftclassResponse;
-  result1: string;
-  1: string;
+export interface GetRegisterTimeResponse {
+  result0: BigNumber;
+  0: BigNumber;
+  result1: BigNumber;
+  1: BigNumber;
   length: 2;
 }
-export interface GetAllNftClassesResponse {
-  result0: NftclassResponse[];
-  0: NftclassResponse[];
-  result1: string[];
-  1: string[];
-  length: 2;
-}
-export interface NftcourseResponse {
-  tokenId: BigNumber;
+export interface CourseResponse {
+  id: BigNumber;
   0: BigNumber;
   knowledgeBlockId: BigNumber;
   1: BigNumber;
-  credits: BigNumber;
+  prevCourseId: BigNumber;
   2: BigNumber;
-  status: BigNumber;
+  credits: BigNumber;
   3: BigNumber;
+  status: BigNumber;
+  4: BigNumber;
+  uri: string;
+  5: string;
 }
-export interface GetCourseResponse {
-  result0: NftcourseResponse;
-  0: NftcourseResponse;
-  result1: string;
-  1: string;
-  length: 2;
+export interface ClassResponse {
+  id: BigNumber;
+  0: BigNumber;
+  courseId: BigNumber;
+  1: BigNumber;
+  knowledgeBlockId: BigNumber;
+  2: BigNumber;
+  prevCourseId: BigNumber;
+  3: BigNumber;
+  credits: BigNumber;
+  4: BigNumber;
+  registeredStartAt: BigNumber;
+  5: BigNumber;
+  registeredEndAt: BigNumber;
+  6: BigNumber;
+  completeAt: BigNumber;
+  7: BigNumber;
+  maxSize: BigNumber;
+  8: BigNumber;
+  teacherTokenId: BigNumber;
+  9: BigNumber;
+  uri: string;
+  10: string;
+}
+export interface NftClassRegistrationResponse {
+  tokenId: BigNumber;
+  0: NftClassRegistrationResponse;
+  classId: BigNumber;
+  1: NftClassRegistrationResponse;
+  studentTokenId: BigNumber;
+  2: NftClassRegistrationResponse;
+}
+export interface NftclassregistrationresponseResponse {
+  nftClassRegistration: NftClassRegistrationResponse;
+  0: NftClassRegistrationResponse;
+  class: ClassResponse;
+  1: ClassResponse;
+  tokenURI: string;
+  2: string;
+}
+export interface NftclassregistrationResponse {
+  tokenId: BigNumber;
+  0: BigNumber;
+  classId: BigNumber;
+  1: BigNumber;
+  studentTokenId: BigNumber;
+  2: BigNumber;
 }
 export interface NftSchool {
   /**
@@ -195,13 +205,11 @@ export interface NftSchool {
    * StateMutability: nonpayable
    * Type: constructor
    * @param nftIdentities Type: address, Indexed: false
-   * @param scoreAddr Type: address, Indexed: false
    * @param knowledgeBlockNames Type: string[], Indexed: false
    * @param knowledgeBlockCredits Type: uint256[], Indexed: false
    */
   'new'(
     nftIdentities: string,
-    scoreAddr: string,
     knowledgeBlockNames: string[],
     knowledgeBlockCredits: BigNumberish[],
     overrides?: ContractTransactionOverrides
@@ -265,14 +273,7 @@ export interface NftSchool {
    * StateMutability: view
    * Type: function
    */
-  registeredEndAt(overrides?: ContractCallOverrides): Promise<BigNumber>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   */
-  registeredStartAt(overrides?: ContractCallOverrides): Promise<BigNumber>;
+  registerClassFee(overrides?: ContractCallOverrides): Promise<BigNumber>;
   /**
    * Payable: false
    * Constant: false
@@ -313,13 +314,6 @@ export interface NftSchool {
   ): Promise<ContractTransaction>;
   /**
    * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   */
-  schoolYearEnd(overrides?: ContractCallOverrides): Promise<BigNumber>;
-  /**
-   * Payable: false
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
@@ -355,13 +349,6 @@ export interface NftSchool {
   ): Promise<string>;
   /**
    * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   */
-  yearId(overrides?: ContractCallOverrides): Promise<BigNumber>;
-  /**
-   * Payable: false
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
@@ -371,82 +358,6 @@ export interface NftSchool {
     nftCertificates: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param _schoolYearEnd Type: uint256, Indexed: false
-   * @param _registeredStartAt Type: uint256, Indexed: false
-   * @param _registeredEndAt Type: uint256, Indexed: false
-   */
-  initializeYear(
-    _schoolYearEnd: BigNumberish,
-    _registeredStartAt: BigNumberish,
-    _registeredEndAt: BigNumberish,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param _registeredStartAt Type: uint256, Indexed: false
-   * @param _registeredEndAt Type: uint256, Indexed: false
-   */
-  updateRegisteredTime(
-    _registeredStartAt: BigNumberish,
-    _registeredEndAt: BigNumberish,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param knowledgeBlock Type: uint256, Indexed: false
-   * @param credits Type: uint256, Indexed: false
-   * @param tokenURI Type: string, Indexed: false
-   */
-  createCourse(
-    knowledgeBlock: BigNumberish,
-    credits: BigNumberish,
-    tokenURI: string,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param tokenId Type: uint256, Indexed: false
-   * @param credits Type: uint256, Indexed: false
-   */
-  updateCourse(
-    tokenId: BigNumberish,
-    credits: BigNumberish,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param tokenId Type: uint256, Indexed: false
-   */
-  burnToken(
-    tokenId: BigNumberish,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   */
-  getRegisteredClasses(
-    overrides?: ContractCallOverrides
-  ): Promise<GetRegisteredClassesResponse>;
   /**
    * Payable: false
    * Constant: true
@@ -469,57 +380,175 @@ export interface NftSchool {
   ): Promise<KnowledgeblockResponse>;
   /**
    * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param registeredStartAt Type: uint256, Indexed: false
+   * @param registeredEndAt Type: uint256, Indexed: false
+   */
+  updateRegisteredTime(
+    registeredStartAt: BigNumberish,
+    registeredEndAt: BigNumberish,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   */
+  getRegisterTime(
+    overrides?: ContractCallOverrides
+  ): Promise<GetRegisterTimeResponse>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   */
+  getAllCourses(overrides?: ContractCallOverrides): Promise<CourseResponse[]>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param id Type: uint256, Indexed: false
+   */
+  getCourseById(
+    id: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<CourseResponse>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param tokenURI Type: string, Indexed: false
+   */
+  getCourseByURI(
+    tokenURI: string,
+    overrides?: ContractCallOverrides
+  ): Promise<CourseResponse>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param tokenURI Type: string, Indexed: false
+   */
+  getCourseIdByURI(
+    tokenURI: string,
+    overrides?: ContractCallOverrides
+  ): Promise<BigNumber>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param prevCourseId Type: uint256, Indexed: false
+   * @param knowledgeBlockId Type: uint256, Indexed: false
+   * @param credits Type: uint256, Indexed: false
+   * @param uri Type: string, Indexed: false
+   */
+  createCourse(
+    prevCourseId: BigNumberish,
+    knowledgeBlockId: BigNumberish,
+    credits: BigNumberish,
+    uri: string,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param id Type: uint256, Indexed: false
+   * @param credits Type: uint256, Indexed: false
+   */
+  updateCourse(
+    id: BigNumberish,
+    credits: BigNumberish,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param id Type: uint256, Indexed: false
+   */
+  getClassById(
+    id: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<ClassResponse>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   */
+  getAllClasses(overrides?: ContractCallOverrides): Promise<ClassResponse[]>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   */
+  getCurrentRegisteredClasses(
+    overrides?: ContractCallOverrides
+  ): Promise<ClassResponse[]>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param courseId Type: uint256, Indexed: false
+   * @param completeAt Type: uint256, Indexed: false
+   * @param maxSize Type: uint256, Indexed: false
+   * @param teacherTokenId Type: uint256, Indexed: false
+   * @param uri Type: string, Indexed: false
+   */
+  createClass(
+    courseId: BigNumberish,
+    completeAt: BigNumberish,
+    maxSize: BigNumberish,
+    teacherTokenId: BigNumberish,
+    uri: string,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   */
+  getRegisteredClasses(
+    overrides?: ContractCallOverrides
+  ): Promise<NftclassregistrationresponseResponse[]>;
+  /**
+   * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    * @param tokenId Type: uint256, Indexed: false
    */
-  getNftClass(
+  getNftClassRegistration(
     tokenId: BigNumberish,
     overrides?: ContractCallOverrides
-  ): Promise<GetNftClassResponse>;
+  ): Promise<NftclassregistrationResponse>;
   /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
+   * Payable: true
+   * Constant: false
+   * StateMutability: payable
    * Type: function
-   * @param _yearId Type: uint256, Indexed: false
+   * @param classId Type: uint256, Indexed: false
+   * @param uri Type: string, Indexed: false
    */
-  getAllNftClasses(
-    _yearId: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<GetAllNftClassesResponse>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   */
-  getAllCourses(
-    overrides?: ContractCallOverrides
-  ): Promise<NftcourseResponse[]>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param tokenId Type: uint256, Indexed: false
-   */
-  getCourse(
-    tokenId: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<GetCourseResponse>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param tokenId Type: uint256, Indexed: false
-   */
-  checkTokenExists(
-    tokenId: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<boolean>;
+  registerClass(
+    classId: BigNumberish,
+    uri: string,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
   /**
    * Payable: false
    * Constant: true
@@ -538,6 +567,10 @@ export interface NftSchool {
    * Constant: true
    * StateMutability: view
    * Type: function
+   * @param currentRegisterTimeId Type: uint256, Indexed: false
    */
-  checkInRegisterDate(overrides?: ContractCallOverrides): Promise<boolean>;
+  checkInRegisterDate(
+    currentRegisterTimeId: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<boolean>;
 }

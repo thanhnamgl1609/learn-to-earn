@@ -1,8 +1,8 @@
 import { FC, memo } from 'react';
+import Link from 'next/link';
 
 import { Heading } from '@atoms';
 import { Box } from '@molecules';
-import Link from 'next/link';
 
 type BoxLink = {
   url: string;

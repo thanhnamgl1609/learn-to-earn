@@ -1,8 +1,8 @@
-import { Middleware, Action } from 'redux';
 import { configureStore, createAsyncThunk } from '@reduxjs/toolkit';
 import user from '@store/userSlice';
 import app from '@store/appSlice';
 import manage from '@store/manageSlice';
+import school from '@store/schoolSlice';
 
 const middleware = [];
 if (process.env.NODE_ENV === `development`) {
@@ -16,6 +16,7 @@ export const store = configureStore({
     user,
     app,
     manage,
+    school,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -3,7 +3,7 @@ import useSWR from 'swr';
 import CONST from 'config/constants.json';
 import { CryptoHookFactory } from '@_types/hooks';
 import { RegistrationInfo } from '@_types/nftIdentity';
-import { formatRegistrationInfos } from './formatter/registrationInfos';
+import { formatRegistrationInfos } from './formatter';
 import { useAppDispatch } from '@hooks/stores';
 import { loading, unloading } from '@store/appSlice';
 
