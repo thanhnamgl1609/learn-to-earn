@@ -1,54 +1,30 @@
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import moment from 'moment';
 
-import { RegistrationInfo } from '@_types/nftIdentity';
 import CONST from '@config/constants.json';
 import Routes from '@config/routes.json';
 import { selectRegistrationByAddr } from '@store/manageSlice';
-import { useFormSubmit, useInputTextChange } from '@hooks/form';
 import { useModalController } from '@hooks/ui';
-import { withAuth } from '@hooks/routes';
-import { Image } from '@atoms';
-import { GroupTwoButtons, InputField } from '@molecules';
-import { Breadcrumb, RegistrationDetail, Form } from '@organisms';
-import { BaseLayout, Modal } from '@templates';
-import { useGrantNftIdentity, useRejectNftIdentity } from '@hooks/common';
+import { GroupTwoButtons } from '@molecules';
+import { Breadcrumb, RegistrationDetail } from '@organisms';
+import { BaseLayout } from '@templates';
+import { useRejectNftIdentity } from '@hooks/common';
+import { FormNftIdentityDetail } from '@templates/Modal';
 
 type Query = {
   address: string;
 };
 
-type NftIdentityInfo = {
-  expiredAt: string;
-};
-
-const { ROLE_LABELS, ROLES } = CONST;
-const DEFAULT_EXPIRED_AFTER_MONTHS = {
-  [ROLES.STUDENT]: 4,
-  [ROLES.TEACHER]: 1,
-};
-
-const createFormStateDefault = (): RegistrationInfo & NftIdentityInfo => ({
-  applicant: '',
-  documentURI: '',
-  expiredAt: moment().format('YYYY-MM-DD'),
-  meta: {
-    documentURIs: [],
-    fullName: '',
-    profileImage: '',
-  },
-  role: 0,
-});
+const { ROLE_LABELS } = CONST;
 
 const RegistrationInfoDetail = () => {
   const router = useRouter();
 
-  const registrationsByAddr = useSelector(selectRegistrationByAddr);
   const { address } = router.query as Query;
+  const registrationsByAddr = useSelector(selectRegistrationByAddr);
   const application = registrationsByAddr[address];
   const managementURL = `${Routes.manageRegistration.name}?r=${application?.role}`;
+  if (!application) router.push(managementURL);
   const breadcrumbs = [
     {
       label: 'Manager',
@@ -63,27 +39,9 @@ const RegistrationInfoDetail = () => {
     },
   ];
 
-  const [formState, setFormState] = useState(createFormStateDefault());
-  const onInputChange = useInputTextChange(setFormState);
-  const grantNftIdentity = useGrantNftIdentity(formState);
-  const rejectNftIdentity = useRejectNftIdentity(formState);
-
   const [isApprovalModalOpen, onOpenApprovalModal, onCloseApprovalModal] =
     useModalController();
-
-  const onGrant = useFormSubmit(grantNftIdentity, [grantNftIdentity]);
-
-  useEffect(() => {
-    if (!application) router.push(managementURL);
-    else
-      setFormState((_formState) => ({
-        ..._formState,
-        ...application,
-        expiredAt: moment()
-          .add(DEFAULT_EXPIRED_AFTER_MONTHS[application.role], 'M')
-          .format('YYYY-MM-DD'),
-      }));
-  }, []);
+  const rejectNftIdentity = useRejectNftIdentity(application);
 
   return (
     <>
@@ -101,34 +59,13 @@ const RegistrationInfoDetail = () => {
             />
           </RegistrationDetail>
         )}
-      </BaseLayout>
 
-      <Modal
-        className="w-[800px] overflow-auto"
-        isOpen={isApprovalModalOpen}
-        onClose={onCloseApprovalModal}
-      >
-        <Form className="w-[100%]" submitText="Grant" onSubmit={onGrant}>
-          <InputField label="Metadata" value={formState.documentURI} readOnly />
-          <InputField
-            label="Full Name"
-            value={formState.meta.fullName}
-            readOnly
-          />
-          <div className="grid grid-cols-2 gap-2">
-            {formState.meta.documentURIs.map((uri) => (
-              <Image src={uri} alt="" key={uri} canZoomIn />
-            ))}
-          </div>
-          <InputField
-            label="Expired Date"
-            name="expiredAt"
-            type="date"
-            value={formState.expiredAt}
-            onChange={onInputChange}
-          />
-        </Form>
-      </Modal>
+        <FormNftIdentityDetail
+          isOpen={isApprovalModalOpen}
+          onClose={onCloseApprovalModal}
+          application={application}
+        />
+      </BaseLayout>
     </>
   );
 };

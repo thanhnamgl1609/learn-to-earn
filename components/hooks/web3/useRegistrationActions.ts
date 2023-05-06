@@ -7,10 +7,15 @@ import { RegistrationInfo } from '@_types/nftIdentity';
 import { HookFactoryWithoutSWR } from '@_types/hooks';
 import { formatRegistrationInfoResponses } from './formatter/registrationInfos';
 
-type GrantOrRejectParams = {
+type GrantParams = {
   onSuccess?: () => {};
   onError?: (error: Error) => {};
 } & RegistrationInfo & { expiredAt: string };
+
+type RejectParams = {
+  onSuccess?: () => {};
+  onError?: (error: Error) => {};
+} & { role: number; applicant: string };
 
 type UseRegistrationActionsReturnTypes = {
   registerNftIdentity: (
@@ -28,9 +33,9 @@ type PromiseHandlerFunc = (params: {
   promise: Promise<ContractTransaction>;
 }) => Promise<void>;
 
-type GrantNftIdentityFunc = (params: GrantOrRejectParams) => Promise<void>;
+type GrantNftIdentityFunc = (params: GrantParams) => Promise<void>;
 
-type RejectNftIdentityFunc = (params: GrantOrRejectParams) => Promise<void>;
+type RejectNftIdentityFunc = (params: RejectParams) => Promise<void>;
 
 type UtilitiesHookFactory =
   HookFactoryWithoutSWR<UseRegistrationActionsReturnTypes>;
@@ -128,16 +133,13 @@ export const hookFactory: UtilitiesHookFactory =
     }) => {
       try {
         const tx = await promise;
-        console.log("🚀 ~ file: useRegistrationActions.ts:131 ~ tx:", tx)
+        console.log('🚀 ~ file: useRegistrationActions.ts:131 ~ tx:', tx);
 
-        const result = await toast.promise(
-          tx!.wait(),
-          {
-            pending: 'Processing...',
-            success: successMsg,
-            error: errorMsg,
-          }
-        );
+        const result = await toast.promise(tx!.wait(), {
+          pending: 'Processing...',
+          success: successMsg,
+          error: errorMsg,
+        });
 
         onSuccess?.(result);
       } catch (e) {

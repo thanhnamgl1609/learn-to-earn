@@ -1,6 +1,7 @@
 import { AppProps } from 'next/app';
 import { useMemo } from 'react';
-import { Modal, BaseLayout } from '@templates';
+import { BaseLayout } from '@templates';
+import { Modal } from '@templates/Modal';
 import { AppLoading } from '..';
 import { withAuth } from '@hooks/routes';
 import { useAppSelector } from '@hooks/stores';
