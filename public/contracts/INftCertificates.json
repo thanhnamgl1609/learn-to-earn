@@ -1,7 +1,32 @@
 {
   "contractName": "INftCertificates",
-  "abi": [],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/INftCertificates.sol\":\"INftCertificates\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces/IConstant.sol\":{\"keccak256\":\"0xf331a5290f07a2167782c35cdad6937bfd93f6115f51e66eb0aae742dc8b21b9\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://55fecebec866395ca42e064a94488804ab9a848b84fa8156bce72c3546486d86\",\"dweb:/ipfs/QmeP3aVBTDfesypJdoohp6dEJYuwqNkXradDxc6XvcDiNZ\"]},\"project:/contracts/interfaces/INftCertificates.sol\":{\"keccak256\":\"0x82c4e170812b4b162264f75f329ed9b4c95ee8bfa2c77b0e5e137c288ad35a80\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c5a35087c97cf9290d0e4decd02a99d4ccf4f4864a84d2deb304d87e3e17aca7\",\"dweb:/ipfs/QmZh9gnrH87UdGj5FMb2H8Xu2ErrwKkPmcq47aeysKB5pH\"]}},\"version\":1}",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "courseId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "studentAddr",
+          "type": "address"
+        }
+      ],
+      "name": "checkCompleteCourse",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"courseId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"studentAddr\",\"type\":\"address\"}],\"name\":\"checkCompleteCourse\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/blockchain/contracts/interfaces/INftCertificates.sol\":\"INftCertificates\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/blockchain/contracts/interfaces/IConstant.sol\":{\"keccak256\":\"0x9eaf0c8792da609c8844eaa2e38ffd5258025aa6704b0deb817f06a67804bd5f\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://ffd211bfab5048c2e7045a87e42dca7fc7c6389227d72cea36b1de6ca5668003\",\"dweb:/ipfs/QmSCQ3qzgcTC6KzDwqCgykEVteCRD1BBCHQvDWaCMhata7\"]},\"project:/blockchain/contracts/interfaces/INftCertificates.sol\":{\"keccak256\":\"0xe0bd2417e0c5d03a202e378f7088040bccb7867eb6fdcec23e27766e4bec1327\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8e96c7ac129276b183e0d2b1faabc719e72571500112094b0d129af8e68ab374\",\"dweb:/ipfs/QmXBJrCXegDh8PSdAUq4uiNBDMVif8nfE1X8V5paFBF48u\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -9,24 +34,24 @@
   "deployedGeneratedSources": [],
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "// SPDX-License-Identifier: MIT\r\n// Tells the Solidity compiler to compile only from v0.8.13 to v0.9.0\r\npragma solidity ^0.8.13;\r\nimport \"./IConstant.sol\";\r\n\r\ninterface INftCertificates is IConstant {}\r\n",
-  "sourcePath": "E:\\learn\\learn-to-earn\\contracts\\interfaces\\INftCertificates.sol",
+  "source": "// SPDX-License-Identifier: MIT\r\n// Tells the Solidity compiler to compile only from v0.8.13 to v0.9.0\r\npragma solidity ^0.8.13;\r\nimport \"./IConstant.sol\";\r\n\r\ninterface INftCertificates is IConstant {\r\n    function checkCompleteCourse(\r\n        uint256 courseId,\r\n        address studentAddr\r\n    ) external view returns (bool);\r\n}\r\n",
+  "sourcePath": "E:\\learn\\learn-to-earn\\blockchain\\contracts\\interfaces\\INftCertificates.sol",
   "ast": {
-    "absolutePath": "project:/contracts/interfaces/INftCertificates.sol",
+    "absolutePath": "project:/blockchain/contracts/interfaces/INftCertificates.sol",
     "exportedSymbols": {
       "IConstant": [
-        6897
+        6709
       ],
       "INftCertificates": [
-        6903
+        6724
       ]
     },
-    "id": 6904,
+    "id": 6725,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 6899,
+        "id": 6711,
         "literals": [
           "solidity",
           "^",
@@ -37,13 +62,13 @@
         "src": "104:24:20"
       },
       {
-        "absolutePath": "project:/contracts/interfaces/IConstant.sol",
+        "absolutePath": "project:/blockchain/contracts/interfaces/IConstant.sol",
         "file": "./IConstant.sol",
-        "id": 6900,
+        "id": 6712,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 6904,
-        "sourceUnit": 6898,
+        "scope": 6725,
+        "sourceUnit": 6710,
         "src": "130:25:20",
         "symbolAliases": [],
         "unitAlias": ""
@@ -53,13 +78,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 6901,
+              "id": 6713,
               "name": "IConstant",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 6897,
+              "referencedDeclaration": 6709,
               "src": "189:9:20"
             },
-            "id": 6902,
+            "id": 6714,
             "nodeType": "InheritanceSpecifier",
             "src": "189:9:20"
           }
@@ -67,22 +92,134 @@
         "canonicalName": "INftCertificates",
         "contractDependencies": [],
         "contractKind": "interface",
-        "fullyImplemented": true,
-        "id": 6903,
+        "fullyImplemented": false,
+        "id": 6724,
         "linearizedBaseContracts": [
-          6903,
-          6897
+          6724,
+          6709
         ],
         "name": "INftCertificates",
         "nameLocation": "169:16:20",
         "nodeType": "ContractDefinition",
-        "nodes": [],
-        "scope": 6904,
-        "src": "159:42:20",
+        "nodes": [
+          {
+            "functionSelector": "6eabe75f",
+            "id": 6723,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "checkCompleteCourse",
+            "nameLocation": "215:19:20",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 6719,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6716,
+                  "mutability": "mutable",
+                  "name": "courseId",
+                  "nameLocation": "253:8:20",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6723,
+                  "src": "245:16:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 6715,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "245:7:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 6718,
+                  "mutability": "mutable",
+                  "name": "studentAddr",
+                  "nameLocation": "280:11:20",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6723,
+                  "src": "272:19:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 6717,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "272:7:20",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "234:64:20"
+            },
+            "returnParameters": {
+              "id": 6722,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 6721,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 6723,
+                  "src": "322:4:20",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 6720,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "322:4:20",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "321:6:20"
+            },
+            "scope": 6724,
+            "src": "206:122:20",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 6725,
+        "src": "159:172:20",
         "usedErrors": []
       }
     ],
-    "src": "104:99:20"
+    "src": "104:229:20"
   },
   "compiler": {
     "name": "solc",
@@ -90,7 +227,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-03-26T22:49:54.512Z",
+  "updatedAt": "2023-05-06T10:55:35.777Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
