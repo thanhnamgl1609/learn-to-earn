@@ -31,6 +31,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
     mapping(uint256 => uint256) private _registeredEndAt;
 
     mapping(uint256 => uint256[]) private _classIdByRegisterTime;
+    mapping(uint256 => mapping(string => uint256)) private _idOfURIOfType;
 
     Course[] private _allCourses;
     mapping(uint256 => uint256) _posOfCourses;
@@ -45,8 +46,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
     mapping(uint256 => uint256[]) private _registeredClassTokenIdOfStudent; // tokenId => currentRegisterTimeId => courseId
     mapping(uint256 => mapping(uint256 => uint256))
         private _registeredCourseOfStudent;
-    mapping(uint256 => uint256[])
-        private _registeredTokenIdOfClass;
+    mapping(uint256 => uint256[]) private _registeredTokenIdOfClass;
 
     mapping(uint256 => mapping(uint256 => uint256)) _posOfTokenIdOfNftType;
 
@@ -136,6 +136,20 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
         return _allCourses[pos - 1];
     }
 
+    function getCourseByURI(
+        string memory tokenURI
+    ) public view returns (Course memory) {
+        uint256 tokenId = _idOfURIOfType[COURSE_ID][tokenURI];
+
+        return getCourseById(tokenId);
+    }
+
+    function getCourseIdByURI(
+        string memory tokenURI
+    ) public view returns (uint256) {
+        return _idOfURIOfType[COURSE_ID][tokenURI];
+    }
+
     function createCourse(
         uint256 prevCourseId,
         uint256 knowledgeBlockId,
@@ -145,10 +159,12 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
         require(knowledgeBlockId <= _knowledgeBlocks.length);
         require(credits > 0);
         require(prevCourseId == 0 || _posOfCourses[prevCourseId] > 0);
+        require(_idOfURIOfType[COURSE_ID][uri] == 0);
         uint256 id = generateNewId(COURSE_ID);
         _allCourses.push(
             Course(id, knowledgeBlockId, prevCourseId, credits, 1, uri)
         );
+        _idOfURIOfType[COURSE_ID][uri] = id;
         _posOfCourses[id] = _allCourses.length;
 
         return id;
@@ -262,8 +278,11 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
             );
 
         for (uint256 idx = 0; idx < count; ++idx) {
-            NftClassRegistration memory nftClassRegistration = getNftClassRegistration(nftClassRegistrationTokenIds[idx]);
-            
+            NftClassRegistration
+                memory nftClassRegistration = getNftClassRegistration(
+                    nftClassRegistrationTokenIds[idx]
+                );
+
             nftClassRegistrationResponses[idx] = NftClassRegistrationResponse(
                 nftClassRegistration,
                 getClassById(nftClassRegistration.classId),
@@ -274,7 +293,9 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
         return nftClassRegistrationResponses;
     }
 
-    function getNftClassRegistration(uint256 tokenId) public view returns (NftClassRegistration memory) {
+    function getNftClassRegistration(
+        uint256 tokenId
+    ) public view returns (NftClassRegistration memory) {
         uint256 posOfNft = _posOfNftClassRegistrationTokenId[tokenId];
         require(posOfNft > 0);
 
@@ -318,7 +339,6 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
     }
 
     // Register class block: end
-
 
     function checkTokenOfTypeExists(
         uint256 tokenId,
