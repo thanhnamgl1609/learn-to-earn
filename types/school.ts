@@ -13,3 +13,8 @@ export type Course = {
   meta: CourseMeta;
   isUploading?: boolean;
 } & CourseCore;
+
+export type RegisterTime = {
+  registerStartAt: Date | null;
+  registerEndAt: Date | null;
+};

@@ -41,6 +41,10 @@ const RouteConfig: RouteConfigType = {
     [Routes.courses.name]: Routes.courses,
     [Routes.createCourse.name]: Routes.createCourse,
     [Routes.courseDetail.name]: Routes.courseDetail,
+    [Routes.classes.name]: Routes.classes,
+    [Routes.createClass.name]: Routes.createClass,
+    [Routes.classDetail.name]: Routes.classDetail,
+    [Routes.registerTime.name]: Routes.registerTime,
   },
 };
 

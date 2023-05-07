@@ -1,4 +1,7 @@
 {
+  "UI": {
+    "INPUT_DATE_FORMAT": "YYYY-MM-DD"
+  },
   "UPLOAD_TARGET": {
     "REGISTRATION": "registration",
     "CREATE_COURSE": "create_course"

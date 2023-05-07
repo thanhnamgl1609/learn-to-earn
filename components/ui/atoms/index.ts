@@ -11,3 +11,4 @@ export { default as CircleLink } from './CircleLink';
 export { default as Anchor } from './Anchor';
 export { default as FlexDiv } from './FlexDiv';
 export { default as Heading } from './Heading';
+export { CustomLink as Link } from './Link';

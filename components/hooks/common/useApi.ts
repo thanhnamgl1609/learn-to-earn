@@ -6,7 +6,7 @@ import { loading, unloading } from '@store/appSlice';
 import { useAppDispatch } from '@hooks/stores';
 import { useCallback } from 'react';
 
-export const useApi = (action: (...params) => any, deps?: any[]) => {
+export const useApi = <D>(action: (...params) => Promise<D>, deps?: any[]) => {
   const dispatch = useAppDispatch();
 
   return useCallback(async (...params) => {

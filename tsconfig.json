@@ -19,6 +19,7 @@
       "@molecules": ["components/ui/molecules"],
       "@organisms": ["components/ui/organisms"],
       "@templates": ["components/ui/templates"],
+      "@templates/*": ["components/ui/templates/*"],
       "@providers": ["components/providers"],
       "@providers/*": ["components/providers/*"],
       "@hooks": ["components/hooks"],

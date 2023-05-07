@@ -37,7 +37,6 @@ export const useCreateCourse = () => {
           ...coreCourse,
           uri,
         };
-        if (!validator(formState)) return;
         const id = await createCourse({ data: createdCourse });
         router.push(ROUTES.courseDetail.name.replace(':id', id.toString()));
       } catch (e) {

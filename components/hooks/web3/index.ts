@@ -71,3 +71,10 @@ export const useCourseDetail = (params: UseCourseDetailParams) => {
 
   return { courseDetail };
 };
+
+export const useRegisterTime = () => {
+  const { useRegisterTime } = useHooks();
+  const registerTime = useRegisterTime();
+
+  return { registerTime };
+};

@@ -1,13 +1,14 @@
 import { FC, memo } from 'react';
-import Link from 'next/link';
 
-import { Heading } from '@atoms';
+import { Heading, Link } from '@atoms';
 import { Box } from '@molecules';
 
 type BoxLink = {
   url: string;
   label: string;
   badge?: number | null;
+  disabled?: boolean;
+  disabledTag?: string;
 };
 
 type Box = {
@@ -24,11 +25,15 @@ export const BoxLinks: FC<Props> = memo(({ box }) => (
     <Heading className="text-indigo-900">{box.header}</Heading>
 
     <div className="mt-4 space-y-6 md:space-y-0 md:space-x-6">
-      {box.links.map(({ url, label, badge = null }) => (
+      {box.links.map(({ url, label, disabled, disabledTag, badge = null }) => (
         <Link
           className="relative inline-block bg-gray-500 text-white border rounded p-4 hover:opacity-80 active:opacity-60"
+          disabledContainerClassName="inline-block"
+          disabledClassName="opacity-50 cursor-default hover:opacity-50 active:opacity-50"
+          disabledTag={disabledTag}
           href={url}
           key={url}
+          disabled={disabled}
         >
           {label}
           {badge !== null && (

@@ -17,5 +17,6 @@
   "createCourse": { "name": "/course/create" },
   "classes": { "name": "/classes" },
   "classDetail": { "name": "/class/:id" },
-  "createClass": { "name": "/class/create" }
+  "createClass": { "name": "/class/create" },
+  "registerTime": { "name": "/register-time" }
 }

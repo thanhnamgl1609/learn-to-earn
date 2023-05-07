@@ -1,3 +1,4 @@
+import { after, sameOrAfter } from 'utils';
 import { z } from 'zod';
 
 export const APPLY_VALIDATOR = z.object({
@@ -22,3 +23,19 @@ export const CREATE_COURSE = z.object({
   credits: z.preprocess((v: string) => parseInt(v), z.number().positive()),
   name: z.string().nonempty(),
 });
+
+export const REGISTER_TIME = z
+  .object({
+    registerStartAt: z.preprocess((v: string) => new Date(v), z.date()),
+    registerEndAt: z.preprocess((v: string) => new Date(v), z.date()),
+  })
+  .refine(({ registerStartAt }) => sameOrAfter(registerStartAt), {
+    message: 'Ngày bắt đầu phải lớn hơn hiện tại',
+  })
+  .refine(
+    ({ registerStartAt, registerEndAt }) =>
+      after(registerEndAt, registerStartAt),
+    {
+      message: 'Ngày kết thúc phải lớn hơn ngày bắt đầu',
+    }
+  );

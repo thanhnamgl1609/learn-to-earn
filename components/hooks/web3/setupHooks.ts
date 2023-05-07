@@ -29,6 +29,10 @@ import {
   hookFactory as createCourseDetailHook,
   UseCourseDetailHook,
 } from './useCourseDetail';
+import {
+  hookFactory as createRegisterTimeHook,
+  UseRegisterTimeHook,
+} from './useRegisterTime';
 
 export type Web3Hooks = {
   useAccount: UseAccountHook;
@@ -40,6 +44,7 @@ export type Web3Hooks = {
   useSchoolActions: UseSchoolActionsHook;
   useCourseList: UseCourseListHook;
   useCourseDetail: UseCourseDetailHook;
+  useRegisterTime: UseRegisterTimeHook;
 };
 
 type SetupHooks = {
@@ -57,5 +62,6 @@ export const setupHooks: SetupHooks = (deps) => {
     useSchoolActions: createSchoolActionsHook(deps),
     useCourseList: createCourseListHook(deps),
     useCourseDetail: createCourseDetailHook(deps),
+    useRegisterTime: createRegisterTimeHook(deps),
   };
 };

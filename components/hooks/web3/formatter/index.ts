@@ -6,3 +6,4 @@ export {
   formatRegistrationInfoResponses,
 } from './registrationInfos';
 export { formatCourse, formatCourses } from './courses';
+export { formatRegisterTime } from './registerTime';

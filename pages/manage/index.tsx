@@ -1,9 +1,10 @@
 import { NextPage } from 'next';
-import { useRegistrationList } from '@hooks/web3';
+import { useRegistrationList, useRegisterTime } from '@hooks/web3';
 import CONST from '@config/constants.json';
 import Routes from '@config/routes.json';
 import { BaseLayout } from '@templates';
 import { BoxLinks } from '@organisms';
+import { formatDate } from 'utils';
 
 const { ROLES } = CONST;
 
@@ -14,6 +15,9 @@ const PageManage: NextPage = () => {
   const {
     registrationList: { data: studentRegistrationInfos },
   } = useRegistrationList({ role: ROLES.STUDENT });
+  const {
+    registerTime: { data: registerTime, canCreateNewClass },
+  } = useRegisterTime();
 
   const boxes = [
     {
@@ -45,15 +49,25 @@ const PageManage: NextPage = () => {
       ],
     },
     {
-      header: 'LỚP HỌC',
+      header: `LỚP HỌC - Thời gian đăng ký:
+        ${formatDate(registerTime?.registerStartAt)}
+        - ${formatDate(registerTime?.registerEndAt)}`,
       links: [
         {
           url: Routes.createClass.name,
           label: 'Tạo lớp học',
+          disabled: !canCreateNewClass,
+          disabledTag: 'Chỉnh sửa thời gian đăng ký học phần!',
         },
         {
           url: Routes.classes.name,
           label: 'Danh sách lớp học',
+          disabled: !canCreateNewClass,
+          disabledTag: 'Chỉnh sửa thời gian đăng ký học phần!',
+        },
+        {
+          url: Routes.registerTime.name,
+          label: 'Chỉnh sửa thời gian đăng ký học phần',
         },
       ],
     },

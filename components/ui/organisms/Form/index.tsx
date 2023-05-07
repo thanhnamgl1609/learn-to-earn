@@ -8,12 +8,14 @@ import {
 } from 'react';
 
 type Props = {
+  disabled?: boolean;
   submitText?: string;
 } & FormHTMLAttributes<HTMLFormElement>;
 
 const Form: FC<PropsWithChildren<Props>> = ({
   className,
   children,
+  disabled,
   onSubmit,
   submitText = 'Submit',
 }) => {
@@ -32,7 +34,8 @@ const Form: FC<PropsWithChildren<Props>> = ({
         <div className="text-right">
           <Button
             type="submit"
-            className="inline-flex justify-center  text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="inline-flex justify-center  text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none"
+            disabled={disabled}
           >
             {submitText}
           </Button>

@@ -84,12 +84,6 @@ export const hookFactory: UtilitiesHookFactory =
         expiredAt,
         documentURI: tokenURI,
       }) => {
-        const params = {
-          applicant,
-          role,
-          expiredAt: moment(expiredAt).endOf('d').unix(),
-          documentURI: tokenURI,
-        };
         const promise = _contracts.nftIdentities?.grantNftIdentity(
           applicant,
           role,
@@ -133,7 +127,6 @@ export const hookFactory: UtilitiesHookFactory =
     }) => {
       try {
         const tx = await promise;
-        console.log('🚀 ~ file: useRegistrationActions.ts:131 ~ tx:', tx);
 
         const result = await toast.promise(tx!.wait(), {
           pending: 'Processing...',
