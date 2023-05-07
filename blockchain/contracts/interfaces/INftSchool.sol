@@ -6,7 +6,7 @@ import "./IConstant.sol";
 interface INftSchool is IConstant {
     function minimumGraduationScore() external view returns (uint256);
     function checkTokenOfTypeExists(uint256 tokenId, uint256 requiredType) external view returns (bool);
-    function getClassById(uint256 id) external view returns (Class memory);
+    function getClassById(uint256 id) external view returns (ClassResponse memory);
     function getAllKnowledgeBlocks()
         external
         view

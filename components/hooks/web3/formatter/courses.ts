@@ -1,4 +1,4 @@
-import request from 'utils/request';
+import { request } from 'utils';
 
 import Api from 'config/api.json';
 import { CourseResponse } from '@_types/contracts/NftSchool';

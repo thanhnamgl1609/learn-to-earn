@@ -39,3 +39,24 @@ export const REGISTER_TIME = z
       message: 'Ngày kết thúc phải lớn hơn ngày bắt đầu',
     }
   );
+
+export const CREATE_CLASS = z.object({
+  courseId: z.preprocess((v: string) => parseInt(v), z.number().positive()),
+  teacherTokenId: z.preprocess(
+    (v: string) => parseInt(v),
+    z.number().positive()
+  ),
+  maxSize: z.preprocess((v: string) => parseInt(v), z.number().positive()),
+  completeAt: z.preprocess((v: string) => new Date(v), z.date()),
+});
+
+export const CREATE_CLASS_META = z.object({
+  course: z.object({
+    id: z.number().positive(),
+    name: z.string().nonempty(),
+  }),
+  teacher: z.object({
+    tokenId: z.number().positive(),
+    name: z.string().nonempty(),
+  })
+});

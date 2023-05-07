@@ -1,11 +1,10 @@
 import { ContractTransaction, ethers } from 'ethers';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
-import moment from 'moment';
 
-import { Course } from '@_types/school';
+import { Course, Class } from '@_types/school';
 import { HookFactoryWithoutSWR } from '@_types/hooks';
-import { formatCourse } from './formatter';
+import { parseTimeStamp } from 'utils';
 
 type CreateCourseFunc = {
   (params: {
@@ -15,8 +14,22 @@ type CreateCourseFunc = {
   }): Promise<number>;
 };
 
+type CreateClassFunc = {
+  (params: {
+    data: Pick<
+      Class,
+      'courseId' | 'teacherTokenId' | 'maxSize' | 'completeAt'
+    > & {
+      uri: string;
+    };
+    onSuccess?: () => {};
+    onError?: (error: Error) => {};
+  }): Promise<void>;
+};
+
 type UseSchoolActionsReturnTypes = {
   createCourse: CreateCourseFunc;
+  createClass: CreateClassFunc;
 };
 type PromiseHandlerFunc = (params: {
   onSuccess?: (params: any) => {};
@@ -59,6 +72,27 @@ export const hookFactory: SchoolActionsHookFactory =
       [_contracts]
     );
 
+    const createClass: CreateClassFunc = useCallback(
+      async ({ data, onSuccess, onError }) => {
+        const { courseId, completeAt, maxSize, teacherTokenId, uri } = data;
+        const promise = _contracts.nftSchool?.createClass(
+          courseId,
+          parseTimeStamp(completeAt),
+          maxSize,
+          teacherTokenId,
+          uri
+        );
+        await promiseHandler({
+          successMsg: `Success to create class`,
+          errorMsg: `Fail to grant NFT`,
+          onSuccess,
+          onError,
+          promise,
+        });
+      },
+      [_contracts]
+    );
+
     const promiseHandler: PromiseHandlerFunc = async ({
       successMsg,
       errorMsg,
@@ -68,7 +102,6 @@ export const hookFactory: SchoolActionsHookFactory =
     }) => {
       try {
         const tx = await promise;
-        console.log('🚀 ~ file: useSchoolActions.ts:131 ~ tx:', tx);
 
         const result = await toast.promise(tx!.wait(), {
           pending: 'Processing...',
@@ -85,5 +118,6 @@ export const hookFactory: SchoolActionsHookFactory =
 
     return {
       createCourse,
+      createClass,
     };
   };

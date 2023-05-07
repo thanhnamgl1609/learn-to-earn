@@ -2,43 +2,53 @@ import { useState } from 'react';
 
 import CONST from '@config/constants.json';
 import ROUTES from '@config/routes.json';
-import { useCreateCourse } from '@hooks/common';
+import { formatDate } from 'utils';
+import { useCourseList, useMemberList, useRegisterTime } from '@hooks/web3';
+import { useCreateClass } from '@hooks/common';
 import { useFormSubmit, useInputTextChange } from '@hooks/form';
-import { InputField, SelectField } from '@molecules';
 import { Breadcrumb, Form } from '@organisms';
-import { BaseLayout, CourseDetail } from '@templates';
+import { BaseLayout, FormClassDetail } from '@templates';
 import { Heading } from '@atoms';
-import { useCourseList } from '@hooks/web3';
 
-const { KNOWLEDGE_BLOCKS } = CONST;
+const { ROLES, UI } = CONST;
 
-const unsetCourse = {
-  label: 'No compulsory previous course',
-  value: '0',
-};
-
-const createDefaultState = () => ({
-  name: '',
-  credits: 0,
-  prevCourseId: 0,
-  knowledgeBlockId: KNOWLEDGE_BLOCKS.GENERAL.id,
+const createDefaultState = (
+  { value: courseId } = { value: 0 },
+  { value: teacherTokenId } = { value: 0 },
+  { registerEndAt } = { registerEndAt: new Date() }
+) => ({
+  courseId,
+  completeAt: formatDate(registerEndAt, UI.INPUT_DATE_FORMAT),
+  maxSize: 0,
+  teacherTokenId,
 });
 
-const CreateCourse = () => {
+const CreateClass = () => {
   const {
-    courseList: { data },
+    courseList: { data: courseList },
   } = useCourseList();
-  const courses = [
-    unsetCourse,
-    ...data?.map(({ meta: { name }, id }) => ({ label: name, value: id })),
-  ];
-  const knowledgeBlocks = Object.values(KNOWLEDGE_BLOCKS).map(
-    ({ id, name }) => ({ value: id, label: name })
+  const {
+    memberList: { data: teacherList },
+  } = useMemberList({ role: ROLES.TEACHER });
+  const {
+    registerTime: { data: registerTime },
+  } = useRegisterTime();
+  const courses =
+    courseList?.map(({ meta: { name }, id }) => ({
+      label: name,
+      value: id,
+    })) || [];
+  const teachers =
+    teacherList?.map(({ meta: { fullName }, tokenId }) => ({
+      label: fullName,
+      value: tokenId,
+    })) || [];
+  const [formState, setFormState] = useState(
+    createDefaultState(courses[0], teachers[0], registerTime)
   );
-  const [formState, setFormState] = useState(createDefaultState());
   const onInputChange = useInputTextChange(setFormState);
-  const createCourse = useCreateCourse();
-  const onSubmit = useFormSubmit(() => createCourse(formState), [formState]);
+  const createClass = useCreateClass();
+  const onSubmit = useFormSubmit(() => createClass(formState), [formState]);
 
   const links = [
     {
@@ -46,7 +56,11 @@ const CreateCourse = () => {
       route: ROUTES.manage,
     },
     {
-      label: 'Create Course',
+      label: 'Danh sách lớp học',
+      route: ROUTES.classes,
+    },
+    {
+      label: 'Tạo lớp học',
     },
   ];
 
@@ -54,16 +68,21 @@ const CreateCourse = () => {
     <BaseLayout containerClassName="max-w-[640px]">
       <Breadcrumb links={links} />
       <Form submitText="Create" onSubmit={onSubmit}>
-        <Heading>Create Class</Heading>
-        <CourseDetail
+        <Heading>
+          Tạo lớp học - Thời gian đăng ký:{' '}
+          {formatDate(registerTime?.registerStartAt)} -{' '}
+          {formatDate(registerTime?.registerEndAt)}
+        </Heading>
+
+        <FormClassDetail
           formState={formState}
           onInputChange={onInputChange}
           courses={courses}
-          knowledgeBlocks={knowledgeBlocks}
+          teachers={teachers}
         />
       </Form>
     </BaseLayout>
   );
 };
 
-export default CreateCourse;
+export default CreateClass;

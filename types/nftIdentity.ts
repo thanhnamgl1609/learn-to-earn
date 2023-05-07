@@ -36,4 +36,5 @@ export type NftIdentity = {
   role: number;
   tokenURI: string;
   meta: NftIdentityMetaType;
+  isUploading?: boolean;
 } & NftIdentityCore;

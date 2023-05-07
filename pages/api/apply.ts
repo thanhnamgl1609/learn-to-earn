@@ -7,8 +7,12 @@ import REQUEST_CONST from '@config/request.json';
 import PINATA_CONST from '@config/pinata.json';
 import addressCheckMiddleware from './middleware/address-check';
 import { withSession, pinataApiKey, pinataSecretApiKey } from './utils';
-import { APPLY_VALIDATOR, CREATE_COURSE_META } from '@validators/schemas';
-import request from 'utils/request';
+import {
+  APPLY_VALIDATOR,
+  CREATE_CLASS_META,
+  CREATE_COURSE_META,
+} from '@validators/schemas';
+import { request } from 'utils';
 import { logger } from 'utils';
 import { z } from 'zod';
 
@@ -26,8 +30,7 @@ export default withSession(
 
         const { body } = req;
         const { target, ...rawData } = body.data;
-        const { role, ...data } = rawData;
-        const pinataContent = validate(target, data);
+        const pinataContent = validate(target, rawData);
         if (!pinataContent) return res.status(400).json({ message: 'invalid' });
 
         const jsonRes = await request.post(
@@ -63,6 +66,8 @@ const validate = (target?: string, data?: Record<string, any>) => {
       return validateRegistration(data);
     case UPLOAD_TARGET.CREATE_COURSE:
       return validateForm(CREATE_COURSE_META, data);
+    case UPLOAD_TARGET.CREATE_CLASS:
+      return validateForm(CREATE_CLASS_META, data);
     default:
       return null;
   }
@@ -84,7 +89,8 @@ const validateRegistration = (rawData?: Record<string, any>) => {
 const validateForm = (validator: z.ZodType, data: Record<string, any>) => {
   try {
     return validator.parse(data);
-  } catch {
+  } catch (e) {
+    logger(e instanceof z.ZodError ? e.issues : e.message);
     return null;
   }
 };

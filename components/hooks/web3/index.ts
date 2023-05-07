@@ -1,5 +1,8 @@
 import { useHooks } from '@providers/web3';
+import { UseClassDetailParams } from './useClassDetail';
+import { UseClassListParams } from './useClassList';
 import { UseCourseDetailParams } from './useCourseDetail';
+import { UseMemberListParams } from './useMemberList';
 import { UseRegistrationListParams } from './useRegistrationList';
 
 export const useAccount = () => {
@@ -77,4 +80,25 @@ export const useRegisterTime = () => {
   const registerTime = useRegisterTime();
 
   return { registerTime };
+};
+
+export const useMemberList = (params: UseMemberListParams) => {
+  const { useMemberList } = useHooks();
+  const memberList = useMemberList(params);
+
+  return { memberList };
+};
+
+export const useClassList = (params?: UseClassListParams) => {
+  const { useClassList } = useHooks();
+  const classList = useClassList(params);
+
+  return { classList };
+};
+
+export const useClassDetail = (params: UseClassDetailParams) => {
+  const { useClassDetail } = useHooks();
+  const classDetail = useClassDetail(params);
+
+  return { classDetail };
 };

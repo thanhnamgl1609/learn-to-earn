@@ -1,4 +1,4 @@
-import request from 'utils/request';
+import { logger, request } from 'utils';
 import moment from 'moment';
 
 import { NftidentityresponseResponse } from '@_types/contracts/NftIdentities';
@@ -11,22 +11,38 @@ export const formatNftIdentity = async ({
   isExpired,
   tokenURI,
 }: NftidentityresponseResponse): Promise<NftIdentity> => {
-  const { data: meta } = await request.get(Api.proxy, {
-    params: {
-      l: tokenURI,
-    },
-  });
   const { expiredAt, register, tokenId } = nftIdentity;
-
-  return {
+  const coreCourse = {
     role: role.toNumber(),
     expiredAt: moment.unix(expiredAt.toNumber()).toDate(),
     register,
     tokenId: tokenId.toNumber(),
     isExpired,
     tokenURI,
-    meta,
   };
+  try {
+    const { data: meta } = await request.get(Api.proxy, {
+      params: {
+        l: tokenURI,
+      },
+    });
+
+    return {
+      ...coreCourse,
+      meta,
+    };
+  } catch (e) {
+    logger(e);
+    return {
+      ...coreCourse,
+      isUploading: true,
+      meta: {
+        documentURIs: [],
+        fullName: '',
+        profileImage: ''
+      },
+    };
+  }
 };
 
 export const formatNftIdentities = async (

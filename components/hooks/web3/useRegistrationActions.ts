@@ -50,27 +50,23 @@ export const hookFactory: UtilitiesHookFactory =
 
     const registerNftIdentity = useCallback(
       async (role: number, metadataURI: string) => {
-        try {
-          const promise = _contracts.nftIdentities?.registerNftIdentity(
-            role,
-            metadataURI,
-            {
-              value: registerFee,
-            }
-          );
-          await promiseHandler({
-            successMsg: 'Request sent! Waiting for validating!',
-            errorMsg: 'Error when sending request!',
-            promise,
-          });
+        const promise = _contracts.nftIdentities?.registerNftIdentity(
+          role,
+          metadataURI,
+          {
+            value: registerFee,
+          }
+        );
+        await promiseHandler({
+          successMsg: 'Request sent! Waiting for validating!',
+          errorMsg: 'Error when sending request!',
+          promise,
+        });
 
-          const registrationInfoResponses =
-            await _contracts.nftIdentities?.getAllOwnedRegistrationInfos();
+        const registrationInfoResponses =
+          await _contracts.nftIdentities?.getAllOwnedRegistrationInfos();
 
-          return formatRegistrationInfoResponses(registrationInfoResponses);
-        } catch (error) {
-          toast.error('Unexpected error');
-        }
+        return formatRegistrationInfoResponses(registrationInfoResponses);
       },
       [_contracts]
     );

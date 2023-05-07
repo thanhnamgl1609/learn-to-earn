@@ -5,3 +5,4 @@ export { useRejectNftIdentity } from './useRejectNftIdentity';
 export { useApi } from './useApi';
 export { useCreateCourse } from './useCreateCourse';
 export { useEditRegisterTime } from './useEditRegisterTime';
+export { useCreateClass } from './useCreateClass';

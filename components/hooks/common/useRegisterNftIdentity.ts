@@ -29,14 +29,16 @@ export const useRegisterNftIdentity = () => {
 
   return useCallback(async (data: NftIdentityMetaType & { role: number }) => {
     const { role, ...nftMetadata } = data;
-    if (!nftMetaValidator(nftMetadata)) return;
+    if (!nftMetaValidator(nftMetadata as any)) return;
     dispatch(loading());
 
     try {
       const link = await dispatch(
         uploadData({
-          data: { ...data, target: UPLOAD_TARGET.CREATE_COURSE },
+          data: { ...data, target: UPLOAD_TARGET.REGISTRATION },
           getSignedData,
+          successText:
+            'Your profile is uploaded! Please wait for sending request!',
         })
       ).unwrap();
       await registerNftIdentity(role, link);
@@ -45,6 +47,7 @@ export const useRegisterNftIdentity = () => {
         updateUser({
           roleType: CONST.ROLES.REGISTERED,
           role: role,
+          ...newUserInfo,
           afterUpdate: () =>
             router.push(
               Routes.registerDetail.name.replace(
@@ -52,16 +55,15 @@ export const useRegisterNftIdentity = () => {
                 ROLE_LABELS[role].toLowerCase()
               )
             ),
-          ...newUserInfo,
         })
       );
 
+      dispatch(unloading());
       return link;
     } catch (e) {
       logger(e, { method: 'error' });
-      toast.error(ERROR_MESSAGE.UNEXPECTED);
-    } finally {
       dispatch(unloading());
+      toast.error(ERROR_MESSAGE.UNEXPECTED);
     }
   }, []);
 };

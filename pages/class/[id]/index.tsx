@@ -2,56 +2,34 @@ import { useRouter } from 'next/router';
 
 import CONST from '@config/constants.json';
 import ROUTES from '@config/routes.json';
-import { useCourseDetail } from '@hooks/web3';
-import { BaseLayout, CourseDetail } from '@templates';
+import { useClassDetail } from '@hooks/web3';
+import { BaseLayout, ClassDetail } from '@templates';
 import { Breadcrumb } from '@organisms';
 import { Box } from '@molecules';
 import { Heading } from '@atoms';
 
 const { KNOWLEDGE_BLOCKS } = CONST;
 
-const createDefaultCourse = () => ({
+const createDefaultClass = () => ({
   id: 0,
-  prevCourse: {
+  prevClass: {
     meta: { name: '' },
   },
-  prevCourseId: 0,
+  prevClassId: 0,
   knowledgeBlockId: 1,
   name: '',
   credits: 0,
 });
 
-const CourseDetailPage = () => {
+const ClassDetailPage = () => {
   const router = useRouter();
   const { id: qid } = router.query;
   const id = parseInt(qid as string);
   if (!id || Number.isNaN(id)) return null;
 
   const {
-    courseDetail: { data, isLoading },
-  } = useCourseDetail({ id });
-  const defaultData = isLoading
-    ? createDefaultCourse()
-    : { ...data, ...data?.meta };
-  const { prevCourse, prevCourseId, knowledgeBlockId } = defaultData;
-  const knowledgeBlock = Object.values(KNOWLEDGE_BLOCKS).find(
-    ({ id }) => id === knowledgeBlockId
-  );
-  const courses = [
-    {
-      label:
-        prevCourseId > 0 && !isLoading
-          ? prevCourse?.meta?.name || 'error'
-          : 'None',
-      value: prevCourseId || 0,
-    },
-  ];
-  const knowledgeBlocks = [
-    {
-      label: knowledgeBlock?.name || 'error',
-      value: knowledgeBlock?.id || 0,
-    },
-  ];
+    classDetail: { data: classDetail, isLoading },
+  } = useClassDetail({ id });
 
   const links = [
     {
@@ -59,11 +37,11 @@ const CourseDetailPage = () => {
       route: ROUTES.manage,
     },
     {
-      label: 'Course List',
-      route: ROUTES.courses,
+      label: 'Class List',
+      route: ROUTES.classes,
     },
     {
-      label: 'Create Course',
+      label: 'Create Class',
     },
   ];
 
@@ -71,16 +49,11 @@ const CourseDetailPage = () => {
     <BaseLayout containerClassName="max-w-[640px]">
       <Breadcrumb links={links} />
       <Box autoLayout>
-        <Heading>Course #{defaultData.id}</Heading>
-        <CourseDetail
-          formState={defaultData}
-          courses={courses}
-          knowledgeBlocks={knowledgeBlocks}
-          disabled
-        />
+        <Heading>Class #{classDetail?.id}</Heading>
+        {classDetail && <ClassDetail classDetail={classDetail} />}
       </Box>
     </BaseLayout>
   );
 };
 
-export default CourseDetailPage;
+export default ClassDetailPage;

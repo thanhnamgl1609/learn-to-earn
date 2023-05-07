@@ -23,7 +23,8 @@ interface IConstant {
         uint256 credits;
     }
 
-    struct Course { // cannot be burn if exist any nft classes belongs to it
+    struct Course {
+        // cannot be burn if exist any nft classes belongs to it
         uint256 id;
         uint256 knowledgeBlockId; // cannot be updated
         uint256 prevCourseId;
@@ -36,7 +37,7 @@ interface IConstant {
                 - Course name
         */
     }
-    
+
     struct Class {
         uint256 id;
         uint256 courseId; // courseId - requirementId
@@ -58,6 +59,11 @@ interface IConstant {
             - Student List (Name - Nft Id?)
             - Start at
         */
+    }
+
+    struct ClassResponse {
+        Class class;
+        uint256 numberOfStudents;
     }
 
     struct NftClassRegistration {

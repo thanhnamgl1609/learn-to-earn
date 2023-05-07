@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 
-import { withAuth } from '@hooks/routes';
 import { selectCurrentRegistration } from '@store/userSlice';
 import { BaseLayout } from '@templates';
 import { RegistrationDetail } from '@organisms';
@@ -11,13 +10,13 @@ const RegisterRole = () => {
 
   return (
     <BaseLayout>
-      {registration.isUploading ? (
+      {registration?.isUploading ? (
         <Heading>
           Registration application is currently uploading! Please wait for a
           wait!
         </Heading>
       ) : (
-        <RegistrationDetail registration={registration.meta} />
+        <RegistrationDetail registration={registration?.meta} />
       )}
     </BaseLayout>
   );

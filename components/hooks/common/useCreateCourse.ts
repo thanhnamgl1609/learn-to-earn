@@ -31,7 +31,11 @@ export const useCreateCourse = () => {
       try {
         const { name, ...coreCourse } = formState;
         const uri = await dispatch(
-          uploadData({ data: { target: UPLOAD_TARGET.CREATE_COURSE, name }, getSignedData })
+          uploadData({
+            data: { target: UPLOAD_TARGET.CREATE_COURSE, name },
+            getSignedData,
+            successText: 'Upload course successfully!',
+          })
         ).unwrap();
         const createdCourse = {
           ...coreCourse,

@@ -18,7 +18,7 @@ const {
 
 const createDefaultValue = (data?: RegisterTime) => ({
   registerStartAt: formatDate(data?.registerStartAt, INPUT_DATE_FORMAT) || '',
-  registerEndAt: formatDate(data?.registerStartAt, INPUT_DATE_FORMAT) || '',
+  registerEndAt: formatDate(data?.registerEndAt, INPUT_DATE_FORMAT) || '',
 });
 
 const RegisterTimeDetail = () => {
@@ -57,14 +57,14 @@ const RegisterTimeDetail = () => {
           type="date"
           label="Ngày bắt đầu"
           name="registerStartAt"
-          value={formState.registerStartAt}
+          value={formState?.registerStartAt}
           onChange={onInputChange}
         />
         <InputField
           type="date"
           label="Ngày kết thúc"
           name="registerEndAt"
-          value={formState.registerEndAt}
+          value={formState?.registerEndAt}
           onChange={onInputChange}
         />
       </Form>

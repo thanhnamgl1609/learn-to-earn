@@ -6,4 +6,4 @@ const request = axios.create({
   timeout: TIMEOUT,
 });
 
-export default request;
+export { request };

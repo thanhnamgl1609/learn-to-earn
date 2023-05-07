@@ -73,7 +73,7 @@ const CourseList = () => {
       route: Routes.manage,
     },
     {
-      label: `Course List`,
+      label: 'Danh sách môn học',
     },
   ];
 
@@ -81,7 +81,7 @@ const CourseList = () => {
     <BaseLayout>
       <Breadcrumb links={breadcrumbs} />
       <Box autoLayout>
-        <Table title="Course List" data={tableItems} headers={tableHeaders} />
+        <Table title="Danh sách môn học" data={tableItems} headers={tableHeaders} />
       </Box>
     </BaseLayout>
   );

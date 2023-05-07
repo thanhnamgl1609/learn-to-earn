@@ -5,7 +5,6 @@ import { parseBigNumberFields, parseDate } from 'utils';
 export const formatRegisterTime = (
   data: GetRegisterTimeResponse
 ): RegisterTime => {
-  console.log('🚀 ~ file: registerTime.ts:8 ~ data:', data);
   const { 0: registerStartTimestamp, 1: registerEndTimestamp } =
     parseBigNumberFields(data, [0, 1]);
 

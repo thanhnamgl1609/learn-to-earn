@@ -8,7 +8,7 @@ import Api from 'config/api.json';
 import { ENV_CONST } from '@config/env-const';
 
 const defaultMeta = {
-  fullName: 'ERORR',
+  fullName: 'ERROR',
   profileImage: `${ENV_CONST.IMAGE_PREFIX}/default_avatar.png`,
   documentURIs: [],
 };

@@ -30,7 +30,7 @@ const CreateCourse = () => {
   } = useCourseList();
   const courses = [
     unsetCourse,
-    ...data?.map(({ meta: { name }, id }) => ({ label: name, value: id })),
+    ...data?.map(({ meta: { name }, id }) => ({ label: name, value: id })) || [],
   ];
   const knowledgeBlocks = Object.values(KNOWLEDGE_BLOCKS).map(
     ({ id, name }) => ({ value: id, label: name })
@@ -42,11 +42,15 @@ const CreateCourse = () => {
 
   const links = [
     {
-      label: 'Manager',
+      label: 'Trang chủ',
       route: ROUTES.manage,
     },
     {
-      label: 'Create Course',
+      label: 'Danh sách môn học',
+      route: ROUTES.courses,
+    },
+    {
+      label: 'Tạo môn học',
     },
   ];
 

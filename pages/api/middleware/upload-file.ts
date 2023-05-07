@@ -16,7 +16,6 @@ const uploader = formidable({
   filename: (_name, _ext, part) => {
     const { originalFilename } = part;
     const uniqueSuffix = Date.now();
-    console.log('🚀 ~ file: upload-file.ts:13 ~ uniqueSuffix:', uniqueSuffix);
     const filename = `${uniqueSuffix}_${originalFilename}`;
     return filename;
   },

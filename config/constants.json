@@ -4,7 +4,8 @@
   },
   "UPLOAD_TARGET": {
     "REGISTRATION": "registration",
-    "CREATE_COURSE": "create_course"
+    "CREATE_COURSE": "create_course",
+    "CREATE_CLASS": "create_class"
   },
   "ROLES": {
     "STUDENT": 0,

@@ -2,40 +2,35 @@ import { toast } from 'react-toastify';
 
 import { createAppAsyncThunk, RootState } from '@store';
 import { getIpfsLink } from 'utils/pinataHelper';
-import request from 'utils/request';
-import { loading, unloading } from '@store/appSlice';
+import { request } from 'utils';
 
 export const uploadData = createAppAsyncThunk<
   string,
   {
     data: Record<string, any>;
     getSignedData: (account: string) => Promise<string>;
+    successText?: string
   }
->('user/uploadData', async (payload, { getState, dispatch }) => {
-  try {
-    dispatch(loading());
-    const { data, getSignedData } = payload;
-    const {
-      user: { account },
-    } = getState();
+>('user/uploadData', async (payload, { getState }) => {
+  const { data, getSignedData, successText = '' } = payload;
+  const {
+    user: { account },
+  } = getState();
 
-    const signature = await getSignedData(account);
-    const promise = request.post('/api/apply', {
-      address: account,
-      signature,
-      data,
-    });
+  const signature = await getSignedData(account);
+  const promise = request.post('/api/apply', {
+    address: account,
+    signature,
+    data,
+  });
 
-    const res = await toast.promise(promise, {
-      pending: 'Uploading metadata',
-      success: 'Your profile is uploaded! Please wait for sending request!',
-      error: 'Metadata upload error',
-    });
+  const res = await toast.promise(promise, {
+    pending: 'Uploading metadata',
+    success: successText,
+    error: 'Metadata upload error',
+  });
 
-    return getIpfsLink(res.data);
-  } catch {
-    dispatch(unloading());
-  }
+  return getIpfsLink(res.data);
 });
 
 export const uploadFileData = createAppAsyncThunk<

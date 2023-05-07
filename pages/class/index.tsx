@@ -1,16 +1,16 @@
 import { useMemo } from 'react';
 import Link from 'next/link';
 
-import { Course } from '@_types/school';
+import { Class } from '@_types/school';
 import CONST from '@config/constants.json';
 import Routes from '@config/routes.json';
-import { useCourseList } from '@hooks/web3';
+import { useClassList } from '@hooks/web3';
 import { Box } from '@molecules';
 import { Breadcrumb, Table } from '@organisms';
 import { BaseLayout } from '@templates';
 
 type ActionColumnsProps = {
-  item: Course;
+  item: Class;
 };
 
 const { KNOWLEDGE_BLOCKS } = CONST;
@@ -23,7 +23,7 @@ const KNOWLEDGE_BLOCK_BY_IDS = Object.values(KNOWLEDGE_BLOCKS).reduce(
 const ActionColumns = ({ item }: ActionColumnsProps) => (
   <div>
     <Link
-      href={Routes.courseDetail.name.replace(':id', item.id.toString())}
+      href={Routes.classDetail.name.replace(':id', item.id.toString())}
       className="bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80"
     >
       View
@@ -34,25 +34,37 @@ const ActionColumns = ({ item }: ActionColumnsProps) => (
 const tableHeaders = [
   {
     field: 'id',
-    name: 'Course ID',
+    name: 'Mã lớp học',
   },
   {
-    field: 'meta.name',
-    name: 'Course Name',
-  },
-  {
-    field: 'prevCourseId',
-    name: 'Compulsory Course',
-    custom: ({ item }: ActionColumnsProps) => (
-      <p>{item.prevCourse ? item.prevCourse.meta?.name || 'ERROR' : 'None'}</p>
-    ),
+    field: 'meta.course.name',
+    name: 'Tên môn học',
   },
   {
     field: 'knowledgeBlockId',
-    name: 'Knowledge block',
+    name: 'Khối kiến thức',
     custom: ({ item }: ActionColumnsProps) => (
       <p>{KNOWLEDGE_BLOCK_BY_IDS[item.knowledgeBlockId].name}</p>
     ),
+  },
+  {
+    field: 'credits',
+    name: 'Số tín chỉ',
+    custom: ({ item }: ActionColumnsProps) => (
+      <p>{KNOWLEDGE_BLOCK_BY_IDS[item.knowledgeBlockId].name}</p>
+    ),
+  },
+  {
+    field: 'maxSize',
+    name: 'Số sinh viên tối đa',
+  },
+  {
+    field: 'numberOfStudents',
+    name: 'Số sinh viên đã đăng ký',
+  },
+  {
+    field: 'meta.teacher.name',
+    name: 'Giảng viên',
   },
   {
     name: 'Action',
@@ -60,10 +72,10 @@ const tableHeaders = [
   },
 ];
 
-const CourseList = () => {
+const ClassList = () => {
   const {
-    courseList: { data },
-  } = useCourseList();
+    classList: { data },
+  } = useClassList();
 
   const tableItems = useMemo(() => data || [], [data]);
 
@@ -73,7 +85,7 @@ const CourseList = () => {
       route: Routes.manage,
     },
     {
-      label: `Course List`,
+      label: 'Danh sách lớp học',
     },
   ];
 
@@ -81,10 +93,14 @@ const CourseList = () => {
     <BaseLayout>
       <Breadcrumb links={breadcrumbs} />
       <Box autoLayout>
-        <Table title="Course List" data={tableItems} headers={tableHeaders} />
+        <Table
+          title="Danh sách lớp học"
+          data={tableItems}
+          headers={tableHeaders}
+        />
       </Box>
     </BaseLayout>
   );
 };
 
-export default CourseList;
+export default ClassList;

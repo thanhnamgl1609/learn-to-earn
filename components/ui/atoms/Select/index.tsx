@@ -23,7 +23,7 @@ const Select = ({ className, options, ...props }: Props) => {
         {...props}
       >
         {options.map(({ label, value }) => (
-          <option value={value}>{label}</option>
+          <option value={value} key={value}>{label}</option>
         ))}
       </select>
     </div>

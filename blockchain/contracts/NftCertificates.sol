@@ -138,6 +138,14 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
     }
 
     // Nft Complete Course Section: Start
+    // depositNftClassRegistration group by classId
+    // getDepositedNftClassRegistration
+    // updateScoreAndGrantCourseComplete -> burnNftClassRegistration
+
+    // deposit all courseCompletes and documents to validate
+    // validate (off-chain) -> grantNftGraduation (1 groups or 1 person?)
+    // if 1 group, who is enough permission to create this group?
+    
     function exchangeCompleteCourse(
         address studentAddr,
         uint256 studentTokenId,
