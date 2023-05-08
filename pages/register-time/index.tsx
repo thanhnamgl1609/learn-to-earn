@@ -13,18 +13,19 @@ import { formatDate } from 'utils';
 import { Heading } from '@atoms';
 
 const {
-  UI: { INPUT_DATE_FORMAT },
+  UI: { INPUT_DATETIME_FORMAT },
 } = CONST;
 
 const createDefaultValue = (data?: RegisterTime) => ({
-  registerStartAt: formatDate(data?.registerStartAt, INPUT_DATE_FORMAT) || '',
-  registerEndAt: formatDate(data?.registerEndAt, INPUT_DATE_FORMAT) || '',
+  registerStartAt: formatDate(data?.registerStartAt ?? new Date(), INPUT_DATETIME_FORMAT) || '',
+  registerEndAt: formatDate(data?.registerEndAt ?? new Date(), INPUT_DATETIME_FORMAT) || '',
 });
 
 const RegisterTimeDetail = () => {
   const {
-    registerTime: { data, canCreateNewClass },
+    registerTime: { data, canEditRegisterTime },
   } = useRegisterTime();
+    console.log("🚀 ~ file: index.tsx:27 ~ RegisterTimeDetail ~ canEditRegisterTime:", canEditRegisterTime)
 
   const [formState, setFormState] = useState(createDefaultValue(data));
   const editRegisterTime = useEditRegisterTime();
@@ -50,18 +51,18 @@ const RegisterTimeDetail = () => {
       <Form
         onSubmit={onFormSubmit}
         submitText="Chỉnh sửa"
-        disabled={canCreateNewClass}
+        disabled={!canEditRegisterTime}
       >
         <Heading>Thời gian đăng ký học phần</Heading>
         <InputField
-          type="date"
+          type="datetime-local"
           label="Ngày bắt đầu"
           name="registerStartAt"
           value={formState?.registerStartAt}
           onChange={onInputChange}
         />
         <InputField
-          type="date"
+          type="datetime-local"
           label="Ngày kết thúc"
           name="registerEndAt"
           value={formState?.registerEndAt}

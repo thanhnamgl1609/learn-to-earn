@@ -5,6 +5,8 @@
   "registerDetail": { "name": "/register/:role/detail" },
   "manageRegistration": { "name": "/manage/registration" },
   "manageRegistrationDetail": { "name": "/manage/registration/:address" },
+  "member": { "name": "/member" },
+  "memberDetail": { "name": "/member/:id" },
   "profile": { "name": "/profile" },
   "applyTeacher": { "name": "/teacher/apply" },
   "teacherList": { "name": "/teacher/list" },

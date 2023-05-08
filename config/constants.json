@@ -1,6 +1,11 @@
 {
   "UI": {
-    "INPUT_DATE_FORMAT": "YYYY-MM-DD"
+    "INPUT_DATE_FORMAT": "YYYY-MM-DD",
+    "INPUT_DATETIME_FORMAT": "YYYY-MM-DDTHH:mm"
+  },
+  "DATE_TIME": {
+    "DATE": "DD-MM-YYYY",
+    "DATETIME": "DD-MM-YYYY HH:mm"
   },
   "UPLOAD_TARGET": {
     "REGISTRATION": "registration",
@@ -20,6 +25,13 @@
     "99": "Visitor",
     "100": "Register",
     "101": "Council"
+  },
+  "ROLE_LABELS_VI": {
+    "0": "Sinh viên",
+    "1": "Giảng viên",
+    "99": "Khách",
+    "100": "Người đăng ký",
+    "101": "Quản trị viên"
   },
   "REGISTRATION_ROLES": {
     "STUDENT": 0,

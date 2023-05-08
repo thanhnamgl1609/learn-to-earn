@@ -6,7 +6,7 @@ import { BaseLayout } from '@templates';
 import { BoxLinks } from '@organisms';
 import { formatDate } from 'utils';
 
-const { ROLES } = CONST;
+const { ROLES, DATE_TIME } = CONST;
 
 const PageManage: NextPage = () => {
   const {
@@ -36,6 +36,19 @@ const PageManage: NextPage = () => {
       ],
     },
     {
+      header: 'Thành viên',
+      links: [
+        {
+          url: `${Routes.member.name}?r=${[ROLES.TEACHER]}`,
+          label: 'Giảng viên',
+        },
+        {
+          url: `${Routes.member.name}?r=${[ROLES.STUDENT]}`,
+          label: 'Sinh viên',
+        },
+      ],
+    },
+    {
       header: 'MÔN HỌC',
       links: [
         {
@@ -50,8 +63,8 @@ const PageManage: NextPage = () => {
     },
     {
       header: `LỚP HỌC - Thời gian đăng ký:
-        ${formatDate(registerTime?.registerStartAt)}
-        - ${formatDate(registerTime?.registerEndAt)}`,
+        ${formatDate(registerTime?.registerStartAt, DATE_TIME.DATETIME) || 'Chưa có'}
+        - ${formatDate(registerTime?.registerEndAt, DATE_TIME.DATETIME) || 'Chưa có'}`,
       links: [
         {
           url: Routes.createClass.name,

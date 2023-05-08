@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import CONST from '@config/constants.json';
 import ROUTES from '@config/routes.json';
-import { formatDate } from 'utils';
+import { formatDate, dateAdd } from 'utils';
 import { useCourseList, useMemberList, useRegisterTime } from '@hooks/web3';
 import { useCreateClass } from '@hooks/common';
 import { useFormSubmit, useInputTextChange } from '@hooks/form';
@@ -18,7 +18,7 @@ const createDefaultState = (
   { registerEndAt } = { registerEndAt: new Date() }
 ) => ({
   courseId,
-  completeAt: formatDate(registerEndAt, UI.INPUT_DATE_FORMAT),
+  completeAt: formatDate(dateAdd(registerEndAt, 1), UI.INPUT_DATETIME_FORMAT),
   maxSize: 0,
   teacherTokenId,
 });

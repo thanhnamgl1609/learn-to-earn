@@ -55,15 +55,15 @@ const CourseDetailPage = () => {
 
   const links = [
     {
-      label: 'Manager',
+      label: 'Trang chủ',
       route: ROUTES.manage,
     },
     {
-      label: 'Course List',
+      label: 'Danh sách môn học',
       route: ROUTES.courses,
     },
     {
-      label: 'Create Course',
+      label: 'Tạo môn học',
     },
   ];
 

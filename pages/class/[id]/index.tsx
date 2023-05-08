@@ -8,19 +8,6 @@ import { Breadcrumb } from '@organisms';
 import { Box } from '@molecules';
 import { Heading } from '@atoms';
 
-const { KNOWLEDGE_BLOCKS } = CONST;
-
-const createDefaultClass = () => ({
-  id: 0,
-  prevClass: {
-    meta: { name: '' },
-  },
-  prevClassId: 0,
-  knowledgeBlockId: 1,
-  name: '',
-  credits: 0,
-});
-
 const ClassDetailPage = () => {
   const router = useRouter();
   const { id: qid } = router.query;
@@ -28,7 +15,7 @@ const ClassDetailPage = () => {
   if (!id || Number.isNaN(id)) return null;
 
   const {
-    classDetail: { data: classDetail, isLoading },
+    classDetail: { data: classDetail },
   } = useClassDetail({ id });
 
   const links = [

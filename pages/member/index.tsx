@@ -2,33 +2,31 @@ import Link from 'next/link';
 import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 
-import { RegistrationInfo } from '@_types/nftIdentity';
-import { useRegistrationList } from '@hooks/web3';
-import { withAuth } from '@hooks/routes';
+import { NftIdentity } from '@_types/nftIdentity';
+import { useMemberList } from '@hooks/web3';
 import CONST from '@config/constants.json';
 import Routes from '@config/routes.json';
-import { useAppDispatch } from '@hooks/stores';
-import { updateRegistrations } from '@store/manageSlice';
 import { BaseLayout } from '@templates';
 import { Table, Breadcrumb } from '@organisms';
 import { Box } from '@molecules';
+import { formatDate } from 'utils';
 
 type ActionColumnsProps = {
-  item: RegistrationInfo & { id: number };
+  item: Omit<NftIdentity, 'tokenId'> & { id: number };
 };
 
 type RouteQuery = {
   r?: string;
 };
 
-const { ROLES, ROLE_LABELS } = CONST;
+const { ROLES, ROLE_LABELS_VI } = CONST;
 
 const AVAILABLE_ROLES = [ROLES.STUDENT, ROLES.TEACHER];
 
 const ActionColumns = ({ item }: ActionColumnsProps) => (
   <div>
     <Link
-      href={`${Routes.manageRegistration.name}/${item.applicant}`}
+      href={`${Routes.memberDetail.name}/${item.id}`}
       className="bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80"
     >
       View
@@ -38,62 +36,64 @@ const ActionColumns = ({ item }: ActionColumnsProps) => (
 
 const tableHeaders = [
   {
-    field: 'applicant',
-    name: 'Applicant wallet address',
+    field: 'id',
+    name: 'Token ID',
   },
   {
     field: 'meta.fullName',
-    name: 'Full name',
+    name: 'Họ và tên',
   },
   {
-    name: 'Action',
-    custom: ActionColumns,
+    field: 'meta.expiredAt',
+    name: 'Ngày hết hạn',
+    custom: ({ item }: ActionColumnsProps) => (
+      <p className={item.isExpired && 'font-bold text-red-600'}>{formatDate(item.expiredAt)}</p>
+    ),
   },
+  // {
+  //   name: 'Action',
+  //   custom: ActionColumns,
+  // },
 ];
 
-const RegistrationList = () => {
+const MemberList = () => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const { r }: RouteQuery = router.query;
   const currentRole = parseInt(r);
 
   const {
-    registrationList: { data: applications },
-  } = useRegistrationList({ role: currentRole });
+    memberList: { data: members },
+  } = useMemberList({ role: currentRole });
 
-  const tableItems = useMemo(
-    () =>
-      applications?.map((application, id) => ({ id, ...application })) || [],
-    [applications]
-  );
+  const displayMembers =
+    members?.map(({ tokenId, ...otherInfo }) => ({
+      id: tokenId,
+      ...otherInfo,
+    })) || [];
 
   const breadcrumbs = [
     {
-      label: 'Manager',
+      label: 'Trang chủ',
       route: Routes.manage,
     },
     {
-      label: `${ROLE_LABELS[currentRole]} registration manager`,
+      label: `Danh sách ${ROLE_LABELS_VI[currentRole]}`,
     },
   ];
 
   useEffect(() => {
     if (AVAILABLE_ROLES.every((role) => role !== currentRole)) {
-      router.push(Routes.manageRegistration.name);
+      router.push(Routes.manage.name);
     }
   }, []);
-
-  useEffect(() => {
-    dispatch(updateRegistrations(applications));
-  }, [applications]);
 
   return (
     <BaseLayout>
       <Breadcrumb links={breadcrumbs} />
       <Box autoLayout>
         <Table
-          title={`List registered ${ROLE_LABELS[currentRole]}`}
-          data={tableItems}
+          title={`Danh sách ${ROLE_LABELS_VI[currentRole]}`}
+          data={displayMembers}
           headers={tableHeaders}
           autoOrderId
         />
@@ -102,4 +102,4 @@ const RegistrationList = () => {
   );
 };
 
-export default RegistrationList;
+export default MemberList;

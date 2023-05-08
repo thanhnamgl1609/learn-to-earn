@@ -48,7 +48,7 @@ export const FormClassDetail: FC<ClassDetailProps> = ({
       label="Ngày kết thúc"
       name="completeAt"
       onChange={onInputChange}
-      type="date"
+      type="datetime-local"
       value={formState.completeAt}
       readOnly={disabled}
     />
