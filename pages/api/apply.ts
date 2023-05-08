@@ -59,7 +59,7 @@ export default withSession(
 );
 
 const validate = (target?: string, data?: Record<string, any>) => {
-  if (!target) return null;
+  if (!target) return data;
 
   switch (target) {
     case UPLOAD_TARGET.REGISTRATION:

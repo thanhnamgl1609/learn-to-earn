@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import CONST from '@config/constants.json';
 import ROUTES from '@config/routes.json';
@@ -33,19 +33,30 @@ const CreateClass = () => {
   const {
     registerTime: { data: registerTime },
   } = useRegisterTime();
-  const courses =
-    courseList?.map(({ meta: { name }, id }) => ({
+  const courses = [
+    {
+      label: 'Chọn môn học',
+      value: 0,
+    },
+    ...(courseList?.map(({ meta: { name }, id }) => ({
       label: name,
       value: id,
-    })) || [];
-  const teachers =
-    teacherList?.map(({ meta: { fullName }, tokenId }) => ({
+    })) || []),
+  ];
+  const teachers = [
+    {
+      label: 'Chọn giảng viên',
+      value: 0,
+    },
+    ...(teacherList?.map(({ meta: { fullName }, tokenId }) => ({
       label: fullName,
       value: tokenId,
-    })) || [];
+    })) || []),
+  ];
   const [formState, setFormState] = useState(
     createDefaultState(courses[0], teachers[0], registerTime)
   );
+  // filter expired
   const onInputChange = useInputTextChange(setFormState);
   const createClass = useCreateClass();
   const onSubmit = useFormSubmit(() => createClass(formState), [formState]);

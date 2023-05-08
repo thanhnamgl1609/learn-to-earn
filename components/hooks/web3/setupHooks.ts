@@ -45,6 +45,14 @@ import {
   hookFactory as createClassDetailHook,
   UseClassDetailHook,
 } from './useClassDetail';
+import {
+  hookFactory as createRegisteredClassesHook,
+  UseRegisteredClassesHook,
+} from './useRegisteredClasses';
+import {
+  hookFactory as createAssignedClassesHook,
+  UseAssignedClassesHook,
+} from './useAssignedClasses';
 
 export type Web3Hooks = {
   useAccount: UseAccountHook;
@@ -60,6 +68,8 @@ export type Web3Hooks = {
   useMemberList: UseMemberListHook;
   useClassList: UseClassListHook;
   useClassDetail: UseClassDetailHook;
+  useRegisteredClasses: UseRegisteredClassesHook;
+  useAssignedClasses: UseAssignedClassesHook;
 };
 
 type SetupHooks = {
@@ -81,5 +91,7 @@ export const setupHooks: SetupHooks = (deps) => {
     useMemberList: createMemberListHook(deps),
     useClassList: createClassListHook(deps),
     useClassDetail: createClassDetailHook(deps),
+    useRegisteredClasses: createRegisteredClassesHook(deps),
+    useAssignedClasses: createAssignedClassesHook(deps),
   };
 };

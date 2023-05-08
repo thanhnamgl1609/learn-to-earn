@@ -4,13 +4,20 @@ import { CryptoHookFactory } from '@_types/hooks';
 import { RegisterTime } from '@_types/school';
 import { formatRegisterTime } from './formatter';
 import { useApi } from '@hooks/common';
-import { parseTimeStamp, sameOrAfter, sameOrBefore } from 'utils';
+import {
+  between,
+  parseDate,
+  parseTimeStamp,
+  sameOrAfter,
+  sameOrBefore,
+} from 'utils';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 
 type UseRegisterTimeResponse = {
   canCreateNewClass: boolean;
   canEditRegisterTime: boolean;
+  canRegisterClass: boolean;
   editRegisterTime: (registerTime: RegisterTime) => Promise<void>;
 };
 
@@ -31,7 +38,7 @@ export const hookFactory: RegisterTimeHookFactory =
     });
 
     const { data, ...swr } = useSWR(
-      contracts ? `web3/useRegisterTime` : null,
+      contracts ? `web3/useRegisterTime` + Math.floor(Math.random() + 500) : null,
       getRegisterTime,
       {
         revalidateOnFocus: false,
@@ -58,10 +65,13 @@ export const hookFactory: RegisterTimeHookFactory =
     return {
       ...swr,
       data,
-      canCreateNewClass:
-        data?.registerStartAt && sameOrAfter(data.registerStartAt),
+      canCreateNewClass: data?.registerEndAt && sameOrAfter(data.registerEndAt),
       canEditRegisterTime:
         !data?.registerEndAt || sameOrBefore(data.registerEndAt),
       editRegisterTime,
+      canRegisterClass:
+        data?.registerStartAt &&
+        data?.registerEndAt &&
+        between(data?.registerStartAt, data?.registerEndAt),
     };
   };

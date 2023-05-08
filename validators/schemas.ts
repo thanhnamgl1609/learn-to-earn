@@ -29,9 +29,6 @@ export const REGISTER_TIME = z
     registerStartAt: z.preprocess((v: string) => new Date(v), z.date()),
     registerEndAt: z.preprocess((v: string) => new Date(v), z.date()),
   })
-  .refine(({ registerStartAt }) => sameOrAfter(registerStartAt), {
-    message: 'Ngày bắt đầu phải lớn hơn hiện tại',
-  })
   .refine(
     ({ registerStartAt, registerEndAt }) =>
       after(registerEndAt, registerStartAt),

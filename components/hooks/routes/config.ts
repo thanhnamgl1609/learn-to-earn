@@ -20,10 +20,13 @@ const RouteConfig: RouteConfigType = {
   [ROLES.STUDENT]: {
     default: Routes.profile,
     [Routes.profile.name]: Routes.profile,
+    [Routes.school.name]: Routes.school,
+    [Routes.registeredClassList.name]: Routes.registeredClassList,
   },
   [ROLES.TEACHER]: {
     default: Routes.profile,
     [Routes.profile.name]: Routes.profile,
+    [Routes.schoolClassDetail.name]: Routes.schoolClassDetail,
   },
   [ROLES.VISITOR]: {
     default: Routes.register,

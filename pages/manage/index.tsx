@@ -63,8 +63,14 @@ const PageManage: NextPage = () => {
     },
     {
       header: `LỚP HỌC - Thời gian đăng ký:
-        ${formatDate(registerTime?.registerStartAt, DATE_TIME.DATETIME) || 'Chưa có'}
-        - ${formatDate(registerTime?.registerEndAt, DATE_TIME.DATETIME) || 'Chưa có'}`,
+        ${
+          formatDate(registerTime?.registerStartAt, DATE_TIME.DATETIME) ||
+          'Chưa có'
+        }
+        - ${
+          formatDate(registerTime?.registerEndAt, DATE_TIME.DATETIME) ||
+          'Chưa có'
+        }`,
       links: [
         {
           url: Routes.createClass.name,
@@ -75,7 +81,6 @@ const PageManage: NextPage = () => {
         {
           url: Routes.classes.name,
           label: 'Danh sách lớp học',
-          disabled: !canCreateNewClass,
           disabledTag: 'Chỉnh sửa thời gian đăng ký học phần!',
         },
         {

@@ -20,5 +20,8 @@
   "classes": { "name": "/class" },
   "classDetail": { "name": "/class/:id" },
   "createClass": { "name": "/class/create" },
-  "registerTime": { "name": "/register-time" }
+  "registerTime": { "name": "/register-time" },
+  "school": { "name": "/school", "as": "/" },
+  "registeredClassList": { "name": "/school/classes" },
+  "schoolClassDetail": { "name": "/school/classes/:id" }
 }

@@ -8,3 +8,4 @@ export {
 export { formatCourse, formatCourses } from './courses';
 export { formatRegisterTime } from './registerTime';
 export { formatClassResponse, formatClassResponses } from './classes';
+export { formatNftClassRegistrationResponses, formatNftClassRegistrationResponse } from './nftClassRegistrationResponses';

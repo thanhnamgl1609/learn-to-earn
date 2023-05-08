@@ -51,7 +51,7 @@ const tableHeaders = [
     field: 'credits',
     name: 'Số tín chỉ',
     custom: ({ item }: ActionColumnsProps) => (
-      <p>{KNOWLEDGE_BLOCK_BY_IDS[item.knowledgeBlockId].name}</p>
+      <p>{item.credits}</p>
     ),
   },
   {

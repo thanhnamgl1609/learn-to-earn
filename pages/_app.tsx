@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { Web3Provider } from '@providers';
 import { LoadingPage } from '@organisms';
 import { AuthWrapper } from '@templates';
+import { ConfirmDialog } from '@templates/Modal';
 import 'react-toastify/dist/ReactToastify.css';
 import { store } from '@store';
 
@@ -12,6 +13,7 @@ const App = (props: AppProps) => {
   return (
     <Web3Provider>
       <Provider store={store}>
+        <ConfirmDialog />
         <LoadingPage />
         <ToastContainer />
         <AuthWrapper {...props} />

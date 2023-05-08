@@ -6,7 +6,7 @@ export const parseDate = (unix: number) => {
 };
 
 export const parseTimeStamp = (
-  date: Date | Moment,
+  date: Date | Moment | string,
   options = {
     startOf: null,
     endOf: null,

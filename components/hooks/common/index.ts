@@ -6,3 +6,4 @@ export { useApi } from './useApi';
 export { useCreateCourse } from './useCreateCourse';
 export { useEditRegisterTime } from './useEditRegisterTime';
 export { useCreateClass } from './useCreateClass';
+export { useRegisterClass } from './useRegisterClass';

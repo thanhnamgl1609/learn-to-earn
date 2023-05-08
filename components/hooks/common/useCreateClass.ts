@@ -75,7 +75,7 @@ export const useCreateClass = () => {
       };
       await createClass({ data: createdClass });
     },
-    []
+    [courses, teachers]
   );
 
   return useCallback(

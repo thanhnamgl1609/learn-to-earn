@@ -25,7 +25,6 @@ const RegisterTimeDetail = () => {
   const {
     registerTime: { data, canEditRegisterTime },
   } = useRegisterTime();
-    console.log("🚀 ~ file: index.tsx:27 ~ RegisterTimeDetail ~ canEditRegisterTime:", canEditRegisterTime)
 
   const [formState, setFormState] = useState(createDefaultValue(data));
   const editRegisterTime = useEditRegisterTime();

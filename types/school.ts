@@ -1,3 +1,5 @@
+import { NftIdentity, NftIdentityMetaType } from './nftIdentity';
+
 export type CourseMeta = {
   name: string;
 };
@@ -46,3 +48,19 @@ export type Class = {
   meta: ClassMeta;
   isUploading?: boolean;
 } & ClassCore;
+
+export type NftClassRegistrationMeta = {
+  classInfo: Omit<Class, 'numberOfStudents' | 'isUploading'>;
+  owner: NftIdentityMetaType & {
+    tokenId: number;
+  };
+};
+export type NftClassRegistrationCore = {
+  tokenId: number;
+  classId: number;
+  studentTokenId: number;
+};
+export type NftClassRegistration = {
+  meta: NftClassRegistrationMeta;
+  isUploading?: boolean;
+} & NftClassRegistrationCore;

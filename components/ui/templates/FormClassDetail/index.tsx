@@ -30,7 +30,7 @@ export const FormClassDetail: FC<ClassDetailProps> = ({
   <>
     <SelectField
       label="Môn học"
-      name="name"
+      name="courseId"
       options={courses}
       onChange={onInputChange}
       value={formState.courseId}

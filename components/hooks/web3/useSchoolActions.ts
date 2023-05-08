@@ -27,9 +27,14 @@ type CreateClassFunc = {
   }): Promise<void>;
 };
 
+type RegisterClassFunc = {
+  (classId: number, uri: string): Promise<void>;
+};
+
 type UseSchoolActionsReturnTypes = {
   createCourse: CreateCourseFunc;
   createClass: CreateClassFunc;
+  registerClass: RegisterClassFunc;
 };
 type PromiseHandlerFunc = (params: {
   onSuccess?: (params: any) => {};
@@ -47,6 +52,7 @@ export type UseSchoolActionsHook = ReturnType<SchoolActionsHookFactory>;
 export const hookFactory: SchoolActionsHookFactory =
   ({ contracts }) =>
   () => {
+    const registerFee = ethers.utils.parseEther('0.5').toString();
     const _contracts = contracts;
 
     const createCourse: CreateCourseFunc = useCallback(
@@ -93,6 +99,20 @@ export const hookFactory: SchoolActionsHookFactory =
       [_contracts]
     );
 
+    const registerClass: RegisterClassFunc = useCallback(
+      async (classId, link) => {
+        const promise = _contracts.nftSchool.registerClass(classId, link, {
+          value: registerFee,
+        });
+        await promiseHandler({
+          successMsg: `Success to register class`,
+          errorMsg: `Fail to grant NFT`,
+          promise,
+        });
+      },
+      [_contracts]
+    );
+
     const promiseHandler: PromiseHandlerFunc = async ({
       successMsg,
       errorMsg,
@@ -119,5 +139,6 @@ export const hookFactory: SchoolActionsHookFactory =
     return {
       createCourse,
       createClass,
+      registerClass,
     };
   };

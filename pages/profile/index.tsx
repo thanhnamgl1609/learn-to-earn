@@ -1,15 +1,21 @@
 import type { NextPage } from 'next';
+import _ from 'lodash';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 
-import { withAuth } from '@hooks/routes';
-import { selectCurrentNftIdentity } from '@store/userSlice';
+import CONST from '@config/constants.json';
+import { selectCurrentNftIdentity, selectUser } from '@store/userSlice';
 import { InputField } from '@molecules';
-import { RegistrationDetail } from '@organisms';
+import { RegistrationDetail, Table } from '@organisms';
 import { BaseLayout } from '@templates';
+import { TeacherProfile, StudentProfile } from '@templates';
+
+const { ROLES } = CONST;
+
 
 const Profile: NextPage = () => {
   const nftIdentity = useSelector(selectCurrentNftIdentity);
+  const { roleType: role } = useSelector(selectUser);
 
   return (
     <BaseLayout>
@@ -27,6 +33,8 @@ const Profile: NextPage = () => {
           readOnly
         />
       </RegistrationDetail>
+
+      {role === ROLES.TEACHER ? <TeacherProfile /> : <StudentProfile />}
     </BaseLayout>
   );
 };

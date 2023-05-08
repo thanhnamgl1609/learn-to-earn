@@ -2,20 +2,28 @@
 
 import React, { memo, useMemo } from 'react';
 import { useRouter } from 'next/router';
+
 import CONST from '@config/constants.json';
+import ROUTES from '@config/routes.json';
+import { useAccount, useNetwork } from '@hooks/web3';
+import { useAppDispatch, useAppSelector } from '@hooks/stores';
+import { selectUser, updateUser } from '@store/userSlice';
 import { ActiveLink, Button } from '@atoms';
 import { WalletBar } from '@molecules';
 import { Disclosure } from '@headlessui/react';
 import { MenuIcon, XIcon } from '@heroicons/react/outline';
-import { useAccount, useNetwork } from '@hooks/web3';
-import { useAppDispatch, useAppSelector } from '@hooks/stores';
-import { selectUser, updateUser } from '@store/userSlice';
 
 const { ROLES } = CONST;
 
 const navigation = {
   [ROLES.TEACHER]: [],
-  [ROLES.STUDENT]: [],
+  [ROLES.STUDENT]: [
+    {
+      current: true,
+      name: 'Home',
+      href: ROUTES.school.name,
+    },
+  ],
   [ROLES.VISITOR]: [],
   [ROLES.REGISTERED]: [],
   [ROLES.COUNCIL]: [],
@@ -26,13 +34,12 @@ function classNames(...classes: string[]) {
 }
 
 function Navbar() {
-  const router = useRouter();
   const { account } = useAccount();
   const { network } = useNetwork();
   const dispatch = useAppDispatch();
   const { roleType: role } = useAppSelector(selectUser);
 
-  const navItems = useMemo(() => (role ? navigation[role] : []), [role]);
+  const navItems = useMemo(() => (role || role === 0 ? navigation[role] : []), [role]);
   const onSignOut = () => {
     dispatch(updateUser({ role: null, roleType: null }));
   };

@@ -1,4 +1,5 @@
 import { useHooks } from '@providers/web3';
+import { UseAssignedClassesParams } from './useAssignedClasses';
 import { UseClassDetailParams } from './useClassDetail';
 import { UseClassListParams } from './useClassList';
 import { UseCourseDetailParams } from './useCourseDetail';
@@ -101,4 +102,18 @@ export const useClassDetail = (params: UseClassDetailParams) => {
   const classDetail = useClassDetail(params);
 
   return { classDetail };
+};
+
+export const useRegisteredClasses = () => {
+  const { useRegisteredClasses } = useHooks();
+  const registeredClasses = useRegisteredClasses();
+
+  return { registeredClasses };
+}
+
+export const useAssignedClasses = (params: UseAssignedClassesParams) => {
+  const { useAssignedClasses } = useHooks();
+  const assignedClasses = useAssignedClasses(params);
+
+  return { assignedClasses };
 };
