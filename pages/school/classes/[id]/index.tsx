@@ -38,6 +38,7 @@ const ActionColumns = ({ item }: IdentityColumnProps) => {
       <Button
         onClick={onRegisterClick}
         className="bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80"
+        disabled
       >
         Cấp chứng chỉ
       </Button>
@@ -70,10 +71,11 @@ const SchoolClassDetail = () => {
     classDetail: { data: classDetail, studentList },
   } = useClassDetail({ id, withStudentList: true });
 
-  const displayStudentList = studentList?.map(({ tokenId, ...otherInfo }) => ({
-    id: tokenId,
-    ...otherInfo,
-  }));
+  const displayStudentList =
+    studentList?.map(({ tokenId, ...otherInfo }) => ({
+      id: tokenId,
+      ...otherInfo,
+    })) || [];
 
   const links = [
     {

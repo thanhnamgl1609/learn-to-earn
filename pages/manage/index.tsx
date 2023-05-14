@@ -75,7 +75,7 @@ const PageManage: NextPage = () => {
         {
           url: Routes.createClass.name,
           label: 'Tạo lớp học',
-          disabled: !canCreateNewClass,
+          // disabled: !canCreateNewClass,
           disabledTag: 'Chỉnh sửa thời gian đăng ký học phần!',
         },
         {

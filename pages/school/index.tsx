@@ -30,7 +30,7 @@ const School = () => {
         {
           url: ROUTES.registeredClassList.name,
           label: 'Đăng ký học phần',
-          // disabled: !canRegisterClass,
+          disabled: !canRegisterClass,
           disabledTag: 'Chưa đến thời gian đăng ký học phần',
         },
       ],

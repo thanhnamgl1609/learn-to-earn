@@ -4,9 +4,20 @@ import CONST from '@config/constants.json';
 import ROUTES from '@config/routes.json';
 import { useClassDetail } from '@hooks/web3';
 import { BaseLayout, ClassDetail } from '@templates';
-import { Breadcrumb } from '@organisms';
+import { Breadcrumb, Table } from '@organisms';
 import { Box } from '@molecules';
 import { Heading } from '@atoms';
+
+const tableHeaders = [
+  {
+    field: 'id',
+    name: 'Token ID',
+  },
+  {
+    field: 'meta.fullName',
+    name: 'Họ và tên',
+  },
+];
 
 const ClassDetailPage = () => {
   const router = useRouter();
@@ -15,8 +26,14 @@ const ClassDetailPage = () => {
   if (!id || Number.isNaN(id)) return null;
 
   const {
-    classDetail: { data: classDetail },
-  } = useClassDetail({ id });
+    classDetail: { data: classDetail, studentList },
+  } = useClassDetail({ id, withStudentList: true });
+
+  const displayStudentList =
+    studentList?.map(({ tokenId, ...otherInfo }) => ({
+      id: tokenId,
+      ...otherInfo,
+    })) || [];
 
   const links = [
     {
@@ -28,7 +45,7 @@ const ClassDetailPage = () => {
       route: ROUTES.classes,
     },
     {
-      label: 'Create Class',
+      label: `Lớp #${id}`,
     },
   ];
 
@@ -38,6 +55,14 @@ const ClassDetailPage = () => {
       <Box autoLayout>
         <Heading>Class #{classDetail?.id}</Heading>
         {classDetail && <ClassDetail classDetail={classDetail} />}
+      </Box>
+
+      <Box autoLayout>
+        <Table
+          title={`Danh sách sinh viên`}
+          data={displayStudentList}
+          headers={tableHeaders}
+        />
       </Box>
     </BaseLayout>
   );
