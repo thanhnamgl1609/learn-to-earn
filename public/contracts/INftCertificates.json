@@ -26,7 +26,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"courseId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"studentAddr\",\"type\":\"address\"}],\"name\":\"checkCompleteCourse\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/blockchain/contracts/interfaces/INftCertificates.sol\":\"INftCertificates\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/blockchain/contracts/interfaces/IConstant.sol\":{\"keccak256\":\"0x9eaf0c8792da609c8844eaa2e38ffd5258025aa6704b0deb817f06a67804bd5f\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://ffd211bfab5048c2e7045a87e42dca7fc7c6389227d72cea36b1de6ca5668003\",\"dweb:/ipfs/QmSCQ3qzgcTC6KzDwqCgykEVteCRD1BBCHQvDWaCMhata7\"]},\"project:/blockchain/contracts/interfaces/INftCertificates.sol\":{\"keccak256\":\"0xe0bd2417e0c5d03a202e378f7088040bccb7867eb6fdcec23e27766e4bec1327\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8e96c7ac129276b183e0d2b1faabc719e72571500112094b0d129af8e68ab374\",\"dweb:/ipfs/QmXBJrCXegDh8PSdAUq4uiNBDMVif8nfE1X8V5paFBF48u\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"courseId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"studentAddr\",\"type\":\"address\"}],\"name\":\"checkCompleteCourse\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/blockchain/contracts/interfaces/INftCertificates.sol\":\"INftCertificates\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/blockchain/contracts/interfaces/IConstant.sol\":{\"keccak256\":\"0xa6cc1fc88365b020c36d15401adc4e520d723ae56e52bc068965ae8f6a76dd25\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8dfa783e124e00ee2ef6df8390a4347ec13864bc2280627a1477c3f62b4c6877\",\"dweb:/ipfs/QmeEo4gWGHFx49bhydEDxqqTg5NLEysWNAHEY73U728gdD\"]},\"project:/blockchain/contracts/interfaces/INftCertificates.sol\":{\"keccak256\":\"0xe0bd2417e0c5d03a202e378f7088040bccb7867eb6fdcec23e27766e4bec1327\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8e96c7ac129276b183e0d2b1faabc719e72571500112094b0d129af8e68ab374\",\"dweb:/ipfs/QmXBJrCXegDh8PSdAUq4uiNBDMVif8nfE1X8V5paFBF48u\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -40,18 +40,18 @@
     "absolutePath": "project:/blockchain/contracts/interfaces/INftCertificates.sol",
     "exportedSymbols": {
       "IConstant": [
-        6768
+        6813
       ],
       "INftCertificates": [
-        6783
+        6828
       ]
     },
-    "id": 6784,
+    "id": 6829,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 6770,
+        "id": 6815,
         "literals": [
           "solidity",
           "^",
@@ -64,11 +64,11 @@
       {
         "absolutePath": "project:/blockchain/contracts/interfaces/IConstant.sol",
         "file": "./IConstant.sol",
-        "id": 6771,
+        "id": 6816,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 6784,
-        "sourceUnit": 6769,
+        "scope": 6829,
+        "sourceUnit": 6814,
         "src": "130:25:20",
         "symbolAliases": [],
         "unitAlias": ""
@@ -78,13 +78,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 6772,
+              "id": 6817,
               "name": "IConstant",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 6768,
+              "referencedDeclaration": 6813,
               "src": "189:9:20"
             },
-            "id": 6773,
+            "id": 6818,
             "nodeType": "InheritanceSpecifier",
             "src": "189:9:20"
           }
@@ -93,10 +93,10 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 6783,
+        "id": 6828,
         "linearizedBaseContracts": [
-          6783,
-          6768
+          6828,
+          6813
         ],
         "name": "INftCertificates",
         "nameLocation": "169:16:20",
@@ -104,7 +104,7 @@
         "nodes": [
           {
             "functionSelector": "6eabe75f",
-            "id": 6782,
+            "id": 6827,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -112,17 +112,17 @@
             "nameLocation": "215:19:20",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 6778,
+              "id": 6823,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6775,
+                  "id": 6820,
                   "mutability": "mutable",
                   "name": "courseId",
                   "nameLocation": "253:8:20",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6782,
+                  "scope": 6827,
                   "src": "245:16:20",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -131,7 +131,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 6774,
+                    "id": 6819,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "245:7:20",
@@ -144,12 +144,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 6777,
+                  "id": 6822,
                   "mutability": "mutable",
                   "name": "studentAddr",
                   "nameLocation": "280:11:20",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6782,
+                  "scope": 6827,
                   "src": "272:19:20",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -158,7 +158,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 6776,
+                    "id": 6821,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "272:7:20",
@@ -174,17 +174,17 @@
               "src": "234:64:20"
             },
             "returnParameters": {
-              "id": 6781,
+              "id": 6826,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6780,
+                  "id": 6825,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6782,
+                  "scope": 6827,
                   "src": "322:4:20",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -193,7 +193,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 6779,
+                    "id": 6824,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "322:4:20",
@@ -207,14 +207,14 @@
               ],
               "src": "321:6:20"
             },
-            "scope": 6783,
+            "scope": 6828,
             "src": "206:122:20",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 6784,
+        "scope": 6829,
         "src": "159:172:20",
         "usedErrors": []
       }
@@ -227,7 +227,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-05-06T17:31:41.134Z",
+  "updatedAt": "2023-05-08T23:02:55.425Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

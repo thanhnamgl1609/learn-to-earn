@@ -5,8 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 import PINATA_CONST from '@config/pinata.json';
 import {
   withSession,
-  pinataApiKey,
-  pinataSecretApiKey,
   nftIdentitiesContractAddress,
   nftSchoolsContractAddress,
   nftCertificatesContractAddress,

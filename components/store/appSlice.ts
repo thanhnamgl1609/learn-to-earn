@@ -1,10 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { RootState } from '@store';
+import CONST from '@config/constants.json';
+
+const { CONFIRM_DIALOG_LEVEL } = CONST.UI;
 
 export type ConfirmDialog = {
   isOpen: boolean;
   onAccept: () => any | null;
-  content: string;
+  content: string | JSX.Element;
+  type?: string;
   acceptText?: string;
   rejectText?: string;
   header?: string;
@@ -13,9 +18,11 @@ export type ConfirmDialog = {
 export type AppState = {
   loading?: boolean;
   confirmDialog: ConfirmDialog;
+  isGrantNftIdentityModalOpen?: boolean;
 };
 
 const defaultDialog = {
+  type: CONFIRM_DIALOG_LEVEL.INFO,
   isOpen: false,
   onAccept: null,
   content: '',
@@ -27,6 +34,7 @@ const defaultDialog = {
 const initialState: AppState = {
   loading: false,
   confirmDialog: defaultDialog,
+  isGrantNftIdentityModalOpen: false,
 };
 
 export const appSlice = createSlice({
@@ -56,10 +64,19 @@ export const appSlice = createSlice({
     closeConfirmModal: (state) => {
       state.confirmDialog = { ...defaultDialog };
     },
+    setGrantNftIdentityModal: (state, { payload }: PayloadAction<boolean>) => {
+      state.isGrantNftIdentityModalOpen = payload;
+    },
   },
 });
 
-export const { updateState, loading, unloading, openConfirmModal, closeConfirmModal } = appSlice.actions;
+export const {
+  updateState,
+  loading,
+  unloading,
+  openConfirmModal,
+  closeConfirmModal,
+} = appSlice.actions;
 
 // selectors
 export const selectApp = (state: RootState) => state.app;

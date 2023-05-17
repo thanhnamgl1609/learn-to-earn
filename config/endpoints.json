@@ -1,0 +1,4 @@
+{
+  "signIn": "/api/v1/sign",
+  "courses": "/api/v1/courses"
+}

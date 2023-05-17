@@ -12,6 +12,7 @@ const Button: FC<ButtonProps> = ({ children, size = 'M', className, ...props }) 
       `hover:opacity-80 active:opacity-60
        text-sm rounded-md font-medium
        border border-transparent shadow-sm
+       disabled:opacity-50 disabled:hover:opacity-50
       `,
       size === 'S' ? 'px-2 py-1' : 
       size === 'M' ? 'px-4 py-2' :

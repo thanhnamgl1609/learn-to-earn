@@ -1,13 +1,16 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 
 import { Course } from '@_types/school';
 import CONST from '@config/constants.json';
 import Routes from '@config/routes.json';
 import { useCourseList } from '@hooks/web3';
-import { Box } from '@molecules';
+import { Box, SelectField } from '@molecules';
 import { Breadcrumb, Table } from '@organisms';
 import { BaseLayout } from '@templates';
+import { useCourseListApi } from '@hooks/api';
+import { Select } from '@atoms';
+import { useInputTextChange } from '@hooks/form';
 
 type ActionColumnsProps = {
   item: Course;
@@ -19,6 +22,17 @@ const KNOWLEDGE_BLOCK_BY_IDS = Object.values(KNOWLEDGE_BLOCKS).reduce(
   (prev, current) => ({ ...prev, [current.id]: current }),
   {}
 );
+
+const knowledgeBlockOptions = [
+  {
+    label: 'Tất cả',
+    value: 0,
+  },
+  ...Object.values(KNOWLEDGE_BLOCKS).map(({ id, name }) => ({
+    label: name,
+    value: id,
+  })),
+];
 
 const ActionColumns = ({ item }: ActionColumnsProps) => (
   <div>
@@ -64,8 +78,12 @@ const CourseList = () => {
   const {
     courseList: { data },
   } = useCourseList();
+  const [query, setQuery] = useState({});
+  const { data: list } = useCourseListApi(query);
+  console.log("🚀 ~ file: index.tsx:83 ~ CourseList ~ result:", list)
+  const onSelectChange = useInputTextChange(setQuery);
 
-  const tableItems = useMemo(() => data || [], [data]);
+  const tableItems = data || [];
 
   const breadcrumbs = [
     {
@@ -81,7 +99,18 @@ const CourseList = () => {
     <BaseLayout>
       <Breadcrumb links={breadcrumbs} />
       <Box autoLayout>
-        <Table title="Danh sách môn học" data={tableItems} headers={tableHeaders} />
+        <SelectField
+          containerClassName="inline-block"
+          label="Khối kiến thức"
+          options={knowledgeBlockOptions}
+          name="knowledgeBlockId"
+          onChange={onSelectChange}
+        />
+        <Table
+          title="Danh sách môn học"
+          data={tableItems}
+          headers={tableHeaders}
+        />
       </Box>
     </BaseLayout>
   );

@@ -1,4 +1,4 @@
-const Loading = ({ width = 32, height = 32, className = '' }) => (
+const Loading = ({ width = 32, height = 32, className = '', children = undefined }) => (
   <div role="status">
     <svg
       aria-hidden="true"
@@ -21,7 +21,7 @@ const Loading = ({ width = 32, height = 32, className = '' }) => (
         fill="currentFill"
       />
     </svg>
-    <span className="sr-only">Loading...</span>
+    <span className="sr-only">{children ?? 'Loading...'}</span>
   </div>
 );
 

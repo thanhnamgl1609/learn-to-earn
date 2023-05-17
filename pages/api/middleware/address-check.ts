@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Session } from 'next-iron-session';
 import * as utils from 'ethereumjs-util';
+import { createError } from '@api/utils/create-error';
 
 // const RPC_PROVIDER_URL =
 //   ENV_CONST.RPC_PROVIDER_URL || ('http://127.0.0.1:7545' as string);
@@ -10,6 +11,10 @@ export default async (
   response: NextApiResponse
 ) => {
   return new Promise(async (resolve, reject) => {
+    const { signature, address } = req.body;
+    if (!signature || !address) {
+      return reject(createError(400, 'Lack of signature'));
+    }
     const message = req.session.get('message-session');
     // const provider = new ethers.providers.JsonRpcProvider(
     //   'http://127.0.0.1:7545'
@@ -26,15 +31,15 @@ export default async (
       JSON.stringify(message);
 
     nonce = utils.keccak(Buffer.from(nonce, 'utf-8'));
-    const { v, r, s } = utils.fromRpcSig(req.body.signature);
+    const { v, r, s } = utils.fromRpcSig(signature);
     const publicKey = utils.ecrecover(utils.toBuffer(nonce), v, r, s);
     const addrBuffer = utils.pubToAddress(publicKey);
-    const address = utils.bufferToHex(addrBuffer);
+    const decodedAddress = utils.bufferToHex(addrBuffer);
 
-    if (address === req.body.address.toLowerCase()) {
-      resolve('Correct address');
+    if (decodedAddress === address.toLowerCase()) {
+      return resolve('Correct address');
     } else {
-      reject('message is empty');
+      return reject(createError(400, 'message is empty'));
     }
   });
 };

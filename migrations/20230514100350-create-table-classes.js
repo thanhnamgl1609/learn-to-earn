@@ -12,6 +12,10 @@ module.exports = {
           type: Sequelize.INTEGER,
           primaryKey: true,
         },
+        onChainId: {
+          type: Sequelize.STRING(8),
+          unique: true,
+        },
         courseCode: {
           type: Sequelize.STRING(8),
           allowNull: false,

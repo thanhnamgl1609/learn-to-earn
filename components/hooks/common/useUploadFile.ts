@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 import { selectUser } from '@store/userSlice';
 import { uploadFileData } from '@store/actions';
 import { useAppDispatch, useAppSelector } from '@hooks/stores';
-import { useUtilities } from '@hooks/web3';
 import { loading, unloading } from '@store/appSlice';
 
 export const useUploadFile = () => {

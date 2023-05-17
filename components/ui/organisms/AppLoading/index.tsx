@@ -7,7 +7,7 @@ import { Route, RouteConfig } from '@hooks/routes/config';
 import { useAppDispatch } from '@hooks/stores';
 import { useAccount, useUserInfo } from '@hooks/web3';
 import { type RoleType, updateUser } from '@store/userSlice';
-import { Button, CircleButton, CircleLink, Loading } from '@atoms';
+import { Button, CircleBox, CircleButton, CircleLink, Loading } from '@atoms';
 import MetaMaskIcon from './MetaMaskIcon';
 import { useRouter } from 'next/router';
 
@@ -238,7 +238,10 @@ const AppLoading: NextPage = () => {
 
   if (!userInfoData) {
     return (
-      <Loading width={64} height={64} className="text-white dark:text-white" />
+      <CircleBox className="flex text-center items-center justify-center uppercase font-medium text-2xl px-4 py-2 w-[320px] h-[320px] bg-indigo-800 text-white">
+        Check metamask
+        <br /> for signing
+      </CircleBox>
     );
   }
 

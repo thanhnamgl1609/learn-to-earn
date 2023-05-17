@@ -20,6 +20,8 @@
       "@organisms": ["components/ui/organisms"],
       "@templates": ["components/ui/templates"],
       "@templates/*": ["components/ui/templates/*"],
+      "@api": ["pages/api"],
+      "@api/*": ["pages/api/*"],
       "@providers": ["components/providers"],
       "@providers/*": ["components/providers/*"],
       "@hooks": ["components/hooks"],

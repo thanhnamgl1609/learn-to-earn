@@ -12,8 +12,17 @@ module.exports = {
           type: Sequelize.INTEGER,
           primaryKey: true,
         },
+        knowledgeBlockId: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+        },
+        onChainId: {
+          type: Sequelize.STRING(8),
+          unique: true,
+        },
         courseCode: {
           type: Sequelize.STRING(8),
+          unique: true,
         },
         prevCourseId: {
           type: Sequelize.INTEGER,
@@ -40,6 +49,18 @@ module.exports = {
           defaultValue: '',
         },
         isRequired: {
+          type: Sequelize.INTEGER,
+          defaultValue: 0,
+        },
+        theoryLessons: {
+          type: Sequelize.INTEGER,
+          defaultValue: 0,
+        },
+        practiceLessons: {
+          type: Sequelize.INTEGER,
+          defaultValue: 0,
+        },
+        exerciseLessons: {
           type: Sequelize.INTEGER,
           defaultValue: 0,
         },

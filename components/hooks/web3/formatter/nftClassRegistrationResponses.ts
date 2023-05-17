@@ -64,13 +64,7 @@ export const formatNftClassRegistrationResponse = async ({
 
     return {
       ...coreNft,
-      meta: {
-        ...meta,
-        owner: {
-          tokenId: meta.owner.tokenId.tokenId,
-          ...meta.owner.tokenId.meta,
-        },
-      },
+      meta,
     };
   } catch (e) {
     return {

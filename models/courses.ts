@@ -8,17 +8,19 @@ export default (sequelize: Sequelize) => {
         foreignKey: 'prevCourseId',
         as: 'prevCourse',
       });
-      this.hasOne(models.course_duration, {
-        foreignKey: 'courseId',
-      });
     }
   }
   Courses.init(
     {
+      onChainId: DataTypes.INTEGER,
+      knowledgeBlockId: DataTypes.INTEGER,
       courseCode: DataTypes.STRING(8),
       name: DataTypes.STRING,
       credits: DataTypes.INTEGER,
       status: DataTypes.INTEGER,
+      theoryLessons: DataTypes.INTEGER,
+      practiceLessons: DataTypes.INTEGER,
+      exerciseLessons: DataTypes.INTEGER,
       description: DataTypes.TEXT,
       isRequired: DataTypes.INTEGER,
       chainURI: DataTypes.STRING,

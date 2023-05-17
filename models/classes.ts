@@ -12,6 +12,7 @@ export default (sequelize: Sequelize) => {
   }
   Classes.init(
     {
+      onChainId: DataTypes.INTEGER,
       semesterId: DataTypes.INTEGER,
       knowledgeBlockId: DataTypes.INTEGER,
       credits: DataTypes.INTEGER,

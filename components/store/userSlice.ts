@@ -13,6 +13,7 @@ export type UserState = {
   registrationInfos: RegistrationInfo[];
   nftIdentities: NftIdentity[];
   account: string;
+  signature: string;
 };
 
 type UpdateUserPayload = Partial<UserState> & {
@@ -25,6 +26,7 @@ const initialState: UserState = {
   registrationInfos: [],
   nftIdentities: [],
   account: '',
+  signature: '',
 };
 
 export const userSlice = createSlice({
@@ -34,7 +36,7 @@ export const userSlice = createSlice({
     updateUser: (state, action: PayloadAction<UpdateUserPayload>) => {
       const { afterUpdate, ...newState } = action.payload;
       Object.assign(state, newState);
-      afterUpdate?.(); 
+      afterUpdate?.();
     },
   },
   extraReducers(builder) {},
@@ -43,7 +45,7 @@ export const userSlice = createSlice({
 export const { updateUser } = userSlice.actions;
 
 // selectors
-export const selectUser = (state: RootState) => state.user;
+export const selectUser = (state: RootState): UserState => state.user;
 export const selectCurrentRegistration = createSelector(selectUser, (user) =>
   user.registrationInfos.find(({ role }) => role === user.role)
 );

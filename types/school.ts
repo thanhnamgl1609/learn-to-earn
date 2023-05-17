@@ -1,4 +1,4 @@
-import { NftIdentity, NftIdentityMetaType } from './nftIdentity';
+import { NftIdentityMetaType } from './nftIdentity';
 
 export type CourseMeta = {
   name: string;

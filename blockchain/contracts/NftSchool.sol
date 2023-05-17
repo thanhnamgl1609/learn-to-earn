@@ -44,10 +44,10 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
 
     NftClassRegistration[] private _allNftClassRegistrations;
     mapping(uint256 => uint256) private _posOfNftClassRegistrationTokenId;
-    mapping(uint256 => uint256[]) private _registeredClassTokenIdOfStudent; // tokenId => currentRegisterTimeId => courseId
+    mapping(uint256 => uint256[]) private _registeredClassTokenIdOfStudent; // REMOVE when have certificate?
     mapping(uint256 => mapping(uint256 => uint256))
-        private _registeredCourseOfStudent;
-    mapping(uint256 => uint256[]) private _registeredTokenIdOfClass;
+        private _registeredCourseOfStudent; // REMOVE when have certificate?
+    mapping(uint256 => uint256[]) private _registeredTokenIdOfClass; // KEEP
 
     mapping(uint256 => mapping(uint256 => uint256)) _posOfTokenIdOfNftType;
 
