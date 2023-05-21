@@ -4,9 +4,10 @@ import { Sequelize, DataTypes } from 'sequelize';
 export default (sequelize: Sequelize) => {
   class Courses extends DBModel {
     static associate(models: DB) {
-      this.belongsTo(models.courses, {
+      this.hasOne(models.courses, {
         foreignKey: 'prevCourseId',
         as: 'prevCourse',
+        sourceKey: 'id',
       });
     }
   }

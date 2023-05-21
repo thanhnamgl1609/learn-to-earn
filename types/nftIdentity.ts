@@ -9,18 +9,38 @@ export type RegistrationInfo = {
   isUploading?: boolean;
 } & RegistrationInfoRaw;
 
-export type RegistrationInfoMeta = TeacherMeta | StudentMeta; // | EducationManagerMeta
+export type RegistrationInfoMeta = RegisterTeacherMeta | RegisterStudentMeta; // | EducationManagerMeta
 
-export type StudentMeta = {
+export type RegisterStudentMeta = {
   fullName: string;
+  memberCode: string;
   profileImage: string;
   documentURIs: string[];
+  gender: number;
+  dateOfBirth: Date;
+  email: string;
+  personalEmail: string;
+  identityNumber: string;
+  phone: string;
 };
 
-export type TeacherMeta = {
+export type RegisterTeacherMeta = {
   fullName: string;
+  memberCode: string;
   profileImage: string;
   documentURIs: string[];
+  gender: number;
+  dateOfBirth: Date;
+  email: string;
+  personalEmail: string;
+  identityNumber: string;
+};
+export type StudentMeta = RegisterStudentMeta & {
+  documentURI: string;
+};
+
+export type TeacherMeta = RegisterTeacherMeta & {
+  documentURI: string;
 };
 
 export type NftIdentityMetaType = TeacherMeta | StudentMeta; // | EducationManagerMeta

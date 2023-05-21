@@ -17,7 +17,7 @@ export default withSession(
       const { l = '' }: { l?: string } = req.query;
 
       const link = new URL(l);
-      if (!link.href.includes(PINATA_CONF.IPFS)) {
+      if (!link || !link.href.includes(PINATA_CONF.IPFS)) {
         return res.status(400).json({ message: 'Invalid link' });
       }
 

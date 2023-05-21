@@ -3,12 +3,19 @@ import { Sequelize, DataTypes } from 'sequelize';
 
 export default (sequelize: Sequelize) => {
   class Users extends DBModel {
-    static associate(models: DB) {}
+    static associate(models: DB) {
+      this.hasMany(models.user_documents, {
+        foreignKey: 'userId',
+        as: 'documentURIs',
+      });
+    }
   }
   Users.init(
     {
+      profileImage: DataTypes.STRING,
       tokenId: DataTypes.INTEGER,
       memberCode: DataTypes.STRING,
+      fullName: DataTypes.STRING,
       gender: DataTypes.INTEGER,
       dateOfBirth: DataTypes.DATE,
       email: DataTypes.STRING,

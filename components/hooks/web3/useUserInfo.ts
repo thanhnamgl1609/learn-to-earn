@@ -1,5 +1,3 @@
-import axios from 'axios';
-import moment from 'moment';
 import useSWR from 'swr';
 
 import { CryptoHookFactory } from '@_types/hooks';
@@ -7,15 +5,16 @@ import { NftIdentity, RegistrationInfo } from '@_types/nftIdentity';
 import { formatRegistrationInfoResponses } from './formatter/registrationInfos';
 import { formatNftIdentities } from './formatter/nftIdentities';
 import endpoints from 'config/endpoints.json';
-import { request } from 'utils';
+import {  request } from 'utils';
 
 type SWRResponse = {
   nftIdentities: NftIdentity[];
   registrationInfos: RegistrationInfo[];
   isOwner: boolean;
-  signature: string;
 };
-type UseUserInfoResponse = {};
+type UseUserInfoResponse = {
+  getSignature: () => Promise<string>;
+};
 
 type UserInfoHookFactory = CryptoHookFactory<SWRResponse, UseUserInfoResponse>;
 
@@ -30,14 +29,11 @@ export const hookFactory: UserInfoHookFactory =
       async () => {
         const isOwner = await contracts!.nftIdentities.isOwner();
 
-        const signature = await getSignature();
-
         if (isOwner) {
           return {
             nftIdentities: [],
             registrationInfos: [],
             isOwner: true,
-            signature,
           };
         }
 
@@ -56,7 +52,6 @@ export const hookFactory: UserInfoHookFactory =
           registrationInfos,
           nftIdentities,
           isOwner: false,
-          signature,
         };
       },
       {
@@ -69,7 +64,7 @@ export const hookFactory: UserInfoHookFactory =
       const accounts = await provider?.listAccounts();
 
       if (accounts && accounts[0] && ethereum) {
-        const { data: messageToSign } = await request.post(endpoints.signIn);
+        const { data: messageToSign } = await request.post(endpoints.sign);
         return ethereum?.request({
           method: 'personal_sign',
           params: [
@@ -87,5 +82,6 @@ export const hookFactory: UserInfoHookFactory =
       ...swr,
       data,
       key,
+      getSignature,
     };
   };

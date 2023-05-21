@@ -53,6 +53,10 @@ import {
   hookFactory as createAssignedClassesHook,
   UseAssignedClassesHook,
 } from './useAssignedClasses';
+import {
+  hookFactory as createIdentitiesActionsHook,
+  UseIdentitiesActionsHook,
+} from './useIdentitiesActions';
 
 export type Web3Hooks = {
   useAccount: UseAccountHook;
@@ -70,6 +74,7 @@ export type Web3Hooks = {
   useClassDetail: UseClassDetailHook;
   useRegisteredClasses: UseRegisteredClassesHook;
   useAssignedClasses: UseAssignedClassesHook;
+  useIdentitiesActions: UseIdentitiesActionsHook;
 };
 
 type SetupHooks = {
@@ -93,5 +98,6 @@ export const setupHooks: SetupHooks = (deps) => {
     useClassDetail: createClassDetailHook(deps),
     useRegisteredClasses: createRegisteredClassesHook(deps),
     useAssignedClasses: createAssignedClassesHook(deps),
+    useIdentitiesActions: createIdentitiesActionsHook(deps),
   };
 };

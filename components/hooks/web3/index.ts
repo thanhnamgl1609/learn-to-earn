@@ -109,11 +109,18 @@ export const useRegisteredClasses = () => {
   const registeredClasses = useRegisteredClasses();
 
   return { registeredClasses };
-}
+};
 
 export const useAssignedClasses = (params: UseAssignedClassesParams) => {
   const { useAssignedClasses } = useHooks();
   const assignedClasses = useAssignedClasses(params);
 
   return { assignedClasses };
+};
+
+export const useIdentitiesActions = () => {
+  const { useIdentitiesActions } = useHooks();
+  const actions = useIdentitiesActions();
+
+  return actions;
 };

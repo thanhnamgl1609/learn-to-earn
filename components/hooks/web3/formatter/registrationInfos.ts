@@ -2,20 +2,27 @@ import {
   RegistrationinfoResponse,
   RegistrationinforesponseResponse,
 } from '@_types/contracts/NftIdentities';
-import { RegistrationInfo } from '@_types/nftIdentity';
+import { RegistrationInfo, RegistrationInfoMeta } from '@_types/nftIdentity';
 import { logger, request } from 'utils';
 import Api from 'config/api.json';
 import { ENV_CONST } from '@config/env-const';
 
-const defaultMeta = {
-  fullName: 'ERROR',
+const defaultMeta: RegistrationInfoMeta = {
+  fullName: '',
   profileImage: `${ENV_CONST.IMAGE_PREFIX}/default_avatar.png`,
   documentURIs: [],
+  gender: 0,
+  dateOfBirth: new Date('2000-01-01'),
+  email: '',
+  personalEmail: '',
+  identityNumber: '',
+  phone: '',
+  memberCode: '',
 };
 
 export const formatRegistrationInfo = async (
   { applicant, documentURI }: Partial<RegistrationinfoResponse>,
-  role: number,
+  role: number
 ): Promise<RegistrationInfo> => {
   try {
     const { data: meta } = await request.get(Api.proxy, {
@@ -23,6 +30,7 @@ export const formatRegistrationInfo = async (
         l: documentURI,
       },
     });
+    meta.dateOfBirth = new Date(meta.dateOfBirth);
 
     return {
       applicant,

@@ -1,23 +1,11 @@
 import { HookFactoryWithoutSWR } from '@_types/hooks';
-import axios from 'axios';
 import { ContractTransaction } from 'ethers';
-import { useCallback } from 'react';
 
-type CommonParams = {
-  onSuccess?: () => {};
-  onError?: (error: Error) => {};
-};
-
-type PromiseHandlerFunc = (params: {
-  onSuccess?: () => {};
-  onError?: (error: Error) => {};
-  successMsg: string;
-  errorMsg: string;
-  promise: Promise<ContractTransaction>;
-}) => Promise<void>;
+import { request } from 'utils';
+import endpoints from '@config/endpoints.json';
 
 type UseUtilitiesReturnTypes = {
-  getSignedData: (account: string) => Promise<string>;
+  getSignedData: () => Promise<string>;
 };
 
 type UtilitiesHookFactory = HookFactoryWithoutSWR<UseUtilitiesReturnTypes>;
@@ -25,17 +13,25 @@ type UtilitiesHookFactory = HookFactoryWithoutSWR<UseUtilitiesReturnTypes>;
 export type UseUtilitiesHook = ReturnType<UtilitiesHookFactory>;
 
 export const hookFactory: UtilitiesHookFactory =
-  ({ ethereum }) =>
+  ({ ethereum, provider }) =>
   () => {
-    const getSignedData = useCallback(async (account: string) => {
-      const { data: messageToSign } = await axios.get('/api/verify');
-      const signedData = await ethereum?.request({
-        method: 'personal_sign',
-        params: [JSON.stringify(messageToSign), account, messageToSign.id],
-      });
+    const getSignedData = async (): Promise<string> => {
+      const accounts = await provider?.listAccounts();
 
-      return signedData as string;
-    }, [ethereum]);
+      if (accounts && accounts[0] && ethereum) {
+        const { data: messageToSign } = await request.post(endpoints.sign);
+        return ethereum?.request({
+          method: 'personal_sign',
+          params: [
+            JSON.stringify(messageToSign),
+            accounts[0],
+            messageToSign.id,
+          ],
+        }) as Promise<string>;
+      }
+
+      return '';
+    };
 
     return {
       getSignedData,

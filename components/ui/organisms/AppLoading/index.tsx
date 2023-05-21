@@ -10,6 +10,7 @@ import { type RoleType, updateUser } from '@store/userSlice';
 import { Button, CircleBox, CircleButton, CircleLink, Loading } from '@atoms';
 import MetaMaskIcon from './MetaMaskIcon';
 import { useRouter } from 'next/router';
+import { useUserDetail } from '@hooks/api';
 
 const { ROLES, ROLE_LABELS } = CONST;
 
@@ -143,6 +144,7 @@ const AppLoading: NextPage = () => {
   } = useUserInfo();
   const { account } = useAccount();
   const dispatch = useAppDispatch();
+  const getUserDetail = useUserDetail();
   const router = useRouter();
   const otherRoles = useMemo(
     () =>
@@ -161,27 +163,25 @@ const AppLoading: NextPage = () => {
   );
 
   const onSelectRole =
-    ({ role, url, roleType }) =>
-    () => {
-      const afterUpdate = () => router.push(url.name, url.as);
-      dispatch(
-        updateUser({ account: account.data, role, roleType, afterUpdate })
-      );
-    };
+    (params: { roleType: number; role: number; url: Route }) => () =>
+      getUserDetail({
+        ...params,
+        account: account.data,
+      });
 
   useEffect(() => {
     if (userInfoData && account) {
-      const updatedUser = userInfoData.isOwner
-        ? {
-            ...userInfoData,
-            account: account?.data,
-            role: ROLES.COUNCIL,
-            roleType: ROLES.COUNCIL,
-          }
-        : { ...userInfoData };
-      delete updatedUser.isOwner;
-
-      dispatch(updateUser(updatedUser));
+      if (userInfoData.isOwner) {
+        getUserDetail({
+          ...userInfoData,
+          account: account?.data,
+          role: ROLES.COUNCIL,
+          roleType: ROLES.COUNCIL,
+        });
+      } else {
+        const { isOwner, ...updatedUser } = userInfoData;
+        dispatch(updateUser(updatedUser));
+      }
     }
   }, [userInfoData, account]);
 
@@ -239,8 +239,7 @@ const AppLoading: NextPage = () => {
   if (!userInfoData) {
     return (
       <CircleBox className="flex text-center items-center justify-center uppercase font-medium text-2xl px-4 py-2 w-[320px] h-[320px] bg-indigo-800 text-white">
-        Check metamask
-        <br /> for signing
+        Loading...
       </CircleBox>
     );
   }

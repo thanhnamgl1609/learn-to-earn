@@ -24,20 +24,28 @@ const db = {
   Op,
 } as DB;
 
-fs.readdirSync(modelFolder)
-  .filter(
-    (file) =>
-      file.indexOf('.') !== 0 && file !== 'index.ts' && file.slice(-3) === '.ts'
-  )
-  .forEach(async (file) => {
+const getModel = async () => {
+  const files = fs
+    .readdirSync(modelFolder)
+    .filter(
+      (file) =>
+        file.indexOf('.') !== 0 &&
+        file !== 'index.ts' &&
+        file.slice(-3) === '.ts'
+    );
+  for (const file of files) {
     const module = await import(`./${file}`);
     const model = module.default(sequelize) as IDBModel;
     db[model.name] = model;
-  });
+  }
 
-Object.keys(db).forEach((modelName) => {
-  if (['sequelize', 'Sequelize', 'Op'].some((key) => key === modelName)) return;
-  (db[modelName] as typeof DBModel).associate?.(db);
-});
+  Object.keys(db).forEach((modelName) => {
+    if (['sequelize', 'Sequelize', 'Op'].some((key) => key === modelName))
+      return;
+    (db[modelName] as typeof DBModel).associate?.(db);
+  });
+};
+
+getModel();
 
 export default db;

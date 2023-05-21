@@ -1,11 +1,18 @@
 import { after, sameOrAfter } from 'utils';
 import { z } from 'zod';
 
-export const APPLY_VALIDATOR = z.object({
-  fullName: z.string().nonempty(),
-  profileImage: z.string().nonempty(),
-  documentURIs: z.array(z.string()).nonempty(),
-});
+export const APPLY_VALIDATOR = z
+  .object({
+    fullName: z.string().nonempty(),
+    profileImage: z.string().nonempty(),
+    documentURIs: z.array(z.string()).nonempty(),
+    gender: z.preprocess((v: string) => parseInt(v), z.number().min(0).max(1)),
+    dateOfBirth: z.string(),
+    personalEmail: z.string(),
+    identityNumber: z.string().nonempty(),
+    phone: z.string(),
+  })
+  .refine(({ dateOfBirth }) => z.date().parse(new Date(dateOfBirth)));
 
 export const GRANT_OR_REJECT_IDENTITY = z
   .object({
@@ -55,5 +62,5 @@ export const CREATE_CLASS_META = z.object({
   teacher: z.object({
     tokenId: z.number().positive(),
     name: z.string().nonempty(),
-  })
+  }),
 });

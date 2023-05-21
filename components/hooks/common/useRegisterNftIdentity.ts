@@ -2,8 +2,8 @@ import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 
-import { NftIdentityMetaType } from '@_types/nftIdentity';
-import { logger } from 'utils';
+import { NftIdentityMetaType, RegistrationInfoMeta } from '@_types/nftIdentity';
+import { logger, makeRequest, request } from 'utils';
 import CONST from '@config/constants.json';
 import ERROR_MESSAGE from '@config/error-message.json';
 import { uploadData } from '@store/actions';
@@ -27,43 +27,54 @@ export const useRegisterNftIdentity = () => {
   const { registerNftIdentity } = useRegistrationActions();
   const nftMetaValidator = useValidator(APPLY_VALIDATOR);
 
-  return useCallback(async (data: NftIdentityMetaType & { role: number }) => {
-    const { role, ...nftMetadata } = data;
-    if (!nftMetaValidator(nftMetadata as any)) return;
-    dispatch(loading());
+  return useCallback(
+    async (
+      data: Omit<
+        RegistrationInfoMeta,
+        'memberCode' | 'email' | 'dateOfBirth'
+      > & {
+        role: number;
+        dateOfBirth: string;
+      }
+    ) => {
+      const { role, ...nftMetadata } = data;
+      if (!nftMetaValidator(nftMetadata as any)) return;
+      dispatch(loading());
 
-    try {
-      const link = await dispatch(
-        uploadData({
-          data: { ...data, target: UPLOAD_TARGET.REGISTRATION },
-          getSignedData,
-          successText:
-            'Your profile is uploaded! Please wait for sending request!',
-        })
-      ).unwrap();
-      await registerNftIdentity(role, link);
-      const { isOwner, ...newUserInfo } = await mutate();
-      dispatch(
-        updateUser({
-          roleType: CONST.ROLES.REGISTERED,
-          role: role,
-          ...newUserInfo,
-          afterUpdate: () =>
-            router.push(
-              Routes.registerDetail.name.replace(
-                ':role',
-                ROLE_LABELS[role].toLowerCase()
-              )
-            ),
-        })
-      );
+      try {
+        const { link } = await dispatch(
+          uploadData({
+            data: { ...data, target: UPLOAD_TARGET.REGISTRATION },
+            getSignedData,
+            successText:
+              'Your profile is uploaded! Please wait for sending request!',
+          })
+        ).unwrap();
+        await registerNftIdentity(role, link);
+        const { isOwner, ...newUserInfo } = await mutate();
+        dispatch(
+          updateUser({
+            roleType: CONST.ROLES.REGISTERED,
+            role: role,
+            ...newUserInfo,
+            afterUpdate: () =>
+              router.push(
+                Routes.registerDetail.name.replace(
+                  ':role',
+                  ROLE_LABELS[role].toLowerCase()
+                )
+              ),
+          })
+        );
 
-      dispatch(unloading());
-      return link;
-    } catch (e) {
-      logger(e, { method: 'error' });
-      dispatch(unloading());
-      toast.error(ERROR_MESSAGE.UNEXPECTED);
-    }
-  }, []);
+        dispatch(unloading());
+        return link;
+      } catch (e) {
+        logger(e, { method: 'error' });
+        dispatch(unloading());
+        toast.error(ERROR_MESSAGE.UNEXPECTED);
+      }
+    },
+    []
+  );
 };

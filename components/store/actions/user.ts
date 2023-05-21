@@ -5,22 +5,23 @@ import { getIpfsLink } from 'utils/pinataHelper';
 import { request } from 'utils';
 
 export const uploadData = createAppAsyncThunk<
-  string,
+  { link: string; meta: Record<string, any> },
   {
     data: Record<string, any>;
-    getSignedData: (account: string) => Promise<string>;
-    successText?: string
+    getSignedData?: (account: string) => Promise<string>;
+    signature?: string;
+    successText?: string;
   }
 >('user/uploadData', async (payload, { getState }) => {
-  const { data, getSignedData, successText = '' } = payload;
+  const { data, getSignedData, successText = '', signature } = payload;
   const {
     user: { account },
   } = getState();
 
-  const signature = await getSignedData(account);
+  const _signature = !signature ? await getSignedData(account) : signature;
   const promise = request.post('/api/apply', {
     address: account,
-    signature,
+    signature: _signature,
     data,
   });
 
@@ -29,8 +30,9 @@ export const uploadData = createAppAsyncThunk<
     success: successText,
     error: 'Metadata upload error',
   });
+  const { link, meta } = res.data;
 
-  return getIpfsLink(res.data);
+  return { link: getIpfsLink(link), meta };
 });
 
 export const uploadFileData = createAppAsyncThunk<

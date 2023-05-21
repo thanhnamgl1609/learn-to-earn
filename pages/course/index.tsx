@@ -1,19 +1,17 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 
-import { Course } from '@_types/school';
+import { CourseEntity } from '@_types/models/entities';
 import CONST from '@config/constants.json';
 import Routes from '@config/routes.json';
-import { useCourseList } from '@hooks/web3';
 import { Box, SelectField } from '@molecules';
 import { Breadcrumb, Table } from '@organisms';
 import { BaseLayout } from '@templates';
 import { useCourseListApi } from '@hooks/api';
-import { Select } from '@atoms';
 import { useInputTextChange } from '@hooks/form';
 
 type ActionColumnsProps = {
-  item: Course;
+  item: CourseEntity;
 };
 
 const { KNOWLEDGE_BLOCKS } = CONST;
@@ -38,9 +36,9 @@ const ActionColumns = ({ item }: ActionColumnsProps) => (
   <div>
     <Link
       href={Routes.courseDetail.name.replace(':id', item.id.toString())}
-      className="bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80"
+      className="block min-w-[70px] text-center bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80"
     >
-      View
+      Chi tiết
     </Link>
   </div>
 );
@@ -48,18 +46,18 @@ const ActionColumns = ({ item }: ActionColumnsProps) => (
 const tableHeaders = [
   {
     field: 'id',
-    name: 'Course ID',
+    name: 'ID môn học',
   },
   {
-    field: 'meta.name',
-    name: 'Course Name',
-  },
-  {
-    field: 'prevCourseId',
-    name: 'Compulsory Course',
+    field: 'courseCode',
+    name: 'Mã môn học',
     custom: ({ item }: ActionColumnsProps) => (
-      <p>{item.prevCourse ? item.prevCourse.meta?.name || 'ERROR' : 'None'}</p>
+      <Link href={item.chainURI ?? ''}>{item.courseCode}</Link>
     ),
+  },
+  {
+    field: 'name',
+    name: 'Tên môn học',
   },
   {
     field: 'knowledgeBlockId',
@@ -69,18 +67,25 @@ const tableHeaders = [
     ),
   },
   {
+    field: 'prevCourseId',
+    name: 'Môn học tiên quyết',
+    custom: ({ item }: ActionColumnsProps) => (
+      <p>{item.prevCourse?.name ?? 'Không có'}</p>
+    ),
+  },
+  {
+    field: 'credits',
+    name: 'Tín chỉ',
+  },
+  {
     name: 'Action',
     custom: ActionColumns,
   },
 ];
 
 const CourseList = () => {
-  const {
-    courseList: { data },
-  } = useCourseList();
   const [query, setQuery] = useState({});
-  const { data: list } = useCourseListApi(query);
-  console.log("🚀 ~ file: index.tsx:83 ~ CourseList ~ result:", list)
+  const { data } = useCourseListApi(query);
   const onSelectChange = useInputTextChange(setQuery);
 
   const tableItems = data || [];

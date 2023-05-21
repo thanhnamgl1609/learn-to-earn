@@ -11,7 +11,33 @@ export const getAll = (query?: CourseQuery, transaction?: Transaction) => {
     $equal: ['knowledgeBlockId'],
   });
 
-  return db.courses.findAll({ where: condition, transaction });
+  return db.courses.findAll({
+    where: condition,
+    include: [
+      {
+        model: db.courses,
+        as: 'prevCourse',
+      },
+    ],
+    transaction,
+  });
+};
+
+export const get = (query?: CourseQuery, transaction?: Transaction) => {
+  const condition = generateCondition(query, {
+    $equal: ['id'],
+  });
+
+  return db.courses.findOne({
+    where: condition,
+    include: [
+      {
+        model: db.courses,
+        as: 'prevCourse',
+      },
+    ],
+    transaction,
+  });
 };
 
 export const createCourse = (course: CreateCourseInput, t?: Transaction) =>

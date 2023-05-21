@@ -1,8 +1,12 @@
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
+import { CourseEntity } from '@_types/models/entities';
 import CONST from '@config/constants.json';
 import ROUTES from '@config/routes.json';
-import { useCourseDetail } from '@hooks/web3';
+import { useInputTextChange, useSelectOptions } from '@hooks/form';
+import { useCourseDetailApi, useCourseListApi } from '@hooks/api';
+import { useKnowledgeBlocks } from '@hooks/common';
 import { BaseLayout, CourseDetail } from '@templates';
 import { Breadcrumb } from '@organisms';
 import { Box } from '@molecules';
@@ -10,15 +14,17 @@ import { Heading } from '@atoms';
 
 const { KNOWLEDGE_BLOCKS } = CONST;
 
-const createDefaultCourse = () => ({
-  id: 0,
-  prevCourse: {
-    meta: { name: '' },
-  },
+const createDefaultCourse = (): Partial<CourseEntity> => ({
   prevCourseId: 0,
+  courseCode: '',
   knowledgeBlockId: 1,
   name: '',
-  credits: 0,
+  credits: 4,
+  description: '',
+  isRequired: false,
+  theoryLessons: 40,
+  practiceLessons: 0,
+  exerciseLessons: 0,
 });
 
 const CourseDetailPage = () => {
@@ -27,31 +33,15 @@ const CourseDetailPage = () => {
   const id = parseInt(qid as string);
   if (!id || Number.isNaN(id)) return null;
 
-  const {
-    courseDetail: { data, isLoading },
-  } = useCourseDetail({ id });
-  const defaultData = isLoading
-    ? createDefaultCourse()
-    : { ...data, ...data?.meta };
-  const { prevCourse, prevCourseId, knowledgeBlockId } = defaultData;
-  const knowledgeBlock = Object.values(KNOWLEDGE_BLOCKS).find(
-    ({ id }) => id === knowledgeBlockId
-  );
-  const courses = [
-    {
-      label:
-        prevCourseId > 0 && !isLoading
-          ? prevCourse?.meta?.name || 'error'
-          : 'None',
-      value: prevCourseId || 0,
-    },
-  ];
-  const knowledgeBlocks = [
-    {
-      label: knowledgeBlock?.name || 'error',
-      value: knowledgeBlock?.id || 0,
-    },
-  ];
+  const { data: courses } = useCourseListApi();
+  const { knowledgeBlockOptions } = useKnowledgeBlocks();
+  const courseOptions = useSelectOptions(courses, {
+    noSelectLabel: 'Không có môn tiên quyết',
+  });
+
+  const [formData, setFormData] = useState(createDefaultCourse());
+  const { data } = useCourseDetailApi(id);
+  const onInputChange = useInputTextChange(setFormData);
 
   const links = [
     {
@@ -67,16 +57,21 @@ const CourseDetailPage = () => {
     },
   ];
 
+  useEffect(() => {
+    if (data) setFormData(data);
+  }, [data]);
+
   return (
     <BaseLayout containerClassName="max-w-[640px]">
       <Breadcrumb links={links} />
       <Box autoLayout>
-        <Heading>Course #{defaultData.id}</Heading>
+        <Heading>Course #{formData.id}</Heading>
         <CourseDetail
-          formState={defaultData}
-          courses={courses}
-          knowledgeBlocks={knowledgeBlocks}
-          disabled
+          formState={formData}
+          courses={courseOptions}
+          knowledgeBlocks={knowledgeBlockOptions}
+          onInputChange={onInputChange}
+          edit
         />
       </Box>
     </BaseLayout>

@@ -8,3 +8,4 @@ export { useEditRegisterTime } from './useEditRegisterTime';
 export { useCreateClass } from './useCreateClass';
 export { useRegisterClass } from './useRegisterClass';
 export { useAuthRequest } from './useAuthRequest';
+export { useKnowledgeBlocks } from './useKnowledgeBlocks';

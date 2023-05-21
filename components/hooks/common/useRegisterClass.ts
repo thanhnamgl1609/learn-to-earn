@@ -40,7 +40,7 @@ export const useRegisterClass = () => {
       },
     };
 
-    const link = await dispatch(
+    const { link } = await dispatch(
       uploadData({
         data,
         getSignedData,

@@ -1,1 +1,2 @@
-export { useCourseList as useCourseListApi } from './useCourseList';
+export * from './courses';
+export * from './users';

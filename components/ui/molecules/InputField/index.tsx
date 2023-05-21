@@ -1,4 +1,4 @@
-import { ChangeEvent, InputHTMLAttributes, memo, useMemo } from 'react';
+import { InputHTMLAttributes, memo, useMemo } from 'react';
 import { Input } from '@atoms';
 
 type Props = {

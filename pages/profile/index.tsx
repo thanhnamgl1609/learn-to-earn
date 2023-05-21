@@ -12,7 +12,6 @@ import { TeacherProfile, StudentProfile } from '@templates';
 
 const { ROLES } = CONST;
 
-
 const Profile: NextPage = () => {
   const nftIdentity = useSelector(selectCurrentNftIdentity);
   const { roleType: role } = useSelector(selectUser);

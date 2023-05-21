@@ -11,6 +11,7 @@ module.exports = {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
+          autoIncrement: true,
         },
         onChainId: {
           type: Sequelize.STRING(8),

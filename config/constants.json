@@ -14,7 +14,8 @@
   "UPLOAD_TARGET": {
     "REGISTRATION": "registration",
     "CREATE_COURSE": "create_course",
-    "CREATE_CLASS": "create_class"
+    "CREATE_CLASS": "create_class",
+    "APPLY_REGISTRATION": "apply_registration"
   },
   "ROLES": {
     "STUDENT": 0,
@@ -45,22 +46,22 @@
     "GENERAL": {
       "id": 1,
       "credits": 56,
-      "name": "General"
+      "name": "Kiến thức giáo dục đại cương"
     },
     "FOUNDATION": {
       "id": 2,
       "credits": 38,
-      "name": "Foundation"
+      "name": "Kiến thức cơ sở ngành"
     },
     "SPECIALIZED": {
       "id": 3,
       "credits": 34,
-      "name": "Specialized"
+      "name": "Kiến thức chuyên ngành"
     },
     "GRADUATION": {
       "id": 4,
       "credits": 10,
-      "name": "Graduation"
+      "name": "Kiến thức tốt nghiệp"
     }
   }
 }

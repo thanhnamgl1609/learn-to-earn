@@ -1,3 +1,7 @@
 export type CourseQuery = {
-  knowledgeBlockId?: number;
-}
+  knowledgeBlockId?: number | string;
+};
+
+export type CourseDetailQuery = {
+  id?: number;
+};

@@ -10,7 +10,12 @@ import { formatRegistrationInfoResponses } from './formatter';
 type GrantParams = {
   onSuccess?: () => {};
   onError?: (error: Error) => {};
-} & RegistrationInfo & { expiredAt: string };
+} & {
+  applicant: string;
+  role: number;
+  expiredAt: string;
+  documentURI: string;
+};
 
 type RejectParams = {
   onSuccess?: () => {};

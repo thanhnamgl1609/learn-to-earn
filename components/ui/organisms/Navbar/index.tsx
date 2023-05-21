@@ -37,7 +37,7 @@ function Navbar() {
   const { account } = useAccount();
   const { network } = useNetwork();
   const dispatch = useAppDispatch();
-  const { roleType: role } = useAppSelector(selectUser);
+  const { roleType: role, detail } = useAppSelector(selectUser);
 
   const navItems = useMemo(() => (role || role === 0 ? navigation[role] : []), [role]);
   const onSignOut = () => {
@@ -103,7 +103,7 @@ function Navbar() {
                 </div>
 
                 {account.data && (
-                  <WalletBar role={role} account={account.data} />
+                  <WalletBar role={role} account={account.data} detail={detail} />
                 )}
 
                 {role !== ROLES.COUNCIL && (

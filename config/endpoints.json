@@ -1,4 +1,6 @@
 {
-  "signIn": "/api/v1/sign",
+  "userDetail": "/api/v1/users/detail",
+  "registration": "/api/v1/users/detail",
+  "sign": "/api/v1/sign",
   "courses": "/api/v1/courses"
 }

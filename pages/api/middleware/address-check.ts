@@ -16,14 +16,6 @@ export default async (
       return reject(createError(400, 'Lack of signature'));
     }
     const message = req.session.get('message-session');
-    // const provider = new ethers.providers.JsonRpcProvider(
-    //   'http://127.0.0.1:7545'
-    // );
-    // const contract = new ethers.Contract(
-    //   contractAddress,
-    //   abi,
-    //   provider.getSigner()
-    // );
 
     let nonce: string | Buffer =
       '\x19Ethereum Signed Message:\n' +

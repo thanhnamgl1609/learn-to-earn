@@ -11,6 +11,13 @@ module.exports = {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
+          autoIncrement: true,
+        },
+        profileImage: {
+          type: Sequelize.STRING,
+        },
+        fullName: {
+          type: Sequelize.STRING,
         },
         tokenId: {
           type: Sequelize.INTEGER,
@@ -47,7 +54,7 @@ module.exports = {
         },
         status: {
           type: Sequelize.INTEGER,
-          allowNull: false,
+          defaultValue: 1,
         },
         registerAddress: {
           type: Sequelize.STRING,
@@ -56,6 +63,10 @@ module.exports = {
         expiredAt: {
           type: Sequelize.DATE,
           allowNull: false,
+        },
+        registerURI: {
+          type: Sequelize.STRING,
+          defaultValue: '',
         },
         chainURI: {
           type: Sequelize.STRING,

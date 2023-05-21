@@ -43,9 +43,12 @@ export const FormNftIdentityDetail: FC<Props> = memo(
     );
 
     const onInputChange = useInputTextChange(setFormState);
-    const grantNftIdentity = useGrantNftIdentity(formState);
+    const grantNftIdentity = useGrantNftIdentity();
 
-    const onGrant = useFormSubmit(grantNftIdentity, [grantNftIdentity]);
+    const onGrant = useFormSubmit(
+      () => grantNftIdentity(formState),
+      [grantNftIdentity]
+    );
 
     return (
       <Modal

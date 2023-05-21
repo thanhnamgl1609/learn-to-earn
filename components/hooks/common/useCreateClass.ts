@@ -52,7 +52,7 @@ export const useCreateClass = () => {
 
       const course = findById(courses, formState.courseId);
       const teacher = findById(teachers, formState.teacherTokenId, 'tokenId');
-      const uri = await dispatch(
+      const { link: uri } = await dispatch(
         uploadData({
           data: {
             target: UPLOAD_TARGET.CREATE_CLASS,

@@ -7,18 +7,14 @@ const request = axios.create({
 });
 
 const makeRequest =
-  ({ method, data = undefined }) =>
-  async ([url, query]) => {
+  ({ method, data = undefined } = { method: 'GET', data: undefined }) =>
+  async ([url, query]: [string, Record<string, any>] | [string]) => {
     const options = {
       url,
       method,
     };
-    if (method === 'get') {
-      Object.assign(options, data ? { params: data } : {});
-    } else {
-      Object.assign(options, { data } || {});
-      Object.assign(options, { params: query } || {});
-    }
+    Object.assign(options, query ? { params: query } : {});
+    Object.assign(options, { data });
     const { data: response } = await request(options);
     return response;
   };

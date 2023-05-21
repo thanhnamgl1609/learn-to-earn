@@ -11,6 +11,7 @@ module.exports = {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
+          autoIncrement: true,
         },
         knowledgeBlockId: {
           type: Sequelize.INTEGER,
@@ -64,6 +65,9 @@ module.exports = {
           type: Sequelize.INTEGER,
           defaultValue: 0,
         },
+        // roadMapURI: {
+        //   type: Sequelize.STRING,
+        // },
         chainURI: {
           type: Sequelize.STRING,
         },

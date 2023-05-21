@@ -15,6 +15,7 @@ import {
 import { request } from 'utils';
 import { logger } from 'utils';
 import { z } from 'zod';
+import { usersRepo } from 'domain/repositories';
 
 const { ROLES, UPLOAD_TARGET } = CONST;
 const { METHOD } = REQUEST_CONST;
@@ -30,7 +31,13 @@ export default withSession(
 
         const { body } = req;
         const { target, ...rawData } = body.data;
-        const pinataContent = validate(target, rawData);
+        const {
+          pinataContent,
+          meta = null,
+        }: {
+          pinataContent: Record<string, any>;
+          meta?: Record<string, any> | null;
+        } = await validate(target, rawData);
         if (!pinataContent) return res.status(400).json({ message: 'invalid' });
 
         const jsonRes = await request.post(
@@ -49,7 +56,10 @@ export default withSession(
           }
         );
 
-        return res.status(200).json(jsonRes.data);
+        return res.status(200).json({
+          link: jsonRes.data,
+          meta,
+        });
       } catch (e) {
         logger(e);
         return res.status(422).json({ message: 'cannot create json' });
@@ -58,8 +68,8 @@ export default withSession(
   }
 );
 
-const validate = (target?: string, data?: Record<string, any>) => {
-  if (!target) return data;
+const validate = async (target?: string, data?: Record<string, any>) => {
+  if (!target) return { pinataContent: data };
 
   switch (target) {
     case UPLOAD_TARGET.REGISTRATION:
@@ -68,13 +78,15 @@ const validate = (target?: string, data?: Record<string, any>) => {
       return validateForm(CREATE_COURSE_META, data);
     case UPLOAD_TARGET.CREATE_CLASS:
       return validateForm(CREATE_CLASS_META, data);
+    case UPLOAD_TARGET.APPLY_REGISTRATION:
+      return validateApplyRegistration(data);
     default:
       return null;
   }
 };
 
 const validateRegistration = (rawData?: Record<string, any>) => {
-  if (!rawData) return null;
+  if (!rawData) return { pinataContent: null };
   const { role, ...data } = rawData;
 
   switch (role) {
@@ -82,15 +94,29 @@ const validateRegistration = (rawData?: Record<string, any>) => {
     case ROLES.STUDENT:
       return validateForm(APPLY_VALIDATOR, data);
     default:
-      return null;
+      return { pinataContent: null };
   }
 };
 
 const validateForm = (validator: z.ZodType, data: Record<string, any>) => {
   try {
-    return validator.parse(data);
+    return { pinataContent: validator.parse(data) };
   } catch (e) {
     logger(e instanceof z.ZodError ? e.issues : e.message);
     return null;
   }
+};
+
+const validateApplyRegistration = async (rawData?: Record<string, any>) => {
+  const memberCode = await usersRepo.getMemberCode(rawData.role);
+
+  return {
+    pinataContent: {
+      ...rawData,
+      memberCode: memberCode,
+    },
+    meta: {
+      memberCode,
+    },
+  };
 };
