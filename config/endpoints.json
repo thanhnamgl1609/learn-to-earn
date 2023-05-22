@@ -2,5 +2,7 @@
   "userDetail": "/api/v1/users/detail",
   "registration": "/api/v1/users/detail",
   "sign": "/api/v1/sign",
-  "courses": "/api/v1/courses"
+  "signIn": "/api/v1/sign",
+  "courses": "/api/v1/courses",
+  "syncCourse": "/api/v1/sync/course"
 }
