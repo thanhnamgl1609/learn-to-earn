@@ -1,4 +1,5 @@
 {
   "signIn": "/api/v1/sign",
-  "courses": "/api/v1/courses"
+  "courses": "/api/v1/courses",
+  "syncCourse": "/api/v1/sync/course"
 }

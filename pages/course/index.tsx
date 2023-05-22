@@ -80,7 +80,6 @@ const CourseList = () => {
   } = useCourseList();
   const [query, setQuery] = useState({});
   const { data: list } = useCourseListApi(query);
-  console.log("🚀 ~ file: index.tsx:83 ~ CourseList ~ result:", list)
   const onSelectChange = useInputTextChange(setQuery);
 
   const tableItems = data || [];
