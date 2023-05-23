@@ -9,23 +9,27 @@ type SelectOption = {
 type ClassDetailProps = {
   formState: {
     courseId: number | string;
+    startAt: string;
     completeAt: string;
     maxSize: number | string;
     teacherTokenId: number | string;
+    semesterId: number | string;
     size?: number | string;
   };
   onInputChange?: (e: ChangeEvent) => void;
   courses: SelectOption[];
   teachers: SelectOption[];
-  disabled?: boolean;
+  semesterOptions: SelectOption[];
+  edit?: boolean;
 };
 
 export const FormClassDetail: FC<ClassDetailProps> = ({
   formState,
+  semesterOptions,
   onInputChange,
   courses,
   teachers,
-  disabled = false,
+  edit = false,
 }) => (
   <>
     <SelectField
@@ -34,7 +38,7 @@ export const FormClassDetail: FC<ClassDetailProps> = ({
       options={courses}
       onChange={onInputChange}
       value={formState.courseId}
-      disabled={disabled}
+      disabled={edit}
     />
     <SelectField
       label="Giảng viên"
@@ -42,22 +46,38 @@ export const FormClassDetail: FC<ClassDetailProps> = ({
       options={teachers}
       onChange={onInputChange}
       value={formState.teacherTokenId}
-      disabled={disabled}
+      disabled={edit}
+    />
+    <InputField
+      label="Ngày bắt đầu"
+      name="startAt"
+      onChange={onInputChange}
+      type="date"
+      value={formState.startAt}
+      readOnly={edit}
     />
     <InputField
       label="Ngày kết thúc"
       name="completeAt"
       onChange={onInputChange}
-      type="datetime-local"
+      type="date"
       value={formState.completeAt}
-      readOnly={disabled}
+      readOnly={edit}
     />
     <InputField
       label="Số lượng sinh viên tối đa"
       name="maxSize"
       value={formState.maxSize}
       onChange={onInputChange}
-      disabled={disabled}
+      disabled={edit}
+    />
+    <SelectField
+      label="Học kỳ"
+      name="semesterId"
+      options={semesterOptions}
+      value={formState.semesterId}
+      onChange={onInputChange}
+      disabled={edit}
     />
     {formState.size && (
       <InputField
@@ -65,7 +85,7 @@ export const FormClassDetail: FC<ClassDetailProps> = ({
         name="size"
         value={formState.size}
         onChange={onInputChange}
-        disabled={disabled}
+        disabled
       />
     )}
   </>

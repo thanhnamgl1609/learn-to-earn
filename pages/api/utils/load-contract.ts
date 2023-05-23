@@ -42,7 +42,7 @@ export const loadContract = (
     provider
   );
 
-  return contract;
+  return contract.connect(provider.getSigner());
 };
 
 export const contract: {

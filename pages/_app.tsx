@@ -11,14 +11,14 @@ import { store } from '@store';
 
 const App = (props: AppProps) => {
   return (
-    <Web3Provider>
-      <Provider store={store}>
+    <Provider store={store}>
+      <Web3Provider>
         <ConfirmDialog />
         <LoadingPage />
         <ToastContainer />
         <AuthWrapper {...props} />
-      </Provider>
-    </Web3Provider>
+      </Web3Provider>
+    </Provider>
   );
 };
 

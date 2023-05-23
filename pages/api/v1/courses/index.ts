@@ -3,6 +3,7 @@ import REQUEST_CONST from 'config/request.json';
 import { coursesRepo } from 'domain/repositories';
 import { run, withSession } from '@api/utils';
 import addressCheck from '@api/middleware/address-check';
+import { isOwner } from '@api/middleware';
 
 const { METHOD } = REQUEST_CONST;
 
@@ -12,13 +13,16 @@ const get: IHandler = async (req, res) => {
   res.sendData(200, result);
 };
 
-const post: IHandler = async (rq, res) => {
-  res.sendData(200, {});
+const post: IHandler = async (req, res) => {
+  const { data } = req.body;
+  const result = await coursesRepo.upsert(data);
+
+  res.sendData(200, result);
 };
 
 export default withSession(
   run({
     [METHOD.GET]: get,
-    [METHOD.POST]: [addressCheck, post],
+    [METHOD.POST]: [addressCheck, isOwner, post],
   })
 );

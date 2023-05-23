@@ -32,7 +32,7 @@ export const useGrantNftIdentity = () => {
       const signature = await getSignedData();
       const { link, meta: uploadMeta } = await dispatch(
         uploadData({
-          data: { ...metadata, target: UPLOAD_TARGET.APPLY_REGISTRATION },
+          data: { role, ...metadata, target: UPLOAD_TARGET.APPLY_REGISTRATION },
           signature,
           successText: 'Metadata is uploaded! Please wait for sending request!',
         })
@@ -43,7 +43,7 @@ export const useGrantNftIdentity = () => {
         expiredAt,
         documentURI: link,
       });
-      const detail = makeRequest({
+      await makeRequest({
         method: 'POST',
         data: {
           address: account,
@@ -59,7 +59,7 @@ export const useGrantNftIdentity = () => {
         },
       })([endpoints.userDetail]);
 
-      router.push(ROUTES.manageRegistration.name);
+      router.push(ROUTES.manageRegistration.name + `?r=${role}`);
     },
     [account]
   );

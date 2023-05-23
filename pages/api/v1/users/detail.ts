@@ -7,6 +7,7 @@ import { ENV } from '@config/env';
 import { contract } from '@api/utils/load-contract';
 import { addressCheck, isOwner } from '@api/middleware';
 import { formatNftIdentity } from '@hooks/web3/formatter';
+import { TIMEOUT } from 'utils';
 
 const { METHOD } = REQUEST_CONST;
 
@@ -36,7 +37,10 @@ const post: IHandler = async (req, res) => {
         from: account,
       }
     );
-  const nftIdentity = await formatNftIdentity(nftIdentityResponse);
+  const nftIdentity = await formatNftIdentity(nftIdentityResponse, {
+    useProxy: false,
+    timeout: TIMEOUT / 2,
+  });
   const result = await usersRepo.upsert(nftIdentity, meta);
 
   res.sendData(200, result);

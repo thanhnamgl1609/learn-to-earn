@@ -9,6 +9,7 @@
   },
   "DATE_TIME": {
     "DATE": "DD-MM-YYYY",
+    "SLASH_DATE": "DD/MM/YYYY",
     "DATETIME": "DD-MM-YYYY HH:mm"
   },
   "UPLOAD_TARGET": {

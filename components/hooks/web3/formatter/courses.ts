@@ -1,17 +1,22 @@
-import { request } from 'utils';
+import { request, TIMEOUT } from 'utils';
 
 import Api from 'config/api.json';
 import { CourseResponse } from '@_types/contracts/NftSchool';
 import { Course } from '@_types/school';
 
-export const formatCourse = async ({
-  id,
-  prevCourseId,
-  knowledgeBlockId,
-  credits,
-  status,
-  uri,
-}: CourseResponse): Promise<Course> => {
+export const formatCourse = async (
+  { id, prevCourseId, knowledgeBlockId, credits, status, uri }: CourseResponse,
+  {
+    useProxy = true,
+    timeout = TIMEOUT,
+  }: {
+    useProxy: boolean;
+    timeout?: number;
+  } = {
+    useProxy: true,
+    timeout: TIMEOUT,
+  }
+): Promise<Course> => {
   const coreCourse = {
     id: id.toNumber(),
     prevCourseId: prevCourseId.toNumber(),
@@ -20,11 +25,14 @@ export const formatCourse = async ({
     status: status.toNumber(),
   };
   try {
-    const { data: meta } = await request.get(Api.proxy, {
-      params: {
-        l: uri,
-      },
-    });
+    const { data: meta } = useProxy
+      ? await request.get(Api.proxy, {
+          params: {
+            l: uri,
+            timeout,
+          },
+        })
+      : await request.get(uri);
 
     return {
       ...coreCourse,

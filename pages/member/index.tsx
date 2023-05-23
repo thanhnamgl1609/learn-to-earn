@@ -10,6 +10,7 @@ import { BaseLayout } from '@templates';
 import { Table, Breadcrumb } from '@organisms';
 import { Box } from '@molecules';
 import { formatDate } from 'utils';
+import { useUserListApi } from '@hooks/api';
 
 type ActionColumnsProps = {
   item: Omit<NftIdentity, 'tokenId'> & { id: number };
@@ -34,36 +35,42 @@ const ActionColumns = ({ item }: ActionColumnsProps) => (
   </div>
 );
 
-const tableHeaders = [
-  {
-    field: 'id',
-    name: 'Token ID',
-  },
-  {
-    field: 'meta.fullName',
-    name: 'Họ và tên',
-  },
-  {
-    field: 'meta.expiredAt',
-    name: 'Ngày hết hạn',
-    custom: ({ item }: ActionColumnsProps) => (
-      <p className={item.isExpired && 'font-bold text-red-600'}>{formatDate(item.expiredAt)}</p>
-    ),
-  },
-  // {
-  //   name: 'Action',
-  //   custom: ActionColumns,
-  // },
-];
-
 const MemberList = () => {
   const router = useRouter();
   const { r }: RouteQuery = router.query;
   const currentRole = parseInt(r);
 
-  const {
-    memberList: { data: members },
-  } = useMemberList({ role: currentRole });
+  const { data: members } = useUserListApi({ role: currentRole });
+
+  const tableHeaders = useMemo(
+    () => [
+      {
+        field: 'id',
+        name: 'Token ID',
+      },
+      {
+        field: 'memberCode',
+        name: currentRole === ROLES.TEACHER ? 'Mã nhân viên' : 'Mã sinh viên',
+      },
+      {
+        field: 'fullName',
+        name: 'Họ và tên',
+      },
+      {
+        name: 'Ngày hết hạn',
+        custom: ({ item }: ActionColumnsProps) => (
+          <p className={item.isExpired && 'font-bold text-red-600'}>
+            {formatDate(item.expiredAt)}
+          </p>
+        ),
+      },
+      // {
+      //   name: 'Action',
+      //   custom: ActionColumns,
+      // },
+    ],
+    [currentRole]
+  );
 
   const displayMembers =
     members?.map(({ tokenId, ...otherInfo }) => ({

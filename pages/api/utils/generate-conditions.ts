@@ -34,7 +34,7 @@ export const generateCondition = (
   const { transformOptions } = options || {};
   if (transformOptions) value = transform(data, transformOptions);
 
-  return generate(data, conditions);
+  return generate(value, conditions);
 };
 
 const generate = (data: Record<string, any>, conditions: ConditionParams) => {

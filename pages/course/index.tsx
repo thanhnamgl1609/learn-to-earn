@@ -9,6 +9,8 @@ import { Breadcrumb, Table } from '@organisms';
 import { BaseLayout } from '@templates';
 import { useCourseListApi } from '@hooks/api';
 import { useInputTextChange } from '@hooks/form';
+import { Button } from '@atoms';
+import { useSyncCourse } from '@hooks/common/useSyncCourse';
 
 type ActionColumnsProps = {
   item: CourseEntity;
@@ -86,6 +88,7 @@ const tableHeaders = [
 const CourseList = () => {
   const [query, setQuery] = useState({});
   const { data } = useCourseListApi(query);
+  const syncCourse = useSyncCourse();
   const onSelectChange = useInputTextChange(setQuery);
 
   const tableItems = data || [];
@@ -104,13 +107,22 @@ const CourseList = () => {
     <BaseLayout>
       <Breadcrumb links={breadcrumbs} />
       <Box autoLayout>
-        <SelectField
-          containerClassName="inline-block"
-          label="Khối kiến thức"
-          options={knowledgeBlockOptions}
-          name="knowledgeBlockId"
-          onChange={onSelectChange}
-        />
+        <div className="flex">
+          <SelectField
+            label="Khối kiến thức"
+            options={knowledgeBlockOptions}
+            name="knowledgeBlockId"
+            onChange={onSelectChange}
+          />
+
+          <Button
+            className="ml-auto px-4 h-[31px] mt-auto bg-indigo-900 text-white text-sm"
+            size="S"
+            onClick={syncCourse}
+          >
+            Sync
+          </Button>
+        </div>
         <Table
           title="Danh sách môn học"
           data={tableItems}

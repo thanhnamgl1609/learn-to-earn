@@ -1,48 +1,61 @@
-import { parseBigNumber, parseBigNumberFields, parseDate, request } from 'utils';
+import {
+  parseBigNumber,
+  parseBigNumberFields,
+  parseDate,
+  request,
+  TIMEOUT,
+} from 'utils';
 
 import Api from 'config/api.json';
 import { ClassresponseResponse } from '@_types/contracts/NftSchool';
-import { Class } from '@_types/school';
+import { Class, ClassCore, ClassMeta } from '@_types/school';
 
-const defaultMeta = {
-  course: {
-    id: 0,
-    name: '',
-  },
-  teacher: {
-    tokenId: 0,
-    name: '',
-  },
+const defaultMeta: ClassMeta = {
+  semesterId: 0,
+  startAt: new Date(),
+  completeAt: new Date(),
+  size: 0,
+  courseCode: '',
+  courseName: '',
+  teacherTokenId: 0,
+  teacherName: '',
 };
 
-export const formatClassResponse = async ({
-  '0': classResponse,
-  '1': numberOfStudents,
-}: ClassresponseResponse): Promise<Class> => {
+export const formatClassResponse = async (
+  { '0': classResponse, '1': numberOfStudents }: ClassresponseResponse,
+  {
+    useProxy = true,
+    timeout = TIMEOUT,
+  }: {
+    useProxy: boolean;
+    timeout?: number;
+  } = {
+    useProxy: true,
+    timeout: TIMEOUT,
+  }
+): Promise<Class> => {
   const {
     id,
     courseId,
     knowledgeBlockId,
     prevCourseId,
     credits,
-    registeredStartAt,
-    registeredEndAt,
     completeAt,
     maxSize,
     teacherTokenId,
-    uri,
+    semester,
   } = parseBigNumberFields(classResponse, [
     'id',
     'courseId',
     'knowledgeBlockId',
     'prevCourseId',
     'credits',
-    'registeredStartAt',
-    'registeredEndAt',
     'completeAt',
     'maxSize',
+    'semester',
     'teacherTokenId',
   ]);
+  const { uri } = classResponse;
 
   const coreClass = {
     id,
@@ -50,23 +63,29 @@ export const formatClassResponse = async ({
     knowledgeBlockId,
     prevCourseId,
     credits,
-    registeredStartAt: parseDate(registeredStartAt),
-    registeredEndAt: parseDate(registeredEndAt),
     completeAt: parseDate(completeAt),
     maxSize,
     teacherTokenId,
+    semester,
     numberOfStudents: parseBigNumber(numberOfStudents),
+    uri,
   };
   try {
-    const { data: meta } = await request.get(Api.proxy, {
-      params: {
-        l: uri,
-      },
-    });
+    const { data: meta } = useProxy
+      ? await request.get(Api.proxy, {
+          params: {
+            l: uri,
+          },
+          timeout,
+        })
+      : await request.get(uri);
 
     return {
       ...coreClass,
-      meta,
+      meta: {
+        ...meta,
+        startAt: new Date(meta.startAt),
+      },
     };
   } catch (e) {
     return {

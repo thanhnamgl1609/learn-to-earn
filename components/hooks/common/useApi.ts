@@ -14,6 +14,7 @@ export const useApi = <D>(action: (...params) => Promise<D>, deps?: any[]) => {
       dispatch(loading());
       const result = await action(...params);
 
+      dispatch(unloading());
       return result;
     } catch (e) {
       logger(e, { method: 'error' });

@@ -48,18 +48,6 @@ export const ClassDetail: FC<ClassDetailProps> = ({ classDetail }) => (
       readOnly
     />
     <InputField
-      label="Ngày bắt đầu đăng ký"
-      name="registeredStartAt"
-      value={formatDate(classDetail.registeredStartAt)}
-      readOnly
-    />
-    <InputField
-      label="Ngày kết thúc đăng ký"
-      name="registeredEndAt"
-      value={formatDate(classDetail.registeredEndAt)}
-      readOnly
-    />
-    <InputField
       label="Ngày kết thúc lớp học"
       name="completeAt"
       value={formatDate(classDetail.completeAt)}

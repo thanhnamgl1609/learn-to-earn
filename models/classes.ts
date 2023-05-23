@@ -21,6 +21,7 @@ export default (sequelize: Sequelize) => {
       maxSize: DataTypes.INTEGER,
       teacherTokenId: DataTypes.INTEGER,
       chainURI: DataTypes.STRING,
+      numberOfStudents: DataTypes.INTEGER,
     },
     {
       sequelize,

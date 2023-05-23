@@ -2,6 +2,13 @@ import { NftIdentityMetaType } from './nftIdentity';
 
 export type CourseMeta = {
   name: string;
+  courseCode: string;
+  status: number;
+  description: string;
+  isRequired: boolean;
+  theoryLessons: number;
+  practiceLessons: number;
+  exerciseLessons: number;
 };
 export type CourseCore = {
   id: number;
@@ -22,14 +29,14 @@ export type RegisterTime = {
 };
 
 export type ClassMeta = {
-  course: {
-    id: number;
-    name: string;
-  };
-  teacher: {
-    tokenId: number;
-    name: string;
-  };
+  semesterId: number;
+  startAt: Date;
+  completeAt: Date;
+  size: number;
+  courseCode: string;
+  courseName: string;
+  teacherTokenId: number;
+  teacherName: string;
 };
 export type ClassCore = {
   id: number;
@@ -38,14 +45,14 @@ export type ClassCore = {
   teacherTokenId: number;
   credits: number;
   courseId: number;
+  semester: number;
   completeAt: Date | null;
   maxSize: number;
-  registeredStartAt: Date | null;
-  registeredEndAt: Date | null;
   numberOfStudents?: number;
 };
 export type Class = {
   meta: ClassMeta;
+  uri?: string;
   isUploading?: boolean;
 } & ClassCore;
 

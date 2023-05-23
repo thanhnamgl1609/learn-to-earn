@@ -1,4 +1,4 @@
-import { logger, request } from 'utils';
+import { logger, request, TIMEOUT } from 'utils';
 import moment from 'moment';
 
 import { NftidentityresponseResponse } from '@_types/contracts/NftIdentities';
@@ -21,8 +21,15 @@ const defaultMeta: NftIdentityMetaType = {
 
 export const formatNftIdentity = async (
   { role, nftIdentity, isExpired, tokenURI }: NftidentityresponseResponse,
-  { useProxy = false } = {
-    useProxy: false,
+  {
+    useProxy = true,
+    timeout = TIMEOUT,
+  }: {
+    useProxy: boolean;
+    timeout?: number;
+  } = {
+    useProxy: true,
+    timeout: TIMEOUT,
   }
 ): Promise<NftIdentity> => {
   const { expiredAt, register, tokenId } = nftIdentity;
@@ -40,6 +47,7 @@ export const formatNftIdentity = async (
           params: {
             l: tokenURI,
           },
+          timeout,
         })
       : await request.get(tokenURI);
 

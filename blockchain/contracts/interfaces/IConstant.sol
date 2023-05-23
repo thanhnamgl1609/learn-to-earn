@@ -44,11 +44,10 @@ interface IConstant {
         uint256 knowledgeBlockId; // courseId - requirementId
         uint256 prevCourseId;
         uint256 credits;
-        uint256 registeredStartAt;
-        uint256 registeredEndAt;
         uint256 completeAt; // end time - editable
         uint256 maxSize;
         uint256 teacherTokenId;
+        uint256 semester;
         string uri;
         /* Metadata:
             - Teacher name - Nft Id?

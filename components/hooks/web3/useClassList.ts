@@ -9,18 +9,24 @@ type UseClassListResponse = {};
 
 export type UseClassListParams = {
   current?: boolean;
-}
+};
 
-type ClassListHookFactory = CryptoHookFactory<Class[], UseClassListResponse, UseClassListParams>;
+type ClassListHookFactory = CryptoHookFactory<
+  Class[],
+  UseClassListResponse,
+  UseClassListParams
+>;
 
 export type UseClassListHook = ReturnType<ClassListHookFactory>;
 
 export const hookFactory: ClassListHookFactory =
   ({ contracts }) =>
-  ({ current } = { current: false}) => {
+  ({ current } = { current: false }) => {
     const getAllClassCaller = useApi(async () => {
-      const caller = current ? contracts!.nftSchool.getCurrentRegisteredClasses : contracts.nftSchool.getAllClasses;
-      const classes = await caller();
+      const caller = current
+        ? contracts!.nftSchool.getCurrentRegisteredClasses()
+        : contracts.nftSchool.getAllClasses();
+      const classes = await caller;
       const result = await formatClassResponses(classes);
 
       return result;
@@ -39,4 +45,3 @@ export const hookFactory: ClassListHookFactory =
       data,
     };
   };
-

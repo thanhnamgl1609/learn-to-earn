@@ -3,63 +3,59 @@ import { useEffect, useState } from 'react';
 import CONST from '@config/constants.json';
 import ROUTES from '@config/routes.json';
 import { formatDate, dateAdd } from 'utils';
-import { useCourseList, useMemberList, useRegisterTime } from '@hooks/web3';
+import { useCourseList, useMemberList } from '@hooks/web3';
 import { useCreateClass } from '@hooks/common';
-import { useFormSubmit, useInputTextChange } from '@hooks/form';
+import {
+  useFormSubmit,
+  useInputTextChange,
+  useSelectOptions,
+} from '@hooks/form';
+import { useCourseListApi, useCurrentYear, useUserListApi } from '@hooks/api';
 import { Breadcrumb, Form } from '@organisms';
 import { BaseLayout, FormClassDetail } from '@templates';
 import { Heading } from '@atoms';
 
-const { ROLES, UI } = CONST;
+const { ROLES, UI, DATE_TIME } = CONST;
 
-const createDefaultState = (
-  { value: courseId } = { value: 0 },
-  { value: teacherTokenId } = { value: 0 },
-  { registerEndAt } = { registerEndAt: new Date() }
-) => ({
-  courseId,
-  completeAt: formatDate(dateAdd(registerEndAt, 1), UI.INPUT_DATETIME_FORMAT),
-  maxSize: 0,
-  teacherTokenId,
+const createDefaultState = () => ({
+  courseId: 0,
+  startAt: formatDate(dateAdd(new Date(), 1, 'M'), UI.INPUT_DATE_FORMAT),
+  completeAt: formatDate(dateAdd(new Date(), 2, 'M'), UI.INPUT_DATE_FORMAT),
+  maxSize: 40,
+  semesterId: 1,
+  teacherTokenId: 0,
 });
 
 const CreateClass = () => {
-  const {
-    courseList: { data: courseList },
-  } = useCourseList();
-  const {
-    memberList: { data: teacherList },
-  } = useMemberList({ role: ROLES.TEACHER });
-  const {
-    registerTime: { data: registerTime },
-  } = useRegisterTime();
-  const courses = [
-    {
-      label: 'Chọn môn học',
-      value: 0,
-    },
-    ...(courseList?.map(({ meta: { name }, id }) => ({
-      label: name,
-      value: id,
-    })) || []),
-  ];
-  const teachers = [
-    {
-      label: 'Chọn giảng viên',
-      value: 0,
-    },
-    ...(teacherList?.map(({ meta: { fullName }, tokenId }) => ({
-      label: fullName,
-      value: tokenId,
-    })) || []),
-  ];
-  const [formState, setFormState] = useState(
-    createDefaultState(courses[0], teachers[0], registerTime)
-  );
+  const { data: courseList } = useCourseListApi();
+  const { data: teacherList } = useUserListApi({ role: ROLES.TEACHER });
+  const { data: semesters } = useCurrentYear();
+  const semesterOptions = useSelectOptions(semesters, {
+    valueField: 'id',
+    customLabel: (item) =>
+      `Học kì ${item.semester} (${formatDate(
+        item.startAt,
+        DATE_TIME.SLASH_DATE
+      )} - ${formatDate(item.endAt, DATE_TIME.SLASH_DATE)})`,
+  });
+  const courses = useSelectOptions(courseList, {
+    labelField: 'name',
+    valueField: 'onChainId',
+    noSelectLabel: 'Chọn môn học',
+  });
+  const teachers = useSelectOptions(teacherList, {
+    labelField: 'fullName',
+    valueField: 'tokenId',
+    noSelectLabel: 'Chọn giảng viên',
+  });
+  const [formState, setFormState] = useState(createDefaultState());
   // filter expired
   const onInputChange = useInputTextChange(setFormState);
   const createClass = useCreateClass();
-  const onSubmit = useFormSubmit(() => createClass(formState), [formState]);
+  const onSubmit = useFormSubmit(
+    () => createClass(formState, courseList, teacherList, semesters),
+    [formState, courseList, teacherList, semesters]
+  );
 
   const links = [
     {
@@ -79,14 +75,11 @@ const CreateClass = () => {
     <BaseLayout containerClassName="max-w-[640px]">
       <Breadcrumb links={links} />
       <Form submitText="Create" onSubmit={onSubmit}>
-        <Heading>
-          Tạo lớp học - Thời gian đăng ký:{' '}
-          {formatDate(registerTime?.registerStartAt)} -{' '}
-          {formatDate(registerTime?.registerEndAt)}
-        </Heading>
+        <Heading>Tạo lớp học</Heading>
 
         <FormClassDetail
           formState={formState}
+          semesterOptions={semesterOptions}
           onInputChange={onInputChange}
           courses={courses}
           teachers={teachers}

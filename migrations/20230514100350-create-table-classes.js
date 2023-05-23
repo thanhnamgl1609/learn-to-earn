@@ -14,7 +14,7 @@ module.exports = {
           autoIncrement: true,
         },
         onChainId: {
-          type: Sequelize.STRING(8),
+          type: Sequelize.INTEGER,
           unique: true,
         },
         courseCode: {
@@ -42,6 +42,10 @@ module.exports = {
           allowNull: false,
         },
         maxSize: {
+          type: Sequelize.INTEGER,
+          defaultValue: 0,
+        },
+        numberOfStudents: {
           type: Sequelize.INTEGER,
           defaultValue: 0,
         },

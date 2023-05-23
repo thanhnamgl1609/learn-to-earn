@@ -77,7 +77,7 @@ const validate = async (target?: string, data?: Record<string, any>) => {
     case UPLOAD_TARGET.CREATE_COURSE:
       return validateForm(CREATE_COURSE_META, data);
     case UPLOAD_TARGET.CREATE_CLASS:
-      return validateForm(CREATE_CLASS_META, data);
+      return { pinataContent: data };
     case UPLOAD_TARGET.APPLY_REGISTRATION:
       return validateApplyRegistration(data);
     default:
@@ -108,11 +108,12 @@ const validateForm = (validator: z.ZodType, data: Record<string, any>) => {
 };
 
 const validateApplyRegistration = async (rawData?: Record<string, any>) => {
-  const memberCode = await usersRepo.getMemberCode(rawData.role);
+  const { role, ...data } = rawData;
+  const memberCode = await usersRepo.getMemberCode(role);
 
   return {
     pinataContent: {
-      ...rawData,
+      ...data,
       memberCode: memberCode,
     },
     meta: {

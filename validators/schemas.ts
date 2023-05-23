@@ -1,5 +1,8 @@
-import { after, sameOrAfter } from 'utils';
 import { z } from 'zod';
+
+import { after, before } from 'utils';
+import { customOptionsWithError } from './custom';
+import { SemesterDetail } from '@_types/api/semester';
 
 export const APPLY_VALIDATOR = z
   .object({
@@ -22,6 +25,16 @@ export const GRANT_OR_REJECT_IDENTITY = z
 
 export const CREATE_COURSE_META = z.object({
   name: z.string().nonempty(),
+  knowledgeBlockId: z.preprocess((v: string) => parseInt(v), z.number()),
+  courseCode: z.string().nonempty(),
+  credits: z.preprocess((v: string) => parseInt(v), z.number()),
+  theoryLessons: z.preprocess((v: string) => parseInt(v), z.number()),
+  practiceLessons: z.preprocess((v: string) => parseInt(v), z.number()),
+  exerciseLessons: z.preprocess((v: string) => parseInt(v), z.number()),
+  description: z.string(),
+  prevCourseId: z
+    .null()
+    .or(z.preprocess((v: string) => parseInt(v), z.number())),
 });
 
 export const CREATE_COURSE = z.object({
@@ -29,12 +42,26 @@ export const CREATE_COURSE = z.object({
   knowledgeBlockId: z.preprocess((v: string) => parseInt(v), z.number()),
   credits: z.preprocess((v: string) => parseInt(v), z.number().positive()),
   name: z.string().nonempty(),
+  description: z.string(),
+  isRequired: z.preprocess(
+    (v: string) => parseInt(v),
+    z.number().min(0).max(1)
+  ),
+  theoryLessons: z.preprocess((v: string) => parseInt(v), z.number()),
+  practiceLessons: z.preprocess((v: string) => parseInt(v), z.number()),
+  exerciseLessons: z.preprocess((v: string) => parseInt(v), z.number()),
 });
 
 export const REGISTER_TIME = z
   .object({
-    registerStartAt: z.preprocess((v: string) => new Date(v), z.date()),
-    registerEndAt: z.preprocess((v: string) => new Date(v), z.date()),
+    registerStartAt: z.preprocess(
+      (v: string) => new Date(v),
+      z.date(customOptionsWithError('Ngày bắt đầu đăng ký không được rỗng'))
+    ),
+    registerEndAt: z.preprocess(
+      (v: string) => new Date(v),
+      z.date(customOptionsWithError('Ngày kết thúc đăng ký không được rỗng'))
+    ),
   })
   .refine(
     ({ registerStartAt, registerEndAt }) =>
@@ -44,15 +71,47 @@ export const REGISTER_TIME = z
     }
   );
 
-export const CREATE_CLASS = z.object({
-  courseId: z.preprocess((v: string) => parseInt(v), z.number().positive()),
-  teacherTokenId: z.preprocess(
-    (v: string) => parseInt(v),
-    z.number().positive()
-  ),
-  maxSize: z.preprocess((v: string) => parseInt(v), z.number().positive()),
-  completeAt: z.preprocess((v: string) => new Date(v), z.date()),
-});
+export const CREATE_CLASS = z
+  .object({
+    courseId: z.preprocess(
+      (v: string) => parseInt(v),
+      z.number().positive('Chọn môn học')
+    ),
+    teacherTokenId: z.preprocess(
+      (v: string) => parseInt(v),
+      z.number().positive('Chọn giảng viên')
+    ),
+    maxSize: z.preprocess(
+      (v: string) => parseInt(v),
+      z
+        .number(customOptionsWithError('Nhập số lương sinh viên tối đa'))
+        .positive('Số lương sinh viên tối đa > 0')
+    ),
+    semesterId: z.preprocess((v: string) => parseInt(v), z.number().positive()),
+    startAt: z.preprocess(
+      (v: string) => new Date(v),
+      z.date(customOptionsWithError('Ngày bắt đầu không được rỗng'))
+    ),
+    completeAt: z.preprocess(
+      (v: string) => new Date(v),
+      z.date(customOptionsWithError('Ngày kết thúc không được rỗng'))
+    ),
+  })
+  .refine(({ completeAt, startAt }) => after(completeAt, startAt), {
+    message: 'Thời gian hoàn thành phải sau thời gian bắt đầu',
+  });
+
+export const EXTEND_CREATE_CLASS = (
+  schema: z.ZodType<Record<string, any>>,
+  semester: SemesterDetail
+) =>
+  schema
+    .refine(({ completeAt }) => before(completeAt, semester.endAt), {
+      message: 'Môn học phải kết thúc trước khi học kì kết thúc',
+    })
+    .refine(({ startAt }) => after(startAt, semester.startAt), {
+      message: 'Môn học phải bắt đầu sau khi học kì bắt đầu',
+    });
 
 export const CREATE_CLASS_META = z.object({
   course: z.object({

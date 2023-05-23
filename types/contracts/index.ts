@@ -1,3 +1,3 @@
-export type { NftIdentities } from './NftIdentities';
-export type { NftSchool } from './NftSchool';
-export type { NftCertificates } from './NftCertificates';
+export type { ContractContext as NftIdentities } from './NftIdentities';
+export type { ContractContext as NftSchool } from './NftSchool';
+export type { ContractContext as NftCertificates } from './NftCertificates';

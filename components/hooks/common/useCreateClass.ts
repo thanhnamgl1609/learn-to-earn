@@ -1,95 +1,82 @@
-import { findById, after } from 'utils';
+import { useRouter } from 'next/router';
+
+import { CourseApi } from '@_types/api/course';
+import { UserDetail } from '@_types/api/user';
+import { findById, makeRequest } from 'utils';
 import CONST from '@config/constants.json';
-import {
-  useCourseList,
-  useMemberList,
-  useRegisterTime,
-  useSchoolActions,
-  useUtilities,
-} from '@hooks/web3';
-import { CREATE_CLASS } from '@validators/schemas';
+import endpoints from 'config/endpoints.json';
+import { useAccount, useSchoolActions, useUtilities } from '@hooks/web3';
+import { CREATE_CLASS, EXTEND_CREATE_CLASS } from '@validators/schemas';
 import { useValidator } from '@hooks/form';
-import { Class } from '@_types/school';
 import { uploadData } from '@store/actions';
 import { useAppDispatch } from '@hooks/stores';
 import { useApi } from './useApi';
-import { useCallback } from 'react';
+import { SemesterDetail } from '@_types/api/semester';
 
-const { UPLOAD_TARGET, ROLES } = CONST;
+const { UPLOAD_TARGET } = CONST;
 
 export const useCreateClass = () => {
   const { getSignedData } = useUtilities();
-  const {
-    courseList: { data: courses },
-  } = useCourseList();
-  const {
-    memberList: { data: teachers },
-  } = useMemberList({ role: ROLES.TEACHER });
-  const {
-    registerTime: { data: registerTime },
-  } = useRegisterTime();
   const dispatch = useAppDispatch();
   const { createClass } = useSchoolActions();
-  const validator = useValidator(
-    CREATE_CLASS.refine(
-      ({ completeAt }) =>
-        after(completeAt, registerTime?.registerEndAt || new Date()),
-      {
-        message: 'Môn học phải hoàn thành sau thời gian đăng ký',
-      }
-    ),
-    [registerTime]
-  );
+  const validator = useValidator(CREATE_CLASS);
 
-  const caller = useApi(
+  return useApi(
     async (
-      formState: Pick<
-        Class,
-        'courseId' | 'teacherTokenId' | 'maxSize' | 'completeAt'
-      >
+      formState: {
+        courseId: number | string;
+        endAt: string;
+        completeAt: string;
+        maxSize: number | string;
+        teacherTokenId: number | string;
+        semesterId: number | string;
+      },
+      courses: CourseApi[],
+      teachers: UserDetail[],
+      semesters: SemesterDetail[]
     ) => {
-      if (!validator(formState)) return;
+      const semester = semesters.find(
+        ({ id }) => id === parseInt(formState.semesterId as string)
+      );
+      if (!semester) return;
 
-      const course = findById(courses, formState.courseId);
-      const teacher = findById(teachers, formState.teacherTokenId, 'tokenId');
+      const data = validator(formState, (_schema) =>
+        EXTEND_CREATE_CLASS(_schema, semester)
+      ) as {
+        courseId: number;
+        teacherTokenId: number;
+        maxSize: number;
+        semesterId: number;
+        startAt: Date;
+        completeAt: Date;
+      };
+      if (!data) return;
+
+      const course = findById(courses, data.courseId, 'onChainId');
+      const teacher = findById(teachers, data.teacherTokenId, 'tokenId');
+      const signature = await getSignedData();
       const { link: uri } = await dispatch(
         uploadData({
           data: {
             target: UPLOAD_TARGET.CREATE_CLASS,
-            course: {
-              id: course.id,
-              name: course.meta.name,
-            },
-            teacher: {
-              tokenId: teacher.tokenId,
-              name: teacher.meta.fullName,
-            },
+            semesterId: data.semesterId,
+            startAt: data.startAt,
+            completeAt: data.completeAt,
+            size: data.maxSize,
+            courseCode: course.courseCode,
+            courseName: course.name,
+            teacherTokenId: teacher.tokenId,
+            teacherName: teacher.fullName,
           },
-          getSignedData,
+          signature,
           successText: 'Upload class metadata successfully!',
         })
       ).unwrap();
-      const createdClass = {
-        ...formState,
+      const createdClass: any = {
+        ...data,
         uri,
       };
       await createClass({ data: createdClass });
-    },
-    [courses, teachers]
-  );
-
-  return useCallback(
-    (formState: {
-      courseId: number | string;
-      completeAt: string;
-      maxSize: number | string;
-      teacherTokenId: number | string;
-      size?: number | string;
-    }) => {
-      const data = validator(formState);
-      if (!data) return;
-
-      return caller(data);
     },
     []
   );

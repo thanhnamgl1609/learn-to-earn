@@ -1,8 +1,14 @@
 {
+  "users": "/api/v1/users",
   "userDetail": "/api/v1/users/detail",
   "registration": "/api/v1/users/detail",
   "sign": "/api/v1/sign",
   "signIn": "/api/v1/sign",
   "courses": "/api/v1/courses",
-  "syncCourse": "/api/v1/sync/course"
+  "syncCourse": "/api/v1/sync/course",
+  "coursesDetail": "/api/v1/courses/detail",
+  "semesters": "/api/v1/semesters",
+  "currentYear": "/api/v1/year/current",
+  "currentSemesters": "/api/v1/semesters/current",
+  "classes": "/api/v1/classes"
 }

@@ -31,8 +31,8 @@ export type UseRegisterTimeHook = ReturnType<RegisterTimeHookFactory>;
 export const hookFactory: RegisterTimeHookFactory =
   ({ contracts }) =>
   () => {
-    const getRegisterTime = useApi(async () => {
-      const registerTimeResponse = await contracts!.nftSchool.getRegisterTime();
+    const getRegisterTime = useApi(async (semesterId) => {
+      const registerTimeResponse = await contracts!.nftSchool.getRegisterTime(semesterId);
 
       return formatRegisterTime(registerTimeResponse);
     });

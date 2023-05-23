@@ -53,15 +53,14 @@ const Web3Provider: FC<PropsWithChildren> = ({ children }) => {
           nftCertificates: nftCertificates as unknown as NftCertificates,
         };
 
+        const web3State = {
+          ethereum,
+          provider,
+          contracts,
+          isLoading: false,
+        };
         setGlobalListeners(ethereum);
-        setWeb3Api(
-          createWeb3State({
-            ethereum,
-            provider,
-            contracts,
-            isLoading: false,
-          })
-        );
+        setWeb3Api(createWeb3State(web3State));
       } catch (e) {
         setWeb3Api(({ hooks, ...api }) =>
           createWeb3State({

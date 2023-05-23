@@ -6,12 +6,13 @@ type Option = {
   value: string | number;
 };
 
-export const useSelectOptions = (
-  data: Record<string, any>[] | undefined,
+export const useSelectOptions = <D>(
+  data: D[] | undefined,
   options: {
     noSelectLabel?: string | null;
     labelField?: string;
     valueField?: string;
+    customLabel?: (item: D) => string;
   } = {
     noSelectLabel: null,
     labelField: 'name',
@@ -23,11 +24,12 @@ export const useSelectOptions = (
       labelField = 'name',
       valueField = 'id',
       noSelectLabel,
+      customLabel,
     } = options || {};
 
     const _data =
       data?.map((item) => ({
-        label: _.get(item, labelField),
+        label: customLabel ? customLabel(item) : _.get(item, labelField),
         value: _.get(item, valueField),
       })) || [];
 

@@ -50,7 +50,7 @@ module.exports = {
     );
     await queryInterface.addConstraint(tableName, {
       type: 'unique',
-      fields: ['startYear', 'endYear', 'semester', 'startAt', 'endAt'],
+      fields: ['startYear', 'endYear', 'semester'],
     });
   },
 

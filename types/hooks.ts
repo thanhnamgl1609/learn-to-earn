@@ -1,7 +1,9 @@
 import { MetaMaskInpageProvider } from '@metamask/providers';
 import { providers } from 'ethers';
 import { SWRResponse } from 'swr';
-import { NftIdentities, NftSchool, NftCertificates } from './contracts';
+import { ContractContext as NftIdentities } from './contracts/NftIdentities';
+import { ContractContext as NftSchool } from './contracts/NftSchool';
+import { ContractContext as NftCertificates } from './contracts/NftCertificates';
 
 export type ContractLists = {
   nftIdentities: NftIdentities;
@@ -26,9 +28,7 @@ export type CryptoHookFactory<D = any, R = any, P = any> = {
   (d: Partial<Web3Dependencies>): CryptoHandlerHook<D, R, P>;
 };
 
-export type HandlerHookWithoutSWR<D = any, P = any> = (
-  params?: P
-) => D;
+export type HandlerHookWithoutSWR<D = any, P = any> = (params?: P) => D;
 
 export type HookFactoryWithoutSWR<D = any, P = any> = {
   (d: Partial<Web3Dependencies>): HandlerHookWithoutSWR<D, P>;

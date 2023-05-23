@@ -9,3 +9,4 @@ export { default as Breadcrumb } from './Breadcrumb';
 export { default as RegistrationDetail } from './RegistrationDetail';
 export { BoxLinks } from './BoxLinks';
 export { default as AppLoading } from './AppLoading';
+export { default as EditRegisterTimeBox } from './EditRegisterTimeBox';

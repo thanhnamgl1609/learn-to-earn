@@ -37,7 +37,7 @@ const tableHeaders = [
     name: 'Mã lớp học',
   },
   {
-    field: 'meta.course.name',
+    field: 'meta.courseName',
     name: 'Tên môn học',
   },
   {
@@ -63,7 +63,7 @@ const tableHeaders = [
     name: 'Số sinh viên đã đăng ký',
   },
   {
-    field: 'meta.teacher.name',
+    field: 'meta.teacherName',
     name: 'Giảng viên',
   },
   {

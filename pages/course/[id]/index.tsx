@@ -12,8 +12,6 @@ import { Breadcrumb } from '@organisms';
 import { Box } from '@molecules';
 import { Heading } from '@atoms';
 
-const { KNOWLEDGE_BLOCKS } = CONST;
-
 const createDefaultCourse = (): Partial<CourseEntity> => ({
   prevCourseId: 0,
   courseCode: '',

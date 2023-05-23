@@ -56,11 +56,13 @@ export interface ContractCallOverrides {
 }
 export type NftSchoolEvents =
   | 'ApprovalForAll'
+  | 'NewClassCreated'
   | 'TransferBatch'
   | 'TransferSingle'
   | 'URI';
 export interface NftSchoolEventsContext {
   ApprovalForAll(...parameters: any): EventFilter;
+  NewClassCreated(...parameters: any): EventFilter;
   TransferBatch(...parameters: any): EventFilter;
   TransferSingle(...parameters: any): EventFilter;
   URI(...parameters: any): EventFilter;
@@ -90,15 +92,14 @@ export type NftSchoolMethodNames =
   | 'getAllClasses'
   | 'getCurrentRegisteredClasses'
   | 'getAssignedClasses'
-  | 'createClass'
-  | 'getRegisteredClasses'
-  | 'getNftClassRegistration'
-  | 'getStudentListOfClass'
-  | 'registerClass';
+  | 'createClass';
 export interface ApprovalForAllEventEmittedResponse {
   account: string;
   operator: string;
   approved: boolean;
+}
+export interface NewClassCreatedEventEmittedResponse {
+  id: BigNumberish;
 }
 export interface TransferBatchEventEmittedResponse {
   operator: string;
@@ -158,66 +159,22 @@ export interface ClassResponse {
   3: ClassResponse;
   credits: BigNumber;
   4: ClassResponse;
-  registeredStartAt: BigNumber;
-  5: ClassResponse;
-  registeredEndAt: BigNumber;
-  6: ClassResponse;
   completeAt: BigNumber;
-  7: ClassResponse;
+  5: ClassResponse;
   maxSize: BigNumber;
-  8: ClassResponse;
+  6: ClassResponse;
   teacherTokenId: BigNumber;
-  9: ClassResponse;
+  7: ClassResponse;
+  semester: BigNumber;
+  8: ClassResponse;
   uri: string;
-  10: ClassResponse;
+  9: ClassResponse;
 }
 export interface ClassresponseResponse {
   class: ClassResponse;
   0: ClassResponse;
   numberOfStudents: BigNumber;
   1: BigNumber;
-}
-export interface NftClassRegistrationResponse {
-  tokenId: BigNumber;
-  0: NftClassRegistrationResponse;
-  classId: BigNumber;
-  1: NftClassRegistrationResponse;
-  studentTokenId: BigNumber;
-  2: NftClassRegistrationResponse;
-}
-export interface NftclassregistrationresponseResponse {
-  nftClassRegistration: NftClassRegistrationResponse;
-  0: NftClassRegistrationResponse;
-  class: ClassResponse;
-  1: ClassResponse;
-  tokenURI: string;
-  2: string;
-}
-export interface NftclassregistrationResponse {
-  tokenId: BigNumber;
-  0: BigNumber;
-  classId: BigNumber;
-  1: BigNumber;
-  studentTokenId: BigNumber;
-  2: BigNumber;
-}
-export interface NftIdentityResponse {
-  tokenId: BigNumber;
-  0: NftIdentityResponse;
-  register: string;
-  1: NftIdentityResponse;
-  expiredAt: BigNumber;
-  2: NftIdentityResponse;
-}
-export interface NftidentityresponseResponse {
-  nftIdentity: NftIdentityResponse;
-  0: NftIdentityResponse;
-  tokenURI: string;
-  1: string;
-  role: BigNumber;
-  2: BigNumber;
-  isExpired: boolean;
-  3: boolean;
 }
 export interface NftSchool {
   /**
@@ -393,10 +350,12 @@ export interface NftSchool {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
+   * @param semesterId Type: uint256, Indexed: false
    * @param registeredStartAt Type: uint256, Indexed: false
    * @param registeredEndAt Type: uint256, Indexed: false
    */
   updateRegisteredTime(
+    semesterId: BigNumberish,
     registeredStartAt: BigNumberish,
     registeredEndAt: BigNumberish,
     overrides?: ContractTransactionOverrides
@@ -406,8 +365,10 @@ export interface NftSchool {
    * Constant: true
    * StateMutability: view
    * Type: function
+   * @param semesterId Type: uint256, Indexed: false
    */
   getRegisterTime(
+    semesterId: BigNumberish,
     overrides?: ContractCallOverrides
   ): Promise<GetRegisterTimeResponse>;
   /**
@@ -481,8 +442,10 @@ export interface NftSchool {
    * Constant: true
    * StateMutability: view
    * Type: function
+   * @param semester Type: uint256, Indexed: false
    */
   getCurrentRegisteredClasses(
+    semester: BigNumberish,
     overrides?: ContractCallOverrides
   ): Promise<ClassresponseResponse[]>;
   /**
@@ -505,6 +468,7 @@ export interface NftSchool {
    * @param completeAt Type: uint256, Indexed: false
    * @param maxSize Type: uint256, Indexed: false
    * @param teacherTokenId Type: uint256, Indexed: false
+   * @param semester Type: uint256, Indexed: false
    * @param uri Type: string, Indexed: false
    */
   createClass(
@@ -512,50 +476,7 @@ export interface NftSchool {
     completeAt: BigNumberish,
     maxSize: BigNumberish,
     teacherTokenId: BigNumberish,
-    uri: string,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   */
-  getRegisteredClasses(
-    overrides?: ContractCallOverrides
-  ): Promise<NftclassregistrationresponseResponse[]>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param tokenId Type: uint256, Indexed: false
-   */
-  getNftClassRegistration(
-    tokenId: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<NftclassregistrationResponse>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param id Type: uint256, Indexed: false
-   */
-  getStudentListOfClass(
-    id: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<NftidentityresponseResponse[]>;
-  /**
-   * Payable: true
-   * Constant: false
-   * StateMutability: payable
-   * Type: function
-   * @param classId Type: uint256, Indexed: false
-   * @param uri Type: string, Indexed: false
-   */
-  registerClass(
-    classId: BigNumberish,
+    semester: BigNumberish,
     uri: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;

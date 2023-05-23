@@ -18,7 +18,7 @@ module.exports = {
           allowNull: false,
         },
         onChainId: {
-          type: Sequelize.STRING(8),
+          type: Sequelize.INTEGER,
           unique: true,
         },
         courseCode: {

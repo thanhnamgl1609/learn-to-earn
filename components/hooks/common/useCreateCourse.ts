@@ -1,16 +1,15 @@
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 
-import { logger } from 'utils';
-import ERROR_MESSAGE from '@config/error-message.json';
+import { makeRequest } from 'utils';
 import CONST from '@config/constants.json';
 import ROUTES from '@config/routes.json';
-import { useSchoolActions, useUtilities } from '@hooks/web3';
+import endpoints from '@config/endpoints.json';
+import { useAccount, useSchoolActions, useUtilities } from '@hooks/web3';
 import { CREATE_COURSE } from '@validators/schemas';
 import { useValidator } from '@hooks/form';
-import { Course, CourseMeta } from '@_types/school';
+import { CourseCore, CourseMeta } from '@_types/school';
 import { uploadData } from '@store/actions';
-import { loading, unloading } from '@store/appSlice';
 import { useAppDispatch } from '@hooks/stores';
 import { useApi } from './useApi';
 
@@ -18,40 +17,60 @@ const { UPLOAD_TARGET } = CONST;
 
 export const useCreateCourse = () => {
   const router = useRouter();
-  const { getSignedData } = useUtilities();
   const dispatch = useAppDispatch();
-  const { createCourse } = useSchoolActions();
   const validator = useValidator(CREATE_COURSE);
 
-  const apiCaller = useApi(
-    async (formState: Omit<Course, 'id' | 'meta' | 'status'> & CourseMeta) => {
-      if (!validator(formState)) return;
-      dispatch(loading());
+  const { getSignedData } = useUtilities();
+  const { createCourse } = useSchoolActions();
+  const {
+    account: { data: account },
+  } = useAccount();
 
-      try {
-        const { name, ...coreCourse } = formState;
-        const { link: uri } = await dispatch(
-          uploadData({
-            data: { target: UPLOAD_TARGET.CREATE_COURSE, name },
-            getSignedData,
-            successText: 'Upload course successfully!',
-          })
-        ).unwrap();
-        const createdCourse = {
-          ...coreCourse,
-          uri,
-        };
-        const id = await createCourse({ data: createdCourse });
-        router.push(ROUTES.courseDetail.name.replace(':id', id.toString()));
-      } catch (e) {
-        logger(e, { method: 'error' });
-        toast.error(ERROR_MESSAGE.UNEXPECTED);
-      } finally {
-        dispatch(unloading());
-      }
-    },
-    []
-  );
+  return useApi(async (formState: Omit<CourseMeta & CourseCore, 'status'>) => {
+    const _formState = {
+      ...formState,
+      isRequired: formState.isRequired ? 1 : 0,
+    };
+    if (!validator(_formState)) return;
+    const existedCourse = await makeRequest()([
+      endpoints.coursesDetail,
+      {
+        courseCode: _formState.courseCode,
+      },
+    ]);
+    if (existedCourse) return toast.error('Mã môn học đã tồn tại');
 
-  return apiCaller;
+    const { knowledgeBlockId, prevCourseId, credits } = _formState;
+    const signature = await getSignedData();
+    const { link: uri } = await dispatch(
+      uploadData({
+        data: { target: UPLOAD_TARGET.CREATE_COURSE, ..._formState },
+        signature,
+        successText: 'Upload course successfully!',
+      })
+    ).unwrap();
+    const createdCourse = {
+      knowledgeBlockId,
+      prevCourseId,
+      credits,
+      uri,
+    };
+    const onChainId = await createCourse({ data: createdCourse });
+    if (!_formState.prevCourseId) {
+      _formState.prevCourseId = null;
+    }
+    const { id } = await makeRequest({
+      method: 'POST',
+      data: {
+        data: {
+          ..._formState,
+          onChainId,
+          chainURI: uri,
+        },
+        signature,
+        address: account,
+      },
+    })([endpoints.courses]);
+    router.push(ROUTES.courseDetail.name.replace(':id', id.toString()));
+  }, []);
 };

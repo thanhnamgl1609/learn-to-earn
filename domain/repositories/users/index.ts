@@ -5,6 +5,7 @@ import { withTransaction, generateCondition } from '@api/utils';
 import CONST from 'config/constants.json';
 import { NftIdentity, NftIdentityMetaType } from '@_types/nftIdentity';
 import user_documents from 'models/user_documents';
+import { before } from 'utils';
 
 const { ROLES } = CONST;
 
@@ -13,22 +14,30 @@ const MEMBER_CODE_PREFIX = {
   [ROLES.TEACHER]: 'TC',
 };
 
-// export const getAll = (query?: UserQuery, transaction?: Transaction) => {
-//   const condition = generateCondition(query, {
-//     $equal: ['knowledgeBlockId'],
-//   });
+export const getAll = async (query?: UserQuery, transaction?: Transaction) => {
+  const condition = generateCondition(query, {
+    $equal: ['role'],
+  });
 
-//   return db.users.findAll({
-//     where: condition,
-//     include: [
-//       {
-//         model: db.users,
-//         as: 'prevUser',
-//       },
-//     ],
-//     transaction,
-//   });
-// };
+  const allUsers = await db.users.findAll({
+    where: {
+      ...condition,
+      tokenId: {
+        [db.Op.not]: null,
+      },
+    },
+    transaction,
+  });
+
+  return allUsers.map((user) => {
+    const _user: UserDetail = user.get();
+
+    return {
+      ..._user,
+      isExpired: before(_user.expiredAt)
+    }
+  })
+};
 
 export const get = (query?: UserQuery, transaction?: Transaction) => {
   const condition = generateCondition(query, {

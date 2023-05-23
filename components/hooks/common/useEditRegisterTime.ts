@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
 
 import { useValidator } from '@hooks/form';
-import { useRegisterTime } from '@hooks/web3';
+import { useRegisterTime, useSchoolActions } from '@hooks/web3';
 import { useApi } from './useApi';
 import { REGISTER_TIME } from '@validators/schemas';
+import { SemesterDetail } from '@_types/api/semester';
 
 type FormState = {
   registerStartAt: string;
@@ -11,19 +12,13 @@ type FormState = {
 };
 
 export const useEditRegisterTime = () => {
-  const {
-    registerTime: { editRegisterTime, mutate },
-  } = useRegisterTime();
+  const { editRegisterTime } = useSchoolActions();
   const validator = useValidator(REGISTER_TIME);
-  const caller = useApi(async (data) => {
-    await editRegisterTime(data);
-    await mutate();
-  });
 
-  return useCallback((formState: FormState) => {
+  return useApi(async (formState: FormState, semester: SemesterDetail) => {
     const data = validator(formState);
     if (!data) return;
-
-    return caller(data);
+    const { id } = semester;
+    await editRegisterTime(id, formState.registerStartAt, formState.registerEndAt);
   }, []);
 };
