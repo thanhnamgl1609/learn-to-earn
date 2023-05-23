@@ -1,16 +1,20 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 
 import { Class } from '@_types/school';
 import CONST from '@config/constants.json';
 import Routes from '@config/routes.json';
-import { useClassList } from '@hooks/web3';
-import { Box } from '@molecules';
+import { useClassListApi } from '@hooks/api/classes';
+import { ClassEntity } from '@_types/models/entities';
+import { useSemesterListApi } from '@hooks/api';
+import { Box, SelectField } from '@molecules';
 import { Breadcrumb, Table } from '@organisms';
 import { BaseLayout } from '@templates';
+import { useInputTextChange, useSelectOptions } from '@hooks/form';
+import {  semesterEntity } from 'domain/models';
 
 type ActionColumnsProps = {
-  item: Class;
+  item: ClassEntity;
 };
 
 const { KNOWLEDGE_BLOCKS } = CONST;
@@ -33,12 +37,20 @@ const ActionColumns = ({ item }: ActionColumnsProps) => (
 
 const tableHeaders = [
   {
-    field: 'id',
+    field: 'onChainId',
     name: 'Mã lớp học',
   },
   {
-    field: 'meta.courseName',
     name: 'Tên môn học',
+    custom: ({ item }: ActionColumnsProps) => (
+      <Link
+        className="underline hover:opacity-80"
+        href={item.chainURI}
+        target="_blank"
+      >
+        {item.course.name}
+      </Link>
+    ),
   },
   {
     field: 'knowledgeBlockId',
@@ -50,9 +62,7 @@ const tableHeaders = [
   {
     field: 'credits',
     name: 'Số tín chỉ',
-    custom: ({ item }: ActionColumnsProps) => (
-      <p>{item.credits}</p>
-    ),
+    custom: ({ item }: ActionColumnsProps) => <p>{item.credits}</p>,
   },
   {
     field: 'maxSize',
@@ -63,7 +73,7 @@ const tableHeaders = [
     name: 'Số sinh viên đã đăng ký',
   },
   {
-    field: 'meta.teacherName',
+    field: 'teacher.fullName',
     name: 'Giảng viên',
   },
   {
@@ -73,11 +83,19 @@ const tableHeaders = [
 ];
 
 const ClassList = () => {
-  const {
-    classList: { data },
-  } = useClassList();
+  const [query, setQuery] = useState({
+    semesterId: 0,
+  });
+  const onSelectChange = useInputTextChange(setQuery);
+  const { data: classList } = useClassListApi(query);
+  const { data: semesters } = useSemesterListApi();
+  const semesterOptions = useSelectOptions(semesters, {
+    labelField: 'id',
+    noSelectLabel: 'Tất cả học kì',
+    customLabel: (item) => semesterEntity.displaySemester(item),
+  });
 
-  const tableItems = useMemo(() => data || [], [data]);
+  const tableItems = classList || [];
 
   const breadcrumbs = [
     {
@@ -93,6 +111,15 @@ const ClassList = () => {
     <BaseLayout>
       <Breadcrumb links={breadcrumbs} />
       <Box autoLayout>
+        <div className="flex">
+          <SelectField
+            label="Khối kiến thức"
+            options={semesterOptions}
+            name="semesterId"
+            onChange={onSelectChange}
+          />
+        </div>
+
         <Table
           title="Danh sách lớp học"
           data={tableItems}

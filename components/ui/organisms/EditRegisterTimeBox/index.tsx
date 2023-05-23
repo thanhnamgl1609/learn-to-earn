@@ -8,10 +8,11 @@ import { InputField } from '@molecules';
 import Form from '../Form';
 import { formatDate } from 'utils';
 import { Button, Heading } from '@atoms';
+import { SemesterEntity } from '@_types/models/entities';
 
 type Props = {
-  semester: SemesterDetail;
-  openSemesterDetail: (semester: SemesterDetail) => () => void;
+  semester: SemesterEntity;
+  openSemesterDetail: (semester: SemesterEntity) => () => void;
 };
 
 const {
@@ -19,7 +20,6 @@ const {
 } = CONST;
 
 const EditRegisterTimeBox: FC<Props> = ({ semester, openSemesterDetail }) => {
-  console.log("🚀 ~ file: index.tsx:22 ~ semester:", semester)
   const [formState, setFormState] = useState({
     registerStartAt: formatDate(
       semester?.registerStartAt ?? new Date(),

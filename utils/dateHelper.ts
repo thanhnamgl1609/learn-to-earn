@@ -26,3 +26,5 @@ export const dateAdd = (
   interval: number | string,
   unit: unitOfTime.DurationConstructor = 'd'
 ) => moment(d).add(interval, unit);
+
+export const today = () => moment().toDate();

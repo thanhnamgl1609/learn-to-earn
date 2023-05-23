@@ -1,8 +1,17 @@
-import { classesRepo } from 'domain/repositories';
+import { classesRepo, semestersRepo } from 'domain/repositories';
 import { TIMEOUT } from 'utils';
 import { contract } from '@api/utils/load-contract';
 import { formatClassResponse } from '@hooks/web3/formatter';
 import { createError } from '@api/utils/create-error';
+
+export const getRegisterClasses = async () => {
+  const currentSemester = await semestersRepo.getCurrentSemester(['id']);
+  const classes = classesRepo.getAll({
+    semesterId: currentSemester.get().id,
+  });
+
+  return classes;
+};
 
 export const upsertFromContract = async ({ classId }: { classId: number }) => {
   const contractClassResponse = await contract.nftSchool.getClassById(classId);

@@ -10,5 +10,6 @@
   "semesters": "/api/v1/semesters",
   "currentYear": "/api/v1/year/current",
   "currentSemesters": "/api/v1/semesters/current",
-  "classes": "/api/v1/classes"
+  "classes": "/api/v1/classes",
+  "registerClasses": "/api/v1/classes/register"
 }

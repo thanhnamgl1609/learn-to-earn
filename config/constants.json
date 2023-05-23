@@ -10,7 +10,8 @@
   "DATE_TIME": {
     "DATE": "DD-MM-YYYY",
     "SLASH_DATE": "DD/MM/YYYY",
-    "DATETIME": "DD-MM-YYYY HH:mm"
+    "DATETIME": "DD-MM-YYYY HH:mm",
+    "SLASH_DATETIME": "DD/MM/YYYY HH:mm"
   },
   "UPLOAD_TARGET": {
     "REGISTRATION": "registration",

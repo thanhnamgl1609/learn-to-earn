@@ -1,30 +1,32 @@
 import { Transaction } from 'sequelize';
+import { ClassEntity } from '@_types/models/entities';
+import { ClassQuery } from '@_types/api/class';
 import db from 'models';
-import { Class } from '@_types/school';
-import { ClassApi, ClassQuery } from '@_types/api/class';
 import { withTransaction, generateCondition } from '@api/utils';
-
-type CreateClassInput = Omit<Class, ''>;
 
 export const getAll = (query?: ClassQuery, transaction?: Transaction) => {
   const condition = generateCondition(query, {
-    $equal: ['knowledgeBlockId'],
+    $equal: ['onChainId', 'semesterId'],
   });
 
-  return db.classs.findAll({
-    where: {
-      ...condition,
-      onChainId: {
-        [db.Op.not]: null,
-      },
-    },
+  return db.classes.findAll({
+    where: condition,
     transaction,
+    include: [
+      {
+        model: db.users,
+        as: 'teacher',
+      },
+      {
+        model: db.courses,
+      },
+    ],
   });
 };
 
 export const get = (query?: ClassQuery, transaction?: Transaction) => {
   const condition = generateCondition(query, {
-    $equal: ['onChainId'],
+    $equal: ['onChainId', 'semesterId'],
   });
 
   return db.classes.findOne({
@@ -33,7 +35,7 @@ export const get = (query?: ClassQuery, transaction?: Transaction) => {
   });
 };
 
-export const insert = async (_class: Partial<ClassApi>, t?: Transaction) =>
+export const insert = async (_class: Partial<ClassEntity>, t?: Transaction) =>
   withTransaction(async (transaction: Transaction) => {
     const createdClass = await db.classes.create(_class, {
       transaction,
@@ -42,7 +44,7 @@ export const insert = async (_class: Partial<ClassApi>, t?: Transaction) =>
     return createdClass.get();
   }, t);
 
-export const update = async (_class: Partial<ClassApi>, t?: Transaction) =>
+export const update = async (_class: Partial<ClassEntity>, t?: Transaction) =>
   withTransaction(async (transaction: Transaction) => {
     const { id, ...updatedClass } = _class;
 
@@ -54,7 +56,7 @@ export const update = async (_class: Partial<ClassApi>, t?: Transaction) =>
     });
   }, t);
 
-export const upsert = async (_class: Partial<ClassApi>, t?: Transaction) =>
+export const upsert = async (_class: Partial<ClassEntity>, t?: Transaction) =>
   withTransaction(async (transaction: Transaction) => {
     const { onChainId } = _class;
     const currentClass = await get({ onChainId }, transaction);

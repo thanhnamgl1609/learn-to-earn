@@ -12,7 +12,7 @@ type BoxLink = {
 };
 
 type Box = {
-  header: string;
+  header: string | JSX.Element;
   links: BoxLink[];
 };
 

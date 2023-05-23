@@ -1,4 +1,7 @@
-export type ClassQuery = {};
+export type ClassQuery = {
+  onChainId?: number;
+  semesterId?: number | string;
+};
 
 export type ClassApi = {
   id: number;

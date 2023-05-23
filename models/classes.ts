@@ -8,6 +8,11 @@ export default (sequelize: Sequelize) => {
         foreignKey: 'courseCode',
         targetKey: 'courseCode',
       });
+      this.belongsTo(models.users, {
+        foreignKey: 'teacherTokenId',
+        targetKey: 'tokenId',
+        as: 'teacher',
+      });
     }
   }
   Classes.init(
@@ -19,7 +24,6 @@ export default (sequelize: Sequelize) => {
       startAt: DataTypes.DATE,
       completeAt: DataTypes.DATE,
       maxSize: DataTypes.INTEGER,
-      teacherTokenId: DataTypes.INTEGER,
       chainURI: DataTypes.STRING,
       numberOfStudents: DataTypes.INTEGER,
     },

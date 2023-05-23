@@ -48,6 +48,7 @@ interface IConstant {
         uint256 maxSize;
         uint256 teacherTokenId;
         uint256 semester;
+        uint256 registerClassFee;
         string uri;
         /* Metadata:
             - Teacher name - Nft Id?

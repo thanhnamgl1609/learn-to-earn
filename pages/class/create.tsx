@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import CONST from '@config/constants.json';
 import ROUTES from '@config/routes.json';
 import { formatDate, dateAdd } from 'utils';
-import { useCourseList, useMemberList } from '@hooks/web3';
 import { useCreateClass } from '@hooks/common';
 import {
   useFormSubmit,
@@ -14,6 +13,7 @@ import { useCourseListApi, useCurrentYear, useUserListApi } from '@hooks/api';
 import { Breadcrumb, Form } from '@organisms';
 import { BaseLayout, FormClassDetail } from '@templates';
 import { Heading } from '@atoms';
+import { courseEntity, semesterEntity } from 'domain/models';
 
 const { ROLES, UI, DATE_TIME } = CONST;
 
@@ -32,11 +32,7 @@ const CreateClass = () => {
   const { data: semesters } = useCurrentYear();
   const semesterOptions = useSelectOptions(semesters, {
     valueField: 'id',
-    customLabel: (item) =>
-      `Học kì ${item.semester} (${formatDate(
-        item.startAt,
-        DATE_TIME.SLASH_DATE
-      )} - ${formatDate(item.endAt, DATE_TIME.SLASH_DATE)})`,
+    customLabel: (item) => semesterEntity.displaySemester(item),
   });
   const courses = useSelectOptions(courseList, {
     labelField: 'name',

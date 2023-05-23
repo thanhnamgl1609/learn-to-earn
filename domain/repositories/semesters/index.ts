@@ -2,7 +2,7 @@ import { Transaction } from 'sequelize';
 import moment from 'moment';
 
 import db from 'models';
-import { after, before, between } from 'utils';
+import { after, before, between, today } from 'utils';
 import { CourseQuery } from '@_types/api/course';
 import { generateCondition } from '@api/utils';
 import { Semester, SemesterQuery } from '@_types/api/semester';
@@ -19,8 +19,21 @@ const _getDetailSemester = (semester: Semester) => {
   };
 };
 
+export const getCurrentSemester = async (attributes?: string[]) => {
+  return db.semesters.findOne({
+    attributes,
+    where: {
+      endAt: {
+        [db.Op.gte]: today(),
+      },
+    },
+    order: [['endAt', 'asc']],
+  });
+};
+
 export const getCurrentSemesters = async () => {
-  const startYear = (await db.semesters.max('startYear')) as number;
+  const currentSemester = await getCurrentSemester(['startYear']);
+  const { startYear } = currentSemester.get();
 
   return getAll({
     startYear,
@@ -41,28 +54,9 @@ export const getAll = async (
     order: [['semester', 'asc']],
   });
 
-  const result = semesters.map((semester) => _getDetailSemester(semester.get()));
-
-  if (result.every(({ isCurrent, isPast }) => !isCurrent || !isPast)) {
-    result[0].isCurrent = true;
-  }
+  const result = semesters.map((semester) =>
+    _getDetailSemester(semester.get())
+  );
 
   return result;
-};
-
-export const get = (query?: CourseQuery, transaction?: Transaction) => {
-  const condition = generateCondition(query, {
-    $equal: ['id', 'courseCode', 'onChainId'],
-  });
-
-  return db.courses.findOne({
-    where: condition,
-    include: [
-      {
-        model: db.courses,
-        as: 'prevCourse',
-      },
-    ],
-    transaction,
-  });
 };

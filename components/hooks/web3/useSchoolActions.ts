@@ -21,7 +21,11 @@ type CreateClassFunc = {
   (params: {
     data: Pick<
       Class,
-      'courseId' | 'teacherTokenId' | 'maxSize' | 'completeAt'
+      | 'courseId'
+      | 'teacherTokenId'
+      | 'maxSize'
+      | 'completeAt'
+      | 'registerClassFee'
     > & {
       uri: string;
       semesterId: number;
@@ -47,12 +51,17 @@ type EditRegisterTimeFunc = {
   ): Promise<void>;
 };
 
+type GetRegisterFeeClassByIdFunc = {
+  (tokenId: number): Promise<number>;
+};
+
 type UseSchoolActionsReturnTypes = {
   createCourse: CreateCourseFunc;
   createClass: CreateClassFunc;
   registerClass: RegisterClassFunc;
   getRegisterTime: GetRegisterTimeFunc;
   editRegisterTime: EditRegisterTimeFunc;
+  getRegisterFeeClassById: GetRegisterFeeClassByIdFunc;
 };
 type PromiseHandlerFunc = (params: {
   onSuccess?: (params: any) => {};
@@ -104,6 +113,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
           maxSize,
           teacherTokenId,
           semesterId,
+          registerClassFee,
           uri,
         } = data;
         const promise = _contracts.nftSchool?.createClass(
@@ -112,6 +122,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
           maxSize,
           teacherTokenId,
           semesterId,
+          ethers.utils.parseEther(registerClassFee.toString()),
           uri
         );
         await promiseHandler({
@@ -169,6 +180,16 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
     }
   );
 
+  const getRegisterFeeClassById: GetRegisterFeeClassByIdFunc = async (
+    tokenId
+  ) => {
+    const registerClassFee = await _contracts.nftSchool.getRegisterFeeClassById(
+      tokenId
+    );
+
+    return parseFloat(ethers.utils.formatEther(registerClassFee));
+  };
+
   const promiseHandler: PromiseHandlerFunc = async ({
     successMsg,
     errorMsg,
@@ -192,5 +213,6 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
     registerClass,
     getRegisterTime,
     editRegisterTime,
+    getRegisterFeeClassById,
   };
 };

@@ -8,6 +8,11 @@ export default (sequelize: Sequelize) => {
         foreignKey: 'userId',
         as: 'documentURIs',
       });
+      this.hasMany(models.classes, {
+        foreignKey: 'teacherTokenId',
+        sourceKey: 'tokenId',
+        as: 'teacher',
+      });
     }
   }
   Users.init(

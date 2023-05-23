@@ -70,6 +70,17 @@ export const REGISTER_TIME = z
       message: 'Ngày kết thúc phải lớn hơn ngày bắt đầu',
     }
   );
+export const EXTEND_REGISTER_TIME = (
+  schema: z.ZodType<Record<string, any>>,
+  semester: SemesterDetail
+) =>
+  schema
+    .refine(({ registerEndAt }) => before(registerEndAt, semester.endAt), {
+      message: 'Đăng ký phải trước khi học kì kết thúc',
+    })
+    .refine(({ registerStartAt }) => after(registerStartAt, semester.startAt), {
+      message: 'Đăng ký phải sau khi học kì bắt đầu',
+    });
 
 export const CREATE_CLASS = z
   .object({

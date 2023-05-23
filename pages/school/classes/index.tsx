@@ -11,6 +11,7 @@ import { BaseLayout } from '@templates';
 import { Button } from '@atoms';
 import { useAppDispatch } from '@hooks/stores';
 import { openConfirmModal } from '@store/appSlice';
+import { useRegisterClassesApi } from '@hooks/api/classes';
 
 type ColumnProps = {
   item: Class;
@@ -95,6 +96,7 @@ const RegisteredClassList = () => {
   const {
     classList: { data: registeredClasses },
   } = useClassList({ current: true });
+  const { data: classListApi } = useRegisterClassesApi();
 
   return (
     <BaseLayout>

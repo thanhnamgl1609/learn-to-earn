@@ -179,19 +179,19 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
         return classResponses;
     }
 
-    function getCurrentRegisteredClasses(
-        uint256 semester
-    ) external view returns (ClassResponse[] memory) {
-        uint256[] memory ids = _classIdByRegisterTime[semester];
-        uint256 count = ids.length;
-        ClassResponse[] memory classes = new ClassResponse[](count);
+    // function getCurrentRegisteredClasses(
+    //     uint256 semester
+    // ) external view returns (ClassResponse[] memory) {
+    //     uint256[] memory ids = _classIdByRegisterTime[semester];
+    //     uint256 count = ids.length;
+    //     ClassResponse[] memory classes = new ClassResponse[](count);
 
-        for (uint256 idx; idx < count; ++idx) {
-            classes[idx] = _getClassByIdx(_posOfClasses[ids[idx]] - 1);
-        }
+    //     for (uint256 idx; idx < count; ++idx) {
+    //         classes[idx] = _getClassByIdx(_posOfClasses[ids[idx]] - 1);
+    //     }
 
-        return classes;
-    }
+    //     return classes;
+    // }
 
     function getAssignedClasses(
         uint256 tokenId
@@ -235,6 +235,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
                 maxSize,
                 teacherTokenId,
                 semester,
+                registerClassFee,
                 uri
             )
         );
@@ -246,6 +247,15 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
         return id;
     }
 
+    function getRegisterFeeClassById(
+        uint256 tokenId
+    ) public view returns (uint256) {
+        uint256 pos = _posOfClasses[id];
+        require(pos > 0);
+
+        return _allClasses[pos - 1].registerClassFee;
+    }
+
     function _getClassByIdx(
         uint256 idx
     ) private view returns (ClassResponse memory) {
@@ -255,7 +265,6 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
                 _registeredTokenIdOfClass[_allClasses[idx].id].length
             );
     }
-
     // Class Block: End
 
     // Register class block: start
