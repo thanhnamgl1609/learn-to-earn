@@ -107,7 +107,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
 
     function getRegisterTime(
         uint256 semesterId
-    ) public view returns (uint256, uint256) {
+    ) external view returns (uint256, uint256) {
         return (_registeredStartAt[semesterId], _registeredEndAt[semesterId]);
     }
 
@@ -325,41 +325,5 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
     //     }
 
     //     return result;
-    // }
-
-    // function registerClass(uint256 classId, string memory uri) public payable {
-    //     NftIdentityResponse memory nftIdentityResponse = _nftIdentities
-    //         .getNftOfMemberWithRole(uint256(ROLE.STUDENT), msg.sender);
-    //     uint256 studentTokenId = nftIdentityResponse.nftIdentity.tokenId;
-    //     Class memory class = getClassById(classId).class;
-
-    //     require(!nftIdentityResponse.isExpired);
-    //     require(_registeredTokenIdOfClass[class.id].length < class.maxSize);
-    //     require(block.timestamp >= class.registeredStartAt);
-    //     require(block.timestamp <= class.registeredEndAt);
-    //     require(
-    //         class.prevCourseId == 0 ||
-    //             _nftCertificates.checkCompleteCourse(
-    //                 class.prevCourseId,
-    //                 msg.sender
-    //             )
-    //     );
-    //     require(
-    //         _registeredCourseOfStudent[studentTokenId][class.courseId] == 0
-    //     );
-    //     require(msg.value == registerClassFee);
-    //     uint256 tokenId = _mintToken(
-    //         msg.sender,
-    //         NFT_COURSE_REGISTRATION_ID,
-    //         uri
-    //     );
-    //     _allNftClassRegistrations.push(
-    //         NftClassRegistration(tokenId, classId, studentTokenId)
-    //     );
-    //     _posOfNftClassRegistrationTokenId[tokenId] = _allNftClassRegistrations
-    //         .length;
-    //     _registeredClassTokenIdOfStudent[studentTokenId].push(tokenId);
-    //     _registeredCourseOfStudent[studentTokenId][class.courseId] = tokenId;
-    //     _registeredTokenIdOfClass[class.id].push(tokenId);
     // }
 }

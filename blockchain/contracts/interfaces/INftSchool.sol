@@ -10,4 +10,6 @@ interface INftSchool is IConstant {
         external
         view
         returns (KnowledgeBlock[] memory);
+
+    function getRegisterTime(uint256 semesterId) external view returns (uint256, uint256);
 }
