@@ -1,14 +1,18 @@
 import { MetaMaskInpageProvider } from '@metamask/providers';
 import { providers } from 'ethers';
 import { SWRResponse } from 'swr';
-import { ContractContext as NftIdentities } from './contracts/NftIdentities';
-import { ContractContext as NftSchool } from './contracts/NftSchool';
-import { ContractContext as NftCertificates } from './contracts/NftCertificates';
+import {
+  NftIdentities,
+  NftSchool,
+  NftCertificates,
+  NftClassRegistration,
+} from './contracts';
 
 export type ContractLists = {
   nftIdentities: NftIdentities;
   nftSchool: NftSchool;
   nftCertificates: NftCertificates;
+  nftClassRegistration: NftClassRegistration;
 };
 
 export type Web3Dependencies = {

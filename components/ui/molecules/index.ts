@@ -9,3 +9,4 @@ export { default as Box } from './Box';
 export { default as GroupTwoButtons } from './GroupTwoButtons';
 export { default as ProfileImage } from './ProfileImage';
 export { default as TextField } from './TextField';
+export { default as LinkField } from './LinkField';

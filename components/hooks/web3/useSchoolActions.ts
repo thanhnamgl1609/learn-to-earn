@@ -21,22 +21,15 @@ type CreateClassFunc = {
   (params: {
     data: Pick<
       Class,
-      | 'courseId'
-      | 'teacherTokenId'
-      | 'maxSize'
-      | 'completeAt'
-      | 'registerClassFee'
+      'courseId' | 'teacherTokenId' | 'maxSize' | 'completeAt'
     > & {
       uri: string;
       semesterId: number;
+      registerClassFee: string;
     };
     onSuccess?: () => {};
     onError?: (error: Error) => {};
   }): Promise<void>;
-};
-
-type RegisterClassFunc = {
-  (classId: number, uri: string): Promise<void>;
 };
 
 type GetRegisterTimeFunc = {
@@ -58,7 +51,6 @@ type GetRegisterFeeClassByIdFunc = {
 type UseSchoolActionsReturnTypes = {
   createCourse: CreateCourseFunc;
   createClass: CreateClassFunc;
-  registerClass: RegisterClassFunc;
   getRegisterTime: GetRegisterTimeFunc;
   editRegisterTime: EditRegisterTimeFunc;
   getRegisterFeeClassById: GetRegisterFeeClassByIdFunc;
@@ -78,7 +70,6 @@ export type UseSchoolActionsHook = ReturnType<SchoolActionsHookFactory>;
 
 export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
   const { contracts } = deps;
-  const registerFee = ethers.utils.parseEther('0.5').toString();
   const _contracts = contracts;
 
   const createCourse: CreateCourseFunc = useCallback(
@@ -122,7 +113,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
           maxSize,
           teacherTokenId,
           semesterId,
-          ethers.utils.parseEther(registerClassFee.toString()),
+          ethers.utils.parseEther(registerClassFee),
           uri
         );
         await promiseHandler({
@@ -135,20 +126,6 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
 
         addClassCreatedEvent(deps as any);
       }
-    },
-    [_contracts]
-  );
-
-  const registerClass: RegisterClassFunc = useCallback(
-    async (classId, link) => {
-      const promise = _contracts.nftSchool.registerClass(classId, link, {
-        value: registerFee,
-      });
-      await promiseHandler({
-        successMsg: `Success to register class`,
-        errorMsg: `Fail to grant NFT`,
-        promise,
-      });
     },
     [_contracts]
   );
@@ -210,7 +187,6 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
   return {
     createCourse,
     createClass,
-    registerClass,
     getRegisterTime,
     editRegisterTime,
     getRegisterFeeClassById,

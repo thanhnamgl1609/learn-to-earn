@@ -107,6 +107,12 @@ export const CREATE_CLASS = z
       (v: string) => new Date(v),
       z.date(customOptionsWithError('Ngày kết thúc không được rỗng'))
     ),
+    registerClassFee: z
+      .preprocess(
+        (v: string) => parseFloat(v),
+        z.number(customOptionsWithError('phí đăng ký không hợp lệ'))
+      )
+      .transform(String),
   })
   .refine(({ completeAt, startAt }) => after(completeAt, startAt), {
     message: 'Thời gian hoàn thành phải sau thời gian bắt đầu',

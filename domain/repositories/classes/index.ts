@@ -19,6 +19,12 @@ export const getAll = (query?: ClassQuery, transaction?: Transaction) => {
       },
       {
         model: db.courses,
+        include: [
+          {
+            model: db.courses,
+            as: 'prevCourse',
+          },
+        ],
       },
     ],
   });
@@ -32,6 +38,18 @@ export const get = (query?: ClassQuery, transaction?: Transaction) => {
   return db.classes.findOne({
     where: condition,
     transaction,
+    include: [
+      {
+        model: db.users,
+        as: 'teacher',
+      },
+      {
+        model: db.courses,
+      },
+      {
+        model: db.semesters,
+      },
+    ],
   });
 };
 

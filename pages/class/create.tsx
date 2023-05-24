@@ -24,6 +24,7 @@ const createDefaultState = () => ({
   maxSize: 40,
   semesterId: 1,
   teacherTokenId: 0,
+  registerClassFee: '0.5',
 });
 
 const CreateClass = () => {

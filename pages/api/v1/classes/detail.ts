@@ -1,12 +1,12 @@
 import { IHandler } from '@_types/api';
 import REQUEST_CONST from 'config/request.json';
-import { coursesRepo } from 'domain/repositories';
+import { classesRepo } from 'domain/repositories';
 import { run, withSession } from '@api/utils';
 
 const { METHOD } = REQUEST_CONST;
 
 const get: IHandler = async (req, res) => {
-  const result = await coursesRepo.get(req.query);
+  const result = await classesRepo.get(req.query);
 
   res.sendData(200, result);
 };

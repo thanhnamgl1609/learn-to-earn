@@ -26,7 +26,7 @@ const School = () => {
       ),
       links: [
         {
-          url: ROUTES.registeredClassList.name,
+          url: ROUTES.schoolClassList.name,
           label: 'Đăng ký học phần',
           disabled: !currentSemester?.isInRegisterTime,
           disabledTag: 'Chưa đến thời gian đăng ký học phần',

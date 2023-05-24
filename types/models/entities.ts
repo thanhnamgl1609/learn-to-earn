@@ -1,3 +1,5 @@
+import { UserDetail } from '@_types/api/user';
+
 export type UserEntity = {
   id: number;
   profileImage: string;
@@ -49,7 +51,8 @@ export type ClassEntity = {
   chainURI: string;
   semesterId: number;
 
-  registerFee?: number;
+  numberOfStudents?: number;
+  registerClassFee?: number;
   course?: CourseEntity;
   teacher?: UserEntity;
 };

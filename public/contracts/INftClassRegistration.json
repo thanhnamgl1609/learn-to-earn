@@ -1,0 +1,104 @@
+{
+  "contractName": "INftClassRegistration",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/blockchain/contracts/interfaces/INftClassRegistration.sol\":\"INftClassRegistration\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/blockchain/contracts/interfaces/IConstant.sol\":{\"keccak256\":\"0x6fd9c3ee3bcc26fd868c813b6ea601ed9673aaf70bf6c8276f218b9bb1f7c40d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://f27c089f34381c25e918f3725b0548587e34e36b68376dc7c0b5215f00cc5931\",\"dweb:/ipfs/QmXQTPsA8YNNQDXi9fMsNKpnLsxqwGr6s9EqXxBFSEgkFi\"]},\"project:/blockchain/contracts/interfaces/INftClassRegistration.sol\":{\"keccak256\":\"0x00c9c5faef6a612c542cbf8246d09af379ec6d423632bc030ebf941125c56fc0\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8764f29ab6fb9d936c473ef75b811c6979d5e88070c097c370081d3145a48dd8\",\"dweb:/ipfs/QmQzQ1FAYGw7CnhhnMGs15oWqATaqpkWJonxmaNu5QxKvF\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\r\n// Tells the Solidity compiler to compile only from v0.8.13 to v0.9.0\r\npragma solidity ^0.8.13;\r\nimport \"./IConstant.sol\";\r\n\r\ninterface INftClassRegistration is IConstant {\r\n    \r\n}\r\n",
+  "sourcePath": "E:\\learn\\learn-to-earn\\blockchain\\contracts\\interfaces\\INftClassRegistration.sol",
+  "ast": {
+    "absolutePath": "project:/blockchain/contracts/interfaces/INftClassRegistration.sol",
+    "exportedSymbols": {
+      "IConstant": [
+        8158
+      ],
+      "INftClassRegistration": [
+        8179
+      ]
+    },
+    "id": 8180,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 8175,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".13"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "104:24:28"
+      },
+      {
+        "absolutePath": "project:/blockchain/contracts/interfaces/IConstant.sol",
+        "file": "./IConstant.sol",
+        "id": 8176,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 8180,
+        "sourceUnit": 8159,
+        "src": "130:25:28",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 8177,
+              "name": "IConstant",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 8158,
+              "src": "194:9:28"
+            },
+            "id": 8178,
+            "nodeType": "InheritanceSpecifier",
+            "src": "194:9:28"
+          }
+        ],
+        "canonicalName": "INftClassRegistration",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": true,
+        "id": 8179,
+        "linearizedBaseContracts": [
+          8179,
+          8158
+        ],
+        "name": "INftClassRegistration",
+        "nameLocation": "169:21:28",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 8180,
+        "src": "159:55:28",
+        "usedErrors": []
+      }
+    ],
+    "src": "104:112:28"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.13+commit.abaa5c0e.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.13",
+  "updatedAt": "2023-05-24T16:45:30.288Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

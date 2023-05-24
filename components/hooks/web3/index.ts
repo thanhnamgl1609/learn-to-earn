@@ -124,3 +124,10 @@ export const useIdentitiesActions = () => {
 
   return actions;
 };
+
+export const useNftClassRegistrationActions = () => {
+  const { useNftClassRegistrationActions } = useHooks();
+  const actions = useNftClassRegistrationActions();
+
+  return actions;
+};

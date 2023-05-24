@@ -13,6 +13,9 @@ export default (sequelize: Sequelize) => {
         targetKey: 'tokenId',
         as: 'teacher',
       });
+      this.belongsTo(models.semesters, {
+        foreignKey: 'semesterId',
+      });
     }
   }
   Classes.init(

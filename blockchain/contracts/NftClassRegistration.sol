@@ -2,9 +2,6 @@
 // Tells the Solidity compiler to compile only from v0.8.13 to v0.9.0
 pragma solidity ^0.8.13;
 
-import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-
 import "./ERC721BaseContract.sol";
 import "./interfaces/INftClassRegistration.sol";
 import "./interfaces/INftIdentities.sol";
@@ -16,20 +13,14 @@ contract NftClassRegistration is ERC721BaseContract, INftClassRegistration {
     INftIdentities private _nftIdentities;
     INftCertificates private _nftCertificates;
 
-    mapping(uint256 => uint256) private _registeredStartAt;
-    mapping(uint256 => uint256) private _registeredEndAt;
-
-    mapping(uint256 => uint256[]) private _classIdByRegisterTime;
-    mapping(uint256 => mapping(string => uint256)) private _idOfURIOfType;
+    bool private _isInitialize;
 
     NftClassRegistration[] private _allNftClassRegistrations;
     mapping(uint256 => uint256) private _posOfNftClassRegistrationTokenId;
-    mapping(uint256 => uint256[]) private _registeredClassTokenIdOfStudent; // REMOVE when have certificate?
+    mapping(uint256 => uint256[]) private _registeredClassTokenIdsOfStudent; // REMOVE when have certificate?
     mapping(uint256 => mapping(uint256 => uint256))
         private _registeredCourseOfStudent; // REMOVE when have certificate?
-    mapping(uint256 => uint256[]) private _registeredTokenIdOfClass; // KEEP
-
-    mapping(uint256 => mapping(uint256 => uint256)) _posOfTokenIdOfNftType;
+    mapping(uint256 => uint256[]) private _studentTokenIdsOfClass; // KEEP
 
     event NewClassRegistrationCreated(uint256 classId);
 
@@ -40,95 +31,86 @@ contract NftClassRegistration is ERC721BaseContract, INftClassRegistration {
 
     constructor(
         address nftIdentities,
-        address nftSchool,
-        address nftCertificates
-    ) ERC1155BaseContract("") {
+        address nftSchool
+    ) ERC721BaseContract("NftClassRegistration", "NCR") {
+        _isInitialize = false;
         _nftIdentities = INftIdentities(nftIdentities);
         _nftSchool = INftSchool(nftSchool);
-        _nftCertificates = INftCertificates(nftCertificates);
     }
 
-    // function getCurrentRegisteredClasses(
-    //     uint256 semester
-    // ) external view returns (ClassResponse[] memory) {
-    //     uint256[] memory ids = _classIdByRegisterTime[semester];
-    //     uint256 count = ids.length;
-    //     ClassResponse[] memory classes = new ClassResponse[](count);
-
-    //     for (uint256 idx; idx < count; ++idx) {
-    //         classes[idx] = _getClassByIdx(_posOfClasses[ids[idx]] - 1);
-    //     }
-
-    //     return classes;
-    // }
+    function initialize(address nftCertificates) public onlyOwner {
+        require(!_isInitialize);
+        _isInitialize = true;
+        _nftCertificates = INftCertificates(nftCertificates);
+    }
 
     // Register class block: start
     function getRegisteredClasses()
         public
         view
-        returns (NftClassRegistrationResponse[] memory)
+        returns (NftClassRegistration[] memory)
     {
         NftIdentityResponse memory nftIdentityResponse = _nftIdentities
             .getNftOfMemberWithRole(uint256(ROLE.STUDENT), msg.sender);
         uint256 studentTokenId = nftIdentityResponse.nftIdentity.tokenId;
         uint256[]
-            memory nftClassRegistrationTokenIds = _registeredClassTokenIdOfStudent[
+            memory nftClassRegistrationTokenIds = _registeredClassTokenIdsOfStudent[
                 studentTokenId
             ];
         uint256 count = nftClassRegistrationTokenIds.length;
 
-        NftClassRegistrationResponse[]
-            memory nftClassRegistrationResponses = new NftClassRegistrationResponse[](
-                count
-            );
+        NftClassRegistration[]
+            memory nftClassRegistrations = new NftClassRegistration[](count);
 
         for (uint256 idx = 0; idx < count; ++idx) {
-            NftClassRegistration
-                memory nftClassRegistration = getNftClassRegistration(
-                    nftClassRegistrationTokenIds[idx]
-                );
-
-            nftClassRegistrationResponses[idx] = NftClassRegistrationResponse(
-                nftClassRegistration,
-                getClassById(nftClassRegistration.classId).class,
-                uri(nftClassRegistration.tokenId)
+            nftClassRegistrations[idx] = getNftClassRegistration(
+                nftClassRegistrationTokenIds[idx]
             );
         }
 
-        return nftClassRegistrationResponses;
+        return nftClassRegistrations;
     }
 
-    function getNftClassRegistration(uint256 tokenId) public view returns (NftClassRegistration memory) {
+    function getNftClassRegistration(
+        uint256 tokenId
+    ) public view returns (NftClassRegistration memory) {
         uint256 posOfNft = _posOfNftClassRegistrationTokenId[tokenId];
         require(posOfNft > 0);
 
         return _allNftClassRegistrations[posOfNft - 1];
     }
 
-    // function getStudentListOfClass(
-    //     uint256 id
-    // ) public view returns (NftIdentityResponse[] memory) {
-    //     uint256 count = _registeredClassTokenIdOfStudent[id].length;
-    //     NftIdentityResponse[] memory result = new NftIdentityResponse[](count);
+    function getStudentListOfClass(
+        uint256 classId
+    ) public view returns (NftIdentityResponse[] memory) {
+        uint256 count = _studentTokenIdsOfClass[classId].length;
+        NftIdentityResponse[] memory result = new NftIdentityResponse[](count);
 
-    //     for (uint256 idx; idx < count; ++idx) {
-    //         result[idx] = _nftIdentities.getNftOfTokenId(
-    //             _registeredClassTokenIdOfStudent[id][idx]
-    //         );
-    //     }
+        for (uint256 idx; idx < count; ++idx) {
+            result[idx] = _nftIdentities.getNftOfTokenId(
+                _studentTokenIdsOfClass[classId][idx]
+            );
+        }
 
-    //     return result;
-    // }
+        return result;
+    }
+
+    function getNumberOfRegisteredStudent(
+        uint256 classId
+    ) public view returns (uint256) {
+        return _studentTokenIdsOfClass[classId].length;
+    }
 
     function registerClass(uint256 classId, string memory uri) public payable {
         NftIdentityResponse memory nftIdentityResponse = _nftIdentities
             .getNftOfMemberWithRole(uint256(ROLE.STUDENT), msg.sender);
         uint256 studentTokenId = nftIdentityResponse.nftIdentity.tokenId;
-        Class memory class = getClassById(classId).class;
-        (uint256 registerStartAt, uint256 registerEndAt) = _nftSchool.getRegisterTime(class.semester);
+        Class memory class = _nftSchool.getClassById(classId);
+        (uint256 registeredStartAt, uint256 registeredEndAt) = _nftSchool
+            .getRegisterTime(class.semester);
 
         require(!nftIdentityResponse.isExpired);
-        require(_registeredTokenIdOfClass[class.id].length < class.maxSize);
+        require(_studentTokenIdsOfClass[class.id].length < class.maxSize);
         require(block.timestamp >= registeredStartAt);
         require(block.timestamp <= registeredEndAt);
         require(
@@ -141,16 +123,16 @@ contract NftClassRegistration is ERC721BaseContract, INftClassRegistration {
         require(
             _registeredCourseOfStudent[studentTokenId][class.courseId] == 0
         );
-        require(msg.value == registerClassFee);
+        require(msg.value == class.registerClassFee);
         uint256 tokenId = _mintToken(msg.sender, uri);
         _allNftClassRegistrations.push(
             NftClassRegistration(tokenId, classId, studentTokenId)
         );
         _posOfNftClassRegistrationTokenId[tokenId] = _allNftClassRegistrations
             .length;
-        _registeredClassTokenIdOfStudent[studentTokenId].push(tokenId);
+        _registeredClassTokenIdsOfStudent[studentTokenId].push(tokenId);
         _registeredCourseOfStudent[studentTokenId][class.courseId] = tokenId;
-        _registeredTokenIdOfClass[class.id].push(tokenId);
+        _studentTokenIdsOfClass[class.id].push(studentTokenId);
 
         emit NewClassRegistrationCreated(tokenId);
     }

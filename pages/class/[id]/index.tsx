@@ -2,11 +2,15 @@ import { useRouter } from 'next/router';
 
 import CONST from '@config/constants.json';
 import ROUTES from '@config/routes.json';
-import { useClassDetail } from '@hooks/web3';
-import { BaseLayout, ClassDetail } from '@templates';
+import { BaseLayout, ClassDetail, FormClassDetail } from '@templates';
 import { Breadcrumb, Table } from '@organisms';
 import { Box } from '@molecules';
 import { Heading } from '@atoms';
+import { useClassDetailApi, useClassListApi } from '@hooks/api/classes';
+import { formatDate } from 'utils';
+import { classEntity, courseEntity } from 'domain/models';
+
+const { UI } = CONST;
 
 const tableHeaders = [
   {
@@ -25,15 +29,16 @@ const ClassDetailPage = () => {
   const id = parseInt(qid as string);
   if (!id || Number.isNaN(id)) return null;
 
-  const {
-    classDetail: { data: classDetail, studentList },
-  } = useClassDetail({ id, withStudentList: true });
+  const { data: classDetail } = useClassDetailApi(id);
+  const displayClassDetail = classEntity.displayClassDetail(
+    classDetail || classEntity.createLoadingState()
+  );
 
-  const displayStudentList =
-    studentList?.map(({ tokenId, ...otherInfo }) => ({
-      id: tokenId,
-      ...otherInfo,
-    })) || [];
+  // const displayStudentList =
+  //   studentList?.map(({ tokenId, ...otherInfo }) => ({
+  //     id: tokenId,
+  //     ...otherInfo,
+  //   })) || [];
 
   const links = [
     {
@@ -54,15 +59,15 @@ const ClassDetailPage = () => {
       <Breadcrumb links={links} />
       <Box autoLayout>
         <Heading>Class #{classDetail?.id}</Heading>
-        {classDetail && <ClassDetail classDetail={classDetail} />}
+        {classDetail && <FormClassDetail formState={displayClassDetail} edit />}
       </Box>
 
       <Box autoLayout>
-        <Table
+        {/* <Table
           title={`Danh sách sinh viên`}
           data={displayStudentList}
           headers={tableHeaders}
-        />
+        /> */}
       </Box>
     </BaseLayout>
   );

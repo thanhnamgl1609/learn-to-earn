@@ -78,6 +78,8 @@ const validate = async (target?: string, data?: Record<string, any>) => {
       return validateForm(CREATE_COURSE_META, data);
     case UPLOAD_TARGET.CREATE_CLASS:
       return { pinataContent: data };
+    case UPLOAD_TARGET.REGISTER_CLASS:
+      return { pinataContent: data };
     case UPLOAD_TARGET.APPLY_REGISTRATION:
       return validateApplyRegistration(data);
     default:

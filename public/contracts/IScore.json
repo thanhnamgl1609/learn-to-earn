@@ -35,15 +35,15 @@
     "absolutePath": "project:/blockchain/contracts/interfaces/IScore.sol",
     "exportedSymbols": {
       "IScore": [
-        6545
+        8305
       ]
     },
-    "id": 6546,
+    "id": 8306,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 6530,
+        "id": 8290,
         "literals": [
           "solidity",
           "^",
@@ -51,7 +51,7 @@
           ".13"
         ],
         "nodeType": "PragmaDirective",
-        "src": "104:24:23"
+        "src": "104:24:31"
       },
       {
         "abstract": false,
@@ -60,81 +60,81 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 6545,
+        "id": 8305,
         "linearizedBaseContracts": [
-          6545
+          8305
         ],
         "name": "IScore",
-        "nameLocation": "465:6:23",
+        "nameLocation": "465:6:31",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "canonicalName": "IScore.ScoreType",
-            "id": 6536,
+            "id": 8296,
             "members": [
               {
-                "id": 6531,
+                "id": 8291,
                 "name": "Midterm",
-                "nameLocation": "505:7:23",
+                "nameLocation": "505:7:31",
                 "nodeType": "EnumValue",
-                "src": "505:7:23"
+                "src": "505:7:31"
               },
               {
-                "id": 6532,
+                "id": 8292,
                 "name": "Practice",
-                "nameLocation": "523:8:23",
+                "nameLocation": "523:8:31",
                 "nodeType": "EnumValue",
-                "src": "523:8:23"
+                "src": "523:8:31"
               },
               {
-                "id": 6533,
+                "id": 8293,
                 "name": "Plus",
-                "nameLocation": "542:4:23",
+                "nameLocation": "542:4:31",
                 "nodeType": "EnumValue",
-                "src": "542:4:23"
+                "src": "542:4:31"
               },
               {
-                "id": 6534,
+                "id": 8294,
                 "name": "Final",
-                "nameLocation": "557:5:23",
+                "nameLocation": "557:5:31",
                 "nodeType": "EnumValue",
-                "src": "557:5:23"
+                "src": "557:5:31"
               },
               {
-                "id": 6535,
+                "id": 8295,
                 "name": "Other",
-                "nameLocation": "573:5:23",
+                "nameLocation": "573:5:31",
                 "nodeType": "EnumValue",
-                "src": "573:5:23"
+                "src": "573:5:31"
               }
             ],
             "name": "ScoreType",
-            "nameLocation": "484:9:23",
+            "nameLocation": "484:9:31",
             "nodeType": "EnumDefinition",
-            "src": "479:106:23"
+            "src": "479:106:31"
           },
           {
             "functionSelector": "4cecbc28",
-            "id": 6544,
+            "id": 8304,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "checkValidScores",
-            "nameLocation": "602:16:23",
+            "nameLocation": "602:16:31",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 6540,
+              "id": 8300,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6539,
+                  "id": 8299,
                   "mutability": "mutable",
                   "name": "scores",
-                  "nameLocation": "636:6:23",
+                  "nameLocation": "636:6:31",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6544,
-                  "src": "619:23:23",
+                  "scope": 8304,
+                  "src": "619:23:31",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -143,18 +143,18 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 6537,
+                      "id": 8297,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
-                      "src": "619:7:23",
+                      "src": "619:7:31",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       }
                     },
-                    "id": 6538,
+                    "id": 8298,
                     "nodeType": "ArrayTypeName",
-                    "src": "619:9:23",
+                    "src": "619:9:31",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
                       "typeString": "uint256[]"
@@ -163,21 +163,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "618:25:23"
+              "src": "618:25:31"
             },
             "returnParameters": {
-              "id": 6543,
+              "id": 8303,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 6542,
+                  "id": 8302,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 6544,
-                  "src": "694:4:23",
+                  "scope": 8304,
+                  "src": "694:4:31",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -185,10 +185,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 6541,
+                    "id": 8301,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "694:4:23",
+                    "src": "694:4:31",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -197,21 +197,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "693:6:23"
+              "src": "693:6:31"
             },
-            "scope": 6545,
-            "src": "593:107:23",
+            "scope": 8305,
+            "src": "593:107:31",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 6546,
-        "src": "455:248:23",
+        "scope": 8306,
+        "src": "455:248:31",
         "usedErrors": []
       }
     ],
-    "src": "104:601:23"
+    "src": "104:601:31"
   },
   "compiler": {
     "name": "solc",
@@ -219,7 +219,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-05-23T11:02:37.304Z",
+  "updatedAt": "2023-05-24T16:45:30.294Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

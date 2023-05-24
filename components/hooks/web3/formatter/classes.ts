@@ -7,8 +7,8 @@ import {
 } from 'utils';
 
 import Api from 'config/api.json';
-import { ClassresponseResponse } from '@_types/contracts/NftSchool';
-import { Class, ClassCore, ClassMeta } from '@_types/school';
+import { ClassResponse } from '@_types/contracts/NftSchool';
+import { Class, ClassMeta } from '@_types/school';
 
 const defaultMeta: ClassMeta = {
   semesterId: 0,
@@ -22,7 +22,7 @@ const defaultMeta: ClassMeta = {
 };
 
 export const formatClassResponse = async (
-  { '0': classResponse, '1': numberOfStudents }: ClassresponseResponse,
+  classResponse: ClassResponse,
   {
     useProxy = true,
     timeout = TIMEOUT,
@@ -67,7 +67,6 @@ export const formatClassResponse = async (
     maxSize,
     teacherTokenId,
     semester,
-    numberOfStudents: parseBigNumber(numberOfStudents),
     uri,
   };
   try {
@@ -97,5 +96,5 @@ export const formatClassResponse = async (
 };
 
 export const formatClassResponses = async (
-  raws: ClassresponseResponse[]
+  raws: ClassResponse[]
 ): Promise<Class[]> => Promise.all(raws.map((raw) => formatClassResponse(raw)));

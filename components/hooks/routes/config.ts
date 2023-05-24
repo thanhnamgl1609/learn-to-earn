@@ -21,12 +21,13 @@ const RouteConfig: RouteConfigType = {
     default: Routes.profile,
     [Routes.profile.name]: Routes.profile,
     [Routes.school.name]: Routes.school,
-    [Routes.registeredClassList.name]: Routes.registeredClassList,
+    [Routes.schoolClassDetail.name]: Routes.schoolClassDetail,
+    [Routes.schoolClassList.name]: Routes.schoolClassList,
   },
   [ROLES.TEACHER]: {
     default: Routes.profile,
     [Routes.profile.name]: Routes.profile,
-    [Routes.schoolClassDetail.name]: Routes.schoolClassDetail,
+    [Routes.classDetail.name]: Routes.classDetail,
   },
   [ROLES.VISITOR]: {
     default: Routes.register,

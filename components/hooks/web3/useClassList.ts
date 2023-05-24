@@ -8,7 +8,7 @@ import { useApi } from '@hooks/common';
 type UseClassListResponse = {};
 
 export type UseClassListParams = {
-  current?: boolean;
+  semester?: number;
 };
 
 type ClassListHookFactory = CryptoHookFactory<
@@ -21,10 +21,10 @@ export type UseClassListHook = ReturnType<ClassListHookFactory>;
 
 export const hookFactory: ClassListHookFactory =
   ({ contracts }) =>
-  ({ current } = { current: false }) => {
+  ({ semester } = { semester: 0 }) => {
     const getAllClassCaller = useApi(async () => {
-      const caller = current
-        ? contracts!.nftSchool.getCurrentRegisteredClasses()
+      const caller = semester
+        ? contracts!.nftSchool.getClassBySemester(semester)
         : contracts.nftSchool.getAllClasses();
       const classes = await caller;
       const result = await formatClassResponses(classes);

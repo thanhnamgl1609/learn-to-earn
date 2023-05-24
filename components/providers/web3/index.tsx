@@ -14,7 +14,12 @@ import {
 } from './utils';
 import { ethers } from 'ethers';
 import { MetaMaskInpageProvider } from '@metamask/providers';
-import { NftCertificates, NftIdentities, NftSchool } from '@_types/contracts';
+import {
+  NftCertificates,
+  NftClassRegistration,
+  NftIdentities,
+  NftSchool,
+} from '@_types/contracts';
 
 const pageReload = () => window.location.reload();
 
@@ -42,15 +47,23 @@ const Web3Provider: FC<PropsWithChildren> = ({ children }) => {
         const ethereum = window.ethereum;
         const provider = new ethers.providers.Web3Provider(ethereum as any);
 
-        const [nftIdentities, nftSchool, nftCertificates] = await Promise.all([
+        const [
+          nftIdentities,
+          nftSchool,
+          nftCertificates,
+          nftClassRegistration,
+        ] = await Promise.all([
           loadSignedContract('NftIdentities', provider),
           loadSignedContract('NftSchool', provider),
           loadSignedContract('NftCertificates', provider),
+          loadSignedContract('NftClassRegistration', provider),
         ]);
         const contracts = {
           nftIdentities: nftIdentities as unknown as NftIdentities,
           nftSchool: nftSchool as unknown as NftSchool,
           nftCertificates: nftCertificates as unknown as NftCertificates,
+          nftClassRegistration:
+            nftClassRegistration as unknown as NftClassRegistration,
         };
 
         const web3State = {

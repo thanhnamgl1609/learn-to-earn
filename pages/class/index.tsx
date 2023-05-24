@@ -11,7 +11,7 @@ import { Box, SelectField } from '@molecules';
 import { Breadcrumb, Table } from '@organisms';
 import { BaseLayout } from '@templates';
 import { useInputTextChange, useSelectOptions } from '@hooks/form';
-import {  semesterEntity } from 'domain/models';
+import { semesterEntity } from 'domain/models';
 
 type ActionColumnsProps = {
   item: ClassEntity;
@@ -73,6 +73,12 @@ const tableHeaders = [
     name: 'Số sinh viên đã đăng ký',
   },
   {
+    name: 'Phí đăng ký',
+    custom: ({ item: { registerClassFee } }: ActionColumnsProps) => (
+      <p>{registerClassFee} ETH</p>
+    ),
+  },
+  {
     field: 'teacher.fullName',
     name: 'Giảng viên',
   },
@@ -84,7 +90,7 @@ const tableHeaders = [
 
 const ClassList = () => {
   const [query, setQuery] = useState({
-    semesterId: 0,
+    semesterId: '0',
   });
   const onSelectChange = useInputTextChange(setQuery);
   const { data: classList } = useClassListApi(query);

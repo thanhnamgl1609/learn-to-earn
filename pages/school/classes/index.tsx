@@ -1,20 +1,19 @@
 import _ from 'lodash';
 
-import { Class } from '@_types/school';
+import { ClassEntity } from '@_types/models/entities';
 import CONST from '@config/constants.json';
 import ROUTES from '@config/routes.json';
-import { useClassList } from '@hooks/web3';
 import { useRegisterClass } from '@hooks/common';
 import { Box } from '@molecules';
 import { Breadcrumb, Table } from '@organisms';
 import { BaseLayout } from '@templates';
-import { Button } from '@atoms';
+import { Button, Link } from '@atoms';
 import { useAppDispatch } from '@hooks/stores';
 import { openConfirmModal } from '@store/appSlice';
 import { useRegisterClassesApi } from '@hooks/api/classes';
 
 type ColumnProps = {
-  item: Class;
+  item: ClassEntity;
 };
 
 const { KNOWLEDGE_BLOCKS } = CONST;
@@ -36,17 +35,31 @@ const ActionColumns = ({ item }: ColumnProps) => {
   const onRegisterClick = () => {
     dispatch(
       openConfirmModal({
-        content: `Đăng ký khóa học ${item.meta.course.name}?`,
+        content: `Đăng ký khóa học ${item.course.name}?`,
         onAccept: () => registerClass(item),
       })
     );
   };
 
   return (
-    <div>
+    <div className="space-y-1">
+      <Link
+        href={ROUTES.schoolClassDetail.name.replace(
+          ':id',
+          item.onChainId.toString()
+        )}
+        className="min-w-[100px]"
+        theme="sub"
+        size="S"
+      >
+        Chi tiết
+      </Link>
+
       <Button
         onClick={onRegisterClick}
-        className="bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80"
+        className="min-w-[100px]"
+        theme="main"
+        size="S"
       >
         Đăng ký
       </Button>
@@ -59,7 +72,7 @@ const tableHeaders = [
     name: 'Mã lớp học',
   },
   {
-    field: 'meta.course.name',
+    field: 'course.name',
     name: 'Tên môn học',
   },
   {
@@ -75,6 +88,12 @@ const tableHeaders = [
     custom: ({ item }: ColumnProps) => <p>{item.credits}</p>,
   },
   {
+    name: 'Môn học tiên quyết',
+    custom: ({ item }: ColumnProps) => (
+      <p>{item.course?.prevCourse?.name ?? 'Không có'}</p>
+    ),
+  },
+  {
     field: 'maxSize',
     name: 'Số sinh viên tối đa',
   },
@@ -83,7 +102,7 @@ const tableHeaders = [
     name: 'Số sinh viên đã đăng ký',
   },
   {
-    field: 'meta.teacher.name',
+    field: 'teacher.fullName',
     name: 'Giảng viên',
   },
   {
@@ -93,10 +112,7 @@ const tableHeaders = [
 ];
 
 const RegisteredClassList = () => {
-  const {
-    classList: { data: registeredClasses },
-  } = useClassList({ current: true });
-  const { data: classListApi } = useRegisterClassesApi();
+  const { data: registeredClasses } = useRegisterClassesApi();
 
   return (
     <BaseLayout>

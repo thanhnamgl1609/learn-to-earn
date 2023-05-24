@@ -17,6 +17,7 @@
     "REGISTRATION": "registration",
     "CREATE_COURSE": "create_course",
     "CREATE_CLASS": "create_class",
+    "REGISTER_CLASS": "register_class",
     "APPLY_REGISTRATION": "apply_registration"
   },
   "ROLES": {

@@ -1,6 +1,7 @@
 'use strict';
 
 const tableName = 'semesters';
+const referClassTableName = 'classes';
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -9,6 +10,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
+    await queryInterface.bulkDelete(referClassTableName, {});
     await queryInterface.bulkDelete(tableName, {});
   },
 };

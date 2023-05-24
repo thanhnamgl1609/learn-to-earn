@@ -4,6 +4,8 @@ import { cls } from 'utils';
 
 type Props = {
   className?: string;
+  size?: 'S' | 'M' | 'L';
+  theme?: 'main' | 'sub';
   disabled?: boolean;
   disabledContainerClassName?: string;
   disabledClassName?: string;
@@ -13,13 +15,15 @@ type Props = {
 export const CustomLink: FC<PropsWithChildren<Props>> = memo(
   ({
     className,
+    size,
+    theme,
     disabled,
     disabledContainerClassName,
     disabledClassName,
     disabledTag,
     ...props
-  }) => {
-    return disabled ? (
+  }) =>
+    disabled ? (
       <div className={cls(disabledContainerClassName, 'group hover:relative')}>
         <p className={cls(className, disabledClassName)}>{props.children}</p>
         {disabledTag && (
@@ -36,7 +40,21 @@ export const CustomLink: FC<PropsWithChildren<Props>> = memo(
         )}
       </div>
     ) : (
-      <Link className={className} {...props} />
-    );
-  }
+      <Link
+        className={cls(
+          `
+            text-center block hover:opacity-80 active:opacity-60
+            text-sm rounded-md font-medium shadow-sm
+            disabled:opacity-50 disabled:hover:opacity-50
+          `,
+          size === 'S' ? 'px-2 py-1' : size === 'M' ? 'px-4 py-2' : 'px-6 py-3',
+          theme === 'main' &&
+            'bg-indigo-900 text-white border border-transparent',
+          theme === 'sub' &&
+            'bg-white text-indigo-900 border border-indigo-900 border-1',
+          className
+        )}
+        {...props}
+      />
+    )
 );

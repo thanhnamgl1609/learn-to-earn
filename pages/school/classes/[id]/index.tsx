@@ -5,11 +5,13 @@ import ROUTES from '@config/routes.json';
 import { useClassDetail } from '@hooks/web3';
 import { useAppDispatch } from '@hooks/stores';
 import { useGrantNftIdentity } from '@hooks/common';
-import { BaseLayout, ClassDetail } from '@templates';
+import { BaseLayout, ClassDetail, FormClassDetail } from '@templates';
 import { Breadcrumb, Table } from '@organisms';
 import { Box } from '@molecules';
-import { Button, Heading } from '@atoms';
+import { Button, Heading, LinkText } from '@atoms';
 import { openConfirmModal } from '@store/appSlice';
+import { useClassDetailApi } from '@hooks/api/classes';
+import { classEntity } from 'domain/models';
 
 type IdentityColumnProps = {
   item: Omit<NftIdentity, 'tokenId'> & { id: number };
@@ -67,20 +69,15 @@ const SchoolClassDetail = () => {
   const id = parseInt(qid as string);
   if (!id || Number.isNaN(id)) return null;
 
-  const {
-    classDetail: { data: classDetail, studentList },
-  } = useClassDetail({ id, withStudentList: true });
-
-  const displayStudentList =
-    studentList?.map(({ tokenId, ...otherInfo }) => ({
-      id: tokenId,
-      ...otherInfo,
-    })) || [];
+  const { data: classDetail } = useClassDetailApi(id);
+  const displayClassDetail = classEntity.displayClassDetail(
+    classDetail || classEntity.createLoadingState()
+  );
 
   const links = [
     {
-      label: 'Profile',
-      route: ROUTES.profile,
+      label: 'Danh sách học phần',
+      route: ROUTES.schoolClassList,
     },
     {
       label: `Lớp #${id}`,
@@ -88,19 +85,18 @@ const SchoolClassDetail = () => {
   ];
 
   return (
-    <BaseLayout>
+    <BaseLayout containerClassName="max-w-[640px]">
       <Breadcrumb links={links} />
-      <Box autoLayout>
-        <Heading>Class #{classDetail?.id}</Heading>
-        {classDetail && <ClassDetail classDetail={classDetail} />}
-      </Box>
 
       <Box autoLayout>
-        <Table
-          title={`Danh sách sinh viên`}
-          data={displayStudentList}
-          headers={tableHeaders}
-        />
+        <LinkText
+          href={displayClassDetail?.chainURI ?? ''}
+          theme="heading"
+          target="_blank"
+        >
+          Class #{displayClassDetail?.onChainId}
+        </LinkText>
+        <FormClassDetail formState={displayClassDetail} edit />
       </Box>
     </BaseLayout>
   );

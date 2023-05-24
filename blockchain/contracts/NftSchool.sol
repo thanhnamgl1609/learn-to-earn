@@ -8,7 +8,7 @@ import "./interfaces/INftSchool.sol";
 import "./interfaces/INftIdentities.sol";
 import "./interfaces/INftCertificates.sol";
 
-contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
+contract NftSchool is INftSchool, IdentityGenerator {
     using Counters for Counters.Counter;
 
     uint256 constant COURSE_ID = 1;
@@ -21,18 +21,19 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
 
     string[] private courseURIs;
 
+    address private _owner;
+    
     INftIdentities private _nftIdentities;
     INftCertificates private _nftCertificates;
 
     bool public _isInitialize;
-    uint256 public registerClassFee = 0.5 ether;
 
     event NewClassCreated(uint256 id);
 
     mapping(uint256 => uint256) private _registeredStartAt;
     mapping(uint256 => uint256) private _registeredEndAt;
 
-    mapping(uint256 => uint256[]) private _classIdByRegisterTime;
+    mapping(uint256 => uint256[]) private _classIdsOfSemeter;
     mapping(uint256 => mapping(string => uint256)) private _idOfURIOfType;
 
     Course[] private _allCourses;
@@ -44,15 +45,6 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
     mapping(uint256 => uint256) private _posOfClasses;
     mapping(uint256 => uint256[]) private _assignedClassesOfTeacher;
 
-    NftClassRegistration[] private _allNftClassRegistrations;
-    mapping(uint256 => uint256) private _posOfNftClassRegistrationTokenId;
-    mapping(uint256 => uint256[]) private _registeredClassTokenIdOfStudent; // REMOVE when have certificate?
-    mapping(uint256 => mapping(uint256 => uint256))
-        private _registeredCourseOfStudent; // REMOVE when have certificate?
-    mapping(uint256 => uint256[]) private _registeredTokenIdOfClass; // KEEP
-
-    mapping(uint256 => mapping(uint256 => uint256)) _posOfTokenIdOfNftType;
-
     modifier onlyOwner() {
         require(_owner == msg.sender);
         _;
@@ -62,7 +54,8 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
         address nftIdentities,
         string[] memory knowledgeBlockNames,
         uint256[] memory knowledgeBlockCredits
-    ) ERC1155BaseContract("") {
+    ) {
+        _owner = msg.sender;
         _nftIdentities = INftIdentities(nftIdentities);
 
         uint256 knowledgeBlockCount = knowledgeBlockNames.length;
@@ -156,51 +149,51 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
     // Class Block: Start
     function getClassById(
         uint256 id
-    ) public view returns (ClassResponse memory) {
+    ) public view returns (Class memory) {
         uint256 pos = _posOfClasses[id];
         require(pos > 0);
 
-        return _getClassByIdx(pos - 1);
+        return _allClasses[pos - 1];
     }
 
     function getAllClasses()
         external
         view
         onlyOwner
-        returns (ClassResponse[] memory)
+        returns (Class[] memory)
     {
         uint256 length = _allClasses.length;
-        ClassResponse[] memory classResponses = new ClassResponse[](length);
+        Class[] memory classes = new Class[](length);
 
         for (uint256 idx; idx < length; ++idx) {
-            classResponses[idx] = _getClassByIdx(idx);
+            classes[idx] = _allClasses[idx];
         }
 
-        return classResponses;
+        return classes;
     }
 
-    // function getCurrentRegisteredClasses(
-    //     uint256 semester
-    // ) external view returns (ClassResponse[] memory) {
-    //     uint256[] memory ids = _classIdByRegisterTime[semester];
-    //     uint256 count = ids.length;
-    //     ClassResponse[] memory classes = new ClassResponse[](count);
-
-    //     for (uint256 idx; idx < count; ++idx) {
-    //         classes[idx] = _getClassByIdx(_posOfClasses[ids[idx]] - 1);
-    //     }
-
-    //     return classes;
-    // }
-
-    function getAssignedClasses(
-        uint256 tokenId
-    ) external view returns (ClassResponse[] memory) {
-        uint256 count = _assignedClassesOfTeacher[tokenId].length;
-        ClassResponse[] memory result = new ClassResponse[](count);
+    function getClassBySemester(
+        uint256 semester
+    ) external view returns (Class[] memory) {
+        uint256[] memory ids = _classIdsOfSemeter[semester];
+        uint256 count = ids.length;
+        Class[] memory classes = new Class[](count);
 
         for (uint256 idx; idx < count; ++idx) {
-            result[idx] = getClassById(_assignedClassesOfTeacher[tokenId][idx]);
+            classes[idx] = _allClasses[_posOfClasses[ids[idx]] - 1];
+        }
+
+        return classes;
+    }
+
+    function getAssignedClasses(
+        uint256 teacherTokenId
+    ) external view returns (Class[] memory) {
+        uint256 count = _assignedClassesOfTeacher[teacherTokenId].length;
+        Class[] memory result = new Class[](count);
+
+        for (uint256 idx; idx < count; ++idx) {
+            result[idx] = getClassById(_assignedClassesOfTeacher[teacherTokenId][idx]);
         }
 
         return result;
@@ -212,6 +205,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
         uint256 maxSize,
         uint256 teacherTokenId,
         uint256 semester,
+        uint256 registerClassFee,
         string memory uri
     ) public onlyOwner returns (uint256) {
         Course memory course = getCourseById(courseId);
@@ -240,7 +234,7 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
             )
         );
         _posOfClasses[id] = _allClasses.length;
-        _classIdByRegisterTime[semester].push(id);
+        _classIdsOfSemeter[semester].push(id);
         _assignedClassesOfTeacher[teacherTokenId].push(id);
         emit NewClassCreated(id);
 
@@ -250,80 +244,10 @@ contract NftSchool is ERC1155BaseContract, INftSchool, IdentityGenerator {
     function getRegisterFeeClassById(
         uint256 tokenId
     ) public view returns (uint256) {
-        uint256 pos = _posOfClasses[id];
+        uint256 pos = _posOfClasses[tokenId];
         require(pos > 0);
 
         return _allClasses[pos - 1].registerClassFee;
     }
-
-    function _getClassByIdx(
-        uint256 idx
-    ) private view returns (ClassResponse memory) {
-        return
-            ClassResponse(
-                _allClasses[idx],
-                _registeredTokenIdOfClass[_allClasses[idx].id].length
-            );
-    }
     // Class Block: End
-
-    // Register class block: start
-    // function getRegisteredClasses()
-    //     public
-    //     view
-    //     returns (NftClassRegistrationResponse[] memory)
-    // {
-    //     NftIdentityResponse memory nftIdentityResponse = _nftIdentities
-    //         .getNftOfMemberWithRole(uint256(ROLE.STUDENT), msg.sender);
-    //     uint256 studentTokenId = nftIdentityResponse.nftIdentity.tokenId;
-    //     uint256[]
-    //         memory nftClassRegistrationTokenIds = _registeredClassTokenIdOfStudent[
-    //             studentTokenId
-    //         ];
-    //     uint256 count = nftClassRegistrationTokenIds.length;
-
-    //     NftClassRegistrationResponse[]
-    //         memory nftClassRegistrationResponses = new NftClassRegistrationResponse[](
-    //             count
-    //         );
-
-    //     for (uint256 idx = 0; idx < count; ++idx) {
-    //         NftClassRegistration
-    //             memory nftClassRegistration = getNftClassRegistration(
-    //                 nftClassRegistrationTokenIds[idx]
-    //             );
-
-    //         nftClassRegistrationResponses[idx] = NftClassRegistrationResponse(
-    //             nftClassRegistration,
-    //             getClassById(nftClassRegistration.classId).class,
-    //             uri(nftClassRegistration.tokenId)
-    //         );
-    //     }
-
-    //     return nftClassRegistrationResponses;
-    // }
-
-    // function getNftClassRegistration(
-    //     uint256 tokenId
-    // ) public view returns (NftClassRegistration memory) {
-    //     uint256 posOfNft = _posOfNftClassRegistrationTokenId[tokenId];
-    //     require(posOfNft > 0);
-
-    //     return _allNftClassRegistrations[posOfNft - 1];
-    // }
-
-    // function getStudentListOfClass(
-    //     uint256 id
-    // ) public view returns (NftIdentityResponse[] memory) {
-    //     uint256 count = _registeredClassTokenIdOfStudent[id].length;
-    //     NftIdentityResponse[] memory result = new NftIdentityResponse[](count);
-
-    //     for (uint256 idx; idx < count; ++idx) {
-    //         result[idx] = _nftIdentities.getNftOfTokenId(
-    //             _registeredClassTokenIdOfStudent[id][idx]
-    //         );
-    //     }
-
-    //     return result;
-    // }
 }
