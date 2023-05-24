@@ -66,5 +66,9 @@
       "credits": 10,
       "name": "Kiến thức tốt nghiệp"
     }
+  },
+  "GENDER": {
+    "0": "Nam",
+    "1": "Nữ"
   }
 }
