@@ -45,6 +45,7 @@ export const LinkBox: FC<PropsWithChildren<Props>> = memo(
         className={`
           block px-2 py-1 mt-1 text-sm border border-gray-300
           hover:text-indigo-900 hover:border-indigo-900 rounded
+          overflow-hidden
         `}
         href={href || ''}
         {...props}

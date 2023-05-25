@@ -1,17 +1,22 @@
 import _ from 'lodash';
 
-import { Class } from '@_types/school';
+import { NftClassRegistrationEntity } from '@_types/models/entities';
 import CONST from '@config/constants.json';
-import { useRegisteredClasses } from '@hooks/web3';
 import { Box } from '@molecules';
 import { Table } from '@organisms';
 import { Button, Heading } from '@atoms';
 import { formatDate } from 'utils';
-import { useAppDispatch } from '@hooks/stores';
+import { useAppDispatch, useAppSelector } from '@hooks/stores';
 import { openConfirmModal } from '@store/appSlice';
+import { useNftRegistrationClassListApi } from '@hooks/api/classes';
+import { NftClassRegistrationDetailModal } from '@templates/Modal';
+import { useModalController } from '@hooks/ui';
+import { useState } from 'react';
+import { selectCurrentNftIdentity } from '@store/userSlice';
 
 type ClassColumnProps = {
-  item: Class;
+  item: NftClassRegistrationEntity;
+  onOpenNftModal: (nft: NftClassRegistrationEntity) => void;
 };
 
 const { KNOWLEDGE_BLOCKS, DATE_TIME } = CONST;
@@ -19,42 +24,48 @@ const KNOWLEDGE_BLOCK_BY_IDS = _.keyBy(KNOWLEDGE_BLOCKS, 'id');
 
 const classTableHeaders = [
   {
-    field: 'id',
+    field: 'class.onChainId',
     name: 'Mã lớp học',
   },
   {
-    field: 'meta.course.name',
+    field: 'class.course.name',
     name: 'Tên môn học',
   },
   {
-    field: 'knowledgeBlockId',
+    field: 'class.knowledgeBlockId',
     name: 'Khối kiến thức',
     custom: ({ item }: ClassColumnProps) => (
-      <p>{KNOWLEDGE_BLOCK_BY_IDS[item.knowledgeBlockId].name}</p>
+      <p>{KNOWLEDGE_BLOCK_BY_IDS[item.class.knowledgeBlockId].name}</p>
     ),
   },
   {
-    field: 'credits',
+    field: 'class.credits',
     name: 'Số tín chỉ',
-    custom: ({ item }: ClassColumnProps) => <p>{item.credits}</p>,
+    custom: ({ item }: ClassColumnProps) => <p>{item.class.credits}</p>,
   },
   {
-    field: 'maxSize',
-    name: 'Số sinh viên tối đa',
+    field: 'class.numberOfStudents',
+    name: 'Số sinh viên',
+  },
+  {
+    name: 'Ngày bắt đầu môn học',
+    custom: ({ item }: ClassColumnProps) => (
+      <p>{formatDate(item.class.startAt, DATE_TIME.DATETIME)}</p>
+    ),
   },
   {
     name: 'Ngày kết thúc môn học',
     custom: ({ item }: ClassColumnProps) => (
-      <p>{formatDate(item.completeAt, DATE_TIME.DATETIME)}</p>
+      <p>{formatDate(item.class.completeAt, DATE_TIME.DATETIME)}</p>
     ),
   },
   {
-    field: 'meta.teacher.name',
+    field: 'class.teacher.fullName',
     name: 'Giảng viên',
   },
   {
     name: 'Hành động',
-    custom: ({ item }: ClassColumnProps) => {
+    custom: ({ item, onOpenNftModal }: ClassColumnProps) => {
       const dispatch = useAppDispatch();
       const onRequestCompleteCourseCertificate = () => {
         dispatch(
@@ -63,7 +74,10 @@ const classTableHeaders = [
             header: 'Chú ý',
             content: (
               <>
-                <p>Hãy chắc chắn bạn đã hoàn tất khóa học trước khi yêu cầu chứng chỉ!</p>
+                <p>
+                  Hãy chắc chắn bạn đã hoàn tất khóa học trước khi yêu cầu chứng
+                  chỉ!
+                </p>
                 <p>
                   Thao tác này sẽ thu hồi NFT đăng ký môn học và đổi thành NFT
                   hoàn tất khóa học khi giảng viên đã kiểm chứng!
@@ -75,28 +89,56 @@ const classTableHeaders = [
         );
       };
 
+      const openModal = () => onOpenNftModal(item);
+
       return (
-        <Button
-          onClick={onRequestCompleteCourseCertificate}
-          className="bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80 w-[120px]"
-        >
-          Yều cầu cấp chứng chỉ
-        </Button>
+        <div className="flex flex-col gap-[8px]">
+          <Button onClick={openModal} theme="sub">
+            Xem NFT
+          </Button>
+
+          <Button
+            onClick={onRequestCompleteCourseCertificate}
+            className="bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80 w-[120px]"
+          >
+            Yều cầu cấp chứng chỉ
+          </Button>
+        </div>
       );
     },
   },
 ];
 export const StudentProfile = () => {
-  const {
-    registeredClasses: { data: registeredClasses },
-  } = useRegisteredClasses();
-  const displayData =
-    registeredClasses?.map(({ meta }) => meta.classInfo) || [];
+  const { tokenId } = useAppSelector(selectCurrentNftIdentity);
+  const { data: registeredClasses = [] } = useNftRegistrationClassListApi({
+    tokenId,
+  });
+  const [isNFTModalOpen, openNftModal, closeNFTModal] = useModalController();
+  const [nftClassRegistrationDetail, setNftClassRegistrationDetail] =
+    useState<NftClassRegistrationEntity | null>(null);
+  const onOpenNftModal = (nftClassRegistration: NftClassRegistrationEntity) => {
+    openNftModal();
+    setNftClassRegistrationDetail(nftClassRegistration);
+  };
+  const onCloseNftModal = () => {
+    closeNFTModal();
+    setNftClassRegistrationDetail(null);
+  };
 
   return (
     <Box className="px-8 py-6" autoLayout>
       <Heading>Môn học đã đăng ký</Heading>
-      <Table headers={classTableHeaders} data={displayData} />
+      <Table
+        headers={classTableHeaders}
+        data={registeredClasses}
+        customProps={{ onOpenNftModal }}
+      />
+
+      <NftClassRegistrationDetailModal
+        isOpen={isNFTModalOpen}
+        onClose={onCloseNftModal}
+        nftClassRegistration={nftClassRegistrationDetail}
+      />
     </Box>
   );
 };

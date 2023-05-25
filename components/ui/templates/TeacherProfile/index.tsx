@@ -9,10 +9,12 @@ import { Table } from '@organisms';
 import { Heading, Link } from '@atoms';
 import { useAppSelector } from '@hooks/stores';
 import { selectCurrentNftIdentity } from '@store/userSlice';
-import { formatDate, parseDate, sameOrAfter, sameOrBefore } from 'utils';
+import { formatDate } from 'utils';
+import { useAssignedClassesApi } from '@hooks/api/classes';
+import { ClassEntity } from '@_types/models/entities';
 
 type ClassColumnProps = {
-  item: Class;
+  item: ClassEntity;
 };
 
 const { KNOWLEDGE_BLOCKS, DATE_TIME } = CONST;
@@ -22,8 +24,8 @@ const ActionColumn = ({ item }: ClassColumnProps) => {
   return (
     <div>
       <Link
-        href={ROUTES.schoolClassDetail.name.replace(/:id/, item.id.toString())}
-        className="bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80"
+        href={ROUTES.classDetail.name.replace(/:id/, item.id.toString())}
+        className="bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80 min-w-[96px]"
       >
         Chi tiết
       </Link>
@@ -33,11 +35,11 @@ const ActionColumn = ({ item }: ClassColumnProps) => {
 
 const classTableHeaders = [
   {
-    field: 'id',
+    field: 'onChainId',
     name: 'Mã lớp học',
   },
   {
-    field: 'meta.course.name',
+    field: 'course.name',
     name: 'Tên môn học',
   },
   {
@@ -50,7 +52,6 @@ const classTableHeaders = [
   {
     field: 'credits',
     name: 'Số tín chỉ',
-    custom: ({ item }: ClassColumnProps) => <p>{item.credits}</p>,
   },
   {
     field: 'maxSize',
@@ -58,15 +59,19 @@ const classTableHeaders = [
   },
   {
     field: 'numberOfStudents',
-    name: 'Số sinh viên đã đăng ký',
+    name: 'Số sinh viên',
   },
   {
-    field: 'completeAt',
-    name: 'Ngày kết thúc',
+    name: 'Ngày bắt đầu môn học',
+    custom: ({ item }: ClassColumnProps) => (
+      <p>{formatDate(item.startAt, DATE_TIME.DATETIME)}</p>
+    ),
   },
   {
-    field: 'isCompleteText',
-    name: 'Tình trạng',
+    name: 'Ngày kết thúc môn học',
+    custom: ({ item }: ClassColumnProps) => (
+      <p>{formatDate(item.completeAt, DATE_TIME.DATETIME)}</p>
+    ),
   },
   {
     name: 'Hành động',
@@ -75,21 +80,12 @@ const classTableHeaders = [
 ];
 export const TeacherProfile = () => {
   const { tokenId } = useAppSelector(selectCurrentNftIdentity);
-  const {
-    assignedClasses: { data: assignedClasses },
-  } = useAssignedClasses({ tokenId });
-
-  const displayAssignedClass =
-    assignedClasses?.map(({ completeAt, ...otherInfo }) => ({
-      completeAt: formatDate(completeAt, DATE_TIME.DATETIME),
-      isCompleteText: sameOrAfter(completeAt) ? 'Đang dạy' : 'Đã hoàn tất',
-      ...otherInfo,
-    })) || [];
+  const { data: assignedClasses = [] } = useAssignedClassesApi({ tokenId });
 
   return (
     <Box className="px-8 py-6" autoLayout>
       <Heading>Lớp học được phân công</Heading>
-      <Table headers={classTableHeaders} data={displayAssignedClass} />
+      <Table headers={classTableHeaders} data={assignedClasses} />
     </Box>
   );
 };

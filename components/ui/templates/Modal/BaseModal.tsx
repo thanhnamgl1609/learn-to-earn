@@ -65,7 +65,7 @@ export const Modal: FC<PropsWithChildren<Props>> = memo(
     return (
       <FlexDiv
         className={[
-          'fixed top-0 right-0 left-0 bottom-0 z-[1000] transition-opacity duration-300',
+          '!mt-0 fixed top-0 right-0 left-0 bottom-0 z-[1000] transition-opacity duration-300',
           containerClassName,
           !isOpen && 'opacity-0',
           visible,

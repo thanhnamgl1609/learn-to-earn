@@ -2,11 +2,10 @@ import { useRouter } from 'next/router';
 
 import { NftIdentity } from '@_types/nftIdentity';
 import ROUTES from '@config/routes.json';
-import { useClassDetail } from '@hooks/web3';
 import { useAppDispatch } from '@hooks/stores';
 import { useGrantNftIdentity } from '@hooks/common';
-import { BaseLayout, ClassDetail, FormClassDetail } from '@templates';
-import { Breadcrumb, Table } from '@organisms';
+import { BaseLayout, FormClassDetail } from '@templates';
+import { Breadcrumb } from '@organisms';
 import { Box } from '@molecules';
 import { Button, Heading, LinkText } from '@atoms';
 import { openConfirmModal } from '@store/appSlice';
@@ -47,21 +46,6 @@ const ActionColumns = ({ item }: IdentityColumnProps) => {
     </div>
   );
 };
-
-const tableHeaders = [
-  {
-    field: 'id',
-    name: 'Token ID',
-  },
-  {
-    field: 'meta.fullName',
-    name: 'Họ và tên',
-  },
-  {
-    name: 'Action',
-    custom: ActionColumns,
-  },
-];
 
 const SchoolClassDetail = () => {
   const router = useRouter();

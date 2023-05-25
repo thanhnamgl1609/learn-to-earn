@@ -1,6 +1,7 @@
 export type ClassQuery = {
   onChainId?: number;
   semesterId?: number | string;
+  teacherTokenId?: number;
 };
 
 export type ClassApi = {
@@ -18,7 +19,9 @@ export type ClassApi = {
 };
 
 export type NftClassRegistrationQuery = {
+  studentTokenId?: number | string;
   tokenId?: number | string;
+  classId?: number | string;
 };
 
 export type CreatedNftClassRegistration = {

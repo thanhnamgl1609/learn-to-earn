@@ -78,6 +78,5 @@ export type NftClassRegistrationEntity = {
   chainURI: string;
 
   class?: ClassEntity;
-  course?: CourseEntity;
-  owner?: UserEntity;
+  student?: UserEntity;
 };

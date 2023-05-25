@@ -1,29 +1,19 @@
-import { FC, memo, useState } from 'react';
-import { connect } from 'react-redux';
+import { FC, memo } from 'react';
 
-import { NftClassRegistration } from '@_types/school';
-import { useFormSubmit, useInputTextChange } from '@hooks/form';
-import { Modal } from '../BaseModal';
-import { InputField, LinkField } from '@molecules';
-import { Form } from '@organisms';
 import { NftClassRegistrationEntity } from '@_types/models/entities';
+import { Box, InputField, LinkField } from '@molecules';
+import { Heading } from '@atoms';
+import { Modal } from '../BaseModal';
 
 type Props = {
-  nftClassRegistration?: NftClassRegistrationEntity | null;
+  nftClassRegistration: NftClassRegistrationEntity | null;
   isOpen: boolean;
   onClose: () => void;
 };
 
-const createDefaultState = () => ({
-  score: 0,
-});
-
-export const GrantNftIdentityModal: FC<Props> = memo(
-  ({ isOpen, onClose, nftClassRegistration }) => {
-    const [formState, setFormState] = useState(createDefaultState());
-    const onInputChange = useInputTextChange(setFormState);
-    const onSubmit = useFormSubmit(() => console.log('hello'), []);
-    if (!nftClassRegistration) return null;
+export const NftClassRegistrationDetailModal: FC<Props> = memo(
+  ({ nftClassRegistration, isOpen, onClose }) => {
+    if (!nftClassRegistration) return <></>;
 
     return (
       <Modal
@@ -31,7 +21,11 @@ export const GrantNftIdentityModal: FC<Props> = memo(
         isOpen={isOpen}
         onClose={onClose}
       >
-        <Form onSubmit={onSubmit}>
+        <Heading className="px-6 pt-4">
+          NFT đăng ký môn học #{nftClassRegistration.tokenId}
+        </Heading>
+
+        <Box autoLayout>
           <InputField
             label="Mã môn học"
             value={nftClassRegistration.class.course.onChainId}
@@ -58,14 +52,7 @@ export const GrantNftIdentityModal: FC<Props> = memo(
             target="_blank"
             text={nftClassRegistration.chainURI}
           />
-
-          <InputField
-            label="Điểm trung bình"
-            name="score"
-            onChange={onInputChange}
-            value={formState.score}
-          />
-        </Form>
+        </Box>
       </Modal>
     );
   }

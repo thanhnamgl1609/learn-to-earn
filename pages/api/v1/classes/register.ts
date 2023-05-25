@@ -4,7 +4,6 @@ import { classService, userService } from 'domain/services';
 import { run, withSession } from '@api/utils';
 import { addressCheck } from '@api/middleware';
 import { createError } from '@api/utils/create-error';
-import { NftClassRegistrationMeta } from '@_types/school';
 
 const { METHOD } = REQUEST_CONST;
 
@@ -17,7 +16,7 @@ const get: IHandler = async (req, res) => {
 const post: IHandler = async (req, res) => {
   const {
     address,
-    data: { id, metadata },
+    data: { id },
   } = req.body;
 
   const studentTokenId = await userService.getStudentTokenIdFromContract(

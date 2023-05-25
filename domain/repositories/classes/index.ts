@@ -9,7 +9,7 @@ import { withTransaction, generateCondition } from '@api/utils';
 
 export const getAll = (query?: ClassQuery, transaction?: Transaction) => {
   const condition = generateCondition(query, {
-    $equal: ['onChainId', 'semesterId'],
+    $equal: ['onChainId', 'semesterId', 'teacherTokenId'],
   });
 
   return db.classes.findAll({

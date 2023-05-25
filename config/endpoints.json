@@ -12,5 +12,7 @@
   "currentSemesters": "/api/v1/semesters/current",
   "classes": "/api/v1/classes",
   "classDetail": "/api/v1/classes/detail",
-  "registerClasses": "/api/v1/classes/register"
+  "registerClasses": "/api/v1/classes/register",
+  "nftClassRegistration": "/api/v1/classes/nft-class-registration",
+  "assignedClasses": "/api/v1/classes/assigned"
 }

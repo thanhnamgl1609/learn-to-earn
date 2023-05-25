@@ -15,6 +15,16 @@ export const getRegisterClasses = async () => {
   return classes;
 };
 
+export const getAssignedClasses = async (teacherTokenId: number) => {
+  const currentSemester = await semestersRepo.getCurrentSemester(['id']);
+  const classes = classesRepo.getAll({
+    semesterId: currentSemester.get().id,
+    teacherTokenId: teacherTokenId,
+  });
+
+  return classes;
+};
+
 export const upsertFromContract = async ({ classId }: { classId: number }) => {
   const contractClassResponse = await contract.nftSchool.getClassById(classId);
   const {

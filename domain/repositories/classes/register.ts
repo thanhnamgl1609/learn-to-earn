@@ -23,6 +23,46 @@ export const countNftClassRegistrationExisted = async (
   });
 };
 
+export const getNftClassRegistrations = async (
+  query: NftClassRegistrationQuery,
+  transaction?: Transaction
+): Promise<NftClassRegistrationEntity[]> => {
+  const condition = generateCondition(query, {
+    $equal: ['tokenId', 'studentTokenId', 'classId'],
+  });
+
+  const result = await db.nft_class_registrations.findAll({
+    where: condition,
+    include: [
+      {
+        model: db.classes,
+        include: [
+          {
+            model: db.courses,
+          },
+          {
+            attributes: {
+              exclude: ['registerAddress'],
+            },
+            model: db.users,
+            as: 'teacher',
+          },
+        ],
+      },
+      {
+        model: db.users,
+        attributes: {
+          exclude: ['registerAddress'],
+        },
+        as: 'student',
+      },
+    ],
+    transaction,
+  });
+
+  return result.map((item) => item.get());
+};
+
 export const getNftClassRegistration = async (
   query: NftClassRegistrationQuery,
   transaction?: Transaction

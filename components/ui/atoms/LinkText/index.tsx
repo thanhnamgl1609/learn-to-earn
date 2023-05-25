@@ -48,7 +48,8 @@ export const LinkText: FC<PropsWithChildren<Props>> = memo(
           block mt-1 text-sm hover:text-indigo-900 
         `,
           theme === 'heading' && 'text-xl font-medium',
-          theme === 'default' && 'text-sm'
+          theme === 'default' && 'text-sm',
+          className,
         )}
         href={href || ''}
         {...props}
