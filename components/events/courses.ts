@@ -1,7 +1,3 @@
-import { useApi } from '@hooks/common';
-import { useAppSelector } from '@hooks/stores';
-import { useContracts } from '@providers/web3';
-import { selectUser } from '@store/userSlice';
 import { Web3Dependencies } from '@_types/hooks';
 import endpoints from 'config/endpoints.json';
 import { toast } from 'react-toastify';

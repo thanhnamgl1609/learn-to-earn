@@ -20,6 +20,9 @@ export const getAll = async (query?: UserQuery, transaction?: Transaction) => {
   });
 
   const allUsers = await db.users.findAll({
+    attributes: {
+      exclude: ['registerAddress'],
+    },
     where: {
       ...condition,
       tokenId: {
@@ -34,9 +37,9 @@ export const getAll = async (query?: UserQuery, transaction?: Transaction) => {
 
     return {
       ..._user,
-      isExpired: before(_user.expiredAt)
-    }
-  })
+      isExpired: before(_user.expiredAt),
+    };
+  });
 };
 
 export const get = (query?: UserQuery, transaction?: Transaction) => {
@@ -45,6 +48,9 @@ export const get = (query?: UserQuery, transaction?: Transaction) => {
   });
 
   return db.users.findOne({
+    attributes: {
+      exclude: ['registerAddress'],
+    },
     where: condition,
     transaction,
     include: [

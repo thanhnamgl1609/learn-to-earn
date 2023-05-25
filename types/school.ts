@@ -1,4 +1,4 @@
-import { NftIdentityMetaType } from './nftIdentity';
+import { StudentMeta } from './nftIdentity';
 
 export type CourseMeta = {
   name: string;
@@ -57,16 +57,52 @@ export type Class = {
 } & ClassCore;
 
 export type NftClassRegistrationMeta = {
-  classInfo: Omit<Class, 'numberOfStudents' | 'isUploading'>;
-  owner: NftIdentityMetaType & {
-    tokenId: number;
+  classInfo: {
+    onChainId: number;
+    knowledgeBlockId: number;
+    teacherTokenId: number;
+    credits: number;
+    completeAt: Date;
+    maxSize: number;
+    chainURI: string;
   };
+  course: {
+    knowledgeBlockId: number;
+    onChainId: number;
+    courseCode: string;
+    prevCourse: string;
+    name: string;
+    credits: number;
+    description: string;
+    isRequired: string;
+    theoryLessons: string;
+    practiceLessons: string;
+    exerciseLessons: string;
+    chainURI: string;
+  };
+  teacher: {
+    profileImage: string;
+    tokenId: number;
+    fullName: string;
+    memberCode: string;
+    gender: string;
+    dateOfBirth: string;
+    email: string;
+    personalEmail: string;
+    phone: string;
+    expiredAt: string;
+    chainURI: string;
+  };
+  owner: {
+    tokenId: number;
+  } & StudentMeta;
 };
 export type NftClassRegistrationCore = {
   tokenId: number;
   classId: number;
   studentTokenId: number;
 };
+
 export type NftClassRegistration = {
   meta: NftClassRegistrationMeta;
   isUploading?: boolean;

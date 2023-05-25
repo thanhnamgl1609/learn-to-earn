@@ -28,6 +28,8 @@
       "@hooks/*": ["components/hooks/*"],
       "@store": ["components/store"],
       "@store/*": ["components/store/*"],
+      "@events": ["components/events"],
+      "@events/*": ["components/events/*"],
       "@_types/*": ["types/*"],
       "@config/*": ["config/*"],
       "@styles/*": ["styles/*"],

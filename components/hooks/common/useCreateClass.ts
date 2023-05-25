@@ -2,10 +2,9 @@ import { useRouter } from 'next/router';
 
 import { CourseApi } from '@_types/api/course';
 import { UserDetail } from '@_types/api/user';
-import { findById, makeRequest } from 'utils';
+import { findById } from 'utils';
 import CONST from '@config/constants.json';
-import endpoints from 'config/endpoints.json';
-import { useAccount, useSchoolActions, useUtilities } from '@hooks/web3';
+import { useSchoolActions, useUtilities } from '@hooks/web3';
 import { CREATE_CLASS, EXTEND_CREATE_CLASS } from '@validators/schemas';
 import { useValidator } from '@hooks/form';
 import { uploadData } from '@store/actions';

@@ -18,7 +18,7 @@ export const useApi = <D>(action: (...params) => Promise<D>, deps?: any[]) => {
       return result;
     } catch (e) {
       logger(e, { method: 'error' });
-      toast.error(ERROR_MESSAGE.UNEXPECTED);
+      toast.error(e.customError ?? ERROR_MESSAGE.UNEXPECTED);
     } finally {
       dispatch(unloading());
     }

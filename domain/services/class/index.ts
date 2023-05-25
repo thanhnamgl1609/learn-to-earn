@@ -1,8 +1,10 @@
-import { classesRepo, semestersRepo } from 'domain/repositories';
 import { TIMEOUT } from 'utils';
+import { classesRepo, semestersRepo } from 'domain/repositories';
 import { contract } from '@api/utils/load-contract';
-import { formatClassResponse } from '@hooks/web3/formatter';
 import { createError } from '@api/utils/create-error';
+import { formatClassResponse } from '@hooks/web3/formatter';
+
+export * from './register';
 
 export const getRegisterClasses = async () => {
   const currentSemester = await semestersRepo.getCurrentSemester(['id']);

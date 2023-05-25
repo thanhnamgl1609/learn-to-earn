@@ -1,5 +1,8 @@
 import { Transaction } from 'sequelize';
-import { ClassEntity } from '@_types/models/entities';
+import {
+  ClassEntity,
+  NftClassRegistrationEntity,
+} from '@_types/models/entities';
 import { ClassQuery } from '@_types/api/class';
 import db from 'models';
 import { withTransaction, generateCondition } from '@api/utils';
@@ -14,6 +17,10 @@ export const getAll = (query?: ClassQuery, transaction?: Transaction) => {
     transaction,
     include: [
       {
+        attributes: {
+          exclude: ['registerAddress'],
+        },
+
         model: db.users,
         as: 'teacher',
       },
@@ -40,6 +47,9 @@ export const get = (query?: ClassQuery, transaction?: Transaction) => {
     transaction,
     include: [
       {
+        attributes: {
+          exclude: ['registerAddress'],
+        },
         model: db.users,
         as: 'teacher',
       },
@@ -90,3 +100,5 @@ export const upsert = async (_class: Partial<ClassEntity>, t?: Transaction) =>
 
 export const incrementNumberOfStudents = (classId: number) =>
   db.classes.increment({ numberOfStudents: 1 }, { where: { id: classId } });
+
+export * from './register';

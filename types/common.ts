@@ -10,3 +10,8 @@ export type PinataRes = {
   Timestamp: string;
   isDuplicate: boolean;
 }
+
+export type SignatureData = {
+  signature: string;
+  account: string;
+}

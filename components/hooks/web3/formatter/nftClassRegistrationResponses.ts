@@ -7,7 +7,8 @@ import {
 
 import Api from 'config/api.json';
 import { NftclassregistrationresponseResponse } from '@_types/contracts/NftSchool';
-import { NftClassRegistration } from '@_types/school';
+import { NftClassRegistration, NftClassRegistrationCore } from '@_types/school';
+import { NftclassregistrationResponse } from '@_types/contracts/NftClassRegistration';
 
 const defaultMeta = {
   classInfo: {
@@ -79,3 +80,26 @@ export const formatNftClassRegistrationResponses = async (
   raws: NftclassregistrationresponseResponse[]
 ): Promise<NftClassRegistration[]> =>
   Promise.all(raws.map((raw) => formatNftClassRegistrationResponse(raw)));
+
+export const formatNftClassRegistrationCore = (
+  raw: NftclassregistrationResponse
+): NftClassRegistrationCore => {
+  const { tokenId, classId, studentTokenId } = parseBigNumberFields(raw, [
+    'tokenId',
+    'classId',
+    'studentTokenId',
+  ]);
+
+  const coreNft = {
+    tokenId,
+    classId,
+    studentTokenId,
+  };
+
+  return coreNft;
+};
+
+export const formatNftClassRegistrationCores = async (
+  raws: NftclassregistrationResponse[]
+): Promise<NftClassRegistrationCore[]> =>
+  Promise.all(raws.map((raw) => formatNftClassRegistrationCore(raw)));

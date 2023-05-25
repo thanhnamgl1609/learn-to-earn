@@ -16,3 +16,14 @@ export type ClassApi = {
   chainURI: string;
   semesterId: number;
 };
+
+export type NftClassRegistrationQuery = {
+  tokenId?: number | string;
+};
+
+export type CreatedNftClassRegistration = {
+  tokenId: number;
+  classId: number;
+  studentTokenId: number;
+  chainURI: string;
+};

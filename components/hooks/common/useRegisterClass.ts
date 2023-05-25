@@ -15,7 +15,7 @@ export const useRegisterClass = () => {
   const { registerClass } = useNftClassRegistrationActions();
   const { getSignedData } = useUtilities();
   const dispatch = useAppDispatch();
-  const { nftIdentities } = useAppSelector(selectUser);
+  const { nftIdentities, account } = useAppSelector(selectUser);
 
   return useApi(
     async (item: ClassEntity) => {
@@ -23,7 +23,7 @@ export const useRegisterClass = () => {
         ({ role }) => role === ROLES.STUDENT
       );
 
-      const data = {
+      const metadata = {
         classInfo: classEntity.displayPublic(item),
         course: courseEntity.displayPublic(item.course),
         teacher: userEntity.displayPublic(item.teacher),
@@ -31,18 +31,29 @@ export const useRegisterClass = () => {
           tokenId: nftIdentity.tokenId,
           ...nftIdentity.meta,
         },
+      };
+
+      const data = {
+        ...metadata,
         target: UPLOAD_TARGET.REGISTER_CLASS,
       };
 
+      const signature = await getSignedData();
       const { link } = await dispatch(
         uploadData({
           data,
-          getSignedData,
-          successText: 'Upload succesfully! Please wait for sending request!',
+          signature,
+          successText: 'Upload successfully! Please wait for sending request!',
         })
       ).unwrap();
 
-      registerClass(item.id, item.registerClassFee, link);
+      await registerClass(item.onChainId, item.registerClassFee, link, {
+        metadata,
+        signatureData: {
+          signature,
+          account,
+        },
+      });
     },
     [nftIdentities]
   );

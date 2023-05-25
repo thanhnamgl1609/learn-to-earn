@@ -1,10 +1,16 @@
 import { Contract, ContractInterface, ethers } from 'ethers';
 import { AbiItem } from 'web3-utils';
 
-import { NftCertificates, NftIdentities, NftSchool } from '@_types/contracts';
+import {
+  NftCertificates,
+  NftIdentities,
+  NftSchool,
+  NftClassRegistration,
+} from '@_types/contracts';
 import NftIdentitiesContract from 'public/contracts/NftIdentities.json';
 import NftSchoolsContract from 'public/contracts/NftSchool.json';
 import NftCertificatesContract from 'public/contracts/NftCertificates.json';
+import NftClassRegistrationContract from 'public/contracts/NftClassRegistration.json';
 import { ENV } from '@config/env';
 
 export const { abi: nftIdentitiesAbi, networks: nftIdentitiesNetworks } =
@@ -13,6 +19,10 @@ export const { abi: nftSchoolsAbi, networks: nftSchoolsNetworks } =
   NftSchoolsContract;
 export const { abi: nftCertificatesAbi, networks: nftCertificatesNetworks } =
   NftCertificatesContract;
+export const {
+  abi: nftClassRegistrationAbi,
+  networks: nftClassRegistrationNetworks,
+} = NftClassRegistrationContract;
 type NETWORK = typeof nftIdentitiesNetworks &
   typeof nftSchoolsNetworks &
   typeof nftCertificatesNetworks;
@@ -27,6 +37,8 @@ export const { address: nftSchoolsContractAddress } =
   nftSchoolsNetworks[targetNetwork];
 export const { address: nftCertificatesContractAddress } =
   nftCertificatesNetworks[targetNetwork];
+export const { address: nftClassRegistrationContractAddress } =
+  nftClassRegistrationNetworks[targetNetwork];
 
 export const loadContract = (
   contractAddress: string,
@@ -49,6 +61,7 @@ export const contract: {
   nftIdentities: NftIdentities;
   nftSchool: NftSchool;
   nftCertificates: NftCertificates;
+  nftClassRegistration: NftClassRegistration;
 } = {
   nftIdentities: loadContract(
     nftIdentitiesContractAddress,
@@ -62,4 +75,8 @@ export const contract: {
     nftCertificatesContractAddress,
     nftCertificatesAbi as AbiItem[]
   ) as unknown as NftCertificates,
+  nftClassRegistration: loadContract(
+    nftClassRegistrationContractAddress,
+    nftClassRegistrationAbi as AbiItem[]
+  ) as unknown as NftClassRegistration,
 };

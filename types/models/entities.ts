@@ -1,5 +1,3 @@
-import { UserDetail } from '@_types/api/user';
-
 export type UserEntity = {
   id: number;
   profileImage: string;
@@ -70,4 +68,16 @@ export type SemesterEntity = {
   registerStartAt?: Date;
   registerEndAt?: Date;
   isInRegisterTime?: boolean;
+};
+
+export type NftClassRegistrationEntity = {
+  id: number;
+  tokenId: number;
+  classId: number;
+  studentTokenId: number;
+  chainURI: string;
+
+  class?: ClassEntity;
+  course?: CourseEntity;
+  owner?: UserEntity;
 };
