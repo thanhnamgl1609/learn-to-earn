@@ -19,11 +19,14 @@ export const createLoadingState = (): ClassEntity => ({
   registerClassFee: 0,
 });
 
+export const displayRegisterFee = (registerFee?: number) =>
+  `${registerFee ?? 0} ETH`;
+
 export const displayClassDetail = (classDetail: ClassEntity) => ({
   ...classDetail,
   startAt: formatDate(classDetail?.startAt, UI.INPUT_DATE_FORMAT),
   completeAt: formatDate(classDetail?.completeAt, UI.INPUT_DATE_FORMAT),
-  registerClassFee: classDetail?.registerClassFee.toString() + ' ETH',
+  registerClassFee: displayRegisterFee(classDetail?.registerClassFee),
 });
 
 export const displayPublic = (classDetail: ClassEntity) => ({

@@ -8,4 +8,5 @@ interface INftCertificates is IConstant {
         uint256 courseId,
         address studentAddr
     ) external view returns (bool);
+    function checkInQueue(uint256 classId, uint256 studentId) external view returns (bool);
 }

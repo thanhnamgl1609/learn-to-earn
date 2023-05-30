@@ -17,7 +17,9 @@ export default (sequelize: Sequelize) => {
   }
   NftClassRegistrations.init(
     {
+      registerFee: DataTypes.FLOAT,
       tokenId: DataTypes.INTEGER,
+      isRegained: DataTypes.TINYINT,
       chainURI: DataTypes.STRING,
     },
     {

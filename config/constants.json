@@ -1,4 +1,5 @@
 {
+  "ZERO_ADDRESS": "0x0000000000000000000000000000000000000000",
   "UI": {
     "INPUT_DATE_FORMAT": "YYYY-MM-DD",
     "INPUT_DATETIME_FORMAT": "YYYY-MM-DDTHH:mm",
@@ -18,7 +19,8 @@
     "CREATE_COURSE": "create_course",
     "CREATE_CLASS": "create_class",
     "REGISTER_CLASS": "register_class",
-    "APPLY_REGISTRATION": "apply_registration"
+    "APPLY_REGISTRATION": "apply_registration",
+    "GRANT_NFT_COMPLETE_COURSE": "grant_nft_complete_course"
   },
   "ROLES": {
     "STUDENT": 0,

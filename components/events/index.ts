@@ -1,2 +1,3 @@
 export * from './courses';
-export * from './nftClassRegistrationCreatedEvent';
+export * from './nftClassRegistration';
+export * from './nftCertificates';

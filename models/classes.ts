@@ -16,6 +16,11 @@ export default (sequelize: Sequelize) => {
       this.belongsTo(models.semesters, {
         foreignKey: 'semesterId',
       });
+      this.belongsTo(models.knowledge_blocks, {
+        foreignKey: 'knowledgeBlockId',
+        targetKey: 'onChainId',
+        as: 'knowledgeBlock'
+      });
     }
   }
   Classes.init(

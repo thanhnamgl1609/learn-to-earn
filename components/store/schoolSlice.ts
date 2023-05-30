@@ -2,18 +2,27 @@ import { Course } from '@_types/school';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@store';
 import _ from 'lodash';
+import { KnowledgeBlockEntity } from '@_types/models/entities';
 
-export type SchoolState = {};
+export type SchoolState = {
+  knowledgeBlocks: KnowledgeBlockEntity[];
+};
 
-const initialState: SchoolState = {};
+const initialState: SchoolState = {
+  knowledgeBlocks: [],
+};
 
 export const schoolSlice = createSlice({
   initialState,
-  name: 'registrations',
-  reducers: {},
+  name: 'school',
+  reducers: {
+    updateSchool: (state, action: PayloadAction<Partial<SchoolState>>) => {
+      Object.assign(state, action.payload);
+    },
+  },
 });
 
-export const {} = schoolSlice.actions;
+export const { updateSchool } = schoolSlice.actions;
 
 // selectors
 export const selectSchool = (state: RootState) => state.school;

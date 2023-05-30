@@ -53,8 +53,11 @@ const Table: FC<PropsWithChildren<Props>> = (props) => {
               {autoOrderId && (
                 <td className="table-data text-center">{idx + 1}</td>
               )}
-              {headers.map(({ field, custom: Custom }) => (
-                <td className="table-data" key={`item_${item.id}_${field}`}>
+              {headers.map(({ field, custom: Custom }, itemIdx) => (
+                <td
+                  className="table-data"
+                  key={`item_${item.id}_${itemIdx}_${field ?? ''}`}
+                >
                   {Custom ? (
                     <Custom item={item} {...customProps} />
                   ) : (

@@ -12,7 +12,7 @@ export const useClassDetailApi = (
   const { getRegisterFeeClassById } = useSchoolActions();
   const { getNumberOfStudentsOfClass } = useNftClassRegistrationActions();
 
-  const getter = useApi(async (params) => {
+  const getter = useApi(async (params: [string, { tokenId: number }]) => {
     const classDetail = (await makeRequest()(params)) as ClassEntity;
     const registerClassFee = await getRegisterFeeClassById(
       classDetail.onChainId

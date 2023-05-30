@@ -30,6 +30,9 @@ module.exports = {
             key: 'tokenId',
           },
         },
+        registerDate: {
+          type: Sequelize.DATE,
+        },
         chainURI: {
           type: Sequelize.STRING,
         },
@@ -48,6 +51,7 @@ module.exports = {
         collate: 'utf8_unicode_ci',
       }
     );
+    await queryInterface.addIndex(tableName, ['tokenId']);
   },
 
   async down(queryInterface, Sequelize) {

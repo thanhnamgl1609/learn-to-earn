@@ -6,7 +6,7 @@ import ROUTES from '@config/routes.json';
 import { BaseLayout, FormClassDetail } from '@templates';
 import { Breadcrumb, Table } from '@organisms';
 import { Box } from '@molecules';
-import { Button, Heading, Link, LinkText } from '@atoms';
+import { Button, Heading, LinkText } from '@atoms';
 import {
   useClassDetailApi,
   useNftRegistrationClassListApi,
@@ -17,12 +17,15 @@ import { useAppSelector } from '@hooks/stores';
 import { selectUser } from '@store/userSlice';
 import { GrantNftIdentityModal } from '@templates/Modal';
 import { useModalController } from '@hooks/ui';
+import { NftClassRegistrationEntityWithApproveStatus } from '@_types/api/class';
 
 const { ROLES } = CONST;
 
 type ColumnProp = {
-  item: NftClassRegistrationEntity;
-  onOpenGrantModal: (nftClassRegistration: NftClassRegistrationEntity) => void;
+  item: NftClassRegistrationEntityWithApproveStatus;
+  onOpenGrantModal: (
+    nftClassRegistration: NftClassRegistrationEntityWithApproveStatus
+  ) => void;
 };
 
 const tableHeaders = [
@@ -48,9 +51,24 @@ const actionColumn = {
   name: 'Hành động',
   custom: ({ item, onOpenGrantModal }: ColumnProp) => {
     const onOpenModal = () => onOpenGrantModal(item);
+    const isNotRequest = !item.isApproved && !item.isRegained;
+    const isGranted = item.isRegained && !item.isInQueue;
+
+    const tag = isNotRequest
+      ? 'Sinh viên chưa gửi yêu cầu cấp NFT'
+      : isGranted
+      ? 'Đã cấp NFT'
+      : '';
+    const isDisabled = isNotRequest || isGranted;
 
     return (
-      <Button theme="main" onClick={onOpenModal}>
+      <Button
+        theme="main"
+        onClick={onOpenModal}
+        disabled={isDisabled}
+        disabledTag={tag}
+        customTagClassName="px-2 py-1"
+      >
         Cấp NFT
       </Button>
     );
@@ -63,11 +81,17 @@ const ClassDetailPage = () => {
   const id = parseInt(qid as string);
   if (!id || Number.isNaN(id)) return null;
 
-  const { role } = useAppSelector(selectUser);
+  const { role, account } = useAppSelector(selectUser);
   const { data: classDetail } = useClassDetailApi(id);
-  const { data: studentList = [] } = useNftRegistrationClassListApi({
-    classId: id,
-  });
+  const { data: studentList = [] } = useNftRegistrationClassListApi(
+    {
+      classId: id,
+    },
+    {
+      account,
+      withApprove: true,
+    }
+  );
   const displayClassDetail = classEntity.displayClassDetail(
     classDetail || classEntity.createLoadingState()
   );
@@ -88,6 +112,8 @@ const ClassDetailPage = () => {
     setSelectedNftClassRegistration(null);
   };
 
+  const isTeacher = role === ROLES.TEACHER;
+
   const links = [
     {
       label: 'Manager',
@@ -103,14 +129,13 @@ const ClassDetailPage = () => {
   ];
 
   const _tableHeaders = useMemo(
-    () =>
-      role === ROLES.TEACHER ? [...tableHeaders, actionColumn] : tableHeaders,
-    [role]
+    () => (isTeacher ? [...tableHeaders, actionColumn] : tableHeaders),
+    [isTeacher]
   );
 
   return (
     <BaseLayout containerClassName="max-w-[640px]">
-      <Breadcrumb links={links} />
+      {!isTeacher && <Breadcrumb links={links} />}
       <Box autoLayout>
         <Heading>Class #{classDetail?.id}</Heading>
         {classDetail && <FormClassDetail formState={displayClassDetail} edit />}

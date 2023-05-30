@@ -1,3 +1,8 @@
 {
-  "UNEXPECTED": "Unexpected error"
+  "UNEXPECTED": "Có lỗi xảy ra",
+  "USER_DENIED": "Hủy yêu cầu",
+  "NOT_TEACHER": "Không phải giảng viên",
+  "MAPPING": {
+    "USER_DENIED": "User denied"
+  }
 }

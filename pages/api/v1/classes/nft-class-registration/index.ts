@@ -7,10 +7,12 @@ import { NftClassRegistrationQuery } from '@_types/api/class';
 const { METHOD } = REQUEST_CONST;
 
 const get: IHandler = async (req, res) => {
-  const { studentTokenId, classId } = req.query as NftClassRegistrationQuery;
+  const { studentTokenId, classId, isRegained } =
+    req.query as NftClassRegistrationQuery;
   const result = await classesRepo.getNftClassRegistrations({
     studentTokenId,
     classId,
+    isRegained,
   });
 
   res.sendData(200, result);

@@ -14,5 +14,7 @@
   "classDetail": "/api/v1/classes/detail",
   "registerClasses": "/api/v1/classes/register",
   "nftClassRegistration": "/api/v1/classes/nft-class-registration",
-  "assignedClasses": "/api/v1/classes/assigned"
+  "nftCompleteCourse": "/api/v1/certificates/nft-complete-course",
+  "assignedClasses": "/api/v1/classes/assigned",
+  "knowledgeBlocks": "/api/v1/knowledge-blocks"
 }

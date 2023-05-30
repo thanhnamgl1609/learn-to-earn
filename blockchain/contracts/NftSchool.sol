@@ -151,7 +151,7 @@ contract NftSchool is INftSchool, IdentityGenerator {
         uint256 id
     ) public view returns (Class memory) {
         uint256 pos = _posOfClasses[id];
-        require(pos > 0);
+        require(pos > 0, "class not found");
 
         return _allClasses[pos - 1];
     }

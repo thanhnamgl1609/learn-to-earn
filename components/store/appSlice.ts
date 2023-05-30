@@ -19,6 +19,7 @@ export type AppState = {
   loading?: boolean;
   confirmDialog: ConfirmDialog;
   isGrantNftIdentityModalOpen?: boolean;
+  isInitialize?: boolean;
 };
 
 const defaultDialog = {
@@ -41,7 +42,7 @@ export const appSlice = createSlice({
   initialState,
   name: 'apps',
   reducers: {
-    updateState: (state, action: PayloadAction<AppState>) => {
+    updateState: (state, action: PayloadAction<Partial<AppState>>) => {
       Object.assign(state, action.payload);
     },
     loading: (state) => {

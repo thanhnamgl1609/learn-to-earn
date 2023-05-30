@@ -53,11 +53,8 @@ const tableHeaders = [
     ),
   },
   {
-    field: 'knowledgeBlockId',
+    field: 'knowledgeBlock.name',
     name: 'Khối kiến thức',
-    custom: ({ item }: ActionColumnsProps) => (
-      <p>{KNOWLEDGE_BLOCK_BY_IDS[item.knowledgeBlockId].name}</p>
-    ),
   },
   {
     field: 'credits',

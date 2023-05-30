@@ -140,3 +140,36 @@ export const CREATE_CLASS_META = z.object({
     name: z.string().nonempty(),
   }),
 });
+
+export const CREATE_NFT_COMPLETE_COURSE = z.object({
+  tokenId: z.preprocess(
+    (i: string) => parseInt(i),
+    z.number(customOptionsWithError('Token ID không rỗng'))
+  ),
+  studentTokenId: z.preprocess(
+    (i: string) => parseInt(i),
+    z.number(customOptionsWithError('Student ID không rỗng'))
+  ),
+  classId: z.preprocess(
+    (i: string) => parseInt(i),
+    z.number(customOptionsWithError('Class ID không rỗng'))
+  ),
+  avgScore: z.preprocess(
+    (i: string) => parseInt(i),
+    z.number(customOptionsWithError('ĐTB không rỗng'))
+  ),
+  tokenURI: z
+    .string(customOptionsWithError('sai token URL'))
+    .nonempty('sai token URL'),
+  grantDate: z.preprocess(
+    (v: string) => new Date(v),
+    z.date(customOptionsWithError('Ngày bắt đầu đăng ký không được rỗng'))
+  ),
+});
+
+export const GRANT_NFT_COMPLETE_COURSE = z.object({
+  avgScore: z.preprocess(
+    (i: string) => parseFloat(i),
+    z.number(customOptionsWithError('Nhập điểm trung bình'))
+  ),
+});

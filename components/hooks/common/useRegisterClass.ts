@@ -24,6 +24,7 @@ export const useRegisterClass = () => {
       );
 
       const metadata = {
+        registerFee: classEntity.displayRegisterFee(item.registerClassFee),
         classInfo: classEntity.displayPublic(item),
         course: courseEntity.displayPublic(item.course),
         teacher: userEntity.displayPublic(item.teacher),
@@ -35,11 +36,12 @@ export const useRegisterClass = () => {
 
       const data = {
         ...metadata,
+        registerFee: item.registerClassFee,
         target: UPLOAD_TARGET.REGISTER_CLASS,
       };
 
       const signature = await getSignedData();
-      const { link } = await dispatch(
+      const { link, meta } = await dispatch(
         uploadData({
           data,
           signature,
@@ -48,7 +50,10 @@ export const useRegisterClass = () => {
       ).unwrap();
 
       await registerClass(item.onChainId, item.registerClassFee, link, {
-        metadata,
+        metadata: {
+          ...meta,
+          ...metadata,
+        },
         signatureData: {
           signature,
           account,

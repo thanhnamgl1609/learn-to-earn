@@ -28,8 +28,9 @@ export const getNftClassRegistrations = async (
   transaction?: Transaction
 ): Promise<NftClassRegistrationEntity[]> => {
   const condition = generateCondition(query, {
-    $equal: ['tokenId', 'studentTokenId', 'classId'],
+    $equal: ['tokenId', 'studentTokenId', 'classId', 'isRegained'],
   });
+  console.log('🚀 ~ file: register.ts:33 ~ condition:', condition);
 
   const result = await db.nft_class_registrations.findAll({
     where: condition,
@@ -47,6 +48,10 @@ export const getNftClassRegistrations = async (
             model: db.users,
             as: 'teacher',
           },
+          {
+            model: db.knowledge_blocks,
+            as: 'knowledgeBlock'
+          }
         ],
       },
       {
@@ -68,7 +73,7 @@ export const getNftClassRegistration = async (
   transaction?: Transaction
 ): Promise<NftClassRegistrationEntity> => {
   const condition = generateCondition(query, {
-    $equal: ['tokenId'],
+    $equal: ['tokenId', 'classId', 'studentTokenId'],
   });
 
   const result = await db.nft_class_registrations.findOne({
@@ -86,6 +91,10 @@ export const getNftClassRegistration = async (
             },
             model: db.users,
             as: 'teacher',
+          },
+          {
+            model: db.knowledge_blocks,
+            as: 'knowledgeBlock',
           },
         ],
       },

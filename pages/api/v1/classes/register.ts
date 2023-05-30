@@ -19,7 +19,7 @@ const post: IHandler = async (req, res) => {
     data: { id },
   } = req.body;
 
-  const studentTokenId = await userService.getStudentTokenIdFromContract(
+  const studentTokenId = await userService.getNftIdentityTokenId(
     address
   );
   const nftClassRegistration = await classService.getNftRegistrationClass(id);

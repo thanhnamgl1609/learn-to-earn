@@ -10,8 +10,9 @@ export const useRegisterClassesApi = (): SWRResponse<ClassEntity[]> => {
   const { getRegisterFeeClassById } = useSchoolActions();
   const { getNumberOfStudentsOfClass } = useNftClassRegistrationActions();
 
-  const getter = useApi(async (params) => {
+  const getter = useApi(async (params: [string]) => {
     const classList = await makeRequest()(params);
+    console.log("🚀 ~ file: useRegisterClasses.ts:15 ~ getter ~ classList:", classList)
     const classListWithRegisterFee = await Promise.all(
       classList.map(async (classItem: ClassEntity) => {
         const registerClassFee = await getRegisterFeeClassById(

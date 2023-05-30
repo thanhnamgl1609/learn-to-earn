@@ -13,6 +13,8 @@ export type UserEntity = {
   role: number;
   status: number;
   registerAddress: string;
+  registerDate: Date;
+  approveDate: Date;
   expiredAt: Date;
   chainURI: string;
 };
@@ -34,6 +36,7 @@ export type CourseEntity = {
   chainURI: string | null;
 
   prevCourse?: CourseEntity;
+  knowledgeBlock?: KnowledgeBlockEntity;
 };
 
 export type ClassEntity = {
@@ -53,6 +56,7 @@ export type ClassEntity = {
   registerClassFee?: number;
   course?: CourseEntity;
   teacher?: UserEntity;
+  knowledgeBlock?: KnowledgeBlockEntity;
 };
 
 export type SemesterEntity = {
@@ -76,7 +80,29 @@ export type NftClassRegistrationEntity = {
   classId: number;
   studentTokenId: number;
   chainURI: string;
+  registerDate: Date;
+  registerFee: number;
 
   class?: ClassEntity;
   student?: UserEntity;
 };
+
+export type NftCompleteCourseEntity = {
+  id: number;
+  tokenId: number;
+  studentTokenId: number;
+  classId: number;
+  avgScore: number;
+  chainURI: string;
+  grantDate: Date;
+
+  class?: ClassEntity;
+  student?: UserEntity;
+};
+
+export type KnowledgeBlockEntity = {
+  id: number;
+  name: string;
+  onChainId: number;
+  credits: number;
+}

@@ -27,7 +27,23 @@ const Profile: NextPage = () => {
         />
         <InputField
           containerClassName="mt-4"
-          label="Expired At"
+          label="Ngày đăng ký"
+          value={moment(nftIdentity.meta.registerDate).format(
+            'DD/MM/YYYY HH:mm:ss'
+          )}
+          readOnly
+        />
+        <InputField
+          containerClassName="mt-4"
+          label="Ngày cấp"
+          value={moment(nftIdentity.meta.approveDate).format(
+            'DD/MM/YYYY HH:mm:ss'
+          )}
+          readOnly
+        />
+        <InputField
+          containerClassName="mt-4"
+          label="Ngày hết hạn"
           value={moment(nftIdentity.expiredAt).format('DD/MM/YYYY HH:mm:ss')}
           readOnly
         />

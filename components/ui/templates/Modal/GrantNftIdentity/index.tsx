@@ -7,22 +7,28 @@ import { Modal } from '../BaseModal';
 import { InputField, LinkField } from '@molecules';
 import { Form } from '@organisms';
 import { NftClassRegistrationEntity } from '@_types/models/entities';
+import { useGrantNftCompleteCourse } from '@hooks/common';
+import { NftClassRegistrationEntityWithApproveStatus } from '@_types/api/class';
 
 type Props = {
-  nftClassRegistration?: NftClassRegistrationEntity | null;
+  nftClassRegistration?: NftClassRegistrationEntityWithApproveStatus | null;
   isOpen: boolean;
   onClose: () => void;
 };
 
 const createDefaultState = () => ({
-  score: 0,
+  avgScore: '0',
 });
 
 export const GrantNftIdentityModal: FC<Props> = memo(
   ({ isOpen, onClose, nftClassRegistration }) => {
+    const grantNftCompleteCourse = useGrantNftCompleteCourse();
     const [formState, setFormState] = useState(createDefaultState());
     const onInputChange = useInputTextChange(setFormState);
-    const onSubmit = useFormSubmit(() => console.log('hello'), []);
+    const onSubmit = useFormSubmit(
+      () => grantNftCompleteCourse(nftClassRegistration, formState.avgScore),
+      [nftClassRegistration, formState]
+    );
     if (!nftClassRegistration) return null;
 
     return (
@@ -31,7 +37,13 @@ export const GrantNftIdentityModal: FC<Props> = memo(
         isOpen={isOpen}
         onClose={onClose}
       >
-        <Form onSubmit={onSubmit}>
+        <Form
+          onSubmit={onSubmit}
+          submitText="Cấp NFT"
+          disabled={
+            nftClassRegistration.isRegained && !nftClassRegistration.isInQueue
+          }
+        >
           <InputField
             label="Mã môn học"
             value={nftClassRegistration.class.course.onChainId}
@@ -61,9 +73,9 @@ export const GrantNftIdentityModal: FC<Props> = memo(
 
           <InputField
             label="Điểm trung bình"
-            name="score"
+            name="avgScore"
             onChange={onInputChange}
-            value={formState.score}
+            value={formState.avgScore}
           />
         </Form>
       </Modal>

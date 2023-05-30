@@ -22,7 +22,7 @@ export const useClassListApi = (
     return q;
   }, [query]);
 
-  const getter = useApi(async (params) => {
+  const getter = useApi(async (params: [string, ClassQuery]) => {
     const classList = await makeRequest()(params);
     const classListWithRegisterFee = await Promise.all(
       classList.map(async (classItem: ClassEntity) => {

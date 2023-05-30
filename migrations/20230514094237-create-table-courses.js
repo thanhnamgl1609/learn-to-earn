@@ -86,6 +86,7 @@ module.exports = {
         collate: 'utf8_unicode_ci',
       }
     );
+    await queryInterface.addIndex(tableName, ['onChainId']);
     await queryInterface.addIndex(tableName, ['courseCode']);
   },
 

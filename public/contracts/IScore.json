@@ -35,15 +35,15 @@
     "absolutePath": "project:/blockchain/contracts/interfaces/IScore.sol",
     "exportedSymbols": {
       "IScore": [
-        8305
+        8909
       ]
     },
-    "id": 8306,
+    "id": 8910,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 8290,
+        "id": 8894,
         "literals": [
           "solidity",
           "^",
@@ -60,9 +60,9 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 8305,
+        "id": 8909,
         "linearizedBaseContracts": [
-          8305
+          8909
         ],
         "name": "IScore",
         "nameLocation": "465:6:31",
@@ -70,38 +70,38 @@
         "nodes": [
           {
             "canonicalName": "IScore.ScoreType",
-            "id": 8296,
+            "id": 8900,
             "members": [
               {
-                "id": 8291,
+                "id": 8895,
                 "name": "Midterm",
                 "nameLocation": "505:7:31",
                 "nodeType": "EnumValue",
                 "src": "505:7:31"
               },
               {
-                "id": 8292,
+                "id": 8896,
                 "name": "Practice",
                 "nameLocation": "523:8:31",
                 "nodeType": "EnumValue",
                 "src": "523:8:31"
               },
               {
-                "id": 8293,
+                "id": 8897,
                 "name": "Plus",
                 "nameLocation": "542:4:31",
                 "nodeType": "EnumValue",
                 "src": "542:4:31"
               },
               {
-                "id": 8294,
+                "id": 8898,
                 "name": "Final",
                 "nameLocation": "557:5:31",
                 "nodeType": "EnumValue",
                 "src": "557:5:31"
               },
               {
-                "id": 8295,
+                "id": 8899,
                 "name": "Other",
                 "nameLocation": "573:5:31",
                 "nodeType": "EnumValue",
@@ -115,7 +115,7 @@
           },
           {
             "functionSelector": "4cecbc28",
-            "id": 8304,
+            "id": 8908,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -123,17 +123,17 @@
             "nameLocation": "602:16:31",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8300,
+              "id": 8904,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8299,
+                  "id": 8903,
                   "mutability": "mutable",
                   "name": "scores",
                   "nameLocation": "636:6:31",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8304,
+                  "scope": 8908,
                   "src": "619:23:31",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -143,7 +143,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8297,
+                      "id": 8901,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "619:7:31",
@@ -152,7 +152,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 8298,
+                    "id": 8902,
                     "nodeType": "ArrayTypeName",
                     "src": "619:9:31",
                     "typeDescriptions": {
@@ -166,17 +166,17 @@
               "src": "618:25:31"
             },
             "returnParameters": {
-              "id": 8303,
+              "id": 8907,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8302,
+                  "id": 8906,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8304,
+                  "scope": 8908,
                   "src": "694:4:31",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -185,7 +185,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 8301,
+                    "id": 8905,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "694:4:31",
@@ -199,14 +199,14 @@
               ],
               "src": "693:6:31"
             },
-            "scope": 8305,
+            "scope": 8909,
             "src": "593:107:31",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 8306,
+        "scope": 8910,
         "src": "455:248:31",
         "usedErrors": []
       }
@@ -219,7 +219,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-05-24T16:45:30.294Z",
+  "updatedAt": "2023-05-28T15:04:10.788Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

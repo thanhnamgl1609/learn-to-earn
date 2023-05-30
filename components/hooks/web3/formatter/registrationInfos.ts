@@ -3,7 +3,7 @@ import {
   RegistrationinforesponseResponse,
 } from '@_types/contracts/NftIdentities';
 import { RegistrationInfo, RegistrationInfoMeta } from '@_types/nftIdentity';
-import { logger, request } from 'utils';
+import { logger, parseBigNumberFields, parseDateFields, request } from 'utils';
 import Api from 'config/api.json';
 import { ENV_CONST } from '@config/env-const';
 
@@ -13,6 +13,7 @@ const defaultMeta: RegistrationInfoMeta = {
   documentURIs: [],
   gender: 0,
   dateOfBirth: new Date('2000-01-01'),
+  registerDate: new Date('2000-01-01'),
   email: '',
   personalEmail: '',
   identityNumber: '',
@@ -30,12 +31,15 @@ export const formatRegistrationInfo = async (
         l: documentURI,
       },
     });
-    meta.dateOfBirth = new Date(meta.dateOfBirth);
+    const dateFields = parseDateFields(meta, ['dateOfBirth', 'registerDate']);
 
     return {
       applicant,
       documentURI,
-      meta,
+      meta: {
+        ...meta,
+        ...dateFields,
+      },
       role,
       isUploading: false,
     };

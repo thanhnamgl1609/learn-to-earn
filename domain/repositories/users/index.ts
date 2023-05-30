@@ -168,6 +168,3 @@ export const upsert = async (
 
     return get({ tokenId }, transaction);
   }, t);
-
-// export const createUser = (user: CreateUserInput, t?: Transaction) =>
-//   withTransaction((transaction) => db.users.create(user, { transaction }), t);

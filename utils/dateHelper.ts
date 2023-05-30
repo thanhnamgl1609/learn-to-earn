@@ -18,7 +18,7 @@ export const between = (
   t: Date | Moment = moment()
 ) => moment(t).isBetween(start, end);
 
-export const formatDate = (d?: Date | Moment | null, format = 'DD/MM/YYYY') =>
+export const formatDate = (d?: Date | Moment | null | string, format = 'DD/MM/YYYY') =>
   d ? moment(d).format(format) : '';
 
 export const dateAdd = (
