@@ -31,7 +31,7 @@ export const useRegisterNftIdentity = () => {
     async (
       data: Omit<
         RegistrationInfoMeta,
-        'memberCode' | 'email' | 'dateOfBirth'
+        'memberCode' | 'email' | 'dateOfBirth' | 'registerDate'
       > & {
         role: number;
         dateOfBirth: string;

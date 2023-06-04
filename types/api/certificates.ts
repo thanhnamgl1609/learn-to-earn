@@ -1,4 +1,7 @@
-import { NftCompleteCourseEntity } from "@_types/models/entities";
+import {
+  KnowledgeBlockEntity,
+  NftCompleteCourseEntity,
+} from '@_types/models/entities';
 
 export type GrantNftCompleteCourseParams = {
   studentTokenId: number;
@@ -20,10 +23,23 @@ export type NftCompleteCourseQuery = {
   id?: number;
   tokenId?: number;
   studentTokenId?: number;
-}
+};
 
 export type NftCompleteCourseListResponse = {
   list: NftCompleteCourseEntity[];
   totalCredits: number;
   totalAvgScore: number;
-}
+};
+
+export type KnowledgeBlockEntityWithGain = KnowledgeBlockEntity & {
+  totalCredits: number;
+  totalScore: number;
+  avgScore: number;
+};
+
+export type KnowledgeBlockListResponse = {
+  list: KnowledgeBlockEntityWithGain[];
+  avgScore: number;
+  totalCredits: number;
+  totalScore: number;
+};

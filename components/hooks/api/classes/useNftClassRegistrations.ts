@@ -33,7 +33,6 @@ export const useNftRegistrationClassListApi = (
   const {
     getNumberOfStudentsOfClass,
     getApprovalOfTokenId,
-    getRegainedNftListOfClass,
     checkNftClassRegistrationRegained,
   } = useNftClassRegistrationActions();
   const { getNftCompleteCourseCreationCreationQueue } = useCertificateActions();

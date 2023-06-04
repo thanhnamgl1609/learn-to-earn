@@ -1,6 +1,6 @@
 'use strict';
 
-const tableNames = ['classes', 'courses'];
+const tableNames = ['classes', 'courses', 'nft_complete_courses'];
 const targetTableName = 'knowledge_blocks';
 const names = ['fk_classes_knowledge_blocks', 'fk_courses_knowledge_blocks'];
 

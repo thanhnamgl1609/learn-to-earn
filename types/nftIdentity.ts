@@ -35,6 +35,7 @@ export type RegisterTeacherMeta = {
   email: string;
   personalEmail: string;
   identityNumber: string;
+  phone: string;
   registerDate: Date;
 };
 export type StudentMeta = RegisterStudentMeta & {

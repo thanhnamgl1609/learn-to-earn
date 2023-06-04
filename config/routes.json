@@ -8,6 +8,8 @@
   "member": { "name": "/member" },
   "memberDetail": { "name": "/member/:id" },
   "profile": { "name": "/profile" },
+  "selfCompleteCourse": { "name": "/profile/complete-course" },
+  "requestGraduation": { "name": "/request-graduation" },
   "applyTeacher": { "name": "/teacher/apply" },
   "teacherList": { "name": "/teacher/list" },
   "teacherApplication": { "name": "/teacher/application" },

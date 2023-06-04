@@ -5,7 +5,7 @@ import { cls } from 'utils';
 type Props = {
   className?: string;
   size?: 'S' | 'M' | 'L';
-  theme?: 'main' | 'sub';
+  theme?: 'main' | 'sub' | 'disabled' | 'default';
   disabled?: boolean;
   disabledContainerClassName?: string;
   disabledClassName?: string;
@@ -16,7 +16,7 @@ export const LinkBox: FC<PropsWithChildren<Props>> = memo(
   ({
     className,
     size,
-    theme,
+    theme = 'default',
     href,
     disabled,
     disabledContainerClassName,
@@ -26,7 +26,24 @@ export const LinkBox: FC<PropsWithChildren<Props>> = memo(
   }) =>
     disabled ? (
       <div className={cls(disabledContainerClassName, 'group hover:relative')}>
-        <p className={cls(className, disabledClassName)}>{props.children}</p>
+        <p
+          className={cls(
+            `
+            text-center border
+            opacity-50 hover:opacity-50
+            text-sm rounded-md shadow-sm
+          `,
+            'px-2 py-1',
+            className,
+            theme === 'main' &&
+              'bg-indigo-900 text-white border border-transparent',
+            theme === 'sub' &&
+              'bg-white text-indigo-900 border border-indigo-900 border-1',
+            disabledClassName
+          )}
+        >
+          {props.children}
+        </p>
         {disabledTag && (
           <span
             className={`
@@ -42,11 +59,23 @@ export const LinkBox: FC<PropsWithChildren<Props>> = memo(
       </div>
     ) : (
       <Link
-        className={`
-          block px-2 py-1 mt-1 text-sm border border-gray-300
-          hover:text-indigo-900 hover:border-indigo-900 rounded
-          overflow-hidden
-        `}
+        className={cls(
+          `block px-2 py-1 mt-1 border overflow-hidden`,
+          `text-sm rounded-md shadow-sm`,
+          theme === 'default' &&
+            'border-gray-300 hover:text-indigo-900 hover:border-indigo-900',
+          theme === 'disabled' &&
+            `
+              read-only:bg-gray-200 read-only:text-black
+              read-only:border-none read-only:outline-none
+              read-only:cursor-default
+            `,
+          theme === 'main' &&
+            'bg-indigo-900 text-white border border-transparent font-medium  px-4 py-2',
+          theme === 'sub' &&
+            'bg-white text-indigo-900 border border-indigo-900 border-1',
+          className
+        )}
         href={href || ''}
         {...props}
       />

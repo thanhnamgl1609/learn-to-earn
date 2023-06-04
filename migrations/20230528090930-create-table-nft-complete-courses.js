@@ -32,6 +32,9 @@ module.exports = {
         tokenId: {
           type: Sequelize.INTEGER,
         },
+        knowledgeBlockId: {
+          type: Sequelize.INTEGER,
+        },
         avgScore: {
           type: Sequelize.FLOAT,
         },

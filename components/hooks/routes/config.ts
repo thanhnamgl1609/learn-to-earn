@@ -23,6 +23,8 @@ const RouteConfig: RouteConfigType = {
     [Routes.school.name]: Routes.school,
     [Routes.schoolClassDetail.name]: Routes.schoolClassDetail,
     [Routes.schoolClassList.name]: Routes.schoolClassList,
+    [Routes.selfCompleteCourse.name]: Routes.selfCompleteCourse,
+    [Routes.requestGraduation.name]: Routes.requestGraduation,
   },
   [ROLES.TEACHER]: {
     default: Routes.profile,

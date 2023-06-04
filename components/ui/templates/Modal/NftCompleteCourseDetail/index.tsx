@@ -1,20 +1,24 @@
 import { FC, memo } from 'react';
 
-import { NftCompleteCourseEntity } from '@_types/models/entities';
+import { ClassEntity } from '@_types/models/entities';
 import { Box, InputField, LinkField } from '@molecules';
 import { Heading } from '@atoms';
 import { nftCompleteCourseEntity } from 'domain/models';
 import { Modal } from '../BaseModal';
 
 type Props = {
-  nftCompleteCourse: NftCompleteCourseEntity | null;
+  classInfo: ClassEntity | null;
   isOpen: boolean;
   onClose: () => void;
 };
 
 export const NftCompleteCourseDetailModal: FC<Props> = memo(
-  ({ nftCompleteCourse, isOpen, onClose }) => {
-    if (!nftCompleteCourse) return <></>;
+  ({ classInfo, isOpen, onClose }) => {
+    if (!classInfo) return <></>;
+    const {
+      nftCompleteCourses: [nftCompleteCourse],
+    } = classInfo;
+      console.log("🚀 ~ file: index.tsx:21 ~ nftCompleteCourse:", nftCompleteCourse)
 
     return (
       <Modal
@@ -29,12 +33,12 @@ export const NftCompleteCourseDetailModal: FC<Props> = memo(
         <Box autoLayout>
           <InputField
             label="Mã môn học"
-            value={nftCompleteCourse.class.course.onChainId}
+            value={classInfo.course.onChainId}
             readOnly
           />
           <InputField
             label="Tên môn học"
-            value={nftCompleteCourse.class.course.name}
+            value={classInfo.course.name}
             readOnly
           />
           <InputField

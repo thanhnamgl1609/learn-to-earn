@@ -3,7 +3,12 @@ import { Sequelize, DataTypes } from 'sequelize';
 
 export default (sequelize: Sequelize) => {
   class KnowledgeBlocks extends DBModel {
-    static associate(models: DB) {}
+    static associate(models: DB) {
+      this.hasMany(models.classes, {
+        foreignKey: 'knowledgeBlockId',
+        sourceKey: 'id',
+      });
+    }
   }
   KnowledgeBlocks.init(
     {

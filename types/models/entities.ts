@@ -57,6 +57,7 @@ export type ClassEntity = {
   course?: CourseEntity;
   teacher?: UserEntity;
   knowledgeBlock?: KnowledgeBlockEntity;
+  nftCompleteCourses: NftCompleteCourseEntity[];
 };
 
 export type SemesterEntity = {
@@ -105,4 +106,6 @@ export type KnowledgeBlockEntity = {
   name: string;
   onChainId: number;
   credits: number;
+
+  classes: ClassEntity[];
 }

@@ -1,19 +1,21 @@
 import _ from 'lodash';
 
 import {
+  KnowledgeBlockEntity,
   NftClassRegistrationEntity,
-  NftCompleteCourseEntity,
 } from '@_types/models/entities';
 import { NftClassRegistrationEntityWithApproveStatus } from '@_types/api/class';
 import CONST from '@config/constants.json';
+import ROUTES from 'config/routes.json';
 import { Box, InputField } from '@molecules';
 import { Table } from '@organisms';
-import { Button, Heading } from '@atoms';
+import { Button, Heading, LinkBox } from '@atoms';
 import { formatDate } from 'utils';
 import { useAppDispatch, useAppSelector } from '@hooks/stores';
 import { openConfirmModal } from '@store/appSlice';
 import {
   useNftCompleteCourseListApi,
+  useNftCompleteCourseListGroupApi,
   useNftRegistrationClassListApi,
 } from '@hooks/api/classes';
 import {
@@ -24,15 +26,12 @@ import { useModalController } from '@hooks/ui';
 import { useState } from 'react';
 import { selectCurrentNftIdentity } from '@store/userSlice';
 import { useRequestCompleteCourseCertificate } from '@hooks/common';
+import { knowledgeBlockEntity, userEntity } from 'domain/models';
+import { KnowledgeBlockEntityWithGain } from '@_types/api/certificates';
 
 type ClassColumnProps = {
   item: NftClassRegistrationEntityWithApproveStatus;
   onOpenNftModal: (nft: NftClassRegistrationEntityWithApproveStatus) => void;
-};
-
-type CompleteCourseColumnProps = {
-  item: NftCompleteCourseEntity;
-  onOpenNftCompleteCourseModal: (nft: NftCompleteCourseEntity) => void;
 };
 
 const { DATE_TIME } = CONST;
@@ -129,56 +128,6 @@ const classTableHeaders = [
   },
 ];
 
-const completeCourseTableHeaders = [
-  {
-    field: 'tokenId',
-    name: 'Token Id',
-  },
-  {
-    field: 'class.onChainId',
-    name: 'Mã lớp học',
-  },
-  {
-    field: 'class.course.name',
-    name: 'Tên môn học',
-  },
-  {
-    field: 'class.knowledgeBlock.name',
-    name: 'Khối kiến thức',
-  },
-  {
-    field: 'class.credits',
-    name: 'Số tín chỉ',
-  },
-  {
-    name: 'Ngày cấp',
-    custom: ({ item }: CompleteCourseColumnProps) => (
-      <p>{formatDate(item.grantDate, DATE_TIME.DATETIME)}</p>
-    ),
-  },
-  {
-    field: 'avgScore',
-    name: 'Điểm trung bình',
-  },
-  {
-    field: 'class.teacher.fullName',
-    name: 'Giảng viên',
-  },
-  {
-    name: 'Hành động',
-    custom: ({
-      item,
-      onOpenNftCompleteCourseModal,
-    }: CompleteCourseColumnProps) => (
-      <div className="flex flex-col gap-[8px]">
-        <Button onClick={() => onOpenNftCompleteCourseModal(item)} theme="sub">
-          Xem NFT
-        </Button>
-      </div>
-    ),
-  },
-];
-
 export const StudentProfile = () => {
   const { tokenId } = useAppSelector(selectCurrentNftIdentity);
   const { data: registeredClasses = [] } = useNftRegistrationClassListApi(
@@ -191,20 +140,17 @@ export const StudentProfile = () => {
     }
   );
   const {
-    data: { list: completeCourseList = [], totalAvgScore, totalCredits } = {},
-  } = useNftCompleteCourseListApi({
+    data: knowledgeBlocks = knowledgeBlockEntity.createDefaultKnowledgeBlockList(),
+  } = useNftCompleteCourseListGroupApi({
     studentTokenId: tokenId,
   });
   const [isNFTModalOpen, openNftModal, closeNFTModal] = useModalController();
-  const [
-    isNftCompleteCourseModal,
-    openNftCompleteCourseModal,
-    closeNftCompleteCourseModal,
-  ] = useModalController();
   const [nftClassRegistrationDetail, setNftClassRegistrationDetail] =
     useState<NftClassRegistrationEntity | null>(null);
-  const [nftCompleteCourseDetail, setNftCompleteCourseDetail] =
-    useState<NftCompleteCourseEntity | null>(null);
+  const totalRequiredCredits = knowledgeBlockEntity.getTotalRequiredCredits(
+    knowledgeBlocks.list as KnowledgeBlockEntity[]
+  );
+  const canRequestGraduation = knowledgeBlockEntity.checkCanGraduate(knowledgeBlocks);
   const onOpenNftModal = (nftClassRegistration: NftClassRegistrationEntity) => {
     openNftModal();
     setNftClassRegistrationDetail(nftClassRegistration);
@@ -214,20 +160,10 @@ export const StudentProfile = () => {
     setNftClassRegistrationDetail(null);
   };
 
-  const onOpenNftCompleteCourseModal = (
-    nftCompleteCourse: NftCompleteCourseEntity
-  ) => {
-    openNftCompleteCourseModal();
-    setNftCompleteCourseDetail(nftCompleteCourse);
-  };
-
-  const onCloseNftCompleteCourseModal = () => {
-    openNftCompleteCourseModal();
-    setNftCompleteCourseDetail(null);
-  };
-
   return (
     <>
+      <Heading>Thông tin học tập</Heading>
+
       <Box className="px-8 py-6" autoLayout>
         <Heading>Môn học đã đăng ký</Heading>
         <Table
@@ -238,40 +174,64 @@ export const StudentProfile = () => {
       </Box>
 
       <Box className="px-8 py-6" autoLayout>
-        <Heading>Môn học đã hoàn thành</Heading>
+        <div className="flex gap-8 items-center">
+          <Heading>Kết quả học tập</Heading>
+          <LinkBox href={ROUTES.selfCompleteCourse.name} theme="main">
+            Xem chi tiết
+          </LinkBox>
+        </div>
 
-        <InputField
-          containerClassName="flex items-center gap-[24px]"
-          className="mt-0"
-          label="Tổng TC tích lũy"
-          value={totalCredits ?? 0}
-          disabled
-        />
-        <InputField
-          containerClassName="flex items-center gap-[24px]"
-          className="mt-0"
-          label="Điểm TB tích lũy"
-          value={totalAvgScore ?? 0}
-          disabled
-        />
+        <div className="grid grid-cols-2 gap-x-[80px]">
+          <div className="flex gap-4 flex-col">
+            <InputField
+              containerClassName="flex items-center gap-[24px]"
+              className="mt-0 flex-1"
+              labelClassName="min-w-[200px]"
+              label="Điểm TB tích lũy"
+              value={knowledgeBlocks.avgScore ?? 0}
+              disabled
+            />
 
-        <Table
-          headers={completeCourseTableHeaders}
-          data={completeCourseList}
-          customProps={{ onOpenNftCompleteCourseModal }}
-        />
+            <InputField
+              containerClassName="flex items-center gap-[24px]"
+              className="mt-0 flex-1"
+              labelClassName="min-w-[200px]"
+              label="Tổng TC tích lũy"
+              value={`${knowledgeBlocks.totalCredits} / ${totalRequiredCredits}`}
+              disabled
+            />
+
+            <LinkBox
+              className="inline-block ml-auto"
+              href={ROUTES.requestGraduation.name}
+              theme="main"
+              disabledContainerClassName="inline-block ml-auto"
+              disabled={canRequestGraduation}
+            >
+              Yêu cầu xét tốt nghiệp
+            </LinkBox>
+          </div>
+
+          <div className="space-y-4">
+            {knowledgeBlocks.list.map((knowledgeBlock) => (
+              <InputField
+                key={knowledgeBlock.onChainId}
+                containerClassName="flex items-center gap-[24px]"
+                labelClassName="min-w-[200px]"
+                className="mt-0 flex-1"
+                label={knowledgeBlock.name}
+                value={`${knowledgeBlock.totalCredits} / ${knowledgeBlock.credits}`}
+                disabled
+              />
+            ))}
+          </div>
+        </div>
       </Box>
 
       <NftClassRegistrationDetailModal
         isOpen={isNFTModalOpen}
         onClose={onCloseNftModal}
         nftClassRegistration={nftClassRegistrationDetail}
-      />
-
-      <NftCompleteCourseDetailModal
-        isOpen={isNftCompleteCourseModal}
-        onClose={onCloseNftCompleteCourseModal}
-        nftCompleteCourse={nftCompleteCourseDetail}
       />
     </>
   );
