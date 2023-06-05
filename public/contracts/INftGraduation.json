@@ -1,0 +1,217 @@
+{
+  "contractName": "INftGraduation",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "studentTokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getNftCompleteCourseForRequestGraduation",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"studentTokenId\",\"type\":\"uint256\"}],\"name\":\"getNftCompleteCourseForRequestGraduation\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/blockchain/contracts/interfaces/INftGraduation.sol\":\"INftGraduation\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/blockchain/contracts/interfaces/IConstant.sol\":{\"keccak256\":\"0xf2c1b81f7e23e76dcc05b63727443783d2f97dadc6ca68f431ae6d6b776cf45d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://80427cbc6f77ab02e6acff4ef14603c71a2d5c632d3c5ae3174c40ac326e9fff\",\"dweb:/ipfs/QmTFrmpABfVT1F49DBqKpPKPQhQhXPcXixo6vHPddz4wxY\"]},\"project:/blockchain/contracts/interfaces/INftGraduation.sol\":{\"keccak256\":\"0x96c67e5ba2eb8cda27c86bd33167afb601ad816e5835095e1f6698d6a19e5eb9\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://03f1e0246064fa5c2e3c8d23c0e2ea4e505605cb843dd13108ef3761cb005e57\",\"dweb:/ipfs/QmQF5JP5fbRnddo6cSmxiGAWbBozN1q5gj66CesECvQi7W\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\r\n// Tells the Solidity compiler to compile only from v0.8.13 to v0.9.0\r\npragma solidity ^0.8.13;\r\nimport \"./IConstant.sol\";\r\n\r\ninterface INftGraduation is IConstant {\r\n    function getNftCompleteCourseForRequestGraduation(\r\n        uint256 studentTokenId\r\n    ) external view returns (uint256[] memory);\r\n}\r\n",
+  "sourcePath": "E:\\learn\\learn-to-earn\\blockchain\\contracts\\interfaces\\INftGraduation.sol",
+  "ast": {
+    "absolutePath": "project:/blockchain/contracts/interfaces/INftGraduation.sol",
+    "exportedSymbols": {
+      "IConstant": [
+        9234
+      ],
+      "INftGraduation": [
+        9331
+      ]
+    },
+    "id": 9332,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 9319,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".13"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "104:24:30"
+      },
+      {
+        "absolutePath": "project:/blockchain/contracts/interfaces/IConstant.sol",
+        "file": "./IConstant.sol",
+        "id": 9320,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 9332,
+        "sourceUnit": 9235,
+        "src": "130:25:30",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 9321,
+              "name": "IConstant",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 9234,
+              "src": "187:9:30"
+            },
+            "id": 9322,
+            "nodeType": "InheritanceSpecifier",
+            "src": "187:9:30"
+          }
+        ],
+        "canonicalName": "INftGraduation",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "id": 9331,
+        "linearizedBaseContracts": [
+          9331,
+          9234
+        ],
+        "name": "INftGraduation",
+        "nameLocation": "169:14:30",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "functionSelector": "c000fb08",
+            "id": 9330,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getNftCompleteCourseForRequestGraduation",
+            "nameLocation": "213:40:30",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 9325,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 9324,
+                  "mutability": "mutable",
+                  "name": "studentTokenId",
+                  "nameLocation": "272:14:30",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 9330,
+                  "src": "264:22:30",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 9323,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "264:7:30",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "253:40:30"
+            },
+            "returnParameters": {
+              "id": 9329,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 9328,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 9330,
+                  "src": "317:16:30",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 9326,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "317:7:30",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 9327,
+                    "nodeType": "ArrayTypeName",
+                    "src": "317:9:30",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "316:18:30"
+            },
+            "scope": 9331,
+            "src": "204:131:30",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 9332,
+        "src": "159:179:30",
+        "usedErrors": []
+      }
+    ],
+    "src": "104:236:30"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.13+commit.abaa5c0e.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.13",
+  "updatedAt": "2023-06-05T16:59:27.452Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

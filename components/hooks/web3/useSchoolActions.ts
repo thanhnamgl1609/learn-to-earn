@@ -79,11 +79,12 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
 
   const createCourse: CreateCourseFunc = useCallback(
     async ({ data, onSuccess, onError }) => {
-      const { credits, knowledgeBlockId, uri, prevCourseId } = data;
+      const { credits, knowledgeBlockId, uri, courseCode, prevCourseId } = data;
       const promise = _contracts.nftSchool?.createCourse(
         prevCourseId,
         knowledgeBlockId,
         credits,
+        courseCode,
         uri
       );
       await promiseHandler({
@@ -168,7 +169,10 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
     const registerClassFee = await _contracts.nftSchool.getRegisterFeeClassById(
       tokenId
     );
-    console.log("🚀 ~ file: useSchoolActions.ts:171 ~ registerClassFee:", registerClassFee)
+    console.log(
+      '🚀 ~ file: useSchoolActions.ts:171 ~ registerClassFee:',
+      registerClassFee
+    );
 
     return parseFloat(ethers.utils.formatEther(registerClassFee));
   };

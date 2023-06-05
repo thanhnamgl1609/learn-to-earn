@@ -6,7 +6,7 @@ const tableName = 'knowledge_blocks';
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (transaction) => {
-      await queryInterface.bulkInsert(tableName, data, {
+      await queryInterface.bulkInsert(tableName, data1, {
         transaction,
       });
     });
@@ -16,6 +16,21 @@ module.exports = {
     await queryInterface.bulkDelete(tableName, {});
   },
 };
+
+const data1 = [
+  {
+    id: 1,
+    onChainId: 1,
+    credits: 4,
+    name: 'Kiến thức giáo dục đại cương',
+  },
+  {
+    id: 2,
+    onChainId: 2,
+    credits: 6,
+    name: 'Kiến thức cơ sở ngành',
+  },
+];
 
 const data = [
   {

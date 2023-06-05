@@ -16,6 +16,7 @@ export type CourseCore = {
   prevCourseId: number;
   credits: number;
   status: number;
+  courseCode: string;
 };
 export type Course = {
   prevCourse?: Course;

@@ -6,41 +6,39 @@ import "./ERC1155BaseContract.sol";
 import "./interfaces/INftClassRegistration.sol";
 import "./interfaces/INftSchool.sol";
 import "./interfaces/INftCertificates.sol";
+import "./interfaces/INftGraduation.sol";
 import "./interfaces/INftIdentities.sol";
 import "./utils/ArrayMath.sol";
 
-/*
-    - Register class -> NftScoreboard
-    - Exchange Nft Complete Course
-    - Exchange Nft Graduation
-*/
 contract NftCertificates is ERC1155BaseContract, INftCertificates {
     using Counters for Counters.Counter;
     using ArrayMath for uint256[];
-    uint256 constant NFT_CLASS = 3;
-    uint256 constant NFT_SCORE_BOARD = 4;
-    uint256 constant NFT_COMPLETE_COURSE = 5;
-    uint256 constant NFT_GRADUATION = 6;
+    uint256 constant NFT_COMPLETE_COURSE = 1;
+    uint256 constant NFT_GRADUATION = 2;
 
     uint256 public graduationPrice = 1 ether;
 
     string[] private courseURIs;
 
+    bool private _isInitialize;
+
     INftIdentities private immutable _nftIdentities;
     INftSchool private immutable _nftSchool;
     INftClassRegistration private immutable _nftClassRegistration;
+    INftGraduation private _nftGraduation;
 
     uint256 public registeredStartAt;
     uint256 public registeredEndAt;
     uint256 public yearId;
 
     NftCompleteCourse[] private _allNftCompleteCourses;
-    NftGraduation[] private _allNftGraduations;
     mapping(uint256 => mapping(uint256 => uint256)) _posOfTokenIdOfNftType;
 
     mapping(uint256 => uint256[]) _studentsOfClass;
     mapping(uint256 => mapping(uint256 => uint256)) _posOfStudentInClass;
     mapping(uint256 => uint256[]) private _studentOwnedCompleteCourseNfts;
+    mapping(uint256 => mapping(uint256 => uint256))
+        private _posOfOwnedCompleteCourseNft;
 
     mapping(uint256 => uint256[]) _nftCompleteCourseQueue;
     mapping(uint256 => mapping(uint256 => uint256)) _posOfStudentInQueue;
@@ -76,13 +74,12 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
         _nftClassRegistration = INftClassRegistration(nftClassRegistration);
     }
 
-    /*
-        Initialize requirement before any operation in the system including
-        - Requirement
-        - Course template
-    */
+    function initialize(address nftGraduation) public onlyOwner {
+        require(!_isInitialize);
+        _isInitialize = true;
+        _nftGraduation = INftGraduation(nftGraduation);
+    }
 
-    // (everyone)
     function getOwnedNftCompleteCourse()
         external
         view
@@ -118,34 +115,6 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
 
         return (_allNftCompleteCourses[pos - 1], uri(tokenId));
     }
-
-    function getOwnedNftGraduation()
-        external
-        view
-        returns (NftGraduation memory, string memory)
-    {
-        uint256 tokenId = _studentOwnedNftGraduation[msg.sender];
-
-        return getNftGraduation(tokenId);
-    }
-
-    function getNftGraduation(
-        uint256 tokenId
-    ) public view returns (NftGraduation memory, string memory) {
-        uint256 pos = _posOfTokenIdOfNftType[NFT_GRADUATION][tokenId];
-        require(pos > 0);
-
-        return (_allNftGraduations[pos - 1], uri(tokenId));
-    }
-
-    // Nft Complete Course Section: Start
-    // depositNftClassRegistration group by classId
-    // getDepositedNftClassRegistration
-    // updateScoreAndGrantCourseComplete -> burnNftClassRegistration
-
-    // deposit all courseCompletes and documents to validate
-    // validate (off-chain) -> grantNftGraduation (1 groups or 1 person?)
-    // if 1 group, who is enough permission to create this group?
 
     function checkInQueue(
         uint256 classId,
@@ -193,9 +162,11 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
     function grantNftCompleteCourse(
         uint256 studentTokenId,
         uint256 avgScore,
+        uint256 status,
         uint256 classId,
         string memory tokenURI
     ) public {
+        require(status == 0 || status == 1);
         require(
             _nftClassRegistration.checkNftClassRegistrationRegained(
                 studentTokenId,
@@ -223,9 +194,13 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
             class.courseId,
             class.knowledgeBlockId,
             class.credits,
-            avgScore
+            avgScore,
+            status
         );
         _studentOwnedCompleteCourseNfts[studentTokenId].push(tokenId);
+        _posOfOwnedCompleteCourseNft[studentTokenId][
+            tokenId
+        ] = _studentOwnedCompleteCourseNfts[studentTokenId].length;
         _completedCoursesOfStudent[studentTokenId][class.courseId] = true;
         uint256 pos = _posOfStudentInQueue[classId][studentTokenId];
         uint256 length = _nftCompleteCourseQueue[classId].length;
@@ -244,75 +219,21 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
         uint256 courseId,
         uint256 knowledgeBlockId,
         uint256 credits,
-        uint256 score
+        uint256 score,
+        uint256 status
     ) private {
         NftCompleteCourse memory nftCompleteCourse = NftCompleteCourse(
             tokenId,
             courseId,
             knowledgeBlockId,
             credits,
-            score
+            score,
+            status
         );
         _allNftCompleteCourses.push(nftCompleteCourse);
         _posOfTokenIdOfNftType[NFT_COMPLETE_COURSE][
             tokenId
         ] = _allNftCompleteCourses.length;
-    }
-
-    // Nft Complete Course Section: End
-
-    function exchangeGraduation(
-        uint256[] memory nftCompleteCourseIds,
-        string memory tokenURI
-    ) public payable canOperate(uint256(ROLE.STUDENT)) {
-        require(msg.value == graduationPrice);
-        require(_studentOwnedNftGraduation[msg.sender] == 0);
-        uint256 numOfCompleteCourses = nftCompleteCourseIds.length;
-        KnowledgeBlock[] memory knowledgeBlocks = _nftSchool
-            .getAllKnowledgeBlocks();
-        uint256 numOfKnowledgeBlocks = knowledgeBlocks.length;
-        uint256[] memory acquiredCreditsByKnowledgeBlockId = new uint256[](
-            numOfKnowledgeBlocks
-        );
-        uint256 acquiredCredits;
-        uint256 totalScore;
-
-        for (uint256 idx = 0; idx < numOfCompleteCourses; ++idx) {
-            if (
-                _ownerOfNft[NFT_COMPLETE_COURSE][nftCompleteCourseIds[idx]] !=
-                msg.sender
-            ) {
-                revert();
-            }
-            // _TODO: Check duplicate course
-            (
-                NftCompleteCourse memory nftCompleteCourse,
-
-            ) = getNftCompleteCourse(nftCompleteCourseIds[idx]);
-            acquiredCreditsByKnowledgeBlockId[
-                nftCompleteCourse.knowledgeBlockId
-            ] += nftCompleteCourse.credits;
-            acquiredCredits += nftCompleteCourse.credits;
-            totalScore += (nftCompleteCourse.avgScore *
-                nftCompleteCourse.credits);
-        }
-
-        for (uint256 idx = 0; idx < numOfKnowledgeBlocks; ++idx) {
-            if (
-                acquiredCreditsByKnowledgeBlockId[knowledgeBlocks[idx].id] <
-                knowledgeBlocks[idx].credits
-            ) {
-                // If not enough credits of this knowledge block, revert
-                revert();
-            }
-        }
-
-        uint256 avgScore = totalScore / acquiredCredits;
-        if (avgScore <= _nftSchool.minimumGraduationScore()) {
-            revert();
-        }
-
-        _mintNftGraduation(tokenURI);
     }
 
     function checkCompleteCourse(
@@ -326,23 +247,100 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
         return _completedCoursesOfStudent[studentTokenId][courseId];
     }
 
-    // (everyone)
-
-    // onlyOwner
-    function _mintNftGraduation(
-        string memory tokenURI
-    ) private returns (uint256) {
-        uint256 tokenId = _mintToken(msg.sender, NFT_GRADUATION, tokenURI);
-        _createNftGraduation(tokenId);
-        _studentOwnedNftGraduation[msg.sender] = tokenId;
-
-        return tokenId;
+    function checkApprovedForAll(
+        address sender,
+        address owner
+    ) public view returns (bool) {
+        return isApprovedForAll(sender, owner);
     }
 
-    function _createNftGraduation(uint256 tokenId) private {
-        NftGraduation memory nftGraduation = NftGraduation(tokenId);
-        _allNftGraduations.push(nftGraduation);
-        _posOfTokenIdOfNftType[NFT_GRADUATION][tokenId] = _allNftGraduations
-            .length;
+    function regainNftCompleteCourses(uint256 studentTokenId) public onlyOwner {
+        address studentAddr = _nftIdentities.ownerOf(studentTokenId);
+        require(
+            checkApprovedForAll(studentAddr, _owner),
+            "not approved by student"
+        );
+        uint256[] memory tokenIds = _nftGraduation
+            .getNftCompleteCourseForRequestGraduation(studentTokenId);
+        uint256 count = tokenIds.length;
+        uint256[] memory amounts = new uint256[](count);
+
+        for (uint256 idx; idx < count; ++idx) {
+            amounts[idx] = 1;
+        }
+
+        _burnBatch(studentAddr, tokenIds, amounts);
+        _removeFromAllNftCompleteCourses(studentTokenId, tokenIds);
+    }
+
+    function _removeFromAllNftCompleteCourses(
+        uint256 studentTokenId,
+        uint256[] memory tokenIds
+    ) public {
+        uint256 count = tokenIds.length;
+
+        for (uint256 idx; idx < count; ++idx) {
+            uint256 posOfNftCompleteCourse = _posOfTokenIdOfNftType[
+                NFT_COMPLETE_COURSE
+            ][tokenIds[idx]];
+            uint256 posOfLastNftCompleteCourse = _allNftCompleteCourses.length;
+
+            NftCompleteCourse
+                memory deletedNftCompleteCourse = _allNftCompleteCourses[
+                    posOfNftCompleteCourse - 1
+                ];
+            delete _completedCoursesOfStudent[studentTokenId][
+                deletedNftCompleteCourse.courseId
+            ];
+
+            uint256 posOfOwnedCompleteCourse = _posOfOwnedCompleteCourseNft[
+                studentTokenId
+            ][tokenIds[idx]];
+            uint256 posOfLastOwnedCompleteCourse = _studentOwnedCompleteCourseNfts[
+                    studentTokenId
+                ].length;
+            if (posOfOwnedCompleteCourse < posOfLastOwnedCompleteCourse) {
+                uint256 lastTokenId = _studentOwnedCompleteCourseNfts[
+                    studentTokenId
+                ][posOfLastOwnedCompleteCourse - 1];
+                _studentOwnedCompleteCourseNfts[studentTokenId][
+                    posOfOwnedCompleteCourse - 1
+                ] = lastTokenId;
+                _posOfOwnedCompleteCourseNft[studentTokenId][
+                    lastTokenId
+                ] = posOfOwnedCompleteCourse;
+            }
+            _studentOwnedCompleteCourseNfts[studentTokenId].pop();
+
+            if (posOfNftCompleteCourse < posOfLastNftCompleteCourse) {
+                NftCompleteCourse
+                    memory nftCompleteCourse = _allNftCompleteCourses[
+                        posOfLastNftCompleteCourse - 1
+                    ];
+                _allNftCompleteCourses[
+                    posOfNftCompleteCourse - 1
+                ] = nftCompleteCourse;
+                _posOfTokenIdOfNftType[NFT_COMPLETE_COURSE][
+                    nftCompleteCourse.tokenId
+                ] = posOfNftCompleteCourse;
+            }
+            delete _posOfTokenIdOfNftType[NFT_COMPLETE_COURSE][tokenIds[idx]];
+        }
+    }
+
+    function checkAllNftCompleteCoursesRegained(
+        uint256[] memory tokenIds
+    ) public view returns (bool) {
+        uint256 count = tokenIds.length;
+
+        for (uint256 idx; idx < count; ++idx) {
+            if (
+                _posOfTokenIdOfNftType[NFT_COMPLETE_COURSE][tokenIds[idx]] > 0
+            ) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

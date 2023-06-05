@@ -62,6 +62,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
         studentTokenId,
         parseEther(avgScore.toString()),
         classId,
+        avgScore > 5,
         tokenURI
       );
 

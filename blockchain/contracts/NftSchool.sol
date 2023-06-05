@@ -22,7 +22,7 @@ contract NftSchool is INftSchool, IdentityGenerator {
     string[] private courseURIs;
 
     address private _owner;
-    
+
     INftIdentities private _nftIdentities;
     INftCertificates private _nftCertificates;
 
@@ -35,6 +35,7 @@ contract NftSchool is INftSchool, IdentityGenerator {
 
     mapping(uint256 => uint256[]) private _classIdsOfSemeter;
     mapping(uint256 => mapping(string => uint256)) private _idOfURIOfType;
+    mapping(string => uint256) _courseIdOfCode;
 
     Course[] private _allCourses;
     mapping(uint256 => uint256) _posOfCourses;
@@ -52,18 +53,17 @@ contract NftSchool is INftSchool, IdentityGenerator {
 
     constructor(
         address nftIdentities,
-        string[] memory knowledgeBlockNames,
+        uint256[] memory knowledgeBlockIds,
         uint256[] memory knowledgeBlockCredits
     ) {
         _owner = msg.sender;
         _nftIdentities = INftIdentities(nftIdentities);
 
-        uint256 knowledgeBlockCount = knowledgeBlockNames.length;
+        uint256 knowledgeBlockCount = knowledgeBlockIds.length;
         for (uint256 idx = 0; idx < knowledgeBlockCount; ++idx) {
             _knowledgeBlocks.push(
                 KnowledgeBlock(
-                    idx + 1,
-                    knowledgeBlockNames[idx],
+                    knowledgeBlockIds[idx],
                     knowledgeBlockCredits[idx]
                 )
             );
@@ -128,18 +128,29 @@ contract NftSchool is INftSchool, IdentityGenerator {
         uint256 prevCourseId,
         uint256 knowledgeBlockId,
         uint256 credits,
+        string memory courseCode,
         string memory uri
     ) public onlyOwner returns (uint256) {
+        require(_courseIdOfCode[courseCode] == 0);
         require(knowledgeBlockId <= _knowledgeBlocks.length);
         require(credits > 0);
         require(prevCourseId == 0 || _posOfCourses[prevCourseId] > 0);
         require(_idOfURIOfType[COURSE_ID][uri] == 0);
         uint256 id = generateNewId(COURSE_ID);
         _allCourses.push(
-            Course(id, knowledgeBlockId, prevCourseId, credits, 1, uri)
+            Course(
+                id,
+                knowledgeBlockId,
+                prevCourseId,
+                credits,
+                1,
+                courseCode,
+                uri
+            )
         );
         _idOfURIOfType[COURSE_ID][uri] = id;
         _posOfCourses[id] = _allCourses.length;
+        _courseIdOfCode[courseCode] = id;
 
         return id;
     }
@@ -147,21 +158,14 @@ contract NftSchool is INftSchool, IdentityGenerator {
     // Course Block: End
 
     // Class Block: Start
-    function getClassById(
-        uint256 id
-    ) public view returns (Class memory) {
+    function getClassById(uint256 id) public view returns (Class memory) {
         uint256 pos = _posOfClasses[id];
         require(pos > 0, "class not found");
 
         return _allClasses[pos - 1];
     }
 
-    function getAllClasses()
-        external
-        view
-        onlyOwner
-        returns (Class[] memory)
-    {
+    function getAllClasses() external view onlyOwner returns (Class[] memory) {
         uint256 length = _allClasses.length;
         Class[] memory classes = new Class[](length);
 
@@ -193,7 +197,9 @@ contract NftSchool is INftSchool, IdentityGenerator {
         Class[] memory result = new Class[](count);
 
         for (uint256 idx; idx < count; ++idx) {
-            result[idx] = getClassById(_assignedClassesOfTeacher[teacherTokenId][idx]);
+            result[idx] = getClassById(
+                _assignedClassesOfTeacher[teacherTokenId][idx]
+            );
         }
 
         return result;

@@ -8,5 +8,20 @@ interface INftCertificates is IConstant {
         uint256 courseId,
         address studentAddr
     ) external view returns (bool);
-    function checkInQueue(uint256 classId, uint256 studentId) external view returns (bool);
+
+    function checkInQueue(
+        uint256 classId,
+        uint256 studentId
+    ) external view returns (bool);
+
+    function checkApprovedForAll(
+        address sender,
+        address owner
+    ) external view returns (bool);
+
+    function checkAllNftCompleteCoursesRegained(uint256[] memory nftCompleteCourseTokenIds) external view returns (bool);
+
+    function getNftCompleteCourse(
+        uint256 tokenId
+    ) external view returns (NftCompleteCourse memory, string memory);
 }

@@ -82,10 +82,8 @@ export interface NewClassCreatedEventEmittedResponse {
 export interface KnowledgeblockResponse {
   id: BigNumber;
   0: BigNumber;
-  name: string;
-  1: string;
   credits: BigNumber;
-  2: BigNumber;
+  1: BigNumber;
 }
 export interface GetRegisterTimeResponse {
   result0: BigNumber;
@@ -105,8 +103,10 @@ export interface CourseResponse {
   3: BigNumber;
   status: BigNumber;
   4: BigNumber;
-  uri: string;
+  courseCode: string;
   5: string;
+  uri: string;
+  6: string;
 }
 export interface ClassResponse {
   id: BigNumber;
@@ -139,12 +139,12 @@ export interface NftSchool {
    * StateMutability: nonpayable
    * Type: constructor
    * @param nftIdentities Type: address, Indexed: false
-   * @param knowledgeBlockNames Type: string[], Indexed: false
+   * @param knowledgeBlockIds Type: uint256[], Indexed: false
    * @param knowledgeBlockCredits Type: uint256[], Indexed: false
    */
   'new'(
     nftIdentities: string,
-    knowledgeBlockNames: string[],
+    knowledgeBlockIds: BigNumberish[],
     knowledgeBlockCredits: BigNumberish[],
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
@@ -245,12 +245,14 @@ export interface NftSchool {
    * @param prevCourseId Type: uint256, Indexed: false
    * @param knowledgeBlockId Type: uint256, Indexed: false
    * @param credits Type: uint256, Indexed: false
+   * @param courseCode Type: string, Indexed: false
    * @param uri Type: string, Indexed: false
    */
   createCourse(
     prevCourseId: BigNumberish,
     knowledgeBlockId: BigNumberish,
     credits: BigNumberish,
+    courseCode: string,
     uri: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;

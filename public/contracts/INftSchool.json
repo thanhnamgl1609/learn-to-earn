@@ -26,11 +26,6 @@
               "type": "uint256"
             },
             {
-              "internalType": "string",
-              "name": "name",
-              "type": "string"
-            },
-            {
               "internalType": "uint256",
               "name": "credits",
               "type": "uint256"
@@ -297,7 +292,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"getAllKnowledgeBlocks\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"credits\",\"type\":\"uint256\"}],\"internalType\":\"struct IConstant.KnowledgeBlock[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"teacherTokenId\",\"type\":\"uint256\"}],\"name\":\"getAssignedClasses\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"courseId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"knowledgeBlockId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"prevCourseId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"credits\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"completeAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxSize\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"teacherTokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"semester\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"registerClassFee\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"uri\",\"type\":\"string\"}],\"internalType\":\"struct IConstant.Class[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"getClassById\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"courseId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"knowledgeBlockId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"prevCourseId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"credits\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"completeAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxSize\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"teacherTokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"semester\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"registerClassFee\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"uri\",\"type\":\"string\"}],\"internalType\":\"struct IConstant.Class\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"semester\",\"type\":\"uint256\"}],\"name\":\"getClassBySemester\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"courseId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"knowledgeBlockId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"prevCourseId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"credits\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"completeAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxSize\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"teacherTokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"semester\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"registerClassFee\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"uri\",\"type\":\"string\"}],\"internalType\":\"struct IConstant.Class[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"semesterId\",\"type\":\"uint256\"}],\"name\":\"getRegisterTime\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"minimumGraduationScore\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/blockchain/contracts/interfaces/INftSchool.sol\":\"INftSchool\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/blockchain/contracts/interfaces/IConstant.sol\":{\"keccak256\":\"0x6fd9c3ee3bcc26fd868c813b6ea601ed9673aaf70bf6c8276f218b9bb1f7c40d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://f27c089f34381c25e918f3725b0548587e34e36b68376dc7c0b5215f00cc5931\",\"dweb:/ipfs/QmXQTPsA8YNNQDXi9fMsNKpnLsxqwGr6s9EqXxBFSEgkFi\"]},\"project:/blockchain/contracts/interfaces/INftSchool.sol\":{\"keccak256\":\"0x7e0aa113b25ef32e02c84b547eba1c5c1c30eb5e22f8eeae0b3c4db3c846a858\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://bd778731c4eef8fd4cce03b94bf14a18f306e59fea2a3ed0697b579b065a97eb\",\"dweb:/ipfs/QmRqVVWatUyXYTqxW9Z5k6up3Py11E7Jz4QjigWWVEzEQQ\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"getAllKnowledgeBlocks\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"credits\",\"type\":\"uint256\"}],\"internalType\":\"struct IConstant.KnowledgeBlock[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"teacherTokenId\",\"type\":\"uint256\"}],\"name\":\"getAssignedClasses\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"courseId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"knowledgeBlockId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"prevCourseId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"credits\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"completeAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxSize\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"teacherTokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"semester\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"registerClassFee\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"uri\",\"type\":\"string\"}],\"internalType\":\"struct IConstant.Class[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"getClassById\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"courseId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"knowledgeBlockId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"prevCourseId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"credits\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"completeAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxSize\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"teacherTokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"semester\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"registerClassFee\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"uri\",\"type\":\"string\"}],\"internalType\":\"struct IConstant.Class\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"semester\",\"type\":\"uint256\"}],\"name\":\"getClassBySemester\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"courseId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"knowledgeBlockId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"prevCourseId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"credits\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"completeAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxSize\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"teacherTokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"semester\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"registerClassFee\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"uri\",\"type\":\"string\"}],\"internalType\":\"struct IConstant.Class[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"semesterId\",\"type\":\"uint256\"}],\"name\":\"getRegisterTime\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"minimumGraduationScore\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/blockchain/contracts/interfaces/INftSchool.sol\":\"INftSchool\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/blockchain/contracts/interfaces/IConstant.sol\":{\"keccak256\":\"0xf2c1b81f7e23e76dcc05b63727443783d2f97dadc6ca68f431ae6d6b776cf45d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://80427cbc6f77ab02e6acff4ef14603c71a2d5c632d3c5ae3174c40ac326e9fff\",\"dweb:/ipfs/QmTFrmpABfVT1F49DBqKpPKPQhQhXPcXixo6vHPddz4wxY\"]},\"project:/blockchain/contracts/interfaces/INftSchool.sol\":{\"keccak256\":\"0x7e0aa113b25ef32e02c84b547eba1c5c1c30eb5e22f8eeae0b3c4db3c846a858\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://bd778731c4eef8fd4cce03b94bf14a18f306e59fea2a3ed0697b579b065a97eb\",\"dweb:/ipfs/QmRqVVWatUyXYTqxW9Z5k6up3Py11E7Jz4QjigWWVEzEQQ\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -311,18 +306,18 @@
     "absolutePath": "project:/blockchain/contracts/interfaces/INftSchool.sol",
     "exportedSymbols": {
       "IConstant": [
-        8727
+        9234
       ],
       "INftSchool": [
-        8892
+        9440
       ]
     },
-    "id": 8893,
+    "id": 9441,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 8841,
+        "id": 9389,
         "literals": [
           "solidity",
           "^",
@@ -330,17 +325,17 @@
           ".13"
         ],
         "nodeType": "PragmaDirective",
-        "src": "104:24:30"
+        "src": "104:24:32"
       },
       {
         "absolutePath": "project:/blockchain/contracts/interfaces/IConstant.sol",
         "file": "./IConstant.sol",
-        "id": 8842,
+        "id": 9390,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 8893,
-        "sourceUnit": 8728,
-        "src": "130:25:30",
+        "scope": 9441,
+        "sourceUnit": 9235,
+        "src": "130:25:32",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -349,58 +344,58 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 8843,
+              "id": 9391,
               "name": "IConstant",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 8727,
-              "src": "183:9:30"
+              "referencedDeclaration": 9234,
+              "src": "183:9:32"
             },
-            "id": 8844,
+            "id": 9392,
             "nodeType": "InheritanceSpecifier",
-            "src": "183:9:30"
+            "src": "183:9:32"
           }
         ],
         "canonicalName": "INftSchool",
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 8892,
+        "id": 9440,
         "linearizedBaseContracts": [
-          8892,
-          8727
+          9440,
+          9234
         ],
         "name": "INftSchool",
-        "nameLocation": "169:10:30",
+        "nameLocation": "169:10:32",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "functionSelector": "5fe03779",
-            "id": 8849,
+            "id": 9397,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "minimumGraduationScore",
-            "nameLocation": "209:22:30",
+            "nameLocation": "209:22:32",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8845,
+              "id": 9393,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "231:2:30"
+              "src": "231:2:32"
             },
             "returnParameters": {
-              "id": 8848,
+              "id": 9396,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8847,
+                  "id": 9395,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8849,
-                  "src": "257:7:30",
+                  "scope": 9397,
+                  "src": "257:7:32",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -408,10 +403,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8846,
+                    "id": 9394,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "257:7:30",
+                    "src": "257:7:32",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -420,107 +415,107 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "256:9:30"
+              "src": "256:9:32"
             },
-            "scope": 8892,
-            "src": "200:66:30",
+            "scope": 9440,
+            "src": "200:66:32",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "5f7b9d73",
-            "id": 8856,
+            "id": 9404,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getAllKnowledgeBlocks",
-            "nameLocation": "283:21:30",
+            "nameLocation": "283:21:32",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8850,
+              "id": 9398,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "304:2:30"
+              "src": "304:2:32"
             },
             "returnParameters": {
-              "id": 8855,
+              "id": 9403,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8854,
+                  "id": 9402,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8856,
-                  "src": "357:23:30",
+                  "scope": 9404,
+                  "src": "357:23:32",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_struct$_KnowledgeBlock_$8637_memory_ptr_$dyn_memory_ptr",
+                    "typeIdentifier": "t_array$_t_struct$_KnowledgeBlock_$9138_memory_ptr_$dyn_memory_ptr",
                     "typeString": "struct IConstant.KnowledgeBlock[]"
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8852,
+                      "id": 9400,
                       "nodeType": "UserDefinedTypeName",
                       "pathNode": {
-                        "id": 8851,
+                        "id": 9399,
                         "name": "KnowledgeBlock",
                         "nodeType": "IdentifierPath",
-                        "referencedDeclaration": 8637,
-                        "src": "357:14:30"
+                        "referencedDeclaration": 9138,
+                        "src": "357:14:32"
                       },
-                      "referencedDeclaration": 8637,
-                      "src": "357:14:30",
+                      "referencedDeclaration": 9138,
+                      "src": "357:14:32",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_KnowledgeBlock_$8637_storage_ptr",
+                        "typeIdentifier": "t_struct$_KnowledgeBlock_$9138_storage_ptr",
                         "typeString": "struct IConstant.KnowledgeBlock"
                       }
                     },
-                    "id": 8853,
+                    "id": 9401,
                     "nodeType": "ArrayTypeName",
-                    "src": "357:16:30",
+                    "src": "357:16:32",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_struct$_KnowledgeBlock_$8637_storage_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_struct$_KnowledgeBlock_$9138_storage_$dyn_storage_ptr",
                       "typeString": "struct IConstant.KnowledgeBlock[]"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "356:25:30"
+              "src": "356:25:32"
             },
-            "scope": 8892,
-            "src": "274:108:30",
+            "scope": 9440,
+            "src": "274:108:32",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "d9ac23d9",
-            "id": 8865,
+            "id": 9413,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getRegisterTime",
-            "nameLocation": "399:15:30",
+            "nameLocation": "399:15:32",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8859,
+              "id": 9407,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8858,
+                  "id": 9406,
                   "mutability": "mutable",
                   "name": "semesterId",
-                  "nameLocation": "433:10:30",
+                  "nameLocation": "433:10:32",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8865,
-                  "src": "425:18:30",
+                  "scope": 9413,
+                  "src": "425:18:32",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -528,10 +523,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8857,
+                    "id": 9405,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "425:7:30",
+                    "src": "425:7:32",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -540,21 +535,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "414:36:30"
+              "src": "414:36:32"
             },
             "returnParameters": {
-              "id": 8864,
+              "id": 9412,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8861,
+                  "id": 9409,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8865,
-                  "src": "474:7:30",
+                  "scope": 9413,
+                  "src": "474:7:32",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -562,10 +557,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8860,
+                    "id": 9408,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "474:7:30",
+                    "src": "474:7:32",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -575,13 +570,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 8863,
+                  "id": 9411,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8865,
-                  "src": "483:7:30",
+                  "scope": 9413,
+                  "src": "483:7:32",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -589,10 +584,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8862,
+                    "id": 9410,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "483:7:30",
+                    "src": "483:7:32",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -601,36 +596,36 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "473:18:30"
+              "src": "473:18:32"
             },
-            "scope": 8892,
-            "src": "390:102:30",
+            "scope": 9440,
+            "src": "390:102:32",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "03d658e0",
-            "id": 8873,
+            "id": 9421,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getClassById",
-            "nameLocation": "509:12:30",
+            "nameLocation": "509:12:32",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8868,
+              "id": 9416,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8867,
+                  "id": 9415,
                   "mutability": "mutable",
                   "name": "id",
-                  "nameLocation": "530:2:30",
+                  "nameLocation": "530:2:32",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8873,
-                  "src": "522:10:30",
+                  "scope": 9421,
+                  "src": "522:10:32",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -638,10 +633,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8866,
+                    "id": 9414,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "522:7:30",
+                    "src": "522:7:32",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -650,77 +645,77 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "521:12:30"
+              "src": "521:12:32"
             },
             "returnParameters": {
-              "id": 8872,
+              "id": 9420,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8871,
+                  "id": 9419,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8873,
-                  "src": "557:12:30",
+                  "scope": 9421,
+                  "src": "557:12:32",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Class_$8673_memory_ptr",
+                    "typeIdentifier": "t_struct$_Class_$9176_memory_ptr",
                     "typeString": "struct IConstant.Class"
                   },
                   "typeName": {
-                    "id": 8870,
+                    "id": 9418,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 8869,
+                      "id": 9417,
                       "name": "Class",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 8673,
-                      "src": "557:5:30"
+                      "referencedDeclaration": 9176,
+                      "src": "557:5:32"
                     },
-                    "referencedDeclaration": 8673,
-                    "src": "557:5:30",
+                    "referencedDeclaration": 9176,
+                    "src": "557:5:32",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Class_$8673_storage_ptr",
+                      "typeIdentifier": "t_struct$_Class_$9176_storage_ptr",
                       "typeString": "struct IConstant.Class"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "556:14:30"
+              "src": "556:14:32"
             },
-            "scope": 8892,
-            "src": "500:71:30",
+            "scope": 9440,
+            "src": "500:71:32",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "7071b869",
-            "id": 8882,
+            "id": 9430,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getClassBySemester",
-            "nameLocation": "588:18:30",
+            "nameLocation": "588:18:32",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8876,
+              "id": 9424,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8875,
+                  "id": 9423,
                   "mutability": "mutable",
                   "name": "semester",
-                  "nameLocation": "625:8:30",
+                  "nameLocation": "625:8:32",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8882,
-                  "src": "617:16:30",
+                  "scope": 9430,
+                  "src": "617:16:32",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -728,10 +723,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8874,
+                    "id": 9422,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "617:7:30",
+                    "src": "617:7:32",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -740,86 +735,86 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "606:34:30"
+              "src": "606:34:32"
             },
             "returnParameters": {
-              "id": 8881,
+              "id": 9429,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8880,
+                  "id": 9428,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8882,
-                  "src": "664:14:30",
+                  "scope": 9430,
+                  "src": "664:14:32",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_struct$_Class_$8673_memory_ptr_$dyn_memory_ptr",
+                    "typeIdentifier": "t_array$_t_struct$_Class_$9176_memory_ptr_$dyn_memory_ptr",
                     "typeString": "struct IConstant.Class[]"
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8878,
+                      "id": 9426,
                       "nodeType": "UserDefinedTypeName",
                       "pathNode": {
-                        "id": 8877,
+                        "id": 9425,
                         "name": "Class",
                         "nodeType": "IdentifierPath",
-                        "referencedDeclaration": 8673,
-                        "src": "664:5:30"
+                        "referencedDeclaration": 9176,
+                        "src": "664:5:32"
                       },
-                      "referencedDeclaration": 8673,
-                      "src": "664:5:30",
+                      "referencedDeclaration": 9176,
+                      "src": "664:5:32",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Class_$8673_storage_ptr",
+                        "typeIdentifier": "t_struct$_Class_$9176_storage_ptr",
                         "typeString": "struct IConstant.Class"
                       }
                     },
-                    "id": 8879,
+                    "id": 9427,
                     "nodeType": "ArrayTypeName",
-                    "src": "664:7:30",
+                    "src": "664:7:32",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_struct$_Class_$8673_storage_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_struct$_Class_$9176_storage_$dyn_storage_ptr",
                       "typeString": "struct IConstant.Class[]"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "663:16:30"
+              "src": "663:16:32"
             },
-            "scope": 8892,
-            "src": "579:101:30",
+            "scope": 9440,
+            "src": "579:101:32",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "bbaa15e3",
-            "id": 8891,
+            "id": 9439,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getAssignedClasses",
-            "nameLocation": "697:18:30",
+            "nameLocation": "697:18:32",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8885,
+              "id": 9433,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8884,
+                  "id": 9432,
                   "mutability": "mutable",
                   "name": "teacherTokenId",
-                  "nameLocation": "734:14:30",
+                  "nameLocation": "734:14:32",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8891,
-                  "src": "726:22:30",
+                  "scope": 9439,
+                  "src": "726:22:32",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -827,10 +822,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8883,
+                    "id": 9431,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "726:7:30",
+                    "src": "726:7:32",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -839,71 +834,71 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "715:40:30"
+              "src": "715:40:32"
             },
             "returnParameters": {
-              "id": 8890,
+              "id": 9438,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8889,
+                  "id": 9437,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8891,
-                  "src": "779:14:30",
+                  "scope": 9439,
+                  "src": "779:14:32",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_struct$_Class_$8673_memory_ptr_$dyn_memory_ptr",
+                    "typeIdentifier": "t_array$_t_struct$_Class_$9176_memory_ptr_$dyn_memory_ptr",
                     "typeString": "struct IConstant.Class[]"
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8887,
+                      "id": 9435,
                       "nodeType": "UserDefinedTypeName",
                       "pathNode": {
-                        "id": 8886,
+                        "id": 9434,
                         "name": "Class",
                         "nodeType": "IdentifierPath",
-                        "referencedDeclaration": 8673,
-                        "src": "779:5:30"
+                        "referencedDeclaration": 9176,
+                        "src": "779:5:32"
                       },
-                      "referencedDeclaration": 8673,
-                      "src": "779:5:30",
+                      "referencedDeclaration": 9176,
+                      "src": "779:5:32",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Class_$8673_storage_ptr",
+                        "typeIdentifier": "t_struct$_Class_$9176_storage_ptr",
                         "typeString": "struct IConstant.Class"
                       }
                     },
-                    "id": 8888,
+                    "id": 9436,
                     "nodeType": "ArrayTypeName",
-                    "src": "779:7:30",
+                    "src": "779:7:32",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_struct$_Class_$8673_storage_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_struct$_Class_$9176_storage_$dyn_storage_ptr",
                       "typeString": "struct IConstant.Class[]"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "778:16:30"
+              "src": "778:16:32"
             },
-            "scope": 8892,
-            "src": "688:107:30",
+            "scope": 9440,
+            "src": "688:107:32",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 8893,
-        "src": "159:639:30",
+        "scope": 9441,
+        "src": "159:639:32",
         "usedErrors": []
       }
     ],
-    "src": "104:696:30"
+    "src": "104:696:32"
   },
   "compiler": {
     "name": "solc",
@@ -911,7 +906,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-05-28T15:04:10.786Z",
+  "updatedAt": "2023-06-05T16:59:27.454Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

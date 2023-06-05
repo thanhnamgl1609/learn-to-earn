@@ -6,7 +6,7 @@ const tableName = 'courses';
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (transaction) => {
-      await queryInterface.bulkInsert(tableName, data, {
+      await queryInterface.bulkInsert(tableName, data1, {
         transaction,
       });
     });
@@ -1135,6 +1135,8 @@ const data = [
     prevCourseId: null,
   },
 ];
+
+const data1 = data.filter(({ knowledgeBlockId }) => knowledgeBlockId < 3);
 
 const excelData = [
   'BAA00101,Triết học Mác - Lênin,3,45,0,0,BB,1',
