@@ -1,0 +1,36 @@
+import { DB, DBModel } from '@_types/models';
+import { Sequelize, DataTypes } from 'sequelize';
+
+export default (sequelize: Sequelize) => {
+  class RequestGraduations extends DBModel {
+    static associate(models: DB) {
+      this.hasMany(models.nft_complete_course_graduation_relations, {
+        foreignKey: 'requestGraduationId',
+        sourceKey: 'id',
+      });
+      this.belongsTo(models.users, {
+        foreignKey: 'studentTokenId',
+        targetKey: 'tokenId',
+        as: 'student',
+      });
+    }
+  }
+  RequestGraduations.init(
+    {
+      requestDate: DataTypes.STRING,
+      nationalDefenseEduCertificate: DataTypes.STRING,
+      foreignLanguageCertificate: DataTypes.STRING,
+      requestPrice: DataTypes.FLOAT,
+      otherCertificates: DataTypes.JSON,
+      uri: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: 'request_graduations',
+      tableName: 'request_graduations',
+      charset: 'utf8',
+      collate: 'utf8_unicode_ci',
+    }
+  );
+  return RequestGraduations;
+};

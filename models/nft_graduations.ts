@@ -2,11 +2,11 @@ import { DB, DBModel } from '@_types/models';
 import { Sequelize, DataTypes } from 'sequelize';
 
 export default (sequelize: Sequelize) => {
-  class NftClassRegistrations extends DBModel {
+  class NftGraduations extends DBModel {
     static associate(models: DB) {
-      this.belongsTo(models.classes, {
-        foreignKey: 'classId',
-        targetKey: 'onChainId',
+      this.hasMany(models.nft_complete_course_graduation_relations, {
+        foreignKey: 'nftGraduationId',
+        sourceKey: 'tokenId',
       });
       this.belongsTo(models.users, {
         foreignKey: 'studentTokenId',
@@ -15,20 +15,19 @@ export default (sequelize: Sequelize) => {
       });
     }
   }
-  NftClassRegistrations.init(
+  NftGraduations.init(
     {
-      registerFee: DataTypes.FLOAT,
       tokenId: DataTypes.INTEGER,
-      isRegained: DataTypes.TINYINT,
-      registerDate: DataTypes.DATE,
-      chainURI: DataTypes.STRING,
+      grantDate: DataTypes.DATE,
+      uri: DataTypes.STRING,
     },
     {
       sequelize,
-      modelName: 'nft_class_registrations',
+      modelName: 'nft_graduations',
+      tableName: 'nft_graduations',
       charset: 'utf8',
       collate: 'utf8_unicode_ci',
     }
   );
-  return NftClassRegistrations;
+  return NftGraduations;
 };
