@@ -49,7 +49,7 @@ contract NftClassRegistration is ERC721BaseContract, INftClassRegistration {
     }
 
     // Register class block: start
-    function getRegistereClasses()
+    function getRegisteredClasses()
         public
         view
         returns (NftClassRegistration[] memory)

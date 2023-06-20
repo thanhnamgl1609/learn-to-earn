@@ -26,7 +26,9 @@ export const registerClass = async (
   tokenId: number,
   studentTokenId: number,
   classId: number,
-  chainURI: string
+  chainURI: string,
+  registerDate: string,
+  registerFee: number,
 ) => {
   const count = await classesRepo.countNftClassRegistrationExisted({ tokenId });
   if (count > 0) throw createError(400);
@@ -35,6 +37,8 @@ export const registerClass = async (
     studentTokenId,
     classId,
     chainURI,
+    registerDate,
+    registerFee,
   };
 
   return classesRepo.createNftClassRegistration(nftClassRegistration);

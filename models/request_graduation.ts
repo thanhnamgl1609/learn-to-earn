@@ -7,6 +7,7 @@ export default (sequelize: Sequelize) => {
       this.hasMany(models.nft_complete_course_graduation_relations, {
         foreignKey: 'requestGraduationId',
         sourceKey: 'id',
+        as: 'nftCompleteCourseGraduationRelations',
       });
       this.belongsTo(models.users, {
         foreignKey: 'studentTokenId',
@@ -28,6 +29,7 @@ export default (sequelize: Sequelize) => {
       sequelize,
       modelName: 'request_graduations',
       tableName: 'request_graduations',
+      // paranoid: true,
       charset: 'utf8',
       collate: 'utf8_unicode_ci',
     }

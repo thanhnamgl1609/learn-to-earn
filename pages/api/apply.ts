@@ -80,6 +80,10 @@ const validate = async (target?: string, data?: Record<string, any>) => {
       return validateApplyRegistration(data);
     case UPLOAD_TARGET.GRANT_NFT_COMPLETE_COURSE:
       return validateGrantNftCompleteCourse(data);
+    case UPLOAD_TARGET.REQUEST_NFT_GRADUATION:
+      return validateRequestGraduation(data);
+    case UPLOAD_TARGET.GRANT_NFT_GRADUATION:
+      return validateGrantNftGraduation(data);
     default:
       return null;
   }
@@ -102,6 +106,38 @@ const validateRegistration = (rawData?: Record<string, any>) => {
 const validateGrantNftCompleteCourse = async (
   rawData?: Record<string, any>
 ) => {
+  if (!rawData) return { pinataContent: null };
+  const grantDate = today();
+  const pinataContent = {
+    ...rawData,
+    grantDate,
+  };
+
+  return {
+    pinataContent,
+    meta: {
+      grantDate,
+    },
+  };
+};
+
+const validateRequestGraduation = async (rawData?: Record<string, any>) => {
+  if (!rawData) return { pinataContent: null };
+  const requestDate = today();
+  const pinataContent = {
+    ...rawData,
+    requestDate,
+  };
+
+  return {
+    pinataContent,
+    meta: {
+      requestDate,
+    },
+  };
+};
+
+const validateGrantNftGraduation = async (rawData?: Record<string, any>) => {
   if (!rawData) return { pinataContent: null };
   const grantDate = today();
   const pinataContent = {

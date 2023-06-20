@@ -1,4 +1,4 @@
-import { knowledgeBlockEntity } from 'domain/models';
+import { knowledgeBlockEntity, nftCompleteCourseEntity } from 'domain/models';
 import ROUTES from 'config/routes.json';
 import CONST from 'config/constants.json';
 import { KnowledgeBlockEntityWithGain } from '@_types/api/certificates';

@@ -30,7 +30,6 @@ export const getNftClassRegistrations = async (
   const condition = generateCondition(query, {
     $equal: ['tokenId', 'studentTokenId', 'classId', 'isRegained'],
   });
-  console.log('🚀 ~ file: register.ts:33 ~ condition:', condition);
 
   const result = await db.nft_class_registrations.findAll({
     where: condition,

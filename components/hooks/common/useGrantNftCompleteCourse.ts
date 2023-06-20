@@ -1,12 +1,8 @@
-import { useRouter } from 'next/router';
-
-import { NftClassRegistrationEntity } from '@_types/models/entities';
 import CONST from 'config/constants.json';
 import {
   useAccount,
   useCertificateActions,
   useNftClassRegistrationActions,
-  useSchoolActions,
   useUtilities,
 } from '@hooks/web3';
 import { uploadData } from '@store/actions';

@@ -13,7 +13,7 @@ module.exports = {
           primaryKey: true,
           autoIncrement: true,
         },
-        nftCompleteCourseId: {
+        nftCompleteCourseTokenId: {
           type: Sequelize.INTEGER,
         },
         nftGraduationId: {

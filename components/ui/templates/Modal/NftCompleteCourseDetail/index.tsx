@@ -18,7 +18,6 @@ export const NftCompleteCourseDetailModal: FC<Props> = memo(
     const {
       nftCompleteCourses: [nftCompleteCourse],
     } = classInfo;
-      console.log("🚀 ~ file: index.tsx:21 ~ nftCompleteCourse:", nftCompleteCourse)
 
     return (
       <Modal

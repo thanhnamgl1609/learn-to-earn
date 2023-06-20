@@ -57,6 +57,9 @@ export const useGrantNftIdentity = () => {
           },
           signature,
         },
+        options: {
+          timeout: 20000,
+        },
       })([endpoints.userDetail]);
 
       router.push(ROUTES.manageRegistration.name + `?r=${role}`);

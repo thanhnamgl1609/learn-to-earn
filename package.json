@@ -8,6 +8,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "seed": "sequelize db:seed --seed",
+    "seed:undo": "sequelize db:seed:undo --seed",
+    "seed:undo:all": "sequelize db:seed:undo:all",
+    "seed:create": "sequelize seed:generate --name",
     "migrate": "sequelize db:migrate",
     "migrate:db:create": "sequelize db:create",
     "migrate:create": "sequelize migration:create --name",
@@ -18,11 +22,12 @@
     "redeploy": "npm run redeploy:contract && npm run redeploy:migrate",
     "drop:db": "sequelize db:drop",
     "create:db": "sequelize db:create",
-    "genContractType": "npm run genNftSchoolType && npm run genNftIdentitiesType && npm run genNftCertificatesType && npm run genNftClassRegistrationType",
+    "genContractType": "npm run genNftSchoolType && npm run genNftIdentitiesType && npm run genNftCertificatesType && npm run genNftClassRegistrationType && npm run genNftGraduationType",
     "genNftSchoolType": "abi-types-generator './public/contracts/NftSchool.json' --output='./types/contracts' --provider=ethers_v5",
     "genNftIdentitiesType": "abi-types-generator './public/contracts/NftIdentities.json' --output='./types/contracts' --provider=ethers_v5",
     "genNftClassRegistrationType": "abi-types-generator './public/contracts/NftClassRegistration.json' --output='./types/contracts' --provider=ethers_v5",
-    "genNftCertificatesType": "abi-types-generator './public/contracts/NftCertificates.json' --output='./types/contracts' --provider=ethers_v5"
+    "genNftCertificatesType": "abi-types-generator './public/contracts/NftCertificates.json' --output='./types/contracts' --provider=ethers_v5",
+    "genNftGraduationType": "abi-types-generator './public/contracts/NftGraduation.json' --output='./types/contracts' --provider=ethers_v5"
   },
   "dependencies": {
     "@headlessui/react": "^1.5.0",

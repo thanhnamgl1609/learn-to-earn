@@ -7,7 +7,7 @@ import { NftIdentity } from '@_types/nftIdentity';
 import { formatNftIdentities } from './formatter';
 import { SignatureData } from '@_types/common';
 import { useTransactionHandler } from './common';
-import { logger, parseBigNumber, parseBigNumbers } from 'utils';
+import { logger, parseBigNumbers } from 'utils';
 import { NftclassregistrationResponse } from '@_types/contracts/NftClassRegistration';
 
 type GetStudentListOfClass = {
@@ -38,6 +38,10 @@ type GetApprovalOfTokenIdFunc = {
   (tokenId: number): Promise<string>;
 };
 
+type GetRegisteredClassFunc = {
+  (): Promise<any>;
+};
+
 type RegainNftClassRegistrationFunc = {
   (tokenId: number): Promise<void>;
 };
@@ -62,6 +66,7 @@ type UseNftClassRegistrationActionsReturnTypes = {
   registerClass: RegisterClassFunc;
   approveToTeacher: ApproveToTeacherFunc;
   getApprovalOfTokenId: GetApprovalOfTokenIdFunc;
+  getRegisteredClass: GetRegisteredClassFunc;
   regainNftClassRegistration: RegainNftClassRegistrationFunc;
   checkNftClassRegistrationRegained: CheckNftClassRegistrationRegainedFunc;
 };
@@ -112,6 +117,12 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
     },
     [_contracts]
   );
+
+  const getRegisteredClass: GetRegisteredClassFunc = useCallback(async () => {
+    const result = await _contracts!.nftClassRegistration.getRegistereClasses();
+
+    return result;
+  }, [_contracts]);
 
   const getApprovalOfTokenId: GetApprovalOfTokenIdFunc = useCallback(
     async (tokenId: number) => {
@@ -202,6 +213,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
     getRegainedNftListOfClass,
     getApprovalOfTokenId,
     getNftClassRegistration,
+    getRegisteredClass,
     checkNftClassRegistrationRegained,
     registerClass,
     approveToTeacher,

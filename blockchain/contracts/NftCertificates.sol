@@ -19,6 +19,7 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
     uint256 public graduationPrice = 1 ether;
 
     string[] private courseURIs;
+    uint256 private _requiredAvgScore = 5 ether;
 
     bool private _isInitialize;
 
@@ -98,7 +99,7 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
         );
         string[] memory nftURIs = new string[](numberOfNftCompleteCourses);
 
-        for (uint256 idx = 0; idx <= numberOfNftCompleteCourses; ++idx) {
+        for (uint256 idx = 0; idx < numberOfNftCompleteCourses; ++idx) {
             (nfts[idx], nftURIs[idx]) = getNftCompleteCourse(
                 _studentOwnedCompleteCourseNfts[studentTokenId][idx]
             );
@@ -111,7 +112,7 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
         uint256 tokenId
     ) public view returns (NftCompleteCourse memory, string memory) {
         uint256 pos = _posOfTokenIdOfNftType[NFT_COMPLETE_COURSE][tokenId];
-        require(pos > 0);
+        require(pos > 0, "[NFT Complete Course] Not exist");
 
         return (_allNftCompleteCourses[pos - 1], uri(tokenId));
     }
@@ -162,11 +163,10 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
     function grantNftCompleteCourse(
         uint256 studentTokenId,
         uint256 avgScore,
-        uint256 status,
         uint256 classId,
         string memory tokenURI
     ) public {
-        require(status == 0 || status == 1);
+        require(avgScore >= _requiredAvgScore);
         require(
             _nftClassRegistration.checkNftClassRegistrationRegained(
                 studentTokenId,
@@ -191,11 +191,11 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
         );
         _createNftCompleteCourse(
             tokenId,
+            studentTokenId,
             class.courseId,
             class.knowledgeBlockId,
             class.credits,
-            avgScore,
-            status
+            avgScore
         );
         _studentOwnedCompleteCourseNfts[studentTokenId].push(tokenId);
         _posOfOwnedCompleteCourseNft[studentTokenId][
@@ -216,19 +216,19 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
 
     function _createNftCompleteCourse(
         uint256 tokenId,
+        uint256 studentTokenId,
         uint256 courseId,
         uint256 knowledgeBlockId,
         uint256 credits,
-        uint256 score,
-        uint256 status
+        uint256 score
     ) private {
         NftCompleteCourse memory nftCompleteCourse = NftCompleteCourse(
             tokenId,
+            studentTokenId,
             courseId,
             knowledgeBlockId,
             credits,
-            score,
-            status
+            score
         );
         _allNftCompleteCourses.push(nftCompleteCourse);
         _posOfTokenIdOfNftType[NFT_COMPLETE_COURSE][
@@ -245,6 +245,14 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
             .nftIdentity
             .tokenId;
         return _completedCoursesOfStudent[studentTokenId][courseId];
+    }
+
+    function approveOwnerForAllNft(bool approved) public {
+        setApprovalForAll(_owner, approved);
+    }
+
+    function checkApproveOwnerForAllNft() public view returns (bool) {
+        return isApprovedForAll(msg.sender, _owner);
     }
 
     function checkApprovedForAll(
@@ -293,6 +301,7 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
                 deletedNftCompleteCourse.courseId
             ];
 
+            // Remove from owned nft complete courses list
             uint256 posOfOwnedCompleteCourse = _posOfOwnedCompleteCourseNft[
                 studentTokenId
             ][tokenIds[idx]];
@@ -312,19 +321,21 @@ contract NftCertificates is ERC1155BaseContract, INftCertificates {
             }
             _studentOwnedCompleteCourseNfts[studentTokenId].pop();
 
+            // Remove from all nft complete courses
             if (posOfNftCompleteCourse < posOfLastNftCompleteCourse) {
                 NftCompleteCourse
-                    memory nftCompleteCourse = _allNftCompleteCourses[
+                    memory lastNftCompleteCourse = _allNftCompleteCourses[
                         posOfLastNftCompleteCourse - 1
                     ];
                 _allNftCompleteCourses[
                     posOfNftCompleteCourse - 1
-                ] = nftCompleteCourse;
+                ] = lastNftCompleteCourse;
                 _posOfTokenIdOfNftType[NFT_COMPLETE_COURSE][
-                    nftCompleteCourse.tokenId
+                    lastNftCompleteCourse.tokenId
                 ] = posOfNftCompleteCourse;
             }
             delete _posOfTokenIdOfNftType[NFT_COMPLETE_COURSE][tokenIds[idx]];
+            _allNftCompleteCourses.pop();
         }
     }
 

@@ -10,24 +10,20 @@ import ROUTES from 'config/routes.json';
 import { Box, InputField } from '@molecules';
 import { Table } from '@organisms';
 import { Button, Heading, LinkBox } from '@atoms';
-import { formatDate } from 'utils';
+import { formatDate, cls } from 'utils';
 import { useAppDispatch, useAppSelector } from '@hooks/stores';
 import { openConfirmModal } from '@store/appSlice';
 import {
-  useNftCompleteCourseListApi,
   useNftCompleteCourseListGroupApi,
   useNftRegistrationClassListApi,
 } from '@hooks/api/classes';
-import {
-  NftClassRegistrationDetailModal,
-  NftCompleteCourseDetailModal,
-} from '@templates/Modal';
+import { NftClassRegistrationDetailModal } from '@templates/Modal';
 import { useModalController } from '@hooks/ui';
 import { useState } from 'react';
-import { selectCurrentNftIdentity } from '@store/userSlice';
+import { selectCurrentNftIdentity, selectUserDetail } from '@store/userSlice';
 import { useRequestCompleteCourseCertificate } from '@hooks/common';
-import { knowledgeBlockEntity, userEntity } from 'domain/models';
-import { KnowledgeBlockEntityWithGain } from '@_types/api/certificates';
+import { knowledgeBlockEntity } from 'domain/models';
+import { useRequestGraduationStatus } from '@hooks/api';
 
 type ClassColumnProps = {
   item: NftClassRegistrationEntityWithApproveStatus;
@@ -129,6 +125,7 @@ const classTableHeaders = [
 ];
 
 export const StudentProfile = () => {
+  const detail = useAppSelector(selectUserDetail);
   const { tokenId } = useAppSelector(selectCurrentNftIdentity);
   const { data: registeredClasses = [] } = useNftRegistrationClassListApi(
     {
@@ -147,10 +144,21 @@ export const StudentProfile = () => {
   const [isNFTModalOpen, openNftModal, closeNFTModal] = useModalController();
   const [nftClassRegistrationDetail, setNftClassRegistrationDetail] =
     useState<NftClassRegistrationEntity | null>(null);
+  const {
+    data: { isInQueue } = {
+      isInQueue: false,
+      isApprovedSent: false,
+    },
+  } = useRequestGraduationStatus();
   const totalRequiredCredits = knowledgeBlockEntity.getTotalRequiredCredits(
     knowledgeBlocks.list as KnowledgeBlockEntity[]
   );
-  const canRequestGraduation = knowledgeBlockEntity.checkCanGraduate(knowledgeBlocks);
+  const isGraduated = !!detail.nftGraduation;
+  const canRequestGraduation =
+    knowledgeBlockEntity.checkCanGraduate(knowledgeBlocks);
+  const requestGraduationText = isInQueue
+    ? 'Xem yêu cầu xét tốt nghiệp'
+    : 'Yêu cầu xét tốt nghiệp';
   const onOpenNftModal = (nftClassRegistration: NftClassRegistrationEntity) => {
     openNftModal();
     setNftClassRegistrationDetail(nftClassRegistration);
@@ -162,7 +170,18 @@ export const StudentProfile = () => {
 
   return (
     <>
-      <Heading>Thông tin học tập</Heading>
+      <Heading>
+        Thông tin học tập{' '}
+        <span
+          className={cls(
+            'cursor-default ml-4 inline-block border rounded-xl text-sm px-4 py-2 text-white',
+            isGraduated && ' bg-indigo-800',
+            !isGraduated && 'bg-gray-400'
+          )}
+        >
+          {isGraduated ? 'Đã tốt nghiệp' : 'Chưa tốt nghiệp'}
+        </span>
+      </Heading>
 
       <Box className="px-8 py-6" autoLayout>
         <Heading>Môn học đã đăng ký</Heading>
@@ -201,15 +220,29 @@ export const StudentProfile = () => {
               disabled
             />
 
-            <LinkBox
-              className="inline-block ml-auto"
-              href={ROUTES.requestGraduation.name}
-              theme="main"
-              disabledContainerClassName="inline-block ml-auto"
-              disabled={canRequestGraduation}
-            >
-              Yêu cầu xét tốt nghiệp
-            </LinkBox>
+            {isGraduated ? (
+              <LinkBox
+                className="inline-block ml-auto"
+                href={ROUTES.myGraduationDetail.name}
+                theme="main"
+              >
+                Xem NFT tốt nghiệp
+              </LinkBox>
+            ) : (
+              <LinkBox
+                className="inline-block ml-auto"
+                href={
+                  isInQueue
+                    ? ROUTES.myRequestGraduation.name
+                    : ROUTES.requestGraduation.name
+                }
+                theme="main"
+                disabledContainerClassName="inline-block ml-auto"
+                disabled={!canRequestGraduation}
+              >
+                {requestGraduationText}
+              </LinkBox>
+            )}
           </div>
 
           <div className="space-y-4">

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { number, z } from 'zod';
 
 import { after, before } from 'utils';
 import { customOptionsWithError } from './custom';
@@ -170,6 +170,51 @@ export const CREATE_NFT_COMPLETE_COURSE = z.object({
 export const GRANT_NFT_COMPLETE_COURSE = z.object({
   avgScore: z.preprocess(
     (i: string) => parseFloat(i),
-    z.number(customOptionsWithError('Nhập điểm trung bình'))
+    z
+      .number(customOptionsWithError('Nhập điểm trung bình'))
+      .gte(5, 'Điểm trung bình phải lớn hơn hoặc bằng 5 thì mới có thể cấp NFT')
   ),
+});
+
+export const CLASS_ENTITY = z.object({
+  id: z.number(),
+  onChainId: z.number(),
+  courseCode: z.string(),
+  knowledgeBlockId: z.number(),
+  credits: z.number(),
+  startAt: z.preprocess(
+    (v: string) => new Date(v),
+    z.date(customOptionsWithError('Ngày bắt đầu không được rỗng'))
+  ),
+  completeAt: z.preprocess(
+    (v: string) => new Date(v),
+    z.date(customOptionsWithError('Ngày kết thúc không được rỗng'))
+  ),
+  maxSize: z.number(),
+  teacherTokenId: z.number(),
+  chainURI: z.string(),
+  semesterId: z.number(),
+});
+
+export const REQUEST_NFT_GRADUATION = z.object({
+  classEntities: z
+    .array(CLASS_ENTITY)
+    .nonempty('Chọn đủ tín chỉ cho mỗi khối kiến thức'),
+  nationalDefenseEduCertificate: z.string(
+    customOptionsWithError('Cần chứng chỉ giáo dục quốc phòng')
+  ),
+  foreignLanguageCertificate: z.string(
+    customOptionsWithError('Cần chứng chỉ ngoại ngữ')
+  ),
+  otherCertificates: z.array(z.string(customOptionsWithError('Nhập sai'))),
+});
+
+export const GRANT_GRADUATION = z.object({
+  studentTokenId: z.number(customOptionsWithError('Thiếu mã sinh viên')),
+  nftCompleteCourseTokenIds: z.array(
+    z.number(),
+    customOptionsWithError('Chọn đủ tín chỉ cho mỗi khối kiến thức')
+  ),
+  requestPrice: z.string(),
+  requestURI: z.string(),
 });

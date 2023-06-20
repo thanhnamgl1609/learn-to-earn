@@ -12,22 +12,16 @@ import { Breadcrumb, Table } from '@organisms';
 import { BaseLayout } from '@templates';
 import { useInputTextChange, useSelectOptions } from '@hooks/form';
 import { semesterEntity } from 'domain/models';
+import { useClassList } from '@hooks/web3';
 
 type ActionColumnsProps = {
   item: ClassEntity;
 };
 
-const { KNOWLEDGE_BLOCKS } = CONST;
-
-const KNOWLEDGE_BLOCK_BY_IDS = Object.values(KNOWLEDGE_BLOCKS).reduce(
-  (prev, current) => ({ ...prev, [current.id]: current }),
-  {}
-);
-
 const ActionColumns = ({ item }: ActionColumnsProps) => (
   <div>
     <Link
-      href={Routes.classDetail.name.replace(':id', item.id.toString())}
+      href={Routes.classDetail.name.replace(':id', item.onChainId.toString())}
       className="bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80"
     >
       View
@@ -91,6 +85,7 @@ const ClassList = () => {
   });
   const onSelectChange = useInputTextChange(setQuery);
   const { data: classList } = useClassListApi(query);
+  const x = useClassList({ semester: 1 });
   const { data: semesters } = useSemesterListApi();
   const semesterOptions = useSelectOptions(semesters, {
     labelField: 'id',
@@ -116,7 +111,7 @@ const ClassList = () => {
       <Box autoLayout>
         <div className="flex">
           <SelectField
-            label="Khối kiến thức"
+            label="Học kì"
             options={semesterOptions}
             name="semesterId"
             onChange={onSelectChange}

@@ -16,6 +16,7 @@ module.exports = {
         studentTokenId: {
           type: Sequelize.INTEGER,
           allowNull: false,
+          unique: true,
           references: {
             model: 'users',
             key: 'tokenId',

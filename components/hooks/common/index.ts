@@ -12,3 +12,7 @@ export { useAuthRequest } from './useAuthRequest';
 export { useKnowledgeBlocks } from './useKnowledgeBlocks';
 export { useRequestCompleteCourseCertificate } from './useRequestCompleteCourseCertificate';
 export { useGrantNftCompleteCourse } from './useGrantNftCompleteCourse';
+export { usePromiseHandler } from './usePromiseHandler';
+export { useGrantNftGraduation } from './useGrantNftGraduation';
+export { useRequestGraduationCertificate } from './useRequestGraduationCertificate';
+export { useRequestGraduationPrice } from './useRequestGraduationPrice';

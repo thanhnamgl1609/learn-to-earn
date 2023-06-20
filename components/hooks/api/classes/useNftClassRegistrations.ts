@@ -54,37 +54,40 @@ export const useNftRegistrationClassListApi = (
         (prev, current) => ({ ...prev, [current]: true }),
         {}
       );
-      const nftClassRegistrationWithNumberOfStudents = await Promise.all(
-        nftClassRegistrations.map(async ({ class: _class, ...other }) => {
-          const { onChainId } = _class;
-          const isRegained = await checkNftClassRegistrationRegained(
-            other.studentTokenId,
-            _class.id
-          );
+      const nftClassRegistrationWithNumberOfStudents = await Promise.allSettled(
+        nftClassRegistrations.map(
+          async ({ tokenId, class: _class, ...other }) => {
+            const { onChainId } = _class;
+            const isRegained = await checkNftClassRegistrationRegained(
+              other.studentTokenId,
+              _class.onChainId
+            );
 
-          const [numberOfStudents, approval] = await Promise.all([
-            getNumberOfStudentsOfClass(onChainId),
-            (withApprove || withApproveSent) && !isRegained
-              ? getApprovalOfTokenId(onChainId)
-              : '',
-          ]);
-          const isApproved = withApprove && approval === account;
-          const isApprovedSent = !!approval && approval !== ZERO_ADDRESS;
-          const isInQueue = creationQueueOn[other.studentTokenId];
+            const [numberOfStudents, approval] = await Promise.all([
+              getNumberOfStudentsOfClass(onChainId),
+              (withApprove || withApproveSent) && !isRegained
+                ? getApprovalOfTokenId(tokenId)
+                : '',
+            ]);
+            const isApproved = withApprove && approval === account;
+            const isApprovedSent = !!approval && approval !== ZERO_ADDRESS;
+            const isInQueue = creationQueueOn[other.studentTokenId];
 
-          return {
-            ...other,
-            class: {
-              ..._class,
-              numberOfStudents,
-            },
-            isApproved,
-            isApprovedSent,
-            isRegained,
-            isInQueue,
-          };
-        })
-      );
+            return {
+              ...other,
+              tokenId,
+              class: {
+                ..._class,
+                numberOfStudents,
+              },
+              isApproved,
+              isApprovedSent,
+              isRegained,
+              isInQueue,
+            };
+          }
+        )
+      ).then((res) => res.map(({ status, value }) => value).filter(Boolean));
 
       return nftClassRegistrationWithNumberOfStudents as NftClassRegistrationEntityWithApproveStatus[];
     }

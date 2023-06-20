@@ -15,7 +15,7 @@ import { NftClassRegistrationEntity } from '@_types/models/entities';
 import { classEntity } from 'domain/models';
 import { useAppSelector } from '@hooks/stores';
 import { selectUser } from '@store/userSlice';
-import { GrantNftIdentityModal } from '@templates/Modal';
+import { GrantNftCompleteCourseModal } from '@templates/Modal';
 import { useModalController } from '@hooks/ui';
 import { NftClassRegistrationEntityWithApproveStatus } from '@_types/api/class';
 
@@ -137,7 +137,7 @@ const ClassDetailPage = () => {
     <BaseLayout containerClassName="max-w-[640px]">
       {!isTeacher && <Breadcrumb links={links} />}
       <Box autoLayout>
-        <Heading>Class #{classDetail?.id}</Heading>
+        <Heading>Class #{classDetail?.onChainId}</Heading>
         {classDetail && <FormClassDetail formState={displayClassDetail} edit />}
       </Box>
 
@@ -150,7 +150,7 @@ const ClassDetailPage = () => {
         />
       </Box>
 
-      <GrantNftIdentityModal
+      <GrantNftCompleteCourseModal
         isOpen={isGrantModalOpen}
         onClose={onCloseGrantModal}
         nftClassRegistration={selectedNftClassRegistration}

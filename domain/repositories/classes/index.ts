@@ -32,8 +32,8 @@ export const getAll = (query?: ClassQuery, transaction?: Transaction) => {
       },
       {
         model: db.knowledge_blocks,
-        as: 'knowledgeBlock'
-      }
+        as: 'knowledgeBlock',
+      },
     ],
   });
 };
@@ -65,12 +65,12 @@ export const get = async (
       },
       {
         model: db.knowledge_blocks,
-        as: 'knowledgeBlock'
-      }
+        as: 'knowledgeBlock',
+      },
     ],
   });
 
-  return result.get();
+  return result?.get();
 };
 
 export const insert = async (_class: Partial<ClassEntity>, t?: Transaction) =>
@@ -111,14 +111,19 @@ export const upsert = async (_class: Partial<ClassEntity>, t?: Transaction) =>
 export const incrementNumberOfStudents = (classId: number) =>
   db.classes.increment({ numberOfStudents: 1 }, { where: { id: classId } });
 
-export const updateRegainedClass = async (classId: number, t?: Transaction) =>
+export const updateRegainedClass = async (
+  classId: number,
+  studentTokenId: number,
+  t?: Transaction
+) =>
   withTransaction(
     async (transaction) =>
       await db.nft_class_registrations.update(
         { isRegained: 1 },
         {
           where: {
-            onChainId: classId,
+            classId,
+            studentTokenId,
           },
           transaction,
         }

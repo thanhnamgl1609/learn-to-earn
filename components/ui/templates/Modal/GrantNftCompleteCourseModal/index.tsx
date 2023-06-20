@@ -20,7 +20,7 @@ const createDefaultState = () => ({
   avgScore: '0',
 });
 
-export const GrantNftIdentityModal: FC<Props> = memo(
+export const GrantNftCompleteCourseModal: FC<Props> = memo(
   ({ isOpen, onClose, nftClassRegistration }) => {
     const grantNftCompleteCourse = useGrantNftCompleteCourse();
     const [formState, setFormState] = useState(createDefaultState());

@@ -30,6 +30,9 @@ module.exports = {
         uri: {
           type: Sequelize.STRING,
         },
+        requestGraduationId: {
+          type: Sequelize.NUMBER,
+        },
         createdAt: {
           type: Sequelize.DATE,
           defaultValue: Sequelize.literal('current_timestamp'),

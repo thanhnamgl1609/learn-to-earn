@@ -1,4 +1,5 @@
 import { TIMEOUT } from 'utils';
+import { CreatedClass } from '@_types/api/class';
 import { classesRepo, semestersRepo } from 'domain/repositories';
 import { contract } from '@api/utils/load-contract';
 import { createError } from '@api/utils/create-error';
@@ -58,3 +59,6 @@ export const upsertFromContract = async ({ classId }: { classId: number }) => {
     chainURI,
   });
 };
+
+export const syncClassToDB = (createdClass: CreatedClass) =>
+  classesRepo.upsert(createdClass);

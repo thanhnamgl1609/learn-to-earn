@@ -20,6 +20,8 @@ export type ClassApi = {
   semesterId: number;
 };
 
+export type CreatedClass = Omit<ClassApi, 'id'>;
+
 export type NftClassRegistrationQuery = {
   studentTokenId?: number | string;
   tokenId?: number | string;
@@ -32,6 +34,8 @@ export type CreatedNftClassRegistration = {
   classId: number;
   studentTokenId: number;
   chainURI: string;
+  registerDate: string;
+  registerFee: number;
 };
 
 export type NftClassRegistrationEntityWithApproveStatus =

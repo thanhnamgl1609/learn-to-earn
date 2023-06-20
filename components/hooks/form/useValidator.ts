@@ -16,7 +16,7 @@ export const useValidator = <D>(validator: z.ZodType<D>, deps = []) =>
       } catch (e) {
         logger(getDetailError(e));
         toast.error(getError(e));
-        return false;
+        return null;
       }
     },
     deps

@@ -17,6 +17,7 @@ import { MetaMaskInpageProvider } from '@metamask/providers';
 import {
   NftCertificates,
   NftClassRegistration,
+  NftGraduation,
   NftIdentities,
   NftSchool,
 } from '@_types/contracts';
@@ -52,11 +53,13 @@ const Web3Provider: FC<PropsWithChildren> = ({ children }) => {
           nftSchool,
           nftCertificates,
           nftClassRegistration,
+          nftGraduation,
         ] = await Promise.all([
           loadSignedContract('NftIdentities', provider),
           loadSignedContract('NftSchool', provider),
           loadSignedContract('NftCertificates', provider),
           loadSignedContract('NftClassRegistration', provider),
+          loadSignedContract('NftGraduation', provider),
         ]);
         const contracts = {
           nftIdentities: nftIdentities as unknown as NftIdentities,
@@ -64,6 +67,7 @@ const Web3Provider: FC<PropsWithChildren> = ({ children }) => {
           nftCertificates: nftCertificates as unknown as NftCertificates,
           nftClassRegistration:
             nftClassRegistration as unknown as NftClassRegistration,
+          nftGraduation: nftGraduation as unknown as NftGraduation,
         };
 
         const web3State = {

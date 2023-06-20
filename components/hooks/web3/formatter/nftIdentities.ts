@@ -5,6 +5,7 @@ import { NftidentityresponseResponse } from '@_types/contracts/NftIdentities';
 import { NftIdentity, NftIdentityMetaType } from '@_types/nftIdentity';
 import Api from 'config/api.json';
 import { ENV_CONST } from '@config/env-const';
+import { boolean } from 'zod';
 
 const defaultMeta: NftIdentityMetaType = {
   fullName: '',
@@ -24,12 +25,15 @@ export const formatNftIdentity = async (
   {
     useProxy = true,
     timeout = TIMEOUT,
+    ignoreMeta = false,
   }: {
     useProxy: boolean;
     timeout?: number;
+    ignoreMeta?: boolean;
   } = {
     useProxy: true,
     timeout: TIMEOUT,
+    ignoreMeta: false,
   }
 ): Promise<NftIdentity> => {
   const { expiredAt, register, tokenId } = nftIdentity;
@@ -41,6 +45,13 @@ export const formatNftIdentity = async (
     isExpired,
     tokenURI,
   };
+  if (ignoreMeta) {
+    return {
+      ...coreCourse,
+      meta: defaultMeta,
+      isUploading: true,
+    }
+  }
   try {
     const { data: meta } = useProxy
       ? await request.get(Api.proxy, {

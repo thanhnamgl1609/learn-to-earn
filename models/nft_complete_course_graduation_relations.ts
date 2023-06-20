@@ -5,8 +5,9 @@ export default (sequelize: Sequelize) => {
   class NftCompleteCourseGraduationRelations extends DBModel {
     static associate(models: DB) {
       this.belongsTo(models.nft_complete_courses, {
-        foreignKey: 'nftCompleteCourseId',
+        foreignKey: 'nftCompleteCourseTokenId',
         targetKey: 'tokenId',
+        as: 'nftCompleteCourse'
       });
       this.belongsTo(models.nft_graduations, {
         foreignKey: 'nftGraduationId',

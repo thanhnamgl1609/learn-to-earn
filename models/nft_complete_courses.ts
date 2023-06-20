@@ -25,6 +25,7 @@ export default (sequelize: Sequelize) => {
     {
       sequelize,
       modelName: 'nft_complete_courses',
+      // paranoid: true,
       charset: 'utf8',
       collate: 'utf8_unicode_ci',
     }

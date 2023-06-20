@@ -40,6 +40,7 @@ const post: IHandler = async (req, res) => {
   const nftIdentity = await formatNftIdentity(nftIdentityResponse, {
     useProxy: false,
     timeout: TIMEOUT / 2,
+    ignoreMeta: true,
   });
   const result = await usersRepo.upsert(nftIdentity, meta);
 

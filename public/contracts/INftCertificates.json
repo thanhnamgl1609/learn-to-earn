@@ -111,6 +111,11 @@
             },
             {
               "internalType": "uint256",
+              "name": "studentTokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
               "name": "courseId",
               "type": "uint256"
             },
@@ -128,11 +133,6 @@
               "internalType": "uint256",
               "name": "avgScore",
               "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "status",
-              "type": "uint256"
             }
           ],
           "internalType": "struct IConstant.NftCompleteCourse",
@@ -149,7 +149,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"nftCompleteCourseTokenIds\",\"type\":\"uint256[]\"}],\"name\":\"checkAllNftCompleteCoursesRegained\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"checkApprovedForAll\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"courseId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"studentAddr\",\"type\":\"address\"}],\"name\":\"checkCompleteCourse\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"classId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"studentId\",\"type\":\"uint256\"}],\"name\":\"checkInQueue\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getNftCompleteCourse\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"courseId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"knowledgeBlockId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"credits\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"avgScore\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"status\",\"type\":\"uint256\"}],\"internalType\":\"struct IConstant.NftCompleteCourse\",\"name\":\"\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/blockchain/contracts/interfaces/INftCertificates.sol\":\"INftCertificates\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/blockchain/contracts/interfaces/IConstant.sol\":{\"keccak256\":\"0xf2c1b81f7e23e76dcc05b63727443783d2f97dadc6ca68f431ae6d6b776cf45d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://80427cbc6f77ab02e6acff4ef14603c71a2d5c632d3c5ae3174c40ac326e9fff\",\"dweb:/ipfs/QmTFrmpABfVT1F49DBqKpPKPQhQhXPcXixo6vHPddz4wxY\"]},\"project:/blockchain/contracts/interfaces/INftCertificates.sol\":{\"keccak256\":\"0x81d13c0989c24de18ed59c5d197f127264a63e289a9e3945a3df236f4d37400e\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6b453fbc6e0a649c4abaf18f0ff2f7b2566411c10a658e04a7e4defea34a9c12\",\"dweb:/ipfs/QmNiVx6cAPiGSGi4psv1nyJcaHi8UgkrGhtcTz8m9gKGwa\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"nftCompleteCourseTokenIds\",\"type\":\"uint256[]\"}],\"name\":\"checkAllNftCompleteCoursesRegained\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"checkApprovedForAll\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"courseId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"studentAddr\",\"type\":\"address\"}],\"name\":\"checkCompleteCourse\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"classId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"studentId\",\"type\":\"uint256\"}],\"name\":\"checkInQueue\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getNftCompleteCourse\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"studentTokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"courseId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"knowledgeBlockId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"credits\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"avgScore\",\"type\":\"uint256\"}],\"internalType\":\"struct IConstant.NftCompleteCourse\",\"name\":\"\",\"type\":\"tuple\"},{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/blockchain/contracts/interfaces/INftCertificates.sol\":\"INftCertificates\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/blockchain/contracts/interfaces/IConstant.sol\":{\"keccak256\":\"0xfd09c1dc8c5ea0dfdfdac310228ff781aefe269920f13af52617a5bdcd89389c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d9d2bb7db3428a1642f785eb39562dfda7c1c3c303097da62b1b9ccb00b8a3f3\",\"dweb:/ipfs/Qmbw3bPXia3Qcw5TKB5dhXyS8vHE5ZH61mVcfX59hmG6GN\"]},\"project:/blockchain/contracts/interfaces/INftCertificates.sol\":{\"keccak256\":\"0x81d13c0989c24de18ed59c5d197f127264a63e289a9e3945a3df236f4d37400e\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6b453fbc6e0a649c4abaf18f0ff2f7b2566411c10a658e04a7e4defea34a9c12\",\"dweb:/ipfs/QmNiVx6cAPiGSGi4psv1nyJcaHi8UgkrGhtcTz8m9gKGwa\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -163,18 +163,18 @@
     "absolutePath": "project:/blockchain/contracts/interfaces/INftCertificates.sol",
     "exportedSymbols": {
       "IConstant": [
-        9234
+        9427
       ],
       "INftCertificates": [
-        9285
+        9478
       ]
     },
-    "id": 9286,
+    "id": 9479,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 9236,
+        "id": 9429,
         "literals": [
           "solidity",
           "^",
@@ -187,11 +187,11 @@
       {
         "absolutePath": "project:/blockchain/contracts/interfaces/IConstant.sol",
         "file": "./IConstant.sol",
-        "id": 9237,
+        "id": 9430,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 9286,
-        "sourceUnit": 9235,
+        "scope": 9479,
+        "sourceUnit": 9428,
         "src": "130:25:28",
         "symbolAliases": [],
         "unitAlias": ""
@@ -201,13 +201,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 9238,
+              "id": 9431,
               "name": "IConstant",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 9234,
+              "referencedDeclaration": 9427,
               "src": "189:9:28"
             },
-            "id": 9239,
+            "id": 9432,
             "nodeType": "InheritanceSpecifier",
             "src": "189:9:28"
           }
@@ -216,10 +216,10 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 9285,
+        "id": 9478,
         "linearizedBaseContracts": [
-          9285,
-          9234
+          9478,
+          9427
         ],
         "name": "INftCertificates",
         "nameLocation": "169:16:28",
@@ -227,7 +227,7 @@
         "nodes": [
           {
             "functionSelector": "6eabe75f",
-            "id": 9248,
+            "id": 9441,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -235,17 +235,17 @@
             "nameLocation": "215:19:28",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 9244,
+              "id": 9437,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9241,
+                  "id": 9434,
                   "mutability": "mutable",
                   "name": "courseId",
                   "nameLocation": "253:8:28",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9248,
+                  "scope": 9441,
                   "src": "245:16:28",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -254,7 +254,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 9240,
+                    "id": 9433,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "245:7:28",
@@ -267,12 +267,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 9243,
+                  "id": 9436,
                   "mutability": "mutable",
                   "name": "studentAddr",
                   "nameLocation": "280:11:28",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9248,
+                  "scope": 9441,
                   "src": "272:19:28",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -281,7 +281,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 9242,
+                    "id": 9435,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "272:7:28",
@@ -297,17 +297,17 @@
               "src": "234:64:28"
             },
             "returnParameters": {
-              "id": 9247,
+              "id": 9440,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9246,
+                  "id": 9439,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9248,
+                  "scope": 9441,
                   "src": "322:4:28",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -316,7 +316,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 9245,
+                    "id": 9438,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "322:4:28",
@@ -330,7 +330,7 @@
               ],
               "src": "321:6:28"
             },
-            "scope": 9285,
+            "scope": 9478,
             "src": "206:122:28",
             "stateMutability": "view",
             "virtual": false,
@@ -338,7 +338,7 @@
           },
           {
             "functionSelector": "7a4ec7d9",
-            "id": 9257,
+            "id": 9450,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -346,17 +346,17 @@
             "nameLocation": "345:12:28",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 9253,
+              "id": 9446,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9250,
+                  "id": 9443,
                   "mutability": "mutable",
                   "name": "classId",
                   "nameLocation": "376:7:28",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9257,
+                  "scope": 9450,
                   "src": "368:15:28",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -365,7 +365,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 9249,
+                    "id": 9442,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "368:7:28",
@@ -378,12 +378,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 9252,
+                  "id": 9445,
                   "mutability": "mutable",
                   "name": "studentId",
                   "nameLocation": "402:9:28",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9257,
+                  "scope": 9450,
                   "src": "394:17:28",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -392,7 +392,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 9251,
+                    "id": 9444,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "394:7:28",
@@ -407,17 +407,17 @@
               "src": "357:61:28"
             },
             "returnParameters": {
-              "id": 9256,
+              "id": 9449,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9255,
+                  "id": 9448,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9257,
+                  "scope": 9450,
                   "src": "442:4:28",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -426,7 +426,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 9254,
+                    "id": 9447,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "442:4:28",
@@ -440,7 +440,7 @@
               ],
               "src": "441:6:28"
             },
-            "scope": 9285,
+            "scope": 9478,
             "src": "336:112:28",
             "stateMutability": "view",
             "virtual": false,
@@ -448,7 +448,7 @@
           },
           {
             "functionSelector": "422b0a50",
-            "id": 9266,
+            "id": 9459,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -456,17 +456,17 @@
             "nameLocation": "465:19:28",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 9262,
+              "id": 9455,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9259,
+                  "id": 9452,
                   "mutability": "mutable",
                   "name": "sender",
                   "nameLocation": "503:6:28",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9266,
+                  "scope": 9459,
                   "src": "495:14:28",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -475,7 +475,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 9258,
+                    "id": 9451,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "495:7:28",
@@ -489,12 +489,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 9261,
+                  "id": 9454,
                   "mutability": "mutable",
                   "name": "owner",
                   "nameLocation": "528:5:28",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9266,
+                  "scope": 9459,
                   "src": "520:13:28",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -503,7 +503,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 9260,
+                    "id": 9453,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "520:7:28",
@@ -519,17 +519,17 @@
               "src": "484:56:28"
             },
             "returnParameters": {
-              "id": 9265,
+              "id": 9458,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9264,
+                  "id": 9457,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9266,
+                  "scope": 9459,
                   "src": "564:4:28",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -538,7 +538,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 9263,
+                    "id": 9456,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "564:4:28",
@@ -552,7 +552,7 @@
               ],
               "src": "563:6:28"
             },
-            "scope": 9285,
+            "scope": 9478,
             "src": "456:114:28",
             "stateMutability": "view",
             "virtual": false,
@@ -560,7 +560,7 @@
           },
           {
             "functionSelector": "59619d31",
-            "id": 9274,
+            "id": 9467,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -568,17 +568,17 @@
             "nameLocation": "587:34:28",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 9270,
+              "id": 9463,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9269,
+                  "id": 9462,
                   "mutability": "mutable",
                   "name": "nftCompleteCourseTokenIds",
                   "nameLocation": "639:25:28",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9274,
+                  "scope": 9467,
                   "src": "622:42:28",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -588,7 +588,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 9267,
+                      "id": 9460,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "622:7:28",
@@ -597,7 +597,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 9268,
+                    "id": 9461,
                     "nodeType": "ArrayTypeName",
                     "src": "622:9:28",
                     "typeDescriptions": {
@@ -611,17 +611,17 @@
               "src": "621:44:28"
             },
             "returnParameters": {
-              "id": 9273,
+              "id": 9466,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9272,
+                  "id": 9465,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9274,
+                  "scope": 9467,
                   "src": "689:4:28",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -630,7 +630,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 9271,
+                    "id": 9464,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "689:4:28",
@@ -644,7 +644,7 @@
               ],
               "src": "688:6:28"
             },
-            "scope": 9285,
+            "scope": 9478,
             "src": "578:117:28",
             "stateMutability": "view",
             "virtual": false,
@@ -652,7 +652,7 @@
           },
           {
             "functionSelector": "85c7744c",
-            "id": 9284,
+            "id": 9477,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -660,17 +660,17 @@
             "nameLocation": "712:20:28",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 9277,
+              "id": 9470,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9276,
+                  "id": 9469,
                   "mutability": "mutable",
                   "name": "tokenId",
                   "nameLocation": "751:7:28",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9284,
+                  "scope": 9477,
                   "src": "743:15:28",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -679,7 +679,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 9275,
+                    "id": 9468,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "743:7:28",
@@ -694,38 +694,38 @@
               "src": "732:33:28"
             },
             "returnParameters": {
-              "id": 9283,
+              "id": 9476,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 9280,
+                  "id": 9473,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9284,
+                  "scope": 9477,
                   "src": "789:24:28",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_NftCompleteCourse_$9211_memory_ptr",
+                    "typeIdentifier": "t_struct$_NftCompleteCourse_$9404_memory_ptr",
                     "typeString": "struct IConstant.NftCompleteCourse"
                   },
                   "typeName": {
-                    "id": 9279,
+                    "id": 9472,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 9278,
+                      "id": 9471,
                       "name": "NftCompleteCourse",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 9211,
+                      "referencedDeclaration": 9404,
                       "src": "789:17:28"
                     },
-                    "referencedDeclaration": 9211,
+                    "referencedDeclaration": 9404,
                     "src": "789:17:28",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_NftCompleteCourse_$9211_storage_ptr",
+                      "typeIdentifier": "t_struct$_NftCompleteCourse_$9404_storage_ptr",
                       "typeString": "struct IConstant.NftCompleteCourse"
                     }
                   },
@@ -733,12 +733,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 9282,
+                  "id": 9475,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 9284,
+                  "scope": 9477,
                   "src": "815:13:28",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -747,7 +747,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 9281,
+                    "id": 9474,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "815:6:28",
@@ -761,14 +761,14 @@
               ],
               "src": "788:41:28"
             },
-            "scope": 9285,
+            "scope": 9478,
             "src": "703:127:28",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 9286,
+        "scope": 9479,
         "src": "159:674:28",
         "usedErrors": []
       }
@@ -781,7 +781,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-06-05T16:59:27.450Z",
+  "updatedAt": "2023-06-20T05:27:44.363Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

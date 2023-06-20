@@ -10,7 +10,7 @@ export const syncCourseToContract = async () => {
   const allContractCourses = await formatCourses(allContractCourseResponses);
   const allNotSyncCourses = await coursesRepo.getNotSyncCourse(
     allContractCourses,
-    { limit: 20 }
+    { limit: 50 }
   );
 
   if (!allNotSyncCourses.length) {
@@ -59,10 +59,8 @@ export const syncCourseToContract = async () => {
         prevCourseId ?? 0,
         knowledgeBlockId,
         credits,
-        uri,
-        {
-          gasLimit: 500000,
-        }
+        courseCode,
+        uri
       );
       const onChainId = (
         await contract.nftSchool.getCourseIdByURI(uri)

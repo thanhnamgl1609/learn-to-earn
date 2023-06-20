@@ -1,16 +1,15 @@
-import { useRouter } from 'next/router';
-
 import { CourseApi } from '@_types/api/course';
 import { UserDetail } from '@_types/api/user';
+import { SemesterDetail } from '@_types/api/semester';
 import { findById } from 'utils';
 import CONST from '@config/constants.json';
-import { useSchoolActions, useUtilities } from '@hooks/web3';
 import { CREATE_CLASS, EXTEND_CREATE_CLASS } from '@validators/schemas';
-import { useValidator } from '@hooks/form';
 import { uploadData } from '@store/actions';
+import { useSchoolActions, useUtilities } from '@hooks/web3';
+import { useValidator } from '@hooks/form';
 import { useAppDispatch } from '@hooks/stores';
+import { useSyncCreatedClass } from '@hooks/api/classes';
 import { useApi } from './useApi';
-import { SemesterDetail } from '@_types/api/semester';
 
 const { UPLOAD_TARGET } = CONST;
 
@@ -19,6 +18,7 @@ export const useCreateClass = () => {
   const dispatch = useAppDispatch();
   const { createClass } = useSchoolActions();
   const validator = useValidator(CREATE_CLASS);
+  const syncClass = useSyncCreatedClass();
 
   return useApi(
     async (
@@ -75,7 +75,26 @@ export const useCreateClass = () => {
         ...data,
         uri,
       };
-      await createClass({ data: createdClass });
+      await createClass({
+        data: createdClass,
+        onSuccess: (onChainId) => {
+          syncClass({
+            data: {
+              onChainId,
+              chainURI: uri,
+              completeAt: data.completeAt,
+              courseCode: course.courseCode,
+              credits: course.credits,
+              knowledgeBlockId: course.knowledgeBlockId,
+              maxSize: data.maxSize,
+              semesterId: data.semesterId,
+              startAt: data.startAt,
+              teacherTokenId: data.teacherTokenId,
+            },
+            signature,
+          });
+        },
+      });
     },
     []
   );

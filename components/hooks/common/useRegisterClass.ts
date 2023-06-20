@@ -52,7 +52,11 @@ export const useRegisterClass = () => {
       await registerClass(item.onChainId, item.registerClassFee, link, {
         metadata: {
           ...meta,
-          ...metadata,
+          registerFee: item.registerClassFee,
+          owner: {
+            tokenId: nftIdentity.tokenId,
+            ...nftIdentity.meta,
+          },
         },
         signatureData: {
           signature,

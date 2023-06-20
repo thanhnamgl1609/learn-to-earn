@@ -1,11 +1,8 @@
-import { ContractTransaction, ethers } from 'ethers';
 import { useCallback } from 'react';
-import { toast } from 'react-toastify';
-import moment from 'moment';
 
 import { HookFactoryWithoutSWR } from '@_types/hooks';
-import { formatNftIdentity } from './formatter';
 import { NftIdentity } from '@_types/nftIdentity';
+import { formatNftIdentity } from './formatter';
 
 type GetNftOfMemberWithRoleParams = {
   role: number;

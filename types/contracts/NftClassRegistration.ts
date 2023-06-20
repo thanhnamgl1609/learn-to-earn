@@ -83,7 +83,7 @@ export type NftClassRegistrationMethodNames =
   | 'tokenURI'
   | 'transferFrom'
   | 'initialize'
-  | 'getRegistereClasses'
+  | 'getRegisteredClasses'
   | 'getNftClassRegistration'
   | 'getStudentListOfClass'
   | 'getNumberOfRegisteredStudent'
@@ -324,7 +324,7 @@ export interface NftClassRegistration {
    * StateMutability: view
    * Type: function
    */
-  getRegistereClasses(
+  getRegisteredClasses(
     overrides?: ContractCallOverrides
   ): Promise<NftclassregistrationResponse[]>;
   /**

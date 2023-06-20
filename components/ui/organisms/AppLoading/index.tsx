@@ -10,7 +10,7 @@ import { type RoleType, updateUser } from '@store/userSlice';
 import { Button, CircleBox, CircleButton, CircleLink, Loading } from '@atoms';
 import MetaMaskIcon from './MetaMaskIcon';
 import { useRouter } from 'next/router';
-import { useUserDetail } from '@hooks/api';
+import { useOwnedUserDetail } from '@hooks/api';
 import { useInitializeApp } from '@hooks/common';
 
 const { ROLES, ROLE_LABELS } = CONST;
@@ -141,11 +141,11 @@ const SignUpSection = ({
 
 const AppLoading: NextPage = () => {
   const {
-    userInfo: { data: userInfoData },
+    userInfo: { data: userInfoData, error },
   } = useUserInfo();
   const { account } = useAccount();
   const dispatch = useAppDispatch();
-  const getUserDetail = useUserDetail();
+  const getUserDetail = useOwnedUserDetail();
   const router = useRouter();
   const initialize = useInitializeApp();
   const otherRoles = useMemo(

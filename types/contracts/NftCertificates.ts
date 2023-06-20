@@ -89,6 +89,8 @@ export type NftCertificatesMethodNames =
   | 'addToNftCompleteCourseCreationQueue'
   | 'grantNftCompleteCourse'
   | 'checkCompleteCourse'
+  | 'approveOwnerForAllNft'
+  | 'checkApproveOwnerForAllNft'
   | 'checkApprovedForAll'
   | 'regainNftCompleteCourses'
   | '_removeFromAllNftCompleteCourses'
@@ -122,15 +124,15 @@ export interface URIEventEmittedResponse {
 export interface NftcompletecourseResponse {
   tokenId: BigNumber;
   0: BigNumber;
-  courseId: BigNumber;
+  studentTokenId: BigNumber;
   1: BigNumber;
-  knowledgeBlockId: BigNumber;
+  courseId: BigNumber;
   2: BigNumber;
-  credits: BigNumber;
+  knowledgeBlockId: BigNumber;
   3: BigNumber;
-  avgScore: BigNumber;
+  credits: BigNumber;
   4: BigNumber;
-  status: BigNumber;
+  avgScore: BigNumber;
   5: BigNumber;
 }
 export interface GetOwnedNftCompleteCourseResponse {
@@ -378,14 +380,12 @@ export interface NftCertificates {
    * Type: function
    * @param studentTokenId Type: uint256, Indexed: false
    * @param avgScore Type: uint256, Indexed: false
-   * @param status Type: uint256, Indexed: false
    * @param classId Type: uint256, Indexed: false
    * @param tokenURI Type: string, Indexed: false
    */
   grantNftCompleteCourse(
     studentTokenId: BigNumberish,
     avgScore: BigNumberish,
-    status: BigNumberish,
     classId: BigNumberish,
     tokenURI: string,
     overrides?: ContractTransactionOverrides
@@ -401,6 +401,26 @@ export interface NftCertificates {
   checkCompleteCourse(
     courseId: BigNumberish,
     studentAddr: string,
+    overrides?: ContractCallOverrides
+  ): Promise<boolean>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param approved Type: bool, Indexed: false
+   */
+  approveOwnerForAllNft(
+    approved: boolean,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   */
+  checkApproveOwnerForAllNft(
     overrides?: ContractCallOverrides
   ): Promise<boolean>;
   /**

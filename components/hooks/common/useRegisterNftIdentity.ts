@@ -2,8 +2,8 @@ import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 
-import { NftIdentityMetaType, RegistrationInfoMeta } from '@_types/nftIdentity';
-import { logger, makeRequest, request } from 'utils';
+import { RegistrationInfoMeta } from '@_types/nftIdentity';
+import { logger } from 'utils';
 import CONST from '@config/constants.json';
 import ERROR_MESSAGE from '@config/error-message.json';
 import { uploadData } from '@store/actions';

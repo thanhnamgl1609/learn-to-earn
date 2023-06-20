@@ -16,11 +16,14 @@ import {
 } from '@molecules';
 import { Button, Heading, Input } from '@atoms';
 import { floor, formatDate } from 'utils';
-import { useModalController } from '@hooks/ui';
-import { NftCompleteCourseDetailModal } from '@templates/Modal';
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
-import { CheckCircleIcon, CheckIcon, XIcon } from '@heroicons/react/solid';
+import { ChangeEvent, Fragment, useEffect, useMemo, useState } from 'react';
+import { CheckIcon, XIcon } from '@heroicons/react/solid';
 import { useInputImageChange } from '@hooks/form';
+import {
+  useRequestGraduationCertificate,
+  useRequestGraduationPrice,
+} from '@hooks/common';
+import { useRequestGraduationStatus } from '@hooks/api';
 
 type CompleteCourseColumnProps = {
   item: ClassEntity;
@@ -93,17 +96,25 @@ const RequestGraduation = () => {
   } = useNftCompleteCourseListGroupApi({
     studentTokenId: tokenId,
   });
+  const {
+    data: { isInQueue, isApprovedSent } = {
+      isInQueue: false,
+      isApprovedSent: false,
+    },
+  } = useRequestGraduationStatus();
+  const { data: requestPrice } = useRequestGraduationPrice();
+  const requestGraduation = useRequestGraduationCertificate();
   const [selectedNftCompleteCourses, setSelectedNftCompleteCourses] = useState<{
     [k: string]: ClassEntity | null;
   }>({});
   const [images, setImages] = useState<{
     nationalDefenseEduCertificate: string;
     foreignLanguageCertificate: string;
-    others: string[];
+    otherCertificates: string[];
   }>({
     nationalDefenseEduCertificate: '',
     foreignLanguageCertificate: '',
-    others: [],
+    otherCertificates: [],
   });
   const onImageChange = useInputImageChange(setImages);
 
@@ -140,9 +151,8 @@ const RequestGraduation = () => {
       {}
     );
     const isEnoughCredits = Object.keys(totalCredits).every(
-      (key) => totalCredits[key] >= knowledgeBlocksById[key]
+      (key) => totalCredits[key] >= knowledgeBlocksById[key].credits
     );
-
     return (
       isEnoughCredits &&
       images.foreignLanguageCertificate &&
@@ -180,7 +190,21 @@ const RequestGraduation = () => {
       [name]: _prev[name].filter((item: string) => item !== image),
     }));
 
-  const onSubmitRequest = () => {};
+  const onSubmitRequest = () => {
+    requestGraduation(
+      {
+        classEntities: Object.values(selectedNftCompleteCourses).filter(
+          Boolean
+        ),
+        requestPrice,
+        ...images,
+      },
+      {
+        isInQueue,
+        isApprovedSent,
+      }
+    );
+  };
 
   useEffect(() => {
     const getDefaultState = () => {
@@ -206,7 +230,7 @@ const RequestGraduation = () => {
     <BaseLayout>
       <Box autoLayout>
         <Heading className="uppercase">
-          Chọn danh sách môn học muốn dùng để tốt nghiệp
+          Danh sách môn học dùng để tốt nghiệp
         </Heading>
         <InputField
           containerClassName="flex items-center gap-[24px]"
@@ -218,14 +242,14 @@ const RequestGraduation = () => {
         />
 
         {knowledgeBlocks.list.map((knowledgeBlock) => (
-          <>
+          <Fragment key={knowledgeBlock.onChainId}>
             <Heading>
               {knowledgeBlock.name}
 
               <span className="ml-1 text-indigo-900 inline-flex items-center gap-4">
                 ({totalCredits[knowledgeBlock.onChainId] ?? 0}/
                 {knowledgeBlock.credits})
-                {(totalCredits?.[knowledgeBlock.onChainId] ?? 0) >
+                {(totalCredits?.[knowledgeBlock.onChainId] ?? 0) >=
                 knowledgeBlock.credits ? (
                   <CheckIcon className="w-[24px] h-[24px] p-[4px] bg-green-500 text-white rounded-full" />
                 ) : (
@@ -239,7 +263,7 @@ const RequestGraduation = () => {
               headers={completeCourseTableHeaders}
               customProps={{ selectClassEntity, knowledgeBlock, isOn }}
             />
-          </>
+          </Fragment>
         ))}
       </Box>
 
@@ -272,18 +296,23 @@ const RequestGraduation = () => {
 
         <InputMultipleImages
           id="other-images"
-          name="others"
+          name="otherCertificates"
           containerClassName="mt-4"
           label="Chứng chỉ khác"
           labelClassName="text-xl"
           previewClassName="h-[200px] object-contain"
-          images={images.others}
-          onRemove={handleRemoveMultipleImages('others')}
+          images={images.otherCertificates}
+          onRemove={handleRemoveMultipleImages('otherCertificates')}
           onChange={onImageChange}
         />
       </Box>
 
-      <Button onClick={onSubmitRequest} disabled={!canSubmit} theme="main">
+      <Button
+        className="w-[100%]"
+        onClick={onSubmitRequest}
+        disabled={!canSubmit}
+        theme="main"
+      >
         Yêu cầu cấp chứng chỉ tốt nghiệp
       </Button>
     </BaseLayout>

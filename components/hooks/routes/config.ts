@@ -25,6 +25,8 @@ const RouteConfig: RouteConfigType = {
     [Routes.schoolClassList.name]: Routes.schoolClassList,
     [Routes.selfCompleteCourse.name]: Routes.selfCompleteCourse,
     [Routes.requestGraduation.name]: Routes.requestGraduation,
+    [Routes.myRequestGraduation.name]: Routes.myRequestGraduation,
+    [Routes.myGraduationDetail.name]: Routes.myGraduationDetail,
   },
   [ROLES.TEACHER]: {
     default: Routes.profile,
@@ -53,6 +55,10 @@ const RouteConfig: RouteConfigType = {
     [Routes.registerTime.name]: Routes.registerTime,
     [Routes.member.name]: Routes.member,
     [Routes.memberDetail.name]: Routes.memberDetail,
+    [Routes.graduationCondition.name]: Routes.graduationCondition,
+    [Routes.requestGraduationList.name]: Routes.requestGraduationList,
+    [Routes.requestGraduationDetail.name]: Routes.requestGraduationDetail,
+    [Routes.graduationList.name]: Routes.graduationList,
   },
 };
 

@@ -8,36 +8,19 @@ import { Box, SelectField } from '@molecules';
 import { Breadcrumb, Table } from '@organisms';
 import { BaseLayout } from '@templates';
 import { useCourseListApi } from '@hooks/api';
-import { useInputTextChange } from '@hooks/form';
+import { useInputTextChange, useSelectOptions } from '@hooks/form';
 import { Button } from '@atoms';
 import { useSyncCourse } from '@hooks/common/useSyncCourse';
+import { useKnowledgeBlockListApi } from '@hooks/api/knowledge-blocks';
 
 type ActionColumnsProps = {
   item: CourseEntity;
 };
 
-const { KNOWLEDGE_BLOCKS } = CONST;
-
-const KNOWLEDGE_BLOCK_BY_IDS = Object.values(KNOWLEDGE_BLOCKS).reduce(
-  (prev, current) => ({ ...prev, [current.id]: current }),
-  {}
-);
-
-const knowledgeBlockOptions = [
-  {
-    label: 'Tất cả',
-    value: 0,
-  },
-  ...Object.values(KNOWLEDGE_BLOCKS).map(({ id, name }) => ({
-    label: name,
-    value: id,
-  })),
-];
-
 const ActionColumns = ({ item }: ActionColumnsProps) => (
   <div>
     <Link
-      href={Routes.courseDetail.name.replace(':id', item.id.toString())}
+      href={Routes.courseDetail.name.replace(':id', item.id?.toString())}
       className="block min-w-[70px] text-center bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80"
     >
       Chi tiết
@@ -62,11 +45,8 @@ const tableHeaders = [
     name: 'Tên môn học',
   },
   {
-    field: 'knowledgeBlockId',
-    name: 'Knowledge block',
-    custom: ({ item }: ActionColumnsProps) => (
-      <p>{KNOWLEDGE_BLOCK_BY_IDS[item.knowledgeBlockId].name}</p>
-    ),
+    field: 'knowledgeBlock.name',
+    name: 'Khối kiến thức',
   },
   {
     field: 'prevCourseId',
@@ -87,9 +67,15 @@ const tableHeaders = [
 
 const CourseList = () => {
   const [query, setQuery] = useState({});
-  const { data } = useCourseListApi(query);
-  const syncCourse = useSyncCourse();
+  const { data, revalidate } = useCourseListApi(query);
+  const syncCourse = useSyncCourse(revalidate);
   const onSelectChange = useInputTextChange(setQuery);
+  const { data: knowledgeBlocks } = useKnowledgeBlockListApi();
+  const knowledgeBlockOptions = useSelectOptions(knowledgeBlocks, {
+    noSelectLabel: 'Tất cả khối kiến thức',
+    labelField: 'name',
+    valueField: 'id',
+  });
 
   const tableItems = data || [];
 
@@ -120,7 +106,7 @@ const CourseList = () => {
             size="S"
             onClick={syncCourse}
           >
-            Sync
+            Đồng bộ
           </Button>
         </div>
         <Table

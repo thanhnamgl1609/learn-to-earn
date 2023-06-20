@@ -63,6 +63,7 @@ export const getAll = async (
 ): Promise<NftCompleteCourseEntity[]> => {
   const condition = generateCondition(query, {
     $equal: ['id', 'tokenId', 'studentTokenId'],
+    $in: [['nftCompleteCourseTokenIds', 'tokenId']],
   });
 
   const result = await db.nft_complete_courses.findAll({
@@ -128,7 +129,7 @@ export const getGroupByKnowledge = async (
             model: db.nft_complete_courses,
             as: 'nftCompleteCourses',
             where: condition,
-            required: false,
+            required: true,
             include: [
               {
                 model: db.users,
@@ -150,31 +151,41 @@ export const getGroupByKnowledge = async (
   const knowledgeBlockWithScore = result.map((i) => {
     const item = i.get() as KnowledgeBlockEntity;
     const { classes } = item;
-    const gained = classes.reduce(
-      (prev, { nftCompleteCourses, credits }) => ({
-        totalCredits: prev.totalCredits + credits,
-        totalScore: prev.totalScore + nftCompleteCourses[0].avgScore * credits,
-      }),
-      {
+
+    if (classes.length) {
+      const gained = classes.reduce(
+        (prev, { nftCompleteCourses, credits }) => ({
+          totalCredits: prev.totalCredits + credits,
+          totalScore:
+            prev.totalScore + nftCompleteCourses[0].avgScore * credits,
+        }),
+        {
+          totalCredits: 0,
+          totalScore: 0,
+        }
+      );
+      const avgScore = floor(gained.totalScore / gained.totalCredits, 2);
+      totalCredits += gained.totalCredits;
+      totalScore += gained.totalScore;
+      return {
+        ...item,
+        ...gained,
+        avgScore,
+      };
+    } else {
+      return {
+        ...item,
         totalCredits: 0,
         totalScore: 0,
-      }
-    );
-    const avgScore = floor(gained.totalScore / gained.totalCredits, 2);
-    totalCredits += gained.totalCredits;
-    totalScore += gained.totalScore;
-
-    return {
-      ...item,
-      ...gained,
-      avgScore,
-    };
+        avgScore: 0,
+      };
+    }
   });
 
   return {
     totalCredits,
     totalScore,
-    avgScore: floor(totalScore / totalCredits, 2),
+    avgScore: totalCredits ? floor(totalScore / totalCredits, 2) : 0,
     list: knowledgeBlockWithScore,
   };
 };

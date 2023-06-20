@@ -13,5 +13,5 @@ export type PinataRes = {
 
 export type SignatureData = {
   signature: string;
-  account?: string;
+  address?: string;
 }

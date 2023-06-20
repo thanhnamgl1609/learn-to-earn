@@ -63,7 +63,7 @@ contract ERC1155BaseContract is ERC1155URIStorage {
 
         if (to == address(0)) {
             // burn token
-            for (uint256 idx = 0; idx <= numberOfTokens; ++idx) {
+            for (uint256 idx = 0; idx < numberOfTokens; ++idx) {
                 uint256 nftType = _getNftType(ids[idx]);
                 delete _ownerOfNft[nftType][ids[idx]];
             }
@@ -71,7 +71,7 @@ contract ERC1155BaseContract is ERC1155URIStorage {
         }
 
         if (from != address(0) && to != address(0)) {
-            for (uint256 idx = 0; idx <= numberOfTokens; ++idx) {
+            for (uint256 idx = 0; idx < numberOfTokens; ++idx) {
                 uint256 nftType = _getNftType(ids[idx]);
                 _ownerOfNft[nftType][ids[idx]] = to;
             }

@@ -6,7 +6,7 @@ import { useUtilities } from '@hooks/web3';
 import { selectUser } from '@store/userSlice';
 import { useAppSelector } from '@hooks/stores';
 
-export const useSyncCourse = (query?: CourseQuery) => {
+export const useSyncCourse = (callback: () => void) => {
   const { getSignedData } = useUtilities();
   const { account } = useAppSelector(selectUser);
 
@@ -23,5 +23,6 @@ export const useSyncCourse = (query?: CourseQuery) => {
         timeout: 100000,
       },
     })([endpoints.syncCourse]);
+    callback();
   });
 };

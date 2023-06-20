@@ -41,4 +41,8 @@ export const parseBigNumberFields = <D>(
 export const parseDateFields = (
   raw: Record<string, any>,
   fields: (string | number)[]
-) => fields.map((field) => ({ [field]: new Date(raw[field]) }));
+) =>
+  fields.reduce(
+    (prev, field) => ({ ...prev, [field]: new Date(raw[field]) }),
+    {}
+  );

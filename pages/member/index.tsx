@@ -11,9 +11,10 @@ import { Table, Breadcrumb } from '@organisms';
 import { Box } from '@molecules';
 import { formatDate } from 'utils';
 import { useUserListApi } from '@hooks/api';
+import { UserEntity } from '@_types/models/entities';
 
 type ActionColumnsProps = {
-  item: Omit<NftIdentity, 'tokenId'> & { id: number };
+  item: UserEntity;
 };
 
 type RouteQuery = {
@@ -27,10 +28,13 @@ const AVAILABLE_ROLES = [ROLES.STUDENT, ROLES.TEACHER];
 const ActionColumns = ({ item }: ActionColumnsProps) => (
   <div>
     <Link
-      href={`${Routes.memberDetail.name}/${item.id}`}
+      href={`${Routes.memberDetail.name.replace(
+        /:id/,
+        item.tokenId?.toString()
+      )}`}
       className="bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80"
     >
-      View
+      Chi tiết
     </Link>
   </div>
 );
@@ -40,12 +44,12 @@ const MemberList = () => {
   const { r }: RouteQuery = router.query;
   const currentRole = parseInt(r);
 
-  const { data: members } = useUserListApi({ role: currentRole });
+  const { data: members = [] } = useUserListApi({ role: currentRole });
 
   const tableHeaders = useMemo(
     () => [
       {
-        field: 'id',
+        field: 'tokenId',
         name: 'Token ID',
       },
       {
@@ -59,24 +63,19 @@ const MemberList = () => {
       {
         name: 'Ngày hết hạn',
         custom: ({ item }: ActionColumnsProps) => (
-          <p className={item.isExpired && 'font-bold text-red-600'}>
+          <p className={item.isExpired ? 'font-bold text-red-600' : ''}>
             {formatDate(item.expiredAt)}
           </p>
         ),
       },
-      // {
-      //   name: 'Action',
-      //   custom: ActionColumns,
-      // },
+      {
+        name: 'Action',
+        custom: ActionColumns,
+      },
     ],
     [currentRole]
   );
 
-  const displayMembers =
-    members?.map(({ tokenId, ...otherInfo }) => ({
-      id: tokenId,
-      ...otherInfo,
-    })) || [];
 
   const breadcrumbs = [
     {
@@ -100,7 +99,7 @@ const MemberList = () => {
       <Box autoLayout>
         <Table
           title={`Danh sách ${ROLE_LABELS_VI[currentRole]}`}
-          data={displayMembers}
+          data={members}
           headers={tableHeaders}
           autoOrderId
         />

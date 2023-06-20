@@ -53,6 +53,10 @@ module.exports = {
           defaultValue: Sequelize.literal('current_timestamp'),
           onUpdate: Sequelize.literal('current_timestamp'),
         },
+        deletedAt: {
+          type: Sequelize.DATE,
+          defaultValue: null,
+        },
       },
       {
         charset: 'utf8',

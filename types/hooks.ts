@@ -6,13 +6,15 @@ import {
   NftSchool,
   NftCertificates,
   NftClassRegistration,
+  NftGraduation,
 } from './contracts';
 
 export type ContractLists = {
   nftIdentities: NftIdentities;
   nftSchool: NftSchool;
-  nftCertificates: NftCertificates;
   nftClassRegistration: NftClassRegistration;
+  nftCertificates: NftCertificates;
+  nftGraduation: NftGraduation;
 };
 
 export type Web3Dependencies = {

@@ -7,7 +7,7 @@ import { HookFactoryWithoutSWR } from '@_types/hooks';
 import { parseTimeStamp } from 'utils';
 import { useApi } from '@hooks/common';
 import { formatClassResponse, formatRegisterTime } from './formatter';
-import { addClassCreatedEvent } from 'components/events/courses';
+import { addClassCreatedEvent } from 'components/events';
 
 type CreateCourseFunc = {
   (params: {
@@ -27,8 +27,7 @@ type CreateClassFunc = {
       semesterId: number;
       registerClassFee: string;
     };
-    onSuccess?: () => {};
-    onError?: (error: Error) => {};
+    onSuccess: (tokenId: number) => void;
   }): Promise<void>;
 };
 
@@ -102,7 +101,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
   );
 
   const createClass: CreateClassFunc = useCallback(
-    async ({ data, onSuccess, onError }) => {
+    async ({ data, onSuccess }) => {
       if (_contracts) {
         const {
           courseId,
@@ -125,15 +124,13 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
         await promiseHandler({
           successMsg: `Success to create class`,
           errorMsg: `Fail to grant NFT`,
-          onSuccess,
-          onError,
           promise,
         });
 
-        addClassCreatedEvent(deps as any);
+        addClassCreatedEvent(deps as any, onSuccess);
       }
     },
-    [_contracts]
+    [_contracts, deps]
   );
 
   const getRegisterTime: GetRegisterTimeFunc = useApi(
@@ -168,10 +165,6 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
   ) => {
     const registerClassFee = await _contracts.nftSchool.getRegisterFeeClassById(
       tokenId
-    );
-    console.log(
-      '🚀 ~ file: useSchoolActions.ts:171 ~ registerClassFee:',
-      registerClassFee
     );
 
     return parseFloat(ethers.utils.formatEther(registerClassFee));

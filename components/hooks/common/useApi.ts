@@ -20,7 +20,7 @@ export const useApi = <D, P>(
       dispatch(unloading());
       return result;
     } catch (e) {
-      const isUserDenied = e.message.includes(
+      const isUserDenied = e.message?.includes(
         ERROR_MESSAGE.MAPPING.USER_DENIED
       );
       let errorMessage = e.customError ?? ERROR_MESSAGE.UNEXPECTED;

@@ -24,7 +24,7 @@ const ActionColumn = ({ item }: ClassColumnProps) => {
   return (
     <div>
       <Link
-        href={ROUTES.classDetail.name.replace(/:id/, item.id.toString())}
+        href={ROUTES.classDetail.name.replace(/:id/, item.onChainId.toString())}
         className="bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80 min-w-[96px]"
       >
         Chi tiết

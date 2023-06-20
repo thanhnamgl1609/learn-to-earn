@@ -1,17 +1,20 @@
 import { IHandler } from '@_types/api';
+import { NftCompleteCourseQuery } from '@_types/api/certificates';
 import CONST from 'config/constants.json';
 import REQUEST_CONST from 'config/request.json';
 import { certificatesService, userService } from 'domain/services';
 import { run, withSession } from '@api/utils';
+import { CREATE_NFT_COMPLETE_COURSE } from '@validators/schemas';
 import addressCheck from '@api/middleware/address-check';
 import parseInput from '@api/middleware/parse-input';
-import { CREATE_NFT_COMPLETE_COURSE } from '@validators/schemas';
 
 const { METHOD } = REQUEST_CONST;
 const { ROLES } = CONST;
 
 const get: IHandler = async (req, res) => {
-  const result = await certificatesService.getAll(req.query);
+  const result = await certificatesService.getAll(
+    req.query as NftCompleteCourseQuery
+  );
 
   res.sendData(200, result);
 };

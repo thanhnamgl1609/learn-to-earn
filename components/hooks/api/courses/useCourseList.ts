@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 
 import { CourseQuery } from '@_types/api/course';
@@ -9,7 +9,7 @@ import { CourseEntity } from '@_types/models/entities';
 
 export const useCourseListApi = (
   query?: CourseQuery
-): SWRResponse<CourseEntity[]> => {
+): SWRResponse<CourseEntity[]> & { revalidate: () => void } => {
   const _query = useMemo(() => {
     const { knowledgeBlockId, ...other } = query || {};
     if (knowledgeBlockId && parseInt(knowledgeBlockId as string) === 0) {
@@ -21,6 +21,10 @@ export const useCourseListApi = (
   const result = useSWR([endpoints.courses, _query], useApi(makeRequest()), {
     revalidateOnFocus: false,
   });
+  const revalidate = useCallback(
+    () => result.mutate([endpoints.courses, _query]),
+    [_query, result]
+  );
 
-  return result;
+  return { ...result, revalidate };
 };

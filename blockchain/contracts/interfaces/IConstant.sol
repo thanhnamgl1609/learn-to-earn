@@ -86,11 +86,11 @@ interface IConstant {
 
     struct NftCompleteCourse {
         uint256 tokenId;
+        uint256 studentTokenId;
         uint256 courseId;
         uint256 knowledgeBlockId;
         uint256 credits;
         uint256 avgScore; // * 100 to keep 2 digits after comma
-        uint256 status; // 0: failed; 1: passed
     }
 
     struct NftGraduation {

@@ -2,7 +2,7 @@ import { FC, PropsWithChildren, useCallback } from 'react';
 import _ from 'lodash';
 
 type Data = {
-  id: number;
+  id?: number;
   [key: string]: any;
 };
 type CustomProp = {

@@ -7,7 +7,13 @@ export default (sequelize: Sequelize) => {
       this.hasMany(models.nft_complete_course_graduation_relations, {
         foreignKey: 'nftGraduationId',
         sourceKey: 'tokenId',
+        as: 'nftCompleteCourseGraduationRelations',
       });
+      // this.belongsTo(models.request_graduations, {
+      //   foreignKey: 'requestGraduationId',
+      //   targetKey: 'id',
+      //   as: 'request',
+      // });
       this.belongsTo(models.users, {
         foreignKey: 'studentTokenId',
         targetKey: 'tokenId',
