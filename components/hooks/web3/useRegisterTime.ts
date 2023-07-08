@@ -32,7 +32,7 @@ export const hookFactory: RegisterTimeHookFactory =
   ({ contracts }) =>
   () => {
     const getRegisterTime = useApi(async (semesterId) => {
-      const registerTimeResponse = await contracts!.nftSchool.getRegisterTime(semesterId);
+      const registerTimeResponse = await contracts!.school.getRegisterTime(semesterId);
 
       return formatRegisterTime(registerTimeResponse);
     });
@@ -48,7 +48,7 @@ export const hookFactory: RegisterTimeHookFactory =
     const editRegisterTime = useCallback(
       async ({ registerStartAt, registerEndAt }: RegisterTime) => {
         if (!contracts) return null;
-        const tx = await contracts.nftSchool.updateRegisteredTime(
+        const tx = await contracts.school.updateRegisteredTime(
           parseTimeStamp(registerStartAt),
           parseTimeStamp(registerEndAt)
         );

@@ -24,7 +24,7 @@ export const hookFactory: AssignedClassesHookFactory =
   ({ tokenId } = { tokenId: null }) => {
     const getAllClassCaller = useApi(async () => {
       if (!tokenId) return [];
-      const result = await contracts!.nftSchool.getAssignedClasses(tokenId);
+      const result = await contracts!.school.getAssignedClasses(tokenId);
 
       return formatClassResponses(result);
     });

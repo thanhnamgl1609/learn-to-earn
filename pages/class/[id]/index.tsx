@@ -6,7 +6,7 @@ import ROUTES from '@config/routes.json';
 import { BaseLayout, FormClassDetail } from '@templates';
 import { Breadcrumb, Table } from '@organisms';
 import { Box } from '@molecules';
-import { Button, Heading, Link, LinkText } from '@atoms';
+import { Button, Heading, LinkText } from '@atoms';
 import {
   useClassDetailApi,
   useNftRegistrationClassListApi,
@@ -15,7 +15,7 @@ import { NftClassRegistrationEntity } from '@_types/models/entities';
 import { classEntity } from 'domain/models';
 import { useAppSelector } from '@hooks/stores';
 import { selectUser } from '@store/userSlice';
-import { GrantNftIdentityModal } from '@templates/Modal';
+import { UpdateScoreModal } from '@templates/Modal';
 import { useModalController } from '@hooks/ui';
 
 const { ROLES } = CONST;
@@ -48,10 +48,20 @@ const actionColumn = {
   name: 'Hành động',
   custom: ({ item, onOpenGrantModal }: ColumnProp) => {
     const onOpenModal = () => onOpenGrantModal(item);
+    const { isRegained, score } = item;
+
+    const tag = isRegained ? 'Đã đổi NFT' : 'Đã cập nhật điểm';
+    const isDisabled = !!isRegained || (score !== null);
 
     return (
-      <Button theme="main" onClick={onOpenModal}>
-        Cấp NFT
+      <Button
+        theme="main"
+        onClick={onOpenModal}
+        disabled={isDisabled}
+        disabledTag={tag}
+        customTagClassName="px-2 py-1"
+      >
+        Cập nhật điểm
       </Button>
     );
   },
@@ -88,6 +98,8 @@ const ClassDetailPage = () => {
     setSelectedNftClassRegistration(null);
   };
 
+  const isTeacher = role === ROLES.TEACHER;
+
   const links = [
     {
       label: 'Manager',
@@ -103,16 +115,15 @@ const ClassDetailPage = () => {
   ];
 
   const _tableHeaders = useMemo(
-    () =>
-      role === ROLES.TEACHER ? [...tableHeaders, actionColumn] : tableHeaders,
-    [role]
+    () => (isTeacher ? [...tableHeaders, actionColumn] : tableHeaders),
+    [isTeacher]
   );
 
   return (
     <BaseLayout containerClassName="max-w-[640px]">
-      <Breadcrumb links={links} />
+      {!isTeacher && <Breadcrumb links={links} />}
       <Box autoLayout>
-        <Heading>Class #{classDetail?.id}</Heading>
+        <Heading>Class #{classDetail?.onChainId}</Heading>
         {classDetail && <FormClassDetail formState={displayClassDetail} edit />}
       </Box>
 
@@ -125,7 +136,7 @@ const ClassDetailPage = () => {
         />
       </Box>
 
-      <GrantNftIdentityModal
+      <UpdateScoreModal
         isOpen={isGrantModalOpen}
         onClose={onCloseGrantModal}
         nftClassRegistration={selectedNftClassRegistration}

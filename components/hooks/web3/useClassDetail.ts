@@ -23,7 +23,7 @@ export const hookFactory: ClassDetailHookFactory =
   ({ contracts }) =>
   ({ id }) => {
     const getClassDetail = useApi(async () => {
-      const classResponse = await contracts!.nftSchool.getClassById(id);
+      const classResponse = await contracts!.school.getClassById(id);
       const result = await formatClassResponse(classResponse);
 
       return result;

@@ -30,8 +30,19 @@ module.exports = {
             key: 'tokenId',
           },
         },
+        registerDate: {
+          type: Sequelize.DATE,
+        },
         chainURI: {
           type: Sequelize.STRING,
+        },
+        score: {
+          type: Sequelize.INTEGER,
+          defaultValue: null,
+        },
+        isExchangeable: {
+          type: Sequelize.TINYINT,
+          defaultValue: 0, 
         },
         createdAt: {
           type: Sequelize.DATE,
@@ -48,6 +59,7 @@ module.exports = {
         collate: 'utf8_unicode_ci',
       }
     );
+    await queryInterface.addIndex(tableName, ['tokenId']);
   },
 
   async down(queryInterface, Sequelize) {

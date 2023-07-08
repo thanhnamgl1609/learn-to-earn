@@ -12,41 +12,6 @@ import { openConfirmModal } from '@store/appSlice';
 import { useClassDetailApi } from '@hooks/api/classes';
 import { classEntity } from 'domain/models';
 
-type IdentityColumnProps = {
-  item: Omit<NftIdentity, 'tokenId'> & { id: number };
-};
-
-const ActionColumns = ({ item }: IdentityColumnProps) => {
-  const dispatch = useAppDispatch();
-  const grantNftIdentity = useGrantNftIdentity();
-  const { id, ...pNftIdentity } = item;
-
-  const onRegisterClick = () => {
-    dispatch(
-      openConfirmModal({
-        content: `Cấp chứng chỉ cho sinh viên ${item.meta.fullName} - #${id}`,
-        onAccept: () =>
-          grantNftIdentity({
-            tokenId: id,
-            ...pNftIdentity,
-          }),
-      })
-    );
-  };
-
-  return (
-    <div>
-      <Button
-        onClick={onRegisterClick}
-        className="bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80"
-        disabled
-      >
-        Cấp chứng chỉ
-      </Button>
-    </div>
-  );
-};
-
 const SchoolClassDetail = () => {
   const router = useRouter();
   const { id: qid } = router.query;

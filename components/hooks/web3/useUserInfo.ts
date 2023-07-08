@@ -5,7 +5,7 @@ import { NftIdentity, RegistrationInfo } from '@_types/nftIdentity';
 import { formatRegistrationInfoResponses } from './formatter/registrationInfos';
 import { formatNftIdentities } from './formatter/nftIdentities';
 import endpoints from 'config/endpoints.json';
-import {  request } from 'utils';
+import { request } from 'utils';
 
 type SWRResponse = {
   nftIdentities: NftIdentity[];
@@ -23,11 +23,13 @@ export type UseUserInfoHook = ReturnType<UserInfoHookFactory>;
 export const hookFactory: UserInfoHookFactory =
   ({ contracts, ethereum, provider }) =>
   () => {
+    const _contracts = contracts;
+
     const key = 'web3/useUserInfo';
     const { data, ...swr } = useSWR(
-      contracts ? key : null,
+      _contracts ? key : null,
       async () => {
-        const isOwner = await contracts!.nftIdentities.isOwner();
+        const isOwner = await _contracts!.nftIdentities.isOwner();
 
         if (isOwner) {
           return {
@@ -38,8 +40,8 @@ export const hookFactory: UserInfoHookFactory =
         }
 
         const [registrationInfoResponses, nftResponses] = await Promise.all([
-          contracts!.nftIdentities.getAllOwnedRegistrationInfos(),
-          contracts!.nftIdentities.getOwnedNfts(),
+          _contracts!.nftIdentities.getAllOwnedRegistrationInfos(),
+          _contracts!.nftIdentities.getOwnedNfts(),
         ]);
 
         const registrationInfos: RegistrationInfo[] =

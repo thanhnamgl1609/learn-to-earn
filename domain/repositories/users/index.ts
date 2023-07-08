@@ -4,8 +4,9 @@ import db from 'models';
 import { withTransaction, generateCondition } from '@api/utils';
 import CONST from 'config/constants.json';
 import { NftIdentity, NftIdentityMetaType } from '@_types/nftIdentity';
-import user_documents from 'models/user_documents';
 import { before } from 'utils';
+import { formatGraduation } from '../certificates/common';
+import { certificatesRepo } from '..';
 
 const { ROLES } = CONST;
 
@@ -42,12 +43,12 @@ export const getAll = async (query?: UserQuery, transaction?: Transaction) => {
   });
 };
 
-export const get = (query?: UserQuery, transaction?: Transaction) => {
+export const get = async (query?: UserQuery, transaction?: Transaction) => {
   const condition = generateCondition(query, {
     $equal: ['tokenId'],
   });
 
-  return db.users.findOne({
+  const _user = await db.users.findOne({
     attributes: {
       exclude: ['registerAddress'],
     },
@@ -58,8 +59,69 @@ export const get = (query?: UserQuery, transaction?: Transaction) => {
         model: db.user_documents,
         as: 'documentURIs',
       },
+      {
+        model: db.nft_graduations,
+        as: 'nftGraduation',
+        include: [
+          // {
+          //   model: db.request_graduations,
+          //   as: 'request',
+          // },
+          {
+            model: db.nft_complete_course_graduation_relations,
+            as: 'nftCompleteCourseGraduationRelations',
+            attributes: {
+              exclude: ['createdAt', 'updatedAt'],
+            },
+            include: [
+              {
+                model: db.nft_complete_courses,
+                as: 'nftCompleteCourse',
+                include: [
+                  {
+                    model: db.classes,
+                    include: [
+                      {
+                        model: db.courses,
+                      },
+                      {
+                        model: db.users,
+                        as: 'teacher',
+                        attributes: {
+                          exclude: ['registerAddress'],
+                        },
+                        include: [
+                          {
+                            model: db.user_documents,
+                            as: 'documentURIs',
+                          },
+                        ],
+                      },
+                      {
+                        model: db.knowledge_blocks,
+                        as: 'knowledgeBlock',
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
     ],
   });
+
+  if (!_user) return null;
+  const user = _user?.get();
+  const isStudent = user?.role === ROLES.STUDENT;
+  if (isStudent) {
+    user.nftGraduation = await certificatesRepo.nftGraduation.get({
+      studentTokenId: user.tokenId,
+    });
+  }
+
+  return user;
 };
 
 export const getMaxId = async (query: { role?: number }): Promise<number> => {
@@ -159,15 +221,12 @@ export const upsert = async (
     if (nftIdentity.isUploading) {
       _nftIdentity.meta = backupMetaData;
     }
-    const currentNftIdentity = await get({ tokenId }, transaction);
-    if (!currentNftIdentity) {
+    // const currentNftIdentity = await get({ tokenId }, transaction);
+    // if (!currentNftIdentity) {
       await insert(_nftIdentity, transaction);
-    } else {
-      await update(_nftIdentity, transaction);
-    }
+    // } else {
+      // await update(_nftIdentity, transaction);
+    // }
 
     return get({ tokenId }, transaction);
   }, t);
-
-// export const createUser = (user: CreateUserInput, t?: Transaction) =>
-//   withTransaction((transaction) => db.users.create(user, { transaction }), t);

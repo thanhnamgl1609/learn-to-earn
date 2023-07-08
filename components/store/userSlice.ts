@@ -2,8 +2,8 @@ import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@store';
 
 import { NftIdentity, RegistrationInfo } from '@_types/nftIdentity';
-import { UserDetail } from '@_types/api/user';
 import CONST from '@config/constants.json';
+import { UserEntity } from '@_types/models/entities';
 
 const ALL_ROLES = Object.values(CONST.ROLES);
 export type RoleType = (typeof ALL_ROLES)[number];
@@ -14,7 +14,7 @@ export type UserState = {
   registrationInfos: RegistrationInfo[];
   nftIdentities: NftIdentity[];
   account: string;
-  detail: UserDetail | null;
+  detail: UserEntity | null;
 };
 
 type UpdateUserPayload = Partial<UserState> & {
@@ -52,6 +52,10 @@ export const selectCurrentRegistration = createSelector(selectUser, (user) =>
 );
 export const selectCurrentNftIdentity = createSelector(selectUser, (user) =>
   user.nftIdentities.find(({ role }) => role === user.role)
+);
+export const selectUserDetail = createSelector(
+  selectUser,
+  ({ detail }) => detail
 );
 
 export default userSlice.reducer;

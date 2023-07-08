@@ -6,11 +6,11 @@ import { logger } from 'utils';
 import { getIpfsLink } from 'utils/pinataHelper';
 
 export const syncCourseToContract = async () => {
-  const allContractCourseResponses = await contract.nftSchool.getAllCourses();
+  const allContractCourseResponses = await contract.school.getAllCourses();
   const allContractCourses = await formatCourses(allContractCourseResponses);
   const allNotSyncCourses = await coursesRepo.getNotSyncCourse(
     allContractCourses,
-    { limit: 20 }
+    { limit: 50 }
   );
 
   if (!allNotSyncCourses.length) {
@@ -55,17 +55,15 @@ export const syncCourseToContract = async () => {
         uri = getIpfsLink(uploadRes);
       }
 
-      await contract.nftSchool.createCourse(
+      await contract.school.createCourse(
         prevCourseId ?? 0,
         knowledgeBlockId,
         credits,
-        uri,
-        {
-          gasLimit: 500000,
-        }
+        courseCode,
+        uri
       );
       const onChainId = (
-        await contract.nftSchool.getCourseIdByURI(uri)
+        await contract.school.getCourseIdByURI(uri)
       ).toNumber();
       await coursesRepo.update({
         id,

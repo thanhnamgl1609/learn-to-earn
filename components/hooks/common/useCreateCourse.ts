@@ -40,7 +40,7 @@ export const useCreateCourse = () => {
     ]);
     if (existedCourse) return toast.error('Mã môn học đã tồn tại');
 
-    const { knowledgeBlockId, prevCourseId, credits } = _formState;
+    const { knowledgeBlockId, prevCourseId, credits, courseCode } = _formState;
     const signature = await getSignedData();
     const { link: uri } = await dispatch(
       uploadData({
@@ -54,6 +54,7 @@ export const useCreateCourse = () => {
       prevCourseId,
       credits,
       uri,
+      courseCode,
     };
     const onChainId = await createCourse({ data: createdCourse });
     if (!_formState.prevCourseId) {

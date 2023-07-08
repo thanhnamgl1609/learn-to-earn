@@ -6,7 +6,7 @@ import {
 } from 'utils';
 
 import Api from 'config/api.json';
-import { NftclassregistrationresponseResponse } from '@_types/contracts/NftSchool';
+import { NftclassregistrationresponseResponse } from '@_types/contracts/School';
 import { NftClassRegistration, NftClassRegistrationCore } from '@_types/school';
 import { NftclassregistrationResponse } from '@_types/contracts/NftClassRegistration';
 

@@ -38,7 +38,7 @@ export const ConfirmDialog = memo(() => {
         {confirmDialog.header}
       </div>
       <div className="px-4 py-3">
-        <p className="">{confirmDialog.content}</p>
+        <div className="">{confirmDialog.content}</div>
         <GroupTwoButtons
           className="mt-4"
           firstClassName="ml-auto"

@@ -11,6 +11,7 @@ import { Button, Link } from '@atoms';
 import { useAppDispatch } from '@hooks/stores';
 import { openConfirmModal } from '@store/appSlice';
 import { useRegisterClassesApi } from '@hooks/api/classes';
+import { classEntity } from 'domain/models';
 
 type ColumnProps = {
   item: ClassEntity;
@@ -98,6 +99,12 @@ const tableHeaders = [
     name: 'Số sinh viên tối đa',
   },
   {
+    name: 'Phí đăng ký',
+    custom: ({ item }: ColumnProps) => (
+      <p>{classEntity.displayRegisterFee(item.registerClassFee)}</p>
+    ),
+  },
+  {
     field: 'numberOfStudents',
     name: 'Số sinh viên đã đăng ký',
   },
@@ -113,6 +120,10 @@ const tableHeaders = [
 
 const RegisteredClassList = () => {
   const { data: registeredClasses } = useRegisterClassesApi();
+  console.log(
+    '🚀 ~ file: index.tsx:116 ~ RegisteredClassList ~ registeredClasses:',
+    registeredClasses
+  );
 
   return (
     <BaseLayout>

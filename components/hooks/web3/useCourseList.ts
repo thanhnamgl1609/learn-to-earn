@@ -15,7 +15,7 @@ export const hookFactory: CourseListHookFactory =
   ({ contracts }) =>
   () => {
     const getAllCourseCaller = useApi(async () => {
-      const courses = await contracts!.nftSchool.getAllCourses();
+      const courses = await contracts!.school.getAllCourses();
       const result = await formatCourses(courses);
       const allCourseById = result.reduce(
         (prev, course) => ({ ...prev, [course.id]: course }),

@@ -19,20 +19,5 @@ exports.KNOWLEDGE_BLOCKS = {
   },
 };
 
-exports.SCORE_TYPES = {
-  Midterm: {
-    id: 0,
-  },
-  Practice: {
-    id: 1,
-  },
-  Plus: {
-    id: 2,
-  },
-  Final: {
-    id: 3,
-  },
-  Other: {
-    id: 4,
-  },
-};
+exports.BASE_STUDENT = 1;
+exports.BASE_TEACHER = 65537;

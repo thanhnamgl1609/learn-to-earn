@@ -1,13 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
 import { IHandler } from '@_types/api';
 import REQUEST_CONST from 'config/request.json';
+import { run, withSession } from '@api/utils';
 import {
-  run,
-  withSession,
-  nftIdentitiesContractAddress,
-  nftSchoolsContractAddress,
   nftCertificatesContractAddress,
-} from '@api/utils';
+  nftClassRegistrationContractAddress,
+  schoolsContractAddress,
+  nftIdentitiesContractAddress,
+} from '@api/utils/load-contract';
 import { createError } from '@api/utils/create-error';
 
 const { METHOD } = REQUEST_CONST;
@@ -17,8 +17,9 @@ const post: IHandler = async (req, res) => {
     const message = {
       id: uuidv4(),
       nftIdentitiesContractAddress,
-      nftSchoolsContractAddress,
+      schoolsContractAddress,
       nftCertificatesContractAddress,
+      nftClassRegistrationContractAddress,
     };
     req.session.set('message-session', message);
     await req.session.save();

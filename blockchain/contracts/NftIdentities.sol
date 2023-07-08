@@ -5,7 +5,7 @@ pragma solidity ^0.8.13;
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./Registration.sol";
+import "./base/Registration.sol";
 import "./interfaces/INftIdentities.sol";
 
 contract NftIdentities is INftIdentities, ERC1155URIStorage, Registration {

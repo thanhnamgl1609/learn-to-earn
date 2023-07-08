@@ -53,7 +53,7 @@ export const hookFactory: AccountHookFactory =
     const connect = () => {
       ethereum
         ?.request({
-          method: 'wallet_requestPermissions',
+          method: 'eth_requestAccounts',
           params: [{ eth_accounts: {} }],
         })
         .then((users) => {
@@ -63,17 +63,6 @@ export const hookFactory: AccountHookFactory =
           console.log('🚀 ~ file: useAccount.ts:56 ~ connect ~ error:', error);
         });
     };
-
-    // const getSignedData = useCallback(async () => {
-    //   const { data: messageToSign } = await axios.get('/api/verify');
-
-    //   const signedData = await ethereum?.request({
-    //     method: 'personal_sign',
-    //     params: [JSON.stringify(messageToSign), data, messageToSign.id],
-    //   });
-
-    //   return signedData;
-    // }, [data]);
 
     return {
       ...swr,

@@ -131,3 +131,10 @@ export const useNftClassRegistrationActions = () => {
 
   return actions;
 };
+
+export const useCertificateActions = () => {
+  const { useCertificateActions } = useHooks();
+  const actions = useCertificateActions();
+
+  return actions;
+};

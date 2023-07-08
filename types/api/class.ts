@@ -1,3 +1,5 @@
+import { NftClassRegistrationEntity } from '@_types/models/entities';
+
 export type ClassQuery = {
   onChainId?: number;
   semesterId?: number | string;
@@ -18,10 +20,13 @@ export type ClassApi = {
   semesterId: number;
 };
 
+export type CreatedClass = Omit<ClassApi, 'id'>;
+
 export type NftClassRegistrationQuery = {
   studentTokenId?: number | string;
   tokenId?: number | string;
   classId?: number | string;
+  isRegained?: 0 | 1;
 };
 
 export type CreatedNftClassRegistration = {
@@ -29,4 +34,9 @@ export type CreatedNftClassRegistration = {
   classId: number;
   studentTokenId: number;
   chainURI: string;
+  registerDate: string;
+  registerFee: number;
 };
+
+export type NftClassRegistrationEntityWithApproveStatus =
+  NftClassRegistrationEntity & {};

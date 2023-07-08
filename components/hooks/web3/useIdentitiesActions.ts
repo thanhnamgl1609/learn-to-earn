@@ -1,24 +1,26 @@
-import { ContractTransaction, ethers } from 'ethers';
 import { useCallback } from 'react';
-import { toast } from 'react-toastify';
-import moment from 'moment';
 
 import { HookFactoryWithoutSWR } from '@_types/hooks';
-import { formatNftIdentity } from './formatter';
 import { NftIdentity } from '@_types/nftIdentity';
+import { formatNftIdentity } from './formatter';
 
 type GetNftOfMemberWithRoleParams = {
   role: number;
   sender: string;
 };
 
-type UseIdentitiesActionsReturnTypes = {
-  getNftOfMemberWithRole: GetNftOfMemberWithRoleFunc;
+type GetOwnerOfTokenIdFunc = {
+  (tokenId: number): Promise<string>;
 };
 
 type GetNftOfMemberWithRoleFunc = (
   params: GetNftOfMemberWithRoleParams
 ) => Promise<NftIdentity>;
+
+type UseIdentitiesActionsReturnTypes = {
+  getNftOfMemberWithRole: GetNftOfMemberWithRoleFunc;
+  getOwnerOfTokenId: GetOwnerOfTokenIdFunc;
+};
 
 type UseIdentitiesActionsHookFactory =
   HookFactoryWithoutSWR<UseIdentitiesActionsReturnTypes>;
@@ -43,7 +45,17 @@ export const hookFactory: UseIdentitiesActionsHookFactory =
       [_contracts]
     );
 
+    const getOwnerOfTokenId: GetOwnerOfTokenIdFunc = useCallback(
+      async (tokenId) => {
+        const result = await _contracts.nftIdentities.ownerOf(tokenId);
+
+        return result;
+      },
+      [_contracts]
+    );
+
     return {
       getNftOfMemberWithRole,
+      getOwnerOfTokenId,
     };
   };

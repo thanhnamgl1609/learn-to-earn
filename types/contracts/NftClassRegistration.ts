@@ -57,11 +57,13 @@ export interface ContractCallOverrides {
 export type NftClassRegistrationEvents =
   | 'Approval'
   | 'ApprovalForAll'
+  | 'ClassRegistrationRegained'
   | 'NewClassRegistrationCreated'
   | 'Transfer';
 export interface NftClassRegistrationEventsContext {
   Approval(...parameters: any): EventFilter;
   ApprovalForAll(...parameters: any): EventFilter;
+  ClassRegistrationRegained(...parameters: any): EventFilter;
   NewClassRegistrationCreated(...parameters: any): EventFilter;
   Transfer(...parameters: any): EventFilter;
 }
@@ -85,6 +87,10 @@ export type NftClassRegistrationMethodNames =
   | 'getNftClassRegistration'
   | 'getStudentListOfClass'
   | 'getNumberOfRegisteredStudent'
+  | 'checkNftClassRegistrationRegained'
+  | 'getRegainedNftListOfClass'
+  | 'allowRequestNftCompleteCourse'
+  | 'regainV2'
   | 'registerClass';
 export interface ApprovalEventEmittedResponse {
   owner: string;
@@ -95,6 +101,9 @@ export interface ApprovalForAllEventEmittedResponse {
   owner: string;
   operator: string;
   approved: boolean;
+}
+export interface ClassRegistrationRegainedEventEmittedResponse {
+  classId: BigNumberish;
 }
 export interface NewClassRegistrationCreatedEventEmittedResponse {
   classId: BigNumberish;
@@ -137,11 +146,11 @@ export interface NftClassRegistration {
    * StateMutability: nonpayable
    * Type: constructor
    * @param nftIdentities Type: address, Indexed: false
-   * @param nftSchool Type: address, Indexed: false
+   * @param school Type: address, Indexed: false
    */
   'new'(
     nftIdentities: string,
-    nftSchool: string,
+    school: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -352,6 +361,56 @@ export interface NftClassRegistration {
     classId: BigNumberish,
     overrides?: ContractCallOverrides
   ): Promise<BigNumber>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param studentTokenId Type: uint256, Indexed: false
+   * @param classId Type: uint256, Indexed: false
+   */
+  checkNftClassRegistrationRegained(
+    studentTokenId: BigNumberish,
+    classId: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<boolean>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param classId Type: uint256, Indexed: false
+   */
+  getRegainedNftListOfClass(
+    classId: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<BigNumber[]>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param tokenId Type: uint256, Indexed: false
+   * @param isAllowed Type: bool, Indexed: false
+   */
+  allowRequestNftCompleteCourse(
+    tokenId: BigNumberish,
+    isAllowed: boolean,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param sender Type: address, Indexed: false
+   * @param tokenId Type: uint256, Indexed: false
+   */
+  regainV2(
+    sender: string,
+    tokenId: BigNumberish,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
   /**
    * Payable: true
    * Constant: false

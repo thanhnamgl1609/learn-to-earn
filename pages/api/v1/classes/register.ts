@@ -16,12 +16,13 @@ const get: IHandler = async (req, res) => {
 const post: IHandler = async (req, res) => {
   const {
     address,
-    data: { id },
+    data: {
+      id,
+      metadata: { registerFee, registerDate },
+    },
   } = req.body;
 
-  const studentTokenId = await userService.getStudentTokenIdFromContract(
-    address
-  );
+  const studentTokenId = await userService.getNftIdentityTokenId(address);
   const nftClassRegistration = await classService.getNftRegistrationClass(id);
   if (nftClassRegistration.studentTokenId !== studentTokenId) {
     throw createError(400, 'Không đủ quyền');
@@ -31,7 +32,9 @@ const post: IHandler = async (req, res) => {
     tokenId,
     studentTokenId,
     classId,
-    chainURI
+    chainURI,
+    registerDate,
+    registerFee
   );
 
   res.sendData(200, nftClassRegistrationEntity);

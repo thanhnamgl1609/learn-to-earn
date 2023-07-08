@@ -1,24 +1,32 @@
 const NftIdentities = artifacts.require('NftIdentities');
-const NftSchool = artifacts.require('NftSchool');
+const School = artifacts.require('School');
 
 module.exports = function (deployer) {
   const KNOWLEDGE_BLOCKS = {
     GENERAL: {
       id: 1,
-      credits: 56,
+      credits: 4,
     },
     FOUNDATION: {
       id: 2,
-      credits: 38,
+      credits: 6,
     },
-    SPECIALIZED: {
-      id: 3,
-      credits: 34,
-    },
-    GRADUATION: {
-      id: 4,
-      credits: 10,
-    },
+    // GENERAL: {
+    //   id: 1,
+    //   credits: 56,
+    // },
+    // FOUNDATION: {
+    //   id: 2,
+    //   credits: 38,
+    // },
+    // SPECIALIZED: {
+    //   id: 3,
+    //   credits: 34,
+    // },
+    // GRADUATION: {
+    //   id: 4,
+    //   credits: 10,
+    // },
   };
 
   const knowledgeBlocks = Object.values(KNOWLEDGE_BLOCKS).reduce(
@@ -30,7 +38,7 @@ module.exports = function (deployer) {
   );
 
   deployer.deploy(
-    NftSchool,
+    School,
     NftIdentities.address,
     ...knowledgeBlocks
   );

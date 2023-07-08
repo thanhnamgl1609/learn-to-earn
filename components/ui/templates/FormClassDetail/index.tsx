@@ -47,12 +47,12 @@ export const FormClassDetail: FC<ClassDetailProps> = ({
       <>
         <InputField
           label="Môn học"
-          value={formState.course?.name}
+          value={formState.course?.name ?? ''}
           disabled={edit}
         />
         <InputField
           label="Mã môn học"
-          value={formState.course?.onChainId}
+          value={formState.course?.onChainId ?? ''}
           disabled={edit}
         />
         <LinkField
@@ -68,7 +68,7 @@ export const FormClassDetail: FC<ClassDetailProps> = ({
         name="courseId"
         options={courses}
         onChange={onInputChange}
-        value={formState.courseId}
+        value={formState.courseId ?? ''}
         disabled={edit}
       />
     )}
@@ -76,12 +76,12 @@ export const FormClassDetail: FC<ClassDetailProps> = ({
       <>
         <InputField
           label="Giảng viên"
-          value={formState.teacher?.fullName}
+          value={formState.teacher?.fullName ?? ''}
           disabled={edit}
         />
         <InputField
           label="Mã giảng viên"
-          value={formState.teacher?.tokenId}
+          value={formState.teacher?.tokenId ?? ''}
           disabled={edit}
         />
         <LinkField
@@ -97,7 +97,7 @@ export const FormClassDetail: FC<ClassDetailProps> = ({
         name="teacherTokenId"
         options={teachers}
         onChange={onInputChange}
-        value={formState.teacherTokenId}
+        value={formState.teacherTokenId ?? ''}
         disabled={edit}
       />
     )}
@@ -106,7 +106,7 @@ export const FormClassDetail: FC<ClassDetailProps> = ({
       name="startAt"
       onChange={onInputChange}
       type="date"
-      value={formState.startAt}
+      value={formState.startAt ?? ''}
       readOnly={edit}
     />
     <InputField
@@ -114,27 +114,27 @@ export const FormClassDetail: FC<ClassDetailProps> = ({
       name="completeAt"
       onChange={onInputChange}
       type="date"
-      value={formState.completeAt}
+      value={formState.completeAt ?? ''}
       readOnly={edit}
     />
     <InputField
       label="Số lượng sinh viên tối đa"
       name="maxSize"
-      value={formState.maxSize}
+      value={formState.maxSize ?? ''}
       onChange={onInputChange}
       disabled={edit}
     />
     <InputField
       label="Phí đăng ký"
       name="registerClassFee"
-      value={formState.registerClassFee}
+      value={formState.registerClassFee ?? ''}
       onChange={onInputChange}
       disabled={edit}
     />
     {edit ? (
       <InputField
         label="Học kỳ"
-        value={semesterEntity.displaySemester(formState.semester)}
+        value={semesterEntity.displaySemester(formState.semester) ?? ''}
         disabled={edit}
       />
     ) : (
@@ -142,7 +142,7 @@ export const FormClassDetail: FC<ClassDetailProps> = ({
         label="Học kỳ"
         name="semesterId"
         options={semesterOptions}
-        value={formState.semesterId}
+        value={formState.semesterId ?? ''}
         onChange={onInputChange}
         disabled={edit}
       />
@@ -151,7 +151,7 @@ export const FormClassDetail: FC<ClassDetailProps> = ({
       <>
         <InputField
           label="Số lương sinh viên đã đăng ký"
-          value={formState.numberOfStudents}
+          value={formState.numberOfStudents ?? 0}
           disabled
         />
       </>

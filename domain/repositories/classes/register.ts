@@ -8,8 +8,12 @@ import {
   CreatedNftClassRegistration,
   NftClassRegistrationQuery,
 } from '@_types/api/class';
+import CONST from 'config/constants.json';
 import db from 'models';
 import { withTransaction, generateCondition } from '@api/utils';
+import { UpdateScoreForNftClassRegistrationBodyData } from '@_types/api/certificates';
+
+const { MINIMUM_SCORE_FOR_GRADUATION } = CONST;
 
 export const countNftClassRegistrationExisted = async (
   query: NftClassRegistrationQuery
@@ -28,7 +32,7 @@ export const getNftClassRegistrations = async (
   transaction?: Transaction
 ): Promise<NftClassRegistrationEntity[]> => {
   const condition = generateCondition(query, {
-    $equal: ['tokenId', 'studentTokenId', 'classId'],
+    $equal: ['tokenId', 'studentTokenId', 'classId', 'isRegained'],
   });
 
   const result = await db.nft_class_registrations.findAll({
@@ -46,6 +50,10 @@ export const getNftClassRegistrations = async (
             },
             model: db.users,
             as: 'teacher',
+          },
+          {
+            model: db.knowledge_blocks,
+            as: 'knowledgeBlock',
           },
         ],
       },
@@ -68,7 +76,7 @@ export const getNftClassRegistration = async (
   transaction?: Transaction
 ): Promise<NftClassRegistrationEntity> => {
   const condition = generateCondition(query, {
-    $equal: ['tokenId'],
+    $equal: ['tokenId', 'classId', 'studentTokenId'],
   });
 
   const result = await db.nft_class_registrations.findOne({
@@ -86,6 +94,10 @@ export const getNftClassRegistration = async (
             },
             model: db.users,
             as: 'teacher',
+          },
+          {
+            model: db.knowledge_blocks,
+            as: 'knowledgeBlock',
           },
         ],
       },
@@ -115,3 +127,44 @@ export const createNftClassRegistration = (
 
     return getNftClassRegistration({ tokenId }, transaction);
   }, t);
+
+export const updateScore = async (
+  data: Omit<UpdateScoreForNftClassRegistrationBodyData, 'teacherTokenId'>,
+  t?: Transaction
+) =>
+  withTransaction(
+    async (transaction) =>
+      await db.nft_class_registrations.update(
+        {
+          isExchangeable: data.score >= MINIMUM_SCORE_FOR_GRADUATION ? 1 : 0,
+          score: data.score,
+        },
+        {
+          where: {
+            tokenId: data.tokenId,
+          },
+          transaction,
+        }
+      ),
+    t
+  );
+
+export const updateRegainedClass = async (
+  classId: number,
+  studentTokenId: number,
+  t?: Transaction
+) =>
+  withTransaction(
+    async (transaction) =>
+      await db.nft_class_registrations.update(
+        { isRegained: 1 },
+        {
+          where: {
+            classId,
+            studentTokenId,
+          },
+          transaction,
+        }
+      ),
+    t
+  );

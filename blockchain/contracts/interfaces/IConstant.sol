@@ -19,7 +19,6 @@ interface IConstant {
 
     struct KnowledgeBlock {
         uint256 id;
-        string name;
         uint256 credits;
     }
 
@@ -30,6 +29,7 @@ interface IConstant {
         uint256 prevCourseId;
         uint256 credits;
         uint256 status; // 0: opened, 1: closed
+        string courseCode;
         string uri;
         /*
             Metadata:
@@ -86,30 +86,15 @@ interface IConstant {
 
     struct NftCompleteCourse {
         uint256 tokenId;
+        uint256 studentTokenId;
         uint256 courseId;
         uint256 knowledgeBlockId;
         uint256 credits;
-        uint256 avgScore; // * 100 to keep 2 digits after comma
-        /* Metadata:
-            - Teacher name - Nft Id?
-            - Course name
-            - Course group name?
-            - Start at
-            - CompleteAt (datetime)
-            - Credits
-            - Scores -- where?
-        */
     }
 
     struct NftGraduation {
         uint256 tokenId;
-        /*
-            Metadata:
-                - Student name
-                - Student token ID
-                - Courses + Scores (detail?)
-                - Final average score
-        */
+        uint256 studentTokenId;
     }
 
     struct NftIdentity {

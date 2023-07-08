@@ -1,4 +1,4 @@
-import { Image } from '@atoms';
+import { Heading, Image } from '@atoms';
 import { Box, InputField, ProfileImage } from '@molecules';
 import { RegistrationInfoMeta } from '@_types/nftIdentity';
 import { FC, memo, PropsWithChildren } from 'react';
@@ -6,12 +6,16 @@ import { formatDate } from 'utils';
 import CONST from 'config/constants.json';
 
 type Props = {
+  header?: JSX.Element;
+  more?: JSX.Element;
   registration: RegistrationInfoMeta;
 };
 
 const { INPUT_DATE_FORMAT } = CONST.UI;
 
 const RegistrationDetail: FC<PropsWithChildren<Props>> = ({
+  header,
+  more,
   children,
   registration,
 }) => (
@@ -22,14 +26,12 @@ const RegistrationDetail: FC<PropsWithChildren<Props>> = ({
       className="absolute z-[1] top-0 translate-y-[-25%]"
     />
 
-    <h4 className="mb-2 font-medium">Documents</h4>
-    <div className="grid grid-cols-1 md:grid-cols-2">
-      {registration.documentURIs.map((uri) => (
-        <Image src={uri} alt="" key={uri} canZoomIn />
-      ))}
-    </div>
+    {header}
 
-    <div className="flex gap-4 flex-col mt-4">
+    {more}
+
+    <Heading>Thông tin cơ bản</Heading>
+    <div className="grid grid-cols-2 gap-4 gap-x-8 mt-4">
       <InputField
         value={registration.gender === 0 ? 'Nam' : 'Nữ'}
         label="Giới tính"
@@ -59,6 +61,13 @@ const RegistrationDetail: FC<PropsWithChildren<Props>> = ({
         placeholder="Nhập số điện thoại liên lạc"
         readOnly
       />
+    </div>
+
+    <h4 className="mt-4 mb-2 font-medium">Giấy tờ tùy thân</h4>
+    <div className="grid grid-cols-1 md:grid-cols-2">
+      {registration.documentURIs.map((uri) => (
+        <Image src={uri} alt="" key={uri} canZoomIn />
+      ))}
     </div>
     {children}
   </Box>

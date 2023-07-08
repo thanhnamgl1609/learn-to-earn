@@ -7,12 +7,12 @@ import { useApi } from '@hooks/common';
 import { useNftClassRegistrationActions, useSchoolActions } from '@hooks/web3';
 
 export const useClassDetailApi = (
-  tokenId: number
+  onChainId: number
 ): SWRResponse<ClassEntity> => {
   const { getRegisterFeeClassById } = useSchoolActions();
   const { getNumberOfStudentsOfClass } = useNftClassRegistrationActions();
 
-  const getter = useApi(async (params) => {
+  const getter = useApi(async (params: [string, { onChainId: number }]) => {
     const classDetail = (await makeRequest()(params)) as ClassEntity;
     const registerClassFee = await getRegisterFeeClassById(
       classDetail.onChainId
@@ -28,7 +28,7 @@ export const useClassDetailApi = (
     } as ClassEntity;
   });
 
-  const result = useSWR([endpoints.classDetail, { tokenId }], getter, {
+  const result = useSWR([endpoints.classDetail, { onChainId }], getter, {
     revalidateOnFocus: false,
   });
 

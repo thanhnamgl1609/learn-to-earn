@@ -6,7 +6,7 @@ import PINATA_CONST from '@config/pinata.json';
 import {
   withSession,
   nftIdentitiesContractAddress,
-  nftSchoolsContractAddress,
+  schoolsContractAddress,
   nftCertificatesContractAddress,
   pinataJWTKey,
 } from './utils';
@@ -51,7 +51,7 @@ export default withSession(
         const message = {
           id: uuidv4(),
           nftIdentitiesContractAddress,
-          nftSchoolsContractAddress,
+          schoolsContractAddress,
           nftCertificatesContractAddress,
         };
         req.session.set('message-session', message);

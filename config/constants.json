@@ -1,4 +1,5 @@
 {
+  "ZERO_ADDRESS": "0x0000000000000000000000000000000000000000",
   "UI": {
     "INPUT_DATE_FORMAT": "YYYY-MM-DD",
     "INPUT_DATETIME_FORMAT": "YYYY-MM-DDTHH:mm",
@@ -18,7 +19,10 @@
     "CREATE_COURSE": "create_course",
     "CREATE_CLASS": "create_class",
     "REGISTER_CLASS": "register_class",
-    "APPLY_REGISTRATION": "apply_registration"
+    "APPLY_REGISTRATION": "apply_registration",
+    "GRANT_NFT_COMPLETE_COURSE": "grant_nft_complete_course",
+    "REQUEST_NFT_GRADUATION": "request_nft_graduation",
+    "GRANT_NFT_GRADUATION": "grant_nft_graduation"
   },
   "ROLES": {
     "STUDENT": 0,
@@ -70,5 +74,14 @@
   "GENDER": {
     "0": "Nam",
     "1": "Nữ"
-  }
+  },
+  "NFT_COMPLETE_COURSE_STATUS_LABELS": {
+    "0": "Không đạt",
+    "1": "Đạt"
+  },
+  "NFT_COMPLETE_COURSE_STATUSES": {
+    "FAILED": 0,
+    "PASS": 1
+  },
+  "MINIMUM_SCORE_FOR_GRADUATION": 5
 }

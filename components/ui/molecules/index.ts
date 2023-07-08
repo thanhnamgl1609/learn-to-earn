@@ -10,3 +10,5 @@ export { default as GroupTwoButtons } from './GroupTwoButtons';
 export { default as ProfileImage } from './ProfileImage';
 export { default as TextField } from './TextField';
 export { default as LinkField } from './LinkField';
+export { default as BadgeButton } from './BadgeButton';
+export { default as ImageView } from './ImageView';

@@ -22,6 +22,7 @@ export type RegisterStudentMeta = {
   personalEmail: string;
   identityNumber: string;
   phone: string;
+  registerDate: Date;
 };
 
 export type RegisterTeacherMeta = {
@@ -34,13 +35,17 @@ export type RegisterTeacherMeta = {
   email: string;
   personalEmail: string;
   identityNumber: string;
+  phone: string;
+  registerDate: Date;
 };
 export type StudentMeta = RegisterStudentMeta & {
   documentURI: string;
+  approveDate: Date;
 };
 
 export type TeacherMeta = RegisterTeacherMeta & {
   documentURI: string;
+  approveDate: Date;
 };
 
 export type NftIdentityMetaType = TeacherMeta | StudentMeta; // | EducationManagerMeta

@@ -6,6 +6,9 @@
   "signIn": "/api/v1/sign",
   "courses": "/api/v1/courses",
   "syncCourse": "/api/v1/sync/course",
+  "syncNftGraduationDetail": "/api/v1/sync/nft-graduation/detail",
+  "syncRequestGraduationDetail": "/api/v1/sync/request-graduation/detail",
+  "syncClassDetail": "/api/v1/sync/class/detail",
   "coursesDetail": "/api/v1/courses/detail",
   "semesters": "/api/v1/semesters",
   "currentYear": "/api/v1/year/current",
@@ -14,5 +17,10 @@
   "classDetail": "/api/v1/classes/detail",
   "registerClasses": "/api/v1/classes/register",
   "nftClassRegistration": "/api/v1/classes/nft-class-registration",
-  "assignedClasses": "/api/v1/classes/assigned"
+  "nftCompleteCourse": "/api/v1/certificates/nft-complete-course",
+  "nftCompleteCourseGroup": "/api/v1/certificates/nft-complete-course/group",
+  "assignedClasses": "/api/v1/classes/assigned",
+  "knowledgeBlocks": "/api/v1/knowledge-blocks",
+  "requestGraduationList": "/api/v1/graduation/request",
+  "requestGraduationDetail": "/api/v1/graduation/request/detail"
 }

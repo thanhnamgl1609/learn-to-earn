@@ -15,7 +15,7 @@ export const useAssignedClassesApi = (
 ): SWRResponse<ClassEntity[]> => {
   const { getNumberOfStudentsOfClass } = useNftClassRegistrationActions();
 
-  const getter = useApi(async (params) => {
+  const getter = useApi(async (params: [string, NftClassRegistrationQuery]) => {
     const classList = await makeRequest()(params);
     const classListWithRegisterFee = await Promise.all(
       classList.map(async (classItem: ClassEntity) => {

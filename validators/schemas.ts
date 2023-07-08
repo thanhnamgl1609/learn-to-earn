@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { number, z } from 'zod';
 
 import { after, before } from 'utils';
 import { customOptionsWithError } from './custom';
@@ -139,4 +139,73 @@ export const CREATE_CLASS_META = z.object({
     tokenId: z.number().positive(),
     name: z.string().nonempty(),
   }),
+});
+
+export const CREATE_NFT_COMPLETE_COURSE = z.object({
+  tokenId: z.preprocess(
+    (i: string) => parseInt(i),
+    z.number(customOptionsWithError('Token ID không rỗng'))
+  ),
+  studentTokenId: z.preprocess(
+    (i: string) => parseInt(i),
+    z.number(customOptionsWithError('Student ID không rỗng'))
+  ),
+  classId: z.preprocess(
+    (i: string) => parseInt(i),
+    z.number(customOptionsWithError('Class ID không rỗng'))
+  ),
+  avgScore: z.preprocess(
+    (i: string) => parseInt(i),
+    z.number(customOptionsWithError('ĐTB không rỗng'))
+  ),
+  tokenURI: z
+    .string(customOptionsWithError('sai token URL'))
+    .nonempty('sai token URL'),
+  grantDate: z.preprocess(
+    (v: string) => new Date(v),
+    z.date(customOptionsWithError('Ngày bắt đầu đăng ký không được rỗng'))
+  ),
+});
+
+export const CLASS_ENTITY = z.object({
+  id: z.number(),
+  onChainId: z.number(),
+  courseCode: z.string(),
+  knowledgeBlockId: z.number(),
+  credits: z.number(),
+  startAt: z.preprocess(
+    (v: string) => new Date(v),
+    z.date(customOptionsWithError('Ngày bắt đầu không được rỗng'))
+  ),
+  completeAt: z.preprocess(
+    (v: string) => new Date(v),
+    z.date(customOptionsWithError('Ngày kết thúc không được rỗng'))
+  ),
+  maxSize: z.number(),
+  teacherTokenId: z.number(),
+  chainURI: z.string(),
+  semesterId: z.number(),
+});
+
+export const REQUEST_NFT_GRADUATION = z.object({
+  classEntities: z
+    .array(CLASS_ENTITY)
+    .nonempty('Chọn đủ tín chỉ cho mỗi khối kiến thức'),
+  nationalDefenseEduCertificate: z.string(
+    customOptionsWithError('Cần chứng chỉ giáo dục quốc phòng')
+  ),
+  foreignLanguageCertificate: z.string(
+    customOptionsWithError('Cần chứng chỉ ngoại ngữ')
+  ),
+  otherCertificates: z.array(z.string(customOptionsWithError('Nhập sai'))),
+});
+
+export const GRANT_GRADUATION = z.object({
+  studentTokenId: z.number(customOptionsWithError('Thiếu mã sinh viên')),
+  nftCompleteCourseTokenIds: z.array(
+    z.number(),
+    customOptionsWithError('Chọn đủ tín chỉ cho mỗi khối kiến thức')
+  ),
+  requestPrice: z.string(),
+  requestURI: z.string(),
 });

@@ -24,6 +24,8 @@ export const parseTimeStamp = (
 
 export const parseBigNumber = (raw: BigNumber) => raw.toNumber();
 
+export const parseBigNumbers = (raw: BigNumber[]) => raw.map(parseBigNumber);
+
 export const parseBigNumberFields = <D>(
   raw: D,
   fields: (string | number)[]
@@ -35,3 +37,12 @@ export const parseBigNumberFields = <D>(
     }),
     raw
   ) as MergeKeys<D, typeof fields, number>;
+
+export const parseDateFields = (
+  raw: Record<string, any>,
+  fields: (string | number)[]
+) =>
+  fields.reduce(
+    (prev, field) => ({ ...prev, [field]: new Date(raw[field]) }),
+    {}
+  );

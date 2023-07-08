@@ -9,6 +9,11 @@ export default (sequelize: Sequelize) => {
         as: 'prevCourse',
         sourceKey: 'id',
       });
+      this.belongsTo(models.knowledge_blocks, {
+        foreignKey: 'knowledgeBlockId',
+        targetKey: 'onChainId',
+        as: 'knowledgeBlock',
+      });
     }
   }
   Courses.init(

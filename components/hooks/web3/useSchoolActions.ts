@@ -6,8 +6,8 @@ import { Course, Class, RegisterTime } from '@_types/school';
 import { HookFactoryWithoutSWR } from '@_types/hooks';
 import { parseTimeStamp } from 'utils';
 import { useApi } from '@hooks/common';
-import { formatRegisterTime } from './formatter';
-import { addClassCreatedEvent } from 'components/events/courses';
+import { formatClassResponse, formatRegisterTime } from './formatter';
+import { addClassCreatedEvent } from 'components/events';
 
 type CreateCourseFunc = {
   (params: {
@@ -27,8 +27,7 @@ type CreateClassFunc = {
       semesterId: number;
       registerClassFee: string;
     };
-    onSuccess?: () => {};
-    onError?: (error: Error) => {};
+    onSuccess: (tokenId: number) => void;
   }): Promise<void>;
 };
 
@@ -48,12 +47,17 @@ type GetRegisterFeeClassByIdFunc = {
   (tokenId: number): Promise<number>;
 };
 
+type GetClassByIdFunc = {
+  (classId: number): Promise<Class>;
+};
+
 type UseSchoolActionsReturnTypes = {
   createCourse: CreateCourseFunc;
   createClass: CreateClassFunc;
   getRegisterTime: GetRegisterTimeFunc;
   editRegisterTime: EditRegisterTimeFunc;
   getRegisterFeeClassById: GetRegisterFeeClassByIdFunc;
+  getClassById: GetClassByIdFunc;
 };
 type PromiseHandlerFunc = (params: {
   onSuccess?: (params: any) => {};
@@ -74,11 +78,12 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
 
   const createCourse: CreateCourseFunc = useCallback(
     async ({ data, onSuccess, onError }) => {
-      const { credits, knowledgeBlockId, uri, prevCourseId } = data;
-      const promise = _contracts.nftSchool?.createCourse(
+      const { credits, knowledgeBlockId, uri, courseCode, prevCourseId } = data;
+      const promise = _contracts.school?.createCourse(
         prevCourseId,
         knowledgeBlockId,
         credits,
+        courseCode,
         uri
       );
       await promiseHandler({
@@ -88,7 +93,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
         onError,
         promise,
       });
-      const id = await _contracts.nftSchool?.getCourseIdByURI(uri);
+      const id = await _contracts.school?.getCourseIdByURI(uri);
 
       return id.toNumber();
     },
@@ -96,7 +101,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
   );
 
   const createClass: CreateClassFunc = useCallback(
-    async ({ data, onSuccess, onError }) => {
+    async ({ data, onSuccess }) => {
       if (_contracts) {
         const {
           courseId,
@@ -107,7 +112,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
           registerClassFee,
           uri,
         } = data;
-        const promise = _contracts.nftSchool?.createClass(
+        const promise = _contracts.school?.createClass(
           courseId,
           parseTimeStamp(completeAt),
           maxSize,
@@ -119,20 +124,18 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
         await promiseHandler({
           successMsg: `Success to create class`,
           errorMsg: `Fail to grant NFT`,
-          onSuccess,
-          onError,
           promise,
         });
 
-        addClassCreatedEvent(deps as any);
+        addClassCreatedEvent(deps as any, onSuccess);
       }
     },
-    [_contracts]
+    [_contracts, deps]
   );
 
-  const getRegisterTime = useApi(
+  const getRegisterTime: GetRegisterTimeFunc = useApi(
     async (semesterId) => {
-      const registerTimeResponse = await contracts!.nftSchool.getRegisterTime(
+      const registerTimeResponse = await contracts!.school.getRegisterTime(
         semesterId
       );
 
@@ -141,12 +144,12 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
     [contracts]
   );
 
-  const editRegisterTime = useApi(
+  const editRegisterTime: EditRegisterTimeFunc = useApi(
     async (semesterId, registeredStartAt, registeredEndAt) => {
-      const updater = contracts!.nftSchool.updateRegisteredTime(
+      const updater = contracts!.school.updateRegisteredTime(
         semesterId,
-        parseTimeStamp(registeredStartAt),
-        parseTimeStamp(registeredEndAt)
+        parseTimeStamp(registeredStartAt as string),
+        parseTimeStamp(registeredEndAt as string)
       );
 
       await promiseHandler({
@@ -160,11 +163,17 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
   const getRegisterFeeClassById: GetRegisterFeeClassByIdFunc = async (
     tokenId
   ) => {
-    const registerClassFee = await _contracts.nftSchool.getRegisterFeeClassById(
+    const registerClassFee = await _contracts.school.getRegisterFeeClassById(
       tokenId
     );
 
     return parseFloat(ethers.utils.formatEther(registerClassFee));
+  };
+
+  const getClassById: GetClassByIdFunc = async (classId) => {
+    const classInfo = await _contracts.school.getClassById(classId);
+
+    return formatClassResponse(classInfo);
   };
 
   const promiseHandler: PromiseHandlerFunc = async ({
@@ -190,5 +199,6 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
     getRegisterTime,
     editRegisterTime,
     getRegisterFeeClassById,
+    getClassById,
   };
 };

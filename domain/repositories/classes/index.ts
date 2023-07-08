@@ -1,8 +1,5 @@
 import { Transaction } from 'sequelize';
-import {
-  ClassEntity,
-  NftClassRegistrationEntity,
-} from '@_types/models/entities';
+import { ClassEntity } from '@_types/models/entities';
 import { ClassQuery } from '@_types/api/class';
 import db from 'models';
 import { withTransaction, generateCondition } from '@api/utils';
@@ -33,16 +30,23 @@ export const getAll = (query?: ClassQuery, transaction?: Transaction) => {
           },
         ],
       },
+      {
+        model: db.knowledge_blocks,
+        as: 'knowledgeBlock',
+      },
     ],
   });
 };
 
-export const get = (query?: ClassQuery, transaction?: Transaction) => {
+export const get = async (
+  query?: ClassQuery,
+  transaction?: Transaction
+): Promise<ClassEntity> => {
   const condition = generateCondition(query, {
     $equal: ['onChainId', 'semesterId'],
   });
 
-  return db.classes.findOne({
+  const result = await db.classes.findOne({
     where: condition,
     transaction,
     include: [
@@ -59,8 +63,14 @@ export const get = (query?: ClassQuery, transaction?: Transaction) => {
       {
         model: db.semesters,
       },
+      {
+        model: db.knowledge_blocks,
+        as: 'knowledgeBlock',
+      },
     ],
   });
+
+  return result?.get();
 };
 
 export const insert = async (_class: Partial<ClassEntity>, t?: Transaction) =>
@@ -92,7 +102,7 @@ export const upsert = async (_class: Partial<ClassEntity>, t?: Transaction) =>
     if (!currentClass) {
       await insert(_class, transaction);
     } else {
-      await update({ id: currentClass.get().id, ..._class }, transaction);
+      await update({ id: currentClass.id, ..._class }, transaction);
     }
 
     return get({ onChainId }, transaction);

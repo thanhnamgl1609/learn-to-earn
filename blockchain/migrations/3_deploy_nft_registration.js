@@ -1,6 +1,6 @@
 const ArrayMath = artifacts.require('ArrayMath');
 const NftClassRegistration = artifacts.require('NftClassRegistration');
-const NftSchool = artifacts.require('NftSchool');
+const School = artifacts.require('School');
 const NftIdentities = artifacts.require('NftIdentities');
 
 module.exports = function (deployer) {
@@ -9,6 +9,6 @@ module.exports = function (deployer) {
   deployer.deploy(
     NftClassRegistration,
     NftIdentities.address,
-    NftSchool.address
+    School.address
   );
 };

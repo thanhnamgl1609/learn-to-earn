@@ -64,6 +64,12 @@ module.exports = {
           type: Sequelize.DATE,
           allowNull: false,
         },
+        registerDate: {
+          type: Sequelize.DATE,
+        },
+        approveDate: {
+          type: Sequelize.DATE,
+        },
         registerURI: {
           type: Sequelize.STRING,
           defaultValue: '',
@@ -86,6 +92,7 @@ module.exports = {
         collate: 'utf8_unicode_ci',
       }
     );
+    await queryInterface.addIndex(tableName, ['tokenId']);
   },
 
   async down(queryInterface) {

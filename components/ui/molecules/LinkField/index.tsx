@@ -2,15 +2,11 @@ import { LinkBox } from '@atoms';
 import Link, { LinkProps } from 'next/link';
 import { memo, AnchorHTMLAttributes } from 'react';
 
-type Option = {
-  label: string;
-  value: string | number;
-};
-
 type Props = {
   label: string;
   containerClassName?: string;
   text: string;
+  theme?: 'main' | 'sub' | 'disabled';
 } & LinkProps &
   AnchorHTMLAttributes<HTMLAnchorElement>;
 

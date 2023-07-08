@@ -76,6 +76,23 @@ const PageManage: NextPage = () => {
         },
       ],
     },
+    {
+      header: 'TỐT NGHIỆP',
+      links: [
+        {
+          url: Routes.graduationCondition.name,
+          label: 'Điều kiện tốt nghiệp',
+        },
+        {
+          url: Routes.requestGraduationList.name,
+          label: 'Danh sách yêu cầu tốt nghiệp',
+        },
+        {
+          url: Routes.graduationList.name,
+          label: 'Danh sách sinh viên đã tốt nghiệp',
+        },
+      ],
+    },
   ];
 
   return (

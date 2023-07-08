@@ -7,12 +7,8 @@ import REQUEST_CONST from '@config/request.json';
 import PINATA_CONST from '@config/pinata.json';
 import addressCheckMiddleware from './middleware/address-check';
 import { withSession, pinataApiKey, pinataSecretApiKey } from './utils';
-import {
-  APPLY_VALIDATOR,
-  CREATE_CLASS_META,
-  CREATE_COURSE_META,
-} from '@validators/schemas';
-import { request } from 'utils';
+import { APPLY_VALIDATOR, CREATE_COURSE_META } from '@validators/schemas';
+import { request, today } from 'utils';
 import { logger } from 'utils';
 import { z } from 'zod';
 import { usersRepo } from 'domain/repositories';
@@ -79,9 +75,15 @@ const validate = async (target?: string, data?: Record<string, any>) => {
     case UPLOAD_TARGET.CREATE_CLASS:
       return { pinataContent: data };
     case UPLOAD_TARGET.REGISTER_CLASS:
-      return { pinataContent: data };
+      return validateRegisterClass(data);
     case UPLOAD_TARGET.APPLY_REGISTRATION:
       return validateApplyRegistration(data);
+    case UPLOAD_TARGET.GRANT_NFT_COMPLETE_COURSE:
+      return validateGrantNftCompleteCourse(data);
+    case UPLOAD_TARGET.REQUEST_NFT_GRADUATION:
+      return validateRequestGraduation(data);
+    case UPLOAD_TARGET.GRANT_NFT_GRADUATION:
+      return validateGrantNftGraduation(data);
     default:
       return null;
   }
@@ -90,36 +92,110 @@ const validate = async (target?: string, data?: Record<string, any>) => {
 const validateRegistration = (rawData?: Record<string, any>) => {
   if (!rawData) return { pinataContent: null };
   const { role, ...data } = rawData;
+  const registerDate = today();
 
   switch (role) {
     case ROLES.TEACHER:
     case ROLES.STUDENT:
-      return validateForm(APPLY_VALIDATOR, data);
+      return validateForm(APPLY_VALIDATOR, data, { registerDate });
     default:
       return { pinataContent: null };
   }
 };
 
-const validateForm = (validator: z.ZodType, data: Record<string, any>) => {
+const validateGrantNftCompleteCourse = async (
+  rawData?: Record<string, any>
+) => {
+  if (!rawData) return { pinataContent: null };
+  const grantDate = today();
+  const pinataContent = {
+    ...rawData,
+    grantDate,
+  };
+
+  return {
+    pinataContent,
+    meta: {
+      grantDate,
+    },
+  };
+};
+
+const validateRequestGraduation = async (rawData?: Record<string, any>) => {
+  if (!rawData) return { pinataContent: null };
+  const requestDate = today();
+  const pinataContent = {
+    ...rawData,
+    requestDate,
+  };
+
+  return {
+    pinataContent,
+    meta: {
+      requestDate,
+    },
+  };
+};
+
+const validateGrantNftGraduation = async (rawData?: Record<string, any>) => {
+  if (!rawData) return { pinataContent: null };
+  const grantDate = today();
+  const pinataContent = {
+    ...rawData,
+    grantDate,
+  };
+
+  return {
+    pinataContent,
+    meta: {
+      grantDate,
+    },
+  };
+};
+
+const validateForm = (
+  validator: z.ZodType,
+  data: Record<string, any>,
+  mergedData: Record<string, any> = {}
+) => {
   try {
-    return { pinataContent: validator.parse(data) };
+    const result = validator.parse(data);
+    return { pinataContent: { ...result, ...mergedData } };
   } catch (e) {
     logger(e instanceof z.ZodError ? e.issues : e.message);
-    return null;
+    return { pinataContent: null };
   }
 };
 
 const validateApplyRegistration = async (rawData?: Record<string, any>) => {
   const { role, ...data } = rawData;
   const memberCode = await usersRepo.getMemberCode(role);
+  const approveDate = today();
 
   return {
     pinataContent: {
       ...data,
+      approveDate,
       memberCode: memberCode,
     },
     meta: {
+      approveDate,
       memberCode,
+    },
+  };
+};
+
+const validateRegisterClass = async (rawData?: Record<string, any>) => {
+  const { role, ...data } = rawData;
+  const registerDate = today();
+
+  return {
+    pinataContent: {
+      ...data,
+      registerDate,
+    },
+    meta: {
+      registerDate,
     },
   };
 };

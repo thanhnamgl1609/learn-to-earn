@@ -1,3 +1,4 @@
+export { useInitializeApp } from './useInitializeApp';
 export { useUploadFile } from './useUploadFile';
 export { useRegisterNftIdentity } from './useRegisterNftIdentity';
 export { useGrantNftIdentity } from './useGrantNftIdentity';
@@ -9,3 +10,11 @@ export { useCreateClass } from './useCreateClass';
 export { useRegisterClass } from './useRegisterClass';
 export { useAuthRequest } from './useAuthRequest';
 export { useKnowledgeBlocks } from './useKnowledgeBlocks';
+export { useRequestCompleteCourseCertificate } from './useRequestCompleteCourseCertificate';
+export { useGrantNftCompleteCourse } from './useGrantNftCompleteCourse';
+export { usePromiseHandler } from './usePromiseHandler';
+export { useGrantNftGraduation } from './useGrantNftGraduation';
+export { useRequestGraduationCertificate } from './useRequestGraduationCertificate';
+export { useRequestGraduationPrice } from './useRequestGraduationPrice';
+export { useUpdateScore } from './useUpdateScore';
+export { useExchangeNftCompleteCourse } from './useExchangeNftCompleteCourse';

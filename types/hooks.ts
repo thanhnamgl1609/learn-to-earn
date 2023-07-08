@@ -3,16 +3,18 @@ import { providers } from 'ethers';
 import { SWRResponse } from 'swr';
 import {
   NftIdentities,
-  NftSchool,
-  NftCertificates,
+  School,
+  NftCompleteCourses,
   NftClassRegistration,
+  NftGraduation,
 } from './contracts';
 
 export type ContractLists = {
   nftIdentities: NftIdentities;
-  nftSchool: NftSchool;
-  nftCertificates: NftCertificates;
+  school: School;
   nftClassRegistration: NftClassRegistration;
+  nftCompleteCourses: NftCompleteCourses;
+  nftGraduation: NftGraduation;
 };
 
 export type Web3Dependencies = {

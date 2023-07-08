@@ -23,6 +23,10 @@ export const getAll = (query?: CourseQuery, transaction?: Transaction) => {
         model: db.courses,
         as: 'prevCourse',
       },
+      {
+        model: db.knowledge_blocks,
+        as: 'knowledgeBlock'
+      },
     ],
     transaction,
   });
@@ -39,6 +43,10 @@ export const get = (query?: CourseQuery, transaction?: Transaction) => {
       {
         model: db.courses,
         as: 'prevCourse',
+      },
+      {
+        model: db.knowledge_blocks,
+        as: 'knowledgeBlock',
       },
     ],
     transaction,

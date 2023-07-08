@@ -4,6 +4,7 @@ import { NftClassRegistrationEntity } from '@_types/models/entities';
 import { Box, InputField, LinkField } from '@molecules';
 import { Heading } from '@atoms';
 import { Modal } from '../BaseModal';
+import { classEntity } from 'domain/models';
 
 type Props = {
   nftClassRegistration: NftClassRegistrationEntity | null;
@@ -44,6 +45,11 @@ export const NftClassRegistrationDetailModal: FC<Props> = memo(
           <InputField
             label="Tên sinh viên"
             value={nftClassRegistration.student.fullName}
+            readOnly
+          />
+          <InputField
+            label="Giá NFT"
+            value={classEntity.displayRegisterFee(nftClassRegistration.registerFee)}
             readOnly
           />
           <LinkField

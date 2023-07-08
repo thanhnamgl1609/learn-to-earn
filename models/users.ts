@@ -4,6 +4,11 @@ import { Sequelize, DataTypes } from 'sequelize';
 export default (sequelize: Sequelize) => {
   class Users extends DBModel {
     static associate(models: DB) {
+      this.hasOne(models.nft_graduations, {
+        foreignKey: 'studentTokenId',
+        sourceKey: 'tokenId',
+        as: 'nftGraduation',
+      })
       this.hasMany(models.user_documents, {
         foreignKey: 'userId',
         as: 'documentURIs',
@@ -31,7 +36,10 @@ export default (sequelize: Sequelize) => {
       status: DataTypes.INTEGER,
       registerAddress: DataTypes.STRING,
       expiredAt: DataTypes.DATE,
+      registerDate: DataTypes.DATE,
+      approveDate: DataTypes.DATE,
       chainURI: DataTypes.STRING,
+      registerURI: DataTypes.STRING,
     },
     {
       sequelize,
