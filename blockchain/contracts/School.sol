@@ -17,14 +17,11 @@ contract School is ISchool, IdentityGenerator {
 
     uint256 constant NFT_COURSE_REGISTRATION_ID = 0;
 
-    uint256 public minimumGraduationScore = 500;
-
     string[] private courseURIs;
 
     address private _owner;
 
     INftIdentities private _nftIdentities;
-    INftCompleteCourses private _nftCompleteCourses;
 
     bool public _isInitialize;
 
@@ -68,12 +65,6 @@ contract School is ISchool, IdentityGenerator {
                 )
             );
         }
-    }
-
-    function initialize(address nftCertificates) public onlyOwner {
-        require(!_isInitialize);
-        _isInitialize = true;
-        _nftCompleteCourses = INftCompleteCourses(nftCertificates);
     }
 
     // Knowledge Block: Start

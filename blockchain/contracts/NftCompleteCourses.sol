@@ -14,12 +14,8 @@ contract NftCompleteCourses is ERC1155BaseContract, INftCompleteCourses {
     using Counters for Counters.Counter;
     using ArrayMath for uint256[];
     uint256 constant NFT_COMPLETE_COURSE = 1;
-    uint256 constant NFT_GRADUATION = 2;
 
     uint256 public graduationPrice = 1 ether;
-
-    string[] private courseURIs;
-    uint256 private _requiredAvgScore = 5 ether;
 
     bool private _isInitialize;
 
@@ -27,10 +23,6 @@ contract NftCompleteCourses is ERC1155BaseContract, INftCompleteCourses {
     ISchool private immutable _school;
     INftClassRegistration private immutable _nftClassRegistration;
     INftGraduation private _nftGraduation;
-
-    uint256 public registeredStartAt;
-    uint256 public registeredEndAt;
-    uint256 public yearId;
 
     NftCompleteCourse[] private _allNftCompleteCourses;
     mapping(uint256 => mapping(uint256 => uint256)) _posOfTokenIdOfNftType;
@@ -41,12 +33,8 @@ contract NftCompleteCourses is ERC1155BaseContract, INftCompleteCourses {
     mapping(uint256 => mapping(uint256 => uint256))
         private _posOfOwnedCompleteCourseNft;
 
-    mapping(uint256 => uint256[]) _nftCompleteCourseQueue;
-    mapping(uint256 => mapping(uint256 => uint256)) _posOfStudentInQueue;
-
     mapping(uint256 => mapping(uint256 => bool))
         private _completedCoursesOfStudent;
-    mapping(address => uint256) private _studentOwnedNftGraduation;
 
     event NewCompleteCourseCreated(uint256 tokenId);
 
@@ -117,10 +105,49 @@ contract NftCompleteCourses is ERC1155BaseContract, INftCompleteCourses {
         return (_allNftCompleteCourses[pos - 1], uri(tokenId));
     }
 
-    function getNftCompleteCourseCreationQueueByClassId(
-        uint256 classId
-    ) public view returns (uint256[] memory) {
-        return _nftCompleteCourseQueue[classId];
+    function checkCompleteCourse(
+        uint256 courseId,
+        address studentAddr
+    ) public view returns (bool) {
+        uint256 studentTokenId = _nftIdentities
+            .getNftOfMemberWithRole(uint256(ROLE.STUDENT), studentAddr)
+            .nftIdentity
+            .tokenId;
+        return _completedCoursesOfStudent[studentTokenId][courseId];
+    }
+
+    function checkApproveOwnerForAllNft() public view returns (bool) {
+        return isApprovedForAll(msg.sender, _owner);
+    }
+
+    function checkApprovedForAll(
+        address sender,
+        address owner
+    ) public view returns (bool) {
+        return isApprovedForAll(sender, owner);
+    }
+
+    function approveOwnerForAllNft(bool approved) public {
+        setApprovalForAll(_owner, approved);
+    }
+
+    function regainNftCompleteCourses(uint256 studentTokenId) public onlyOwner {
+        address studentAddr = _nftIdentities.ownerOf(studentTokenId);
+        require(
+            checkApprovedForAll(studentAddr, _owner),
+            "not approved by student"
+        );
+        uint256[] memory tokenIds = _nftGraduation
+            .getNftCompleteCourseForRequestGraduation(studentTokenId);
+        uint256 count = tokenIds.length;
+        uint256[] memory amounts = new uint256[](count);
+
+        for (uint256 idx; idx < count; ++idx) {
+            amounts[idx] = 1;
+        }
+
+        _burnBatch(studentAddr, tokenIds, amounts);
+        _removeFromAllNftCompleteCourses(studentTokenId, tokenIds);
     }
 
     function exchangeNftCompleteCourse(
@@ -152,6 +179,22 @@ contract NftCompleteCourses is ERC1155BaseContract, INftCompleteCourses {
         emit NewCompleteCourseCreated(tokenId);
     }
 
+    function checkAllNftCompleteCoursesRegained(
+        uint256[] memory tokenIds
+    ) public view returns (bool) {
+        uint256 count = tokenIds.length;
+
+        for (uint256 idx; idx < count; ++idx) {
+            if (
+                _posOfTokenIdOfNftType[NFT_COMPLETE_COURSE][tokenIds[idx]] > 0
+            ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     function _createNftCompleteCourse(
         uint256 tokenId,
         uint256 studentTokenId,
@@ -170,51 +213,6 @@ contract NftCompleteCourses is ERC1155BaseContract, INftCompleteCourses {
         _posOfTokenIdOfNftType[NFT_COMPLETE_COURSE][
             tokenId
         ] = _allNftCompleteCourses.length;
-    }
-
-    function checkCompleteCourse(
-        uint256 courseId,
-        address studentAddr
-    ) public view returns (bool) {
-        uint256 studentTokenId = _nftIdentities
-            .getNftOfMemberWithRole(uint256(ROLE.STUDENT), studentAddr)
-            .nftIdentity
-            .tokenId;
-        return _completedCoursesOfStudent[studentTokenId][courseId];
-    }
-
-    function approveOwnerForAllNft(bool approved) public {
-        setApprovalForAll(_owner, approved);
-    }
-
-    function checkApproveOwnerForAllNft() public view returns (bool) {
-        return isApprovedForAll(msg.sender, _owner);
-    }
-
-    function checkApprovedForAll(
-        address sender,
-        address owner
-    ) public view returns (bool) {
-        return isApprovedForAll(sender, owner);
-    }
-
-    function regainNftCompleteCourses(uint256 studentTokenId) public onlyOwner {
-        address studentAddr = _nftIdentities.ownerOf(studentTokenId);
-        require(
-            checkApprovedForAll(studentAddr, _owner),
-            "not approved by student"
-        );
-        uint256[] memory tokenIds = _nftGraduation
-            .getNftCompleteCourseForRequestGraduation(studentTokenId);
-        uint256 count = tokenIds.length;
-        uint256[] memory amounts = new uint256[](count);
-
-        for (uint256 idx; idx < count; ++idx) {
-            amounts[idx] = 1;
-        }
-
-        _burnBatch(studentAddr, tokenIds, amounts);
-        _removeFromAllNftCompleteCourses(studentTokenId, tokenIds);
     }
 
     function _removeFromAllNftCompleteCourses(
@@ -273,21 +271,5 @@ contract NftCompleteCourses is ERC1155BaseContract, INftCompleteCourses {
             delete _posOfTokenIdOfNftType[NFT_COMPLETE_COURSE][tokenIds[idx]];
             _allNftCompleteCourses.pop();
         }
-    }
-
-    function checkAllNftCompleteCoursesRegained(
-        uint256[] memory tokenIds
-    ) public view returns (bool) {
-        uint256 count = tokenIds.length;
-
-        for (uint256 idx; idx < count; ++idx) {
-            if (
-                _posOfTokenIdOfNftType[NFT_COMPLETE_COURSE][tokenIds[idx]] > 0
-            ) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }
