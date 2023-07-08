@@ -11,17 +11,16 @@ import { Box, InputField } from '@molecules';
 import { Table } from '@organisms';
 import { Button, Heading, LinkBox } from '@atoms';
 import { formatDate, cls } from 'utils';
-import { useAppDispatch, useAppSelector } from '@hooks/stores';
-import { openConfirmModal } from '@store/appSlice';
+import { useAppSelector } from '@hooks/stores';
 import {
   useNftCompleteCourseListGroupApi,
   useNftRegistrationClassListApi,
 } from '@hooks/api/classes';
 import { NftClassRegistrationDetailModal } from '@templates/Modal';
 import { useModalController } from '@hooks/ui';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { selectCurrentNftIdentity, selectUserDetail } from '@store/userSlice';
-import { useRequestCompleteCourseCertificate } from '@hooks/common';
+import { useExchangeNftCompleteCourse } from '@hooks/common';
 import { knowledgeBlockEntity } from 'domain/models';
 import { useRequestGraduationStatus } from '@hooks/api';
 
@@ -73,33 +72,14 @@ const classTableHeaders = [
   {
     name: 'Hành động',
     custom: ({ item, onOpenNftModal }: ClassColumnProps) => {
-      const dispatch = useAppDispatch();
-      const requestCompleteCourseCertificate =
-        useRequestCompleteCourseCertificate();
-
-      const onRequestCompleteCourseCertificate = () => {
-        dispatch(
-          openConfirmModal({
-            type: 'warning',
-            header: 'Chú ý',
-            content: (
-              <>
-                <p>
-                  Hãy chắc chắn bạn đã hoàn tất khóa học trước khi yêu cầu chứng
-                  chỉ!
-                </p>
-                <p>
-                  Thao tác này sẽ thu hồi NFT đăng ký môn học và đổi thành NFT
-                  hoàn tất khóa học khi giảng viên đã kiểm chứng!
-                </p>
-              </>
-            ),
-            onAccept: () => requestCompleteCourseCertificate(item),
-          })
-        );
-      };
+      const exchangeNftCompleteCourse = useExchangeNftCompleteCourse();
+      const onExchangeNftCompleteCourse = useCallback(
+        () => exchangeNftCompleteCourse(item),
+        [item]
+      );
 
       const openModal = () => onOpenNftModal(item);
+      const disabledText = 'Không đủ điểm';
 
       return (
         <div className="flex flex-col gap-[8px]">
@@ -107,17 +87,17 @@ const classTableHeaders = [
             Xem NFT
           </Button>
 
-          <Button
-            onClick={onRequestCompleteCourseCertificate}
-            className="bg-indigo-900 px-2 py-1 text-white rounded-[4px]  w-[120px]"
-            disabled={item.isApprovedSent || item.isRegained}
-            disabledTag={
-              item.isApprovedSent ? 'Đã gửi yêu cầu' : 'Đang xử lý...'
-            }
-            customTagClassName="min-w-[120px] px-2 py-1"
-          >
-            Yều cầu cấp chứng chỉ
-          </Button>
+          {(item.score || item.score === 0) && (
+            <Button
+              onClick={onExchangeNftCompleteCourse}
+              className="bg-indigo-900 px-2 py-1 text-white rounded-[4px]  w-[120px]"
+              customTagClassName="min-w-[120px] px-2 py-1"
+              disabled={!item.isExchangeable}
+              disabledTag={disabledText}
+            >
+              Đổi chứng chỉ
+            </Button>
+          )}
         </div>
       );
     },
@@ -127,15 +107,10 @@ const classTableHeaders = [
 export const StudentProfile = () => {
   const detail = useAppSelector(selectUserDetail);
   const { tokenId } = useAppSelector(selectCurrentNftIdentity);
-  const { data: registeredClasses = [] } = useNftRegistrationClassListApi(
-    {
-      tokenId,
-      isRegained: 0,
-    },
-    {
-      withApproveSent: true,
-    }
-  );
+  const { data: registeredClasses = [] } = useNftRegistrationClassListApi({
+    tokenId,
+    isRegained: 0,
+  });
   const {
     data: knowledgeBlocks = knowledgeBlockEntity.createDefaultKnowledgeBlockList(),
   } = useNftCompleteCourseListGroupApi({

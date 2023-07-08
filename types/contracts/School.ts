@@ -8,10 +8,10 @@ import {
 import { EthersContractContextV5 } from 'ethereum-abi-types-generator';
 
 export type ContractContext = EthersContractContextV5<
-  NftSchool,
-  NftSchoolMethodNames,
-  NftSchoolEventsContext,
-  NftSchoolEvents
+  School,
+  SchoolMethodNames,
+  SchoolEventsContext,
+  SchoolEvents
 >;
 
 export declare type EventFilter = {
@@ -54,11 +54,11 @@ export interface ContractCallOverrides {
    */
   gasLimit?: number;
 }
-export type NftSchoolEvents = 'NewClassCreated';
-export interface NftSchoolEventsContext {
+export type SchoolEvents = 'NewClassCreated';
+export interface SchoolEventsContext {
   NewClassCreated(...parameters: any): EventFilter;
 }
-export type NftSchoolMethodNames =
+export type SchoolMethodNames =
   | 'new'
   | '_isInitialize'
   | 'minimumGraduationScore'
@@ -132,7 +132,7 @@ export interface ClassResponse {
   uri: string;
   10: string;
 }
-export interface NftSchool {
+export interface School {
   /**
    * Payable: false
    * Constant: false

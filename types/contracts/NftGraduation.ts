@@ -88,7 +88,6 @@ export type NftGraduationMethodNames =
   | 'getNftGraduation'
   | 'getOwnedNftGraduation'
   | 'getAllGraduations'
-  | 'requestGraduationCertificate'
   | 'grantNftGraduation';
 export interface ApprovalEventEmittedResponse {
   owner: string;
@@ -128,12 +127,12 @@ export interface NftGraduation {
    * StateMutability: nonpayable
    * Type: constructor
    * @param nftIdentities Type: address, Indexed: false
-   * @param nftSchool Type: address, Indexed: false
+   * @param school Type: address, Indexed: false
    * @param nftCertificates Type: address, Indexed: false
    */
   'new'(
     nftIdentities: string,
-    nftSchool: string,
+    school: string,
     nftCertificates: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
@@ -372,19 +371,6 @@ export interface NftGraduation {
   getAllGraduations(
     overrides?: ContractCallOverrides
   ): Promise<NftgraduationResponse[]>;
-  /**
-   * Payable: true
-   * Constant: false
-   * StateMutability: payable
-   * Type: function
-   * @param nftCompleteCourseTokenIds Type: uint256[], Indexed: false
-   * @param uri Type: string, Indexed: false
-   */
-  requestGraduationCertificate(
-    nftCompleteCourseTokenIds: BigNumberish[],
-    uri: string,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
   /**
    * Payable: false
    * Constant: false

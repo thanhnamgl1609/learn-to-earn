@@ -23,10 +23,10 @@ export const hookFactory: CourseDetailHookFactory =
   ({ contracts }) =>
   ({ id }) => {
     const getCourseDetail = useApi(async () => {
-      const course = await contracts!.nftSchool.getCourseById(id);
+      const course = await contracts!.school.getCourseById(id);
       const result = await formatCourse(course);
       if (result.prevCourseId) {
-        const prevCourse = await contracts!.nftSchool.getCourseById(
+        const prevCourse = await contracts!.school.getCourseById(
           result.prevCourseId
         );
         result.prevCourse = await formatCourse(prevCourse);

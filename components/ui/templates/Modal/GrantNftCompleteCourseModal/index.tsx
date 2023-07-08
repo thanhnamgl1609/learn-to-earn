@@ -37,13 +37,7 @@ export const GrantNftCompleteCourseModal: FC<Props> = memo(
         isOpen={isOpen}
         onClose={onClose}
       >
-        <Form
-          onSubmit={onSubmit}
-          submitText="Cấp NFT"
-          disabled={
-            nftClassRegistration.isRegained && !nftClassRegistration.isInQueue
-          }
-        >
+        <Form onSubmit={onSubmit} submitText="Cấp NFT" disabled>
           <InputField
             label="Mã môn học"
             value={nftClassRegistration.class.course.onChainId}

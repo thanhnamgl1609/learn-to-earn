@@ -1,10 +1,10 @@
-const NftSchool = artifacts.require('NftSchool');
+const School = artifacts.require('School');
 const ethers = require('ethers');
 const { OWNER } = require('./data');
 const { parseTimestamp, addHours } = require('./utils');
 
 module.exports = async (callback) => {
-  const [nftSchool] = await Promise.all([NftSchool.deployed()]);
+  const [school] = await Promise.all([School.deployed()]);
   for (const {
     courseId,
     completeAt,
@@ -14,7 +14,7 @@ module.exports = async (callback) => {
     registerFee,
     uri,
   } of classesList) {
-    await nftSchool.createClass(
+    await school.createClass(
       courseId,
       completeAt,
       maxSize,
@@ -28,7 +28,7 @@ module.exports = async (callback) => {
     );
   }
   for (const { semesterId, registerEndAt, registerStartAt } of registerTime) {
-    await nftSchool.updateRegisteredTime(
+    await school.updateRegisteredTime(
       semesterId,
       registerStartAt,
       registerEndAt,

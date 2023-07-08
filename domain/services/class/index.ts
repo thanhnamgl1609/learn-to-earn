@@ -27,7 +27,7 @@ export const getAssignedClasses = async (teacherTokenId: number) => {
 };
 
 export const upsertFromContract = async ({ classId }: { classId: number }) => {
-  const contractClassResponse = await contract.nftSchool.getClassById(classId);
+  const contractClassResponse = await contract.school.getClassById(classId);
   const {
     completeAt,
     credits,

@@ -90,7 +90,6 @@ interface IConstant {
         uint256 courseId;
         uint256 knowledgeBlockId;
         uint256 credits;
-        uint256 avgScore; // * 100 to keep 2 digits after comma
     }
 
     struct NftGraduation {

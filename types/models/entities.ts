@@ -86,6 +86,9 @@ export type NftClassRegistrationEntity = {
   chainURI: string;
   registerDate: Date;
   registerFee: number;
+  isExchangeable: number;
+  isRegained: number;
+  score: number;
 
   class?: ClassEntity;
   student?: UserEntity;

@@ -1,4 +1,4 @@
-import { GetRegisterTimeResponse } from '@_types/contracts/NftSchool';
+import { GetRegisterTimeResponse } from '@_types/contracts/School';
 import { RegisterTime } from '@_types/school';
 import { parseBigNumberFields, parseDate } from 'utils';
 

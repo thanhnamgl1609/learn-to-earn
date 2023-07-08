@@ -24,8 +24,8 @@ export const hookFactory: ClassListHookFactory =
   ({ semester } = { semester: 0 }) => {
     const getAllClassCaller = useApi(async () => {
       const caller = semester
-        ? contracts!.nftSchool.getClassBySemester(semester)
-        : contracts.nftSchool.getAllClasses();
+        ? contracts!.school.getClassBySemester(semester)
+        : contracts.school.getAllClasses();
       const classes = await caller;
       const result = await formatClassResponses(classes);
 

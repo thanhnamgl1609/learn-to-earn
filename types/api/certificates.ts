@@ -3,11 +3,26 @@ import {
   NftCompleteCourseEntity,
 } from '@_types/models/entities';
 
+// export type ExchangeNftCompleteCourseParams = {
+//   studentTokenId: number;
+//   avgScore: number;
+//   classId: number;
+//   tokenURI: string;
+// };
+
 export type GrantNftCompleteCourseParams = {
   studentTokenId: number;
   avgScore: number;
   classId: number;
   tokenURI: string;
+};
+
+export type ExchangeNftCompleteCourseBodyData = {
+  nftClassRegistrationTokenId: number;
+  tokenId: number;
+  studentTokenId: number;
+  tokenURI: string;
+  grantDate: Date;
 };
 
 export type CreatedNftCompleteCourse = {
@@ -73,3 +88,9 @@ export type RequestGraduationQuery = {
 };
 
 export type RequestGraduationListQuery = {};
+
+export type UpdateScoreForNftClassRegistrationBodyData = {
+  score: number;
+  tokenId: number;
+  teacherTokenId: number;
+};

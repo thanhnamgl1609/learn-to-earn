@@ -2,13 +2,13 @@
 // Tells the Solidity compiler to compile only from v0.8.13 to v0.9.0
 pragma solidity ^0.8.13;
 
-import "./ERC1155BaseContract.sol";
+import "./base/ERC1155BaseContract.sol";
 import "./utils/IdentityGenerator.sol";
-import "./interfaces/INftSchool.sol";
+import "./interfaces/ISchool.sol";
 import "./interfaces/INftIdentities.sol";
-import "./interfaces/INftCertificates.sol";
+import "./interfaces/INftCompleteCourses.sol";
 
-contract NftSchool is INftSchool, IdentityGenerator {
+contract School is ISchool, IdentityGenerator {
     using Counters for Counters.Counter;
 
     uint256 constant COURSE_ID = 1;
@@ -24,7 +24,7 @@ contract NftSchool is INftSchool, IdentityGenerator {
     address private _owner;
 
     INftIdentities private _nftIdentities;
-    INftCertificates private _nftCertificates;
+    INftCompleteCourses private _nftCompleteCourses;
 
     bool public _isInitialize;
 
@@ -73,7 +73,7 @@ contract NftSchool is INftSchool, IdentityGenerator {
     function initialize(address nftCertificates) public onlyOwner {
         require(!_isInitialize);
         _isInitialize = true;
-        _nftCertificates = INftCertificates(nftCertificates);
+        _nftCompleteCourses = INftCompleteCourses(nftCertificates);
     }
 
     // Knowledge Block: Start

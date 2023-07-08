@@ -16,3 +16,5 @@ export { usePromiseHandler } from './usePromiseHandler';
 export { useGrantNftGraduation } from './useGrantNftGraduation';
 export { useRequestGraduationCertificate } from './useRequestGraduationCertificate';
 export { useRequestGraduationPrice } from './useRequestGraduationPrice';
+export { useUpdateScore } from './useUpdateScore';
+export { useExchangeNftCompleteCourse } from './useExchangeNftCompleteCourse';

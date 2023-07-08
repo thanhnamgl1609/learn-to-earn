@@ -2,7 +2,9 @@
   "UNEXPECTED": "Có lỗi xảy ra",
   "USER_DENIED": "Hủy yêu cầu",
   "NOT_TEACHER": "Không phải giảng viên",
+  "NOT_TEACHER_OF_CLASS": "Không phải giảng viên của lớp",
   "MAPPING": {
     "USER_DENIED": "User denied"
-  }
+  },
+  "UPDATE_ZERO": "Không có gì để cập nhật"
 }

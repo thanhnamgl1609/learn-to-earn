@@ -15,11 +15,11 @@ import {
 import { ethers } from 'ethers';
 import { MetaMaskInpageProvider } from '@metamask/providers';
 import {
-  NftCertificates,
+  NftCompleteCourses,
   NftClassRegistration,
   NftGraduation,
   NftIdentities,
-  NftSchool,
+  School,
 } from '@_types/contracts';
 
 const pageReload = () => window.location.reload();
@@ -50,21 +50,21 @@ const Web3Provider: FC<PropsWithChildren> = ({ children }) => {
 
         const [
           nftIdentities,
-          nftSchool,
-          nftCertificates,
+          school,
+          nftCompleteCourses,
           nftClassRegistration,
           nftGraduation,
         ] = await Promise.all([
           loadSignedContract('NftIdentities', provider),
-          loadSignedContract('NftSchool', provider),
-          loadSignedContract('NftCertificates', provider),
+          loadSignedContract('School', provider),
+          loadSignedContract('NftCompleteCourses', provider),
           loadSignedContract('NftClassRegistration', provider),
           loadSignedContract('NftGraduation', provider),
         ]);
         const contracts = {
           nftIdentities: nftIdentities as unknown as NftIdentities,
-          nftSchool: nftSchool as unknown as NftSchool,
-          nftCertificates: nftCertificates as unknown as NftCertificates,
+          school: school as unknown as School,
+          nftCompleteCourses: nftCompleteCourses as unknown as NftCompleteCourses,
           nftClassRegistration:
             nftClassRegistration as unknown as NftClassRegistration,
           nftGraduation: nftGraduation as unknown as NftGraduation,

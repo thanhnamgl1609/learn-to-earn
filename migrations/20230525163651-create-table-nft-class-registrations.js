@@ -36,6 +36,14 @@ module.exports = {
         chainURI: {
           type: Sequelize.STRING,
         },
+        score: {
+          type: Sequelize.INTEGER,
+          defaultValue: null,
+        },
+        isExchangeable: {
+          type: Sequelize.TINYINT,
+          defaultValue: 0, 
+        },
         createdAt: {
           type: Sequelize.DATE,
           defaultValue: Sequelize.literal('current_timestamp'),

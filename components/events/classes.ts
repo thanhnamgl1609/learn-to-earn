@@ -10,11 +10,11 @@ export const addClassCreatedEvent = (
 ) => {
   const { contracts } = deps;
 
-  contracts.nftSchool.once('NewClassCreated', (res) =>
+  contracts.school.once('NewClassCreated', (res) =>
     callback(res.toNumber())
   );
 };
 
 export const removeEvents = ({ contracts }: Web3Dependencies) => {
-  contracts.nftSchool.removeAllListeners('NewClassCreated');
+  contracts.school.removeAllListeners('NewClassCreated');
 };

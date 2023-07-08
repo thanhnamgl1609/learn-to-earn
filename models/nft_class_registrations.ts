@@ -20,6 +20,8 @@ export default (sequelize: Sequelize) => {
       registerFee: DataTypes.FLOAT,
       tokenId: DataTypes.INTEGER,
       isRegained: DataTypes.TINYINT,
+      score: DataTypes.INTEGER,
+      isExchangeable: DataTypes.TINYINT,
       registerDate: DataTypes.DATE,
       chainURI: DataTypes.STRING,
     },

@@ -3,7 +3,7 @@
 pragma solidity ^0.8.13;
 import "./IConstant.sol";
 
-interface INftSchool is IConstant {
+interface ISchool is IConstant {
     function minimumGraduationScore() external view returns (uint256);
 
     function getAllKnowledgeBlocks()

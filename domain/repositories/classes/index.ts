@@ -111,24 +111,4 @@ export const upsert = async (_class: Partial<ClassEntity>, t?: Transaction) =>
 export const incrementNumberOfStudents = (classId: number) =>
   db.classes.increment({ numberOfStudents: 1 }, { where: { id: classId } });
 
-export const updateRegainedClass = async (
-  classId: number,
-  studentTokenId: number,
-  t?: Transaction
-) =>
-  withTransaction(
-    async (transaction) =>
-      await db.nft_class_registrations.update(
-        { isRegained: 1 },
-        {
-          where: {
-            classId,
-            studentTokenId,
-          },
-          transaction,
-        }
-      ),
-    t
-  );
-
 export * from './register';

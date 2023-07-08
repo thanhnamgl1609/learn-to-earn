@@ -3,34 +3,18 @@ import { formatEther, parseEther } from 'ethers/lib/utils';
 
 import { parseBigNumbers } from 'utils';
 import { HookFactoryWithoutSWR } from '@_types/hooks';
-import { RequestGraduationEntity } from '@_types/models/entities';
 import {
+  ExchangeNftCompleteCourseParams,
   GrantNftGraduationParams,
   RequestGraduationCertificateParams,
   RegainNftCompleteCoursesParams,
+  AllowRequestNftCompleteCourseParams,
 } from '@_types/certificate';
 import { useTransactionHandler } from './common';
 import {
   addNftCompleteCourseCreatedEvent,
   addNftGraduationCreatedEvent,
 } from '@events';
-import { formatRequestGraduations } from './formatter';
-
-type GrantNftCompleteCourse = {
-  (
-    data: {
-      studentTokenId: number;
-      classId: number;
-      tokenURI: string;
-      avgScore: number;
-    },
-    syncDB: (tokenId: number) => Promise<void>
-  ): Promise<void>;
-};
-
-type AddToNftCompleteCourseCreationQueue = {
-  (data: { studentTokenId: number; tokenId: number }): Promise<void>;
-};
 
 type GetRequestGraduationPriceFunc = {
   (): Promise<string>;
@@ -51,8 +35,15 @@ type GrantNftGraduationFunc = {
   ): Promise<void>;
 };
 
-type RequestGraduationCertificateFunc = {
-  (data: RequestGraduationCertificateParams): Promise<void>;
+type AllowRequestNftCompleteCourseFunc = {
+  (data: AllowRequestNftCompleteCourseParams): Promise<void>;
+};
+
+type ExchangeNftCompleteCourseFunc = {
+  (
+    data: ExchangeNftCompleteCourseParams,
+    syncDB: (tokenId: number) => Promise<void>
+  ): Promise<void>;
 };
 
 type RegainNftCompleteCoursesFunc = {
@@ -75,10 +66,9 @@ type UseCertificateActionsReturnTypes = {
   getRequestGraduationPrice: GetRequestGraduationPriceFunc;
   getNftCompleteCourseForRequestGraduation: GetNftCompleteCourseForRequestGraduationFunc;
   getNftCompleteCourseCreationCreationQueue: GetNftCompleteCourseCreationCreationQueue;
-  grantNftCompleteCourse: GrantNftCompleteCourse;
-  addToNftCompleteCourseCreationQueue: AddToNftCompleteCourseCreationQueue;
+  allowRequestNftCompleteCourse: AllowRequestNftCompleteCourseFunc;
+  exchangeNftCompleteCourse: ExchangeNftCompleteCourseFunc;
   grantNftGraduation: GrantNftGraduationFunc;
-  requestGraduationCertificate: RequestGraduationCertificateFunc;
   regainNftCompleteCourses: RegainNftCompleteCoursesFunc;
   approveNftCertificates: ApproveNftCertificatesFunc;
   checkApproveNftCertificates: CheckApproveNftCertificatesFunc;
@@ -116,7 +106,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
     useCallback(
       async (classId: number) => {
         const result =
-          await _contracts.nftCertificates.getNftCompleteCourseCreationQueueByClassId(
+          await _contracts.nftCompleteCourses.getNftCompleteCourseCreationQueueByClassId(
             classId
           );
 
@@ -125,50 +115,50 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
       [_contracts]
     );
 
-  const grantNftCompleteCourse: GrantNftCompleteCourse = useCallback(
-    async (data, syncDB) => {
-      console.log('🚀 ~ file: useCertificateActions.ts:85 ~ data:', data);
-      const { studentTokenId, tokenURI, classId, avgScore } = data;
+  const allowRequestNftCompleteCourse: AllowRequestNftCompleteCourseFunc =
+    useCallback(
+      async (data) => {
+        const { tokenId, isAllowed } = data;
+        const promise =
+          _contracts.nftClassRegistration.allowRequestNftCompleteCourse(
+            tokenId,
+            isAllowed
+          );
 
-      const promise = _contracts.nftCertificates.grantNftCompleteCourse(
-        studentTokenId,
-        parseEther(avgScore.toString()),
-        classId,
+        await transactionHandler({
+          pendingMsg: 'Đang xử lí...',
+          successMsg: 'Cho đổi trao đổi NFT hoàn tất môn thành công!',
+          errorMsg: 'Cho đổi trao đổi NFT hoàn tất môn thất bại!',
+          promise,
+        });
+      },
+      [deps]
+    );
+
+  const exchangeNftCompleteCourse: ExchangeNftCompleteCourseFunc = useCallback(
+    async (data, syncDB) => {
+      const { tokenURI, nftClassRegistrationTokenId } = data;
+
+      const promise = _contracts.nftCompleteCourses.exchangeNftCompleteCourse(
+        nftClassRegistrationTokenId,
         tokenURI
       );
 
       await transactionHandler({
-        successMsg: 'Cấp NFT thành công',
-        errorMsg: 'Cấp NFT thất bại',
+        pendingMsg: 'Đang xử lí...',
+        successMsg: 'Đổi NFT thành công!',
+        errorMsg: 'Đổi NFT thất bại!',
         promise,
       });
       addNftCompleteCourseCreatedEvent(deps, syncDB);
     },
-    [_contracts, deps]
+    [deps]
   );
-
-  const addToNftCompleteCourseCreationQueue: AddToNftCompleteCourseCreationQueue =
-    useCallback(
-      async (data) => {
-        const { studentTokenId, tokenId } = data;
-        const promise =
-          _contracts.nftCertificates.addToNftCompleteCourseCreationQueue(
-            studentTokenId,
-            tokenId
-          );
-        await transactionHandler({
-          successMsg: 'Thêm sinh viên vào danh sách chờ thành công',
-          errorMsg: 'Thêm sinh viên vào danh sách chờ thất bại',
-          promise,
-        });
-      },
-      [_contracts]
-    );
 
   const approveNftCertificates: ApproveNftCertificatesFunc = useCallback(
     async (approved) => {
       const owner = '0x98FB9BF010095517db4C66C358B0286ADB5100d6';
-      const promise = _contracts.nftCertificates.setApprovalForAll(
+      const promise = _contracts.nftCompleteCourses.setApprovalForAll(
         owner,
         approved
       );
@@ -180,7 +170,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
           'Thất bại khi cho phép giáo vụ chuyển đổi NFT hoàn tất môn học',
         promise,
       });
-      // await _contracts.nftCertificates.approveOwnerForAllNft(true);
+      // await _contracts.nftCompleteCourses.approveOwnerForAllNft(true);
     },
     [_contracts]
   );
@@ -189,7 +179,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
     useCallback(
       async (account) => {
         const owner = '0x98FB9BF010095517db4C66C358B0286ADB5100d6';
-        const result = await _contracts.nftCertificates.isApprovedForAll(
+        const result = await _contracts.nftCompleteCourses.isApprovedForAll(
           account,
           owner
         );
@@ -211,30 +201,9 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
       [_contracts]
     );
 
-  const requestGraduationCertificate: RequestGraduationCertificateFunc =
-    useCallback(
-      async (data) => {
-        const { nftCompleteCourseTokenIds, requestPrice, uri } = data;
-
-        const promise = _contracts.nftGraduation.requestGraduationCertificate(
-          nftCompleteCourseTokenIds,
-          uri,
-          {
-            value: parseEther(requestPrice),
-          }
-        );
-
-        await transactionHandler({
-          successMsg: 'Đã gửi yêu cầu',
-          errorMsg: 'Gửi yêu cầu thất bại',
-          promise,
-        });
-      },
-      [_contracts]
-    );
-
   const getOwnedNftCompleteCourse = async () => {
-    const result = await _contracts.nftCertificates.getOwnedNftCompleteCourse();
+    const result =
+      await _contracts.nftCompleteCourses.getOwnedNftCompleteCourse();
 
     return result;
   };
@@ -243,7 +212,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
     async (data) => {
       const { studentTokenId } = data;
       const promise =
-        _contracts.nftCertificates.regainNftCompleteCourses(studentTokenId);
+        _contracts.nftCompleteCourses.regainNftCompleteCourses(studentTokenId);
 
       await transactionHandler({
         successMsg: 'Đã thu hồi NFT',
@@ -277,9 +246,8 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
     getOwnedNftCompleteCourse,
     getNftCompleteCourseForRequestGraduation,
     getNftCompleteCourseCreationCreationQueue,
-    grantNftCompleteCourse,
-    addToNftCompleteCourseCreationQueue,
-    requestGraduationCertificate,
+    allowRequestNftCompleteCourse,
+    exchangeNftCompleteCourse,
     regainNftCompleteCourses,
     grantNftGraduation,
     approveNftCertificates,

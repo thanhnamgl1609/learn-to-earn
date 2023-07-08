@@ -15,17 +15,14 @@ import { NftClassRegistrationEntity } from '@_types/models/entities';
 import { classEntity } from 'domain/models';
 import { useAppSelector } from '@hooks/stores';
 import { selectUser } from '@store/userSlice';
-import { GrantNftCompleteCourseModal } from '@templates/Modal';
+import { UpdateScoreModal } from '@templates/Modal';
 import { useModalController } from '@hooks/ui';
-import { NftClassRegistrationEntityWithApproveStatus } from '@_types/api/class';
 
 const { ROLES } = CONST;
 
 type ColumnProp = {
-  item: NftClassRegistrationEntityWithApproveStatus;
-  onOpenGrantModal: (
-    nftClassRegistration: NftClassRegistrationEntityWithApproveStatus
-  ) => void;
+  item: NftClassRegistrationEntity;
+  onOpenGrantModal: (nftClassRegistration: NftClassRegistrationEntity) => void;
 };
 
 const tableHeaders = [
@@ -51,15 +48,10 @@ const actionColumn = {
   name: 'Hành động',
   custom: ({ item, onOpenGrantModal }: ColumnProp) => {
     const onOpenModal = () => onOpenGrantModal(item);
-    const isNotRequest = !item.isApproved && !item.isRegained;
-    const isGranted = item.isRegained && !item.isInQueue;
+    const { isRegained, score } = item;
 
-    const tag = isNotRequest
-      ? 'Sinh viên chưa gửi yêu cầu cấp NFT'
-      : isGranted
-      ? 'Đã cấp NFT'
-      : '';
-    const isDisabled = isNotRequest || isGranted;
+    const tag = isRegained ? 'Đã đổi NFT' : 'Đã cập nhật điểm';
+    const isDisabled = !!isRegained || (score !== null);
 
     return (
       <Button
@@ -69,7 +61,7 @@ const actionColumn = {
         disabledTag={tag}
         customTagClassName="px-2 py-1"
       >
-        Cấp NFT
+        Cập nhật điểm
       </Button>
     );
   },
@@ -81,17 +73,11 @@ const ClassDetailPage = () => {
   const id = parseInt(qid as string);
   if (!id || Number.isNaN(id)) return null;
 
-  const { role, account } = useAppSelector(selectUser);
+  const { role } = useAppSelector(selectUser);
   const { data: classDetail } = useClassDetailApi(id);
-  const { data: studentList = [] } = useNftRegistrationClassListApi(
-    {
-      classId: id,
-    },
-    {
-      account,
-      withApprove: true,
-    }
-  );
+  const { data: studentList = [] } = useNftRegistrationClassListApi({
+    classId: id,
+  });
   const displayClassDetail = classEntity.displayClassDetail(
     classDetail || classEntity.createLoadingState()
   );
@@ -150,7 +136,7 @@ const ClassDetailPage = () => {
         />
       </Box>
 
-      <GrantNftCompleteCourseModal
+      <UpdateScoreModal
         isOpen={isGrantModalOpen}
         onClose={onCloseGrantModal}
         nftClassRegistration={selectedNftClassRegistration}

@@ -14,8 +14,8 @@ export const grantNftCompleteCourse = (
   withTransaction(async (transaction) => {
     const { classId, studentTokenId } = data;
     const classInfo = await classesRepo.get({ onChainId: classId });
-    if (classInfo.teacherTokenId !== teacherTokenId)
-      throw createError(400, ERROR_MESSAGE.NOT_TEACHER);
+    // if (classInfo.teacherTokenId !== teacherTokenId)
+    //   throw createError(400, ERROR_MESSAGE.NOT_TEACHER);
 
     const result = await certificatesRepo.createNftCompleteCourse(
       data,

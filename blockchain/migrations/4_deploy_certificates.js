@@ -1,24 +1,24 @@
 const ArrayMath = artifacts.require('ArrayMath');
-const NftCertificates = artifacts.require('NftCertificates');
-const NftSchool = artifacts.require('NftSchool');
+const NftCompleteCourses = artifacts.require('NftCompleteCourses');
+const School = artifacts.require('School');
 const NftClassRegistration = artifacts.require('NftClassRegistration');
 const NftIdentities = artifacts.require('NftIdentities');
 
 module.exports = function (deployer) {
   deployer.deploy(ArrayMath);
-  deployer.link(ArrayMath, NftCertificates);
+  deployer.link(ArrayMath, NftCompleteCourses);
   deployer
     .deploy(
-      NftCertificates,
+      NftCompleteCourses,
       NftIdentities.address,
-      NftSchool.address,
+      School.address,
       NftClassRegistration.address
     )
-    .then(() => NftSchool.deployed())
-    .then((nftSchool) => nftSchool.initialize(NftCertificates.address))
+    .then(() => School.deployed())
+    .then((school) => school.initialize(NftCompleteCourses.address))
     .then(() => NftClassRegistration.deployed())
     .then((nftClassRegistration) =>
-      nftClassRegistration.initialize(NftCertificates.address)
+      nftClassRegistration.initialize(NftCompleteCourses.address)
     )
     .catch((e) => console.log(e));
 };

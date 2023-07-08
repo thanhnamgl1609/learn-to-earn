@@ -1,5 +1,5 @@
 const NftIdentities = artifacts.require('NftIdentities');
-const NftSchool = artifacts.require('NftSchool');
+const School = artifacts.require('School');
 
 module.exports = function (deployer) {
   const KNOWLEDGE_BLOCKS = {
@@ -38,7 +38,7 @@ module.exports = function (deployer) {
   );
 
   deployer.deploy(
-    NftSchool,
+    School,
     NftIdentities.address,
     ...knowledgeBlocks
   );

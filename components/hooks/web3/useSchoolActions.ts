@@ -79,7 +79,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
   const createCourse: CreateCourseFunc = useCallback(
     async ({ data, onSuccess, onError }) => {
       const { credits, knowledgeBlockId, uri, courseCode, prevCourseId } = data;
-      const promise = _contracts.nftSchool?.createCourse(
+      const promise = _contracts.school?.createCourse(
         prevCourseId,
         knowledgeBlockId,
         credits,
@@ -93,7 +93,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
         onError,
         promise,
       });
-      const id = await _contracts.nftSchool?.getCourseIdByURI(uri);
+      const id = await _contracts.school?.getCourseIdByURI(uri);
 
       return id.toNumber();
     },
@@ -112,7 +112,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
           registerClassFee,
           uri,
         } = data;
-        const promise = _contracts.nftSchool?.createClass(
+        const promise = _contracts.school?.createClass(
           courseId,
           parseTimeStamp(completeAt),
           maxSize,
@@ -135,7 +135,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
 
   const getRegisterTime: GetRegisterTimeFunc = useApi(
     async (semesterId) => {
-      const registerTimeResponse = await contracts!.nftSchool.getRegisterTime(
+      const registerTimeResponse = await contracts!.school.getRegisterTime(
         semesterId
       );
 
@@ -146,7 +146,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
 
   const editRegisterTime: EditRegisterTimeFunc = useApi(
     async (semesterId, registeredStartAt, registeredEndAt) => {
-      const updater = contracts!.nftSchool.updateRegisteredTime(
+      const updater = contracts!.school.updateRegisteredTime(
         semesterId,
         parseTimeStamp(registeredStartAt as string),
         parseTimeStamp(registeredEndAt as string)
@@ -163,7 +163,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
   const getRegisterFeeClassById: GetRegisterFeeClassByIdFunc = async (
     tokenId
   ) => {
-    const registerClassFee = await _contracts.nftSchool.getRegisterFeeClassById(
+    const registerClassFee = await _contracts.school.getRegisterFeeClassById(
       tokenId
     );
 
@@ -171,7 +171,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
   };
 
   const getClassById: GetClassByIdFunc = async (classId) => {
-    const classInfo = await _contracts.nftSchool.getClassById(classId);
+    const classInfo = await _contracts.school.getClassById(classId);
 
     return formatClassResponse(classInfo);
   };

@@ -89,8 +89,9 @@ export type NftClassRegistrationMethodNames =
   | 'getNumberOfRegisteredStudent'
   | 'checkNftClassRegistrationRegained'
   | 'getRegainedNftListOfClass'
-  | 'registerClass'
-  | 'regainNft';
+  | 'allowRequestNftCompleteCourse'
+  | 'regainV2'
+  | 'registerClass';
 export interface ApprovalEventEmittedResponse {
   owner: string;
   approved: string;
@@ -145,11 +146,11 @@ export interface NftClassRegistration {
    * StateMutability: nonpayable
    * Type: constructor
    * @param nftIdentities Type: address, Indexed: false
-   * @param nftSchool Type: address, Indexed: false
+   * @param school Type: address, Indexed: false
    */
   'new'(
     nftIdentities: string,
-    nftSchool: string,
+    school: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -385,6 +386,32 @@ export interface NftClassRegistration {
     overrides?: ContractCallOverrides
   ): Promise<BigNumber[]>;
   /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param tokenId Type: uint256, Indexed: false
+   * @param isAllowed Type: bool, Indexed: false
+   */
+  allowRequestNftCompleteCourse(
+    tokenId: BigNumberish,
+    isAllowed: boolean,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param sender Type: address, Indexed: false
+   * @param tokenId Type: uint256, Indexed: false
+   */
+  regainV2(
+    sender: string,
+    tokenId: BigNumberish,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
    * Payable: true
    * Constant: false
    * StateMutability: payable
@@ -395,17 +422,6 @@ export interface NftClassRegistration {
   registerClass(
     classId: BigNumberish,
     uri: string,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param tokenId Type: uint256, Indexed: false
-   */
-  regainNft(
-    tokenId: BigNumberish,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
 }

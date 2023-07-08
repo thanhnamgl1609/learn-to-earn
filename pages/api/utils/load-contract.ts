@@ -4,19 +4,19 @@ import { AbiItem } from 'web3-utils';
 import {
   NftCertificates,
   NftIdentities,
-  NftSchool,
+  School,
   NftClassRegistration,
 } from '@_types/contracts';
 import NftIdentitiesContract from 'public/contracts/NftIdentities.json';
-import NftSchoolsContract from 'public/contracts/NftSchool.json';
+import SchoolsContract from 'public/contracts/School.json';
 import NftCertificatesContract from 'public/contracts/NftCertificates.json';
 import NftClassRegistrationContract from 'public/contracts/NftClassRegistration.json';
 import { ENV } from '@config/env';
 
 export const { abi: nftIdentitiesAbi, networks: nftIdentitiesNetworks } =
   NftIdentitiesContract;
-export const { abi: nftSchoolsAbi, networks: nftSchoolsNetworks } =
-  NftSchoolsContract;
+export const { abi: schoolsAbi, networks: schoolsNetworks } =
+  SchoolsContract;
 export const { abi: nftCertificatesAbi, networks: nftCertificatesNetworks } =
   NftCertificatesContract;
 export const {
@@ -24,7 +24,7 @@ export const {
   networks: nftClassRegistrationNetworks,
 } = NftClassRegistrationContract;
 type NETWORK = typeof nftIdentitiesNetworks &
-  typeof nftSchoolsNetworks &
+  typeof schoolsNetworks &
   typeof nftCertificatesNetworks;
 
 const targetNetwork = process.env.NEXT_PUBLIC_NETWORK_ID as keyof NETWORK;
@@ -33,8 +33,8 @@ const jsonRpcUrl = ENV.JSON_RPC_URL;
 
 export const { address: nftIdentitiesContractAddress } =
   nftIdentitiesNetworks[targetNetwork];
-export const { address: nftSchoolsContractAddress } =
-  nftSchoolsNetworks[targetNetwork];
+export const { address: schoolsContractAddress } =
+  schoolsNetworks[targetNetwork];
 export const { address: nftCertificatesContractAddress } =
   nftCertificatesNetworks[targetNetwork];
 export const { address: nftClassRegistrationContractAddress } =
@@ -59,7 +59,7 @@ export const loadContract = (
 
 export const contract: {
   nftIdentities: NftIdentities;
-  nftSchool: NftSchool;
+  school: School;
   nftCertificates: NftCertificates;
   nftClassRegistration: NftClassRegistration;
 } = {
@@ -67,10 +67,10 @@ export const contract: {
     nftIdentitiesContractAddress,
     nftIdentitiesAbi as AbiItem[]
   ) as unknown as NftIdentities,
-  nftSchool: loadContract(
-    nftSchoolsContractAddress,
-    nftSchoolsAbi as AbiItem[]
-  ) as unknown as NftSchool,
+  school: loadContract(
+    schoolsContractAddress,
+    schoolsAbi as AbiItem[]
+  ) as unknown as School,
   nftCertificates: loadContract(
     nftCertificatesContractAddress,
     nftCertificatesAbi as AbiItem[]

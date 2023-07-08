@@ -1,7 +1,7 @@
 import { request, TIMEOUT } from 'utils';
 
 import Api from 'config/api.json';
-import { CourseResponse } from '@_types/contracts/NftSchool';
+import { CourseResponse } from '@_types/contracts/School';
 import { Course } from '@_types/school';
 
 export const formatCourse = async (

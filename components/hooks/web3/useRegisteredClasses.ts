@@ -18,7 +18,7 @@ export const hookFactory: RegisteredClassesHookFactory =
   ({ contracts }) =>
   () => {
     const getAllClassCaller = useApi(async () => {
-      const result = await contracts!.nftSchool.getRegisteredClasses();
+      const result = await contracts!.school.getRegisteredClasses();
 
       return formatNftClassRegistrationResponses(result);
     });

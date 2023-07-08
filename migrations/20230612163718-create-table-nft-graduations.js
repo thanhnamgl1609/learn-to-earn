@@ -31,7 +31,7 @@ module.exports = {
           type: Sequelize.STRING,
         },
         requestGraduationId: {
-          type: Sequelize.NUMBER,
+          type: Sequelize.INTEGER,
         },
         createdAt: {
           type: Sequelize.DATE,

@@ -82,5 +82,6 @@
   "NFT_COMPLETE_COURSE_STATUSES": {
     "FAILED": 0,
     "PASS": 1
-  }
+  },
+  "MINIMUM_SCORE_FOR_GRADUATION": 5
 }

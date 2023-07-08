@@ -39,9 +39,4 @@ export type CreatedNftClassRegistration = {
 };
 
 export type NftClassRegistrationEntityWithApproveStatus =
-  NftClassRegistrationEntity & {
-    isApproved?: boolean;
-    isApprovedSent?: boolean;
-    isRegained?: boolean;
-    isInQueue?: boolean;
-  };
+  NftClassRegistrationEntity & {};

@@ -2,18 +2,18 @@
 // Tells the Solidity compiler to compile only from v0.8.13 to v0.9.0
 pragma solidity ^0.8.13;
 
-import "./ERC721BaseContract.sol";
+import "./base/ERC721BaseContract.sol";
 import "./interfaces/INftGraduation.sol";
 import "./interfaces/INftIdentities.sol";
-import "./interfaces/INftCertificates.sol";
-import "./interfaces/INftSchool.sol";
+import "./interfaces/INftCompleteCourses.sol";
+import "./interfaces/ISchool.sol";
 
 contract NftGraduation is ERC721BaseContract, INftGraduation {
     uint256 public requestGraduationCertificatePrice = 0.5 ether;
 
-    INftSchool private _nftSchool;
+    ISchool private _school;
     INftIdentities private _nftIdentities;
-    INftCertificates private _nftCertificates;
+    INftCompleteCourses private _nftCompleteCourses;
 
     bool private _isInitialize;
 
@@ -40,13 +40,13 @@ contract NftGraduation is ERC721BaseContract, INftGraduation {
 
     constructor(
         address nftIdentities,
-        address nftSchool,
+        address school,
         address nftCertificates
     ) ERC721BaseContract("NftGraduation", "NCR") {
         _isInitialize = false;
         _nftIdentities = INftIdentities(nftIdentities);
-        _nftSchool = INftSchool(nftSchool);
-        _nftCertificates = INftCertificates(nftCertificates);
+        _school = ISchool(school);
+        _nftCompleteCourses = INftCompleteCourses(nftCertificates);
     }
 
     function getNftCompleteCourseForRequestGraduation(
@@ -114,68 +114,6 @@ contract NftGraduation is ERC721BaseContract, INftGraduation {
         return _allNftGraduations;
     }
 
-    function requestGraduationCertificate(
-        uint256[] memory nftCompleteCourseTokenIds,
-        string memory uri
-    ) public payable {
-        NftIdentityResponse memory nftIdentityResponse = _nftIdentities
-            .getNftOfMemberWithRole(uint256(ROLE.STUDENT), msg.sender);
-        require(!nftIdentityResponse.isExpired, "identity expired");
-        require(msg.value == requestGraduationCertificatePrice);
-        require(
-            _nftCertificates.checkApprovedForAll(msg.sender, _owner),
-            "not approve"
-        );
-        require(
-            _posOfRequestInQueue[nftIdentityResponse.nftIdentity.tokenId] == 0,
-            "current in queue"
-        );
-        uint256 count = nftCompleteCourseTokenIds.length;
-        KnowledgeBlock[] memory knowledgeBlocks = _nftSchool
-            .getAllKnowledgeBlocks();
-        uint256 knowledgeBlockCount = knowledgeBlocks.length;
-        uint256 studentTokenId = nftIdentityResponse.nftIdentity.tokenId;
-
-        for (uint256 idx; idx < count; ++idx) {
-            (NftCompleteCourse memory nftCompleteCourse, ) = _nftCertificates
-                .getNftCompleteCourse(nftCompleteCourseTokenIds[idx]);
-            require(
-                nftCompleteCourse.studentTokenId == studentTokenId,
-                "Not your Nft Complete Course"
-            );
-            require(
-                _posOfCompleteCourseInRequest[studentTokenId][
-                    nftCompleteCourse.courseId
-                ] == 0,
-                "Duplicate course"
-            );
-
-            totalAcquiredCreditsOfStudent[studentTokenId][
-                nftCompleteCourse.knowledgeBlockId
-            ] += nftCompleteCourse.credits;
-            _requestGraduationCompleteCourseIds[studentTokenId].push(
-                nftCompleteCourseTokenIds[idx]
-            );
-            _posOfCompleteCourseInRequest[studentTokenId][
-                nftCompleteCourse.courseId
-            ] = _requestGraduationCompleteCourseIds[studentTokenId].length;
-        }
-
-        // validate number of credits
-        for (uint256 idx; idx < knowledgeBlockCount; ++idx) {
-            require(
-                totalAcquiredCreditsOfStudent[studentTokenId][
-                    knowledgeBlocks[idx].id
-                ] >= knowledgeBlocks[idx].credits,
-                "not enough credits"
-            );
-        }
-
-        _requestGraduationQueue.push(studentTokenId);
-        _requestGraduationURI[studentTokenId] = uri;
-        _posOfRequestInQueue[studentTokenId] = _requestGraduationQueue.length;
-    }
-
     function grantNftGraduation(
         uint256 studentTokenId,
         string memory tokenURI
@@ -189,7 +127,7 @@ contract NftGraduation is ERC721BaseContract, INftGraduation {
                 studentTokenId
             ];
         require(
-            _nftCertificates.checkAllNftCompleteCoursesRegained(
+            _nftCompleteCourses.checkAllNftCompleteCoursesRegained(
                 nftCompleteCourseTokenIds
             ),
             "Not regained"

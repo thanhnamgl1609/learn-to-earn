@@ -167,15 +167,6 @@ export const CREATE_NFT_COMPLETE_COURSE = z.object({
   ),
 });
 
-export const GRANT_NFT_COMPLETE_COURSE = z.object({
-  avgScore: z.preprocess(
-    (i: string) => parseFloat(i),
-    z
-      .number(customOptionsWithError('Nhập điểm trung bình'))
-      .gte(5, 'Điểm trung bình phải lớn hơn hoặc bằng 5 thì mới có thể cấp NFT')
-  ),
-});
-
 export const CLASS_ENTITY = z.object({
   id: z.number(),
   onChainId: z.number(),

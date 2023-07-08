@@ -6,7 +6,7 @@ export const addNftCompleteCourseCreatedEvent = (
 ) => {
   const { contracts } = deps;
 
-  contracts.nftCertificates.once('NewCompleteCourseCreated', (res) =>
+  contracts.nftCompleteCourses.once('NewCompleteCourseCreated', (res) =>
     callback(res.toNumber())
   );
 };
@@ -14,5 +14,5 @@ export const addNftCompleteCourseCreatedEvent = (
 export const removeNftCompleteCourseCreatedEvent = ({
   contracts,
 }: Web3Dependencies) => {
-  contracts.nftCertificates.removeAllListeners('NewCompleteCourseCreated');
+  contracts.nftCompleteCourses.removeAllListeners('NewCompleteCourseCreated');
 };

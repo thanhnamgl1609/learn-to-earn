@@ -3,15 +3,10 @@
 pragma solidity ^0.8.13;
 import "./IConstant.sol";
 
-interface INftCertificates is IConstant {
+interface INftCompleteCourses is IConstant {
     function checkCompleteCourse(
         uint256 courseId,
         address studentAddr
-    ) external view returns (bool);
-
-    function checkInQueue(
-        uint256 classId,
-        uint256 studentId
     ) external view returns (bool);
 
     function checkApprovedForAll(

@@ -7,7 +7,7 @@ import {
 } from 'utils';
 
 import Api from 'config/api.json';
-import { ClassResponse } from '@_types/contracts/NftSchool';
+import { ClassResponse } from '@_types/contracts/School';
 import { Class, ClassMeta } from '@_types/school';
 
 const defaultMeta: ClassMeta = {

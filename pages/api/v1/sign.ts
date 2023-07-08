@@ -5,7 +5,7 @@ import { run, withSession } from '@api/utils';
 import {
   nftCertificatesContractAddress,
   nftClassRegistrationContractAddress,
-  nftSchoolsContractAddress,
+  schoolsContractAddress,
   nftIdentitiesContractAddress,
 } from '@api/utils/load-contract';
 import { createError } from '@api/utils/create-error';
@@ -17,7 +17,7 @@ const post: IHandler = async (req, res) => {
     const message = {
       id: uuidv4(),
       nftIdentitiesContractAddress,
-      nftSchoolsContractAddress,
+      schoolsContractAddress,
       nftCertificatesContractAddress,
       nftClassRegistrationContractAddress,
     };
