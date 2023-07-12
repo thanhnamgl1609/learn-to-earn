@@ -73,7 +73,6 @@ export type NftGraduationMethodNames =
   | 'isApprovedForAll'
   | 'name'
   | 'ownerOf'
-  | 'requestGraduationCertificatePrice'
   | 'safeTransferFrom'
   | 'safeTransferFrom'
   | 'setApprovalForAll'
@@ -81,13 +80,11 @@ export type NftGraduationMethodNames =
   | 'symbol'
   | 'tokenURI'
   | 'transferFrom'
-  | 'getNftCompleteCourseForRequestGraduation'
-  | 'getAllRequestGraduationStudents'
-  | 'getRequestGraduationDetail'
-  | 'checkRequestInQueue'
   | 'getNftGraduation'
   | 'getOwnedNftGraduation'
   | 'getAllGraduations'
+  | 'setExchangableNftGraduation'
+  | 'checkExchangeable'
   | 'grantNftGraduation';
 export interface ApprovalEventEmittedResponse {
   owner: string;
@@ -106,13 +103,6 @@ export interface TransferEventEmittedResponse {
   from: string;
   to: string;
   tokenId: BigNumberish;
-}
-export interface GetRequestGraduationDetailResponse {
-  result0: BigNumber[];
-  0: BigNumber[];
-  result1: string;
-  1: string;
-  length: 2;
 }
 export interface NftgraduationResponse {
   tokenId: BigNumber;
@@ -202,15 +192,6 @@ export interface NftGraduation {
     tokenId: BigNumberish,
     overrides?: ContractCallOverrides
   ): Promise<string>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   */
-  requestGraduationCertificatePrice(
-    overrides?: ContractCallOverrides
-  ): Promise<BigNumber>;
   /**
    * Payable: false
    * Constant: false
@@ -307,48 +288,6 @@ export interface NftGraduation {
    * Type: function
    * @param studentTokenId Type: uint256, Indexed: false
    */
-  getNftCompleteCourseForRequestGraduation(
-    studentTokenId: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<BigNumber[]>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   */
-  getAllRequestGraduationStudents(
-    overrides?: ContractCallOverrides
-  ): Promise<BigNumber[]>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param studentTokenId Type: uint256, Indexed: false
-   */
-  getRequestGraduationDetail(
-    studentTokenId: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<GetRequestGraduationDetailResponse>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param studentTokenId Type: uint256, Indexed: false
-   */
-  checkRequestInQueue(
-    studentTokenId: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<boolean>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param studentTokenId Type: uint256, Indexed: false
-   */
   getNftGraduation(
     studentTokenId: BigNumberish,
     overrides?: ContractCallOverrides
@@ -377,10 +316,34 @@ export interface NftGraduation {
    * StateMutability: nonpayable
    * Type: function
    * @param studentTokenId Type: uint256, Indexed: false
+   * @param isAllow Type: bool, Indexed: false
+   */
+  setExchangableNftGraduation(
+    studentTokenId: BigNumberish,
+    isAllow: boolean,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param studentTokenId Type: uint256, Indexed: false
+   */
+  checkExchangeable(
+    studentTokenId: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<boolean>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param tokenIds Type: uint256[], Indexed: false
    * @param tokenURI Type: string, Indexed: false
    */
   grantNftGraduation(
-    studentTokenId: BigNumberish,
+    tokenIds: BigNumberish[],
     tokenURI: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;

@@ -4,7 +4,7 @@ pragma solidity ^0.8.13;
 import "./IConstant.sol";
 
 interface INftGraduation is IConstant {
-    function getNftCompleteCourseForRequestGraduation(
+    function checkExchangeable(
         uint256 studentTokenId
-    ) external view returns (uint256[] memory);
+    ) external view returns (bool);
 }

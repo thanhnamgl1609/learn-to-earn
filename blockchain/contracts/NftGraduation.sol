@@ -9,27 +9,16 @@ import "./interfaces/INftCompleteCourses.sol";
 import "./interfaces/ISchool.sol";
 
 contract NftGraduation is ERC721BaseContract, INftGraduation {
-    uint256 public requestGraduationCertificatePrice = 0.5 ether;
-
     ISchool private _school;
     INftIdentities private _nftIdentities;
     INftCompleteCourses private _nftCompleteCourses;
 
     bool private _isInitialize;
 
-    uint256[] private _requestGraduationQueue;
-    mapping(uint256 => uint256) private _posOfRequestInQueue;
-    mapping(uint256 => uint256[]) private _requestGraduationCompleteCourseIds;
-    mapping(uint256 => string) private _requestGraduationURI;
-    mapping(uint256 => uint256) private _posOfRequestGraduationCompleteCourseId;
-    mapping(uint256 => mapping(uint256 => uint256))
-        private _posOfCompleteCourseInRequest;
-    mapping(uint256 => mapping(uint256 => uint256))
-        private totalAcquiredCreditsOfStudent;
-
     NftGraduation[] private _allNftGraduations;
     mapping(uint256 => uint256) private _posOfNftGraduationTokenId;
     mapping(uint256 => uint256) private _tokenIdOfStudent;
+    mapping(uint256 => bool) private _isExchangeable;
 
     event GrantNewNftGraduation(uint256 tokenId);
 
@@ -47,36 +36,6 @@ contract NftGraduation is ERC721BaseContract, INftGraduation {
         _nftIdentities = INftIdentities(nftIdentities);
         _school = ISchool(school);
         _nftCompleteCourses = INftCompleteCourses(nftCompleteCourse);
-    }
-
-    function getNftCompleteCourseForRequestGraduation(
-        uint256 studentTokenId
-    ) public view returns (uint256[] memory) {
-        return _requestGraduationCompleteCourseIds[studentTokenId];
-    }
-
-    function getAllRequestGraduationStudents()
-        public
-        view
-        onlyOwner
-        returns (uint256[] memory)
-    {
-        return _requestGraduationQueue;
-    }
-
-    function getRequestGraduationDetail(
-        uint256 studentTokenId
-    ) public view returns (uint256[] memory, string memory) {
-        return (
-            _requestGraduationCompleteCourseIds[studentTokenId],
-            _requestGraduationURI[studentTokenId]
-        );
-    }
-
-    function checkRequestInQueue(
-        uint256 studentTokenId
-    ) public view returns (bool) {
-        return _posOfRequestInQueue[studentTokenId] > 0;
     }
 
     function getNftGraduation(
@@ -114,48 +73,74 @@ contract NftGraduation is ERC721BaseContract, INftGraduation {
         return _allNftGraduations;
     }
 
-    function grantNftGraduation(
+    function setExchangableNftGraduation(
         uint256 studentTokenId,
+        bool isAllow
+    ) public onlyOwner {
+        NftIdentityResponse memory nftIdentityResponse = _nftIdentities
+            .getNftOfTokenId(studentTokenId);
+        require(!nftIdentityResponse.isExpired);
+        _isExchangeable[studentTokenId] = isAllow;
+    }
+
+    function checkExchangeable(
+        uint256 studentTokenId
+    ) public view returns (bool) {
+        return _isExchangeable[studentTokenId];
+    }
+
+    function grantNftGraduation(
+        uint256[] memory tokenIds,
         string memory tokenURI
     ) public onlyOwner {
+        NftIdentityResponse memory nftIdentityResponse = _nftIdentities
+            .getNftOfMemberWithRole(uint256(ROLE.STUDENT), msg.sender);
+        require(!nftIdentityResponse.isExpired, "C-ERR-01");
         require(
-            _posOfRequestInQueue[studentTokenId] > 0,
-            "Student didn't request graduation certificate"
+            _isExchangeable[nftIdentityResponse.nftIdentity.tokenId],
+            "NG-ERR-01"
         );
-        uint256[]
-            memory nftCompleteCourseTokenIds = _requestGraduationCompleteCourseIds[
-                studentTokenId
-            ];
-        require(
-            _nftCompleteCourses.checkAllNftCompleteCoursesRegained(
-                nftCompleteCourseTokenIds
-            ),
-            "Not regained"
+        _checkEnoughCredits(tokenIds);
+        _nftCompleteCourses.regainNftCompleteCourses(
+            nftIdentityResponse.nftIdentity.tokenId,
+            tokenIds
         );
+
         uint256 tokenId = _mintToken(msg.sender, tokenURI);
         NftGraduation memory nftGraduation = NftGraduation(
             tokenId,
-            studentTokenId
+            nftIdentityResponse.nftIdentity.tokenId
         );
         _allNftGraduations.push(nftGraduation);
         _posOfNftGraduationTokenId[tokenId] = _allNftGraduations.length;
-        _tokenIdOfStudent[studentTokenId] = tokenId;
-
-        delete _requestGraduationCompleteCourseIds[studentTokenId];
-        delete _requestGraduationURI[studentTokenId];
-        uint256 pos = _posOfRequestInQueue[studentTokenId];
-        uint256 lastRequestQueuePos = _requestGraduationQueue.length;
-        if (pos < lastRequestQueuePos) {
-            _requestGraduationQueue[pos - 1] = _requestGraduationQueue[
-                lastRequestQueuePos - 1
-            ];
-            _posOfRequestInQueue[
-                _requestGraduationQueue[lastRequestQueuePos - 1]
-            ] = pos;
-        }
-        _requestGraduationQueue.pop();
-        delete _posOfRequestInQueue[studentTokenId];
+        _tokenIdOfStudent[nftIdentityResponse.nftIdentity.tokenId] = tokenId;
 
         emit GrantNewNftGraduation(tokenId);
+    }
+
+    function _checkEnoughCredits(uint256[] memory tokenIds) private view {
+        uint256 count = tokenIds.length;
+        KnowledgeBlock[] memory knowledgeBlocks = _school
+            .getAllKnowledgeBlocks();
+        uint256 knowledgeBlockCount = knowledgeBlocks.length;
+        uint256[] memory totalCredits = new uint256[](knowledgeBlockCount);
+
+        for (uint256 idx; idx < count; ++idx) {
+            (NftCompleteCourse memory nftCompleteCourse, ) = _nftCompleteCourses
+                .getNftCompleteCourse(tokenIds[idx]);
+
+            totalCredits[
+                nftCompleteCourse.knowledgeBlockId
+            ] += nftCompleteCourse.credits;
+        }
+
+        // validate number of credits
+        for (uint256 idx; idx < knowledgeBlockCount; ++idx) {
+            require(
+                totalCredits[knowledgeBlockCount] >=
+                    knowledgeBlocks[idx].credits,
+                "NG-ERR-02"
+            );
+        }
     }
 }

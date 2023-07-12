@@ -82,9 +82,6 @@ export type NftCompleteCoursesMethodNames =
   | 'getOwnedNftCompleteCourse'
   | 'getNftCompleteCourse'
   | 'checkCompleteCourse'
-  | 'checkApproveOwnerForAllNft'
-  | 'checkApprovedForAll'
-  | 'approveOwnerForAllNft'
   | 'regainNftCompleteCourses'
   | 'exchangeNftCompleteCourse'
   | 'checkAllNftCompleteCoursesRegained'
@@ -322,46 +319,15 @@ export interface NftCompleteCourses {
   ): Promise<boolean>;
   /**
    * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   */
-  checkApproveOwnerForAllNft(
-    overrides?: ContractCallOverrides
-  ): Promise<boolean>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param sender Type: address, Indexed: false
-   * @param owner Type: address, Indexed: false
-   */
-  checkApprovedForAll(
-    sender: string,
-    owner: string,
-    overrides?: ContractCallOverrides
-  ): Promise<boolean>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param approved Type: bool, Indexed: false
-   */
-  approveOwnerForAllNft(
-    approved: boolean,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
    * @param studentTokenId Type: uint256, Indexed: false
+   * @param tokenIds Type: uint256[], Indexed: false
    */
   regainNftCompleteCourses(
     studentTokenId: BigNumberish,
+    tokenIds: BigNumberish[],
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**

@@ -147,10 +147,12 @@ export interface NftClassRegistration {
    * Type: constructor
    * @param nftIdentities Type: address, Indexed: false
    * @param school Type: address, Indexed: false
+   * @param schoolAccount Type: address, Indexed: false
    */
   'new'(
     nftIdentities: string,
     school: string,
+    schoolAccount: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**

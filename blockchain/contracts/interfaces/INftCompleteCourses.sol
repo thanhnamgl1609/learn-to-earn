@@ -9,12 +9,10 @@ interface INftCompleteCourses is IConstant {
         address studentAddr
     ) external view returns (bool);
 
-    function checkApprovedForAll(
-        address sender,
-        address owner
-    ) external view returns (bool);
-
-    function checkAllNftCompleteCoursesRegained(uint256[] memory nftCompleteCourseTokenIds) external view returns (bool);
+    function regainNftCompleteCourses(
+        uint256 studentTokenId,
+        uint256[] memory tokenIds
+    ) external;
 
     function getNftCompleteCourse(
         uint256 tokenId

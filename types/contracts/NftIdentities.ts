@@ -156,8 +156,12 @@ export interface NftIdentities {
    * Constant: false
    * StateMutability: nonpayable
    * Type: constructor
+   * @param schoolAccount Type: address, Indexed: false
    */
-  'new'(overrides?: ContractTransactionOverrides): Promise<ContractTransaction>;
+  'new'(
+    schoolAccount: string,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
   /**
    * Payable: false
    * Constant: true
