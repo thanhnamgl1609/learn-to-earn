@@ -1,16 +1,20 @@
 import { certificatesRepo } from 'domain/repositories';
-import { CreatedRequestGraduation } from '@_types/api/certificates';
-import { logger } from 'utils';
+import { ReceivedCreatedRequestGraduation } from '@_types/api/certificates';
+import { logger, today } from 'utils';
 
 export const syncRequestGraduation = async (
-  requestGraduation: CreatedRequestGraduation
+  requestGraduation: ReceivedCreatedRequestGraduation
 ) => {
   let result = null;
 
   try {
-    result = await certificatesRepo.requestGraduation.createRequestGraduation(
-      requestGraduation
-    );
+    result =
+      await certificatesRepo.requestGraduation.createRequestGraduation(
+        {
+          ...requestGraduation,
+          requestDate: today(),
+        }
+      );
   } catch (e) {
     logger(e);
   }

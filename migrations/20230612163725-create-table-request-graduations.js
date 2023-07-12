@@ -22,6 +22,10 @@ module.exports = {
             key: 'tokenId',
           },
         },
+        status: {
+          type: Sequelize.INTEGER,
+          defaultValue: 1,
+        },
         requestDate: {
           type: Sequelize.DATE,
         },
@@ -31,14 +35,8 @@ module.exports = {
         foreignLanguageCertificate: {
           type: Sequelize.STRING,
         },
-        requestPrice: {
-          type: Sequelize.FLOAT,
-        },
         otherCertificates: {
           type: Sequelize.JSON,
-        },
-        uri: {
-          type: Sequelize.STRING,
         },
         createdAt: {
           type: Sequelize.DATE,

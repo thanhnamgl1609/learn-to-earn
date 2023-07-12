@@ -36,7 +36,7 @@ export type ExchangeNftCompleteCourseParams = {
 }
 
 export type GrantNftGraduationParams = {
-  studentTokenId: number;
+  tokenIds: number[];
   tokenURI: string;
 };
 

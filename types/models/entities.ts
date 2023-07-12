@@ -127,9 +127,8 @@ export type NftCompleteCourseGraduationRelation = {
 export type RequestGraduationEntity = {
   id?: number;
   studentTokenId: number;
-  uri: string;
   nftCompleteCourseTokenIds: number[];
-  requestPrice: string;
+  status: number;
   nationalDefenseEduCertificate: string;
   foreignLanguageCertificate: string;
   otherCertificates: string[];

@@ -83,5 +83,10 @@
     "FAILED": 0,
     "PASS": 1
   },
-  "MINIMUM_SCORE_FOR_GRADUATION": 5
+  "MINIMUM_SCORE_FOR_GRADUATION": 5,
+  "REQUEST_STATUS": {
+    "PENDING": 1,
+    "APPROVED": 2,
+    "REJECTED": 3
+  }
 }

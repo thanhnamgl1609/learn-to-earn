@@ -72,15 +72,17 @@ export type CreatedNftGraduation = {
   uri: string;
 };
 
-export type CreatedRequestGraduation = {
+export type ReceivedCreatedRequestGraduation = {
   studentTokenId: number;
   nftCompleteCourseTokenIds: number[];
-  uri: string;
   nationalDefenseEduCertificate?: string;
   foreignLanguageCertificate?: string;
-  requestPrice?: string;
   otherCertificates?: string[];
 };
+
+export type CreatedRequestGraduation = {
+  requestDate: Date;
+} & ReceivedCreatedRequestGraduation;
 
 export type RequestGraduationQuery = {
   id?: number;

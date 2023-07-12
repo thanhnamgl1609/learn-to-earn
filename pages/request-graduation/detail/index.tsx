@@ -1,24 +1,22 @@
 import CONST from 'config/constants.json';
 import { KnowledgeBlockEntityWithGain } from '@_types/api/certificates';
-import { ClassEntity, NftCompleteCourseEntity } from '@_types/models/entities';
+import {
+  ClassEntity,
+  NftCompleteCourseEntity,
+} from '@_types/models/entities';
 import { useAppSelector } from '@hooks/stores';
 import { selectCurrentNftIdentity } from '@store/userSlice';
 import { BaseLayout } from '@templates';
 import { Table } from '@organisms';
-import {
-  Box,
-  InputField,
-  InputMultipleImages,
-  InputSingleImage,
-  LinkField,
-} from '@molecules';
-import { Button, Heading, Input, LinkBox } from '@atoms';
+import { Box, InputField, LinkField } from '@molecules';
+import { Button, Heading } from '@atoms';
 import { floor, formatDate } from 'utils';
-import { ChangeEvent, Fragment, useMemo } from 'react';
+import { ChangeEvent, Fragment, useCallback, useMemo } from 'react';
 import { CheckIcon, XIcon } from '@heroicons/react/solid';
 import { useRequestGraduationDetail } from '@hooks/api';
 import { ImageView } from 'components/ui/molecules';
 import { priceVO } from 'domain/models/value-objects';
+import { useGrantNftGraduation } from '@hooks/common';
 
 type CompleteCourseColumnProps = {
   item: NftCompleteCourseEntity;
@@ -29,7 +27,7 @@ type CompleteCourseColumnProps = {
   isOn: (classEntity: ClassEntity) => boolean;
 };
 
-const { DATE_TIME } = CONST;
+const { DATE_TIME, REQUEST_STATUS } = CONST;
 
 const completeCourseTableHeaders = [
   {
@@ -72,54 +70,69 @@ const completeCourseTableHeaders = [
 
 const RequestGraduation = () => {
   const { tokenId } = useAppSelector(selectCurrentNftIdentity);
-  const { data: requestGraduationDetail } = useRequestGraduationDetail({
-    studentTokenId: tokenId,
-  });
+  const { data: requestGraduationDetail } =
+    useRequestGraduationDetail({
+      studentTokenId: tokenId,
+    });
+  const grantNftGraduation = useGrantNftGraduation();
   const {
     nftCompleteCourses = [],
     nationalDefenseEduCertificate,
     foreignLanguageCertificate,
     otherCertificates = [],
-    requestPrice,
-    uri,
+    status,
   } = requestGraduationDetail || {};
 
-  const { totalCredits, avgScore, knowledgeBlockByIds } = useMemo(() => {
-    let _totalAllCredits = 0;
-    let _totalAllScore = 0;
-    let _knowledgeBlocks: Record<string, any> = {};
+  const { totalCredits, avgScore, knowledgeBlockByIds } =
+    useMemo(() => {
+      let _totalAllCredits = 0;
+      let _totalAllScore = 0;
+      let _knowledgeBlocks: Record<string, any> = {};
 
-    const _totalCredits = Object.values(nftCompleteCourses).reduce(
-      (prev, currSelected) => {
-        if (!currSelected) return prev;
+      const _totalCredits = Object.values(nftCompleteCourses).reduce(
+        (prev, currSelected) => {
+          if (!currSelected) return prev;
 
-        _knowledgeBlocks[currSelected.class.knowledgeBlock.onChainId] ??= {
-          ...currSelected.class.knowledgeBlock,
-          nftCompleteCourses: [],
-        };
-        _knowledgeBlocks[
-          currSelected.class.knowledgeBlock.onChainId
-        ].nftCompleteCourses.push(currSelected);
+          _knowledgeBlocks[
+            currSelected.class.knowledgeBlock.onChainId
+          ] ??= {
+            ...currSelected.class.knowledgeBlock,
+            nftCompleteCourses: [],
+          };
+          _knowledgeBlocks[
+            currSelected.class.knowledgeBlock.onChainId
+          ].nftCompleteCourses.push(currSelected);
 
-        prev[currSelected.class.knowledgeBlock.onChainId] =
-          (prev[currSelected.class.knowledgeBlock.onChainId] ?? 0) +
-          currSelected.class.credits;
+          prev[currSelected.class.knowledgeBlock.onChainId] =
+            (prev[currSelected.class.knowledgeBlock.onChainId] ?? 0) +
+            currSelected.class.credits;
 
-        _totalAllScore += currSelected.avgScore * currSelected.class.credits;
-        _totalAllCredits += currSelected.class.credits;
+          _totalAllScore +=
+            currSelected.avgScore * currSelected.class.credits;
+          _totalAllCredits += currSelected.class.credits;
 
-        return prev;
-      },
-      {} as { [k: number]: number }
-    );
+          return prev;
+        },
+        {} as { [k: number]: number }
+      );
 
-    return {
-      totalCredits: _totalCredits,
-      avgScore:
-        _totalAllCredits > 0 ? floor(_totalAllScore / _totalAllCredits, 2) : 0,
-      knowledgeBlockByIds: _knowledgeBlocks,
-    };
-  }, [nftCompleteCourses]);
+      return {
+        totalCredits: _totalCredits,
+        avgScore:
+          _totalAllCredits > 0
+            ? floor(_totalAllScore / _totalAllCredits, 2)
+            : 0,
+        knowledgeBlockByIds: _knowledgeBlocks,
+      };
+    }, [nftCompleteCourses]);
+
+  const handleExchangeNft = useCallback(() => {
+    if (requestGraduationDetail.status === REQUEST_STATUS.APPROVED) {
+      grantNftGraduation({
+        request: requestGraduationDetail,
+      });
+    }
+  }, [requestGraduationDetail]);
 
   return (
     <BaseLayout>
@@ -136,16 +149,6 @@ const RequestGraduation = () => {
           value={avgScore}
           disabled
         />
-        <InputField
-          containerClassName="flex items-center gap-[24px]"
-          labelClassName="min-w-[200px]"
-          className="mt-0"
-          label="Phí gửi yêu cầu"
-          value={priceVO.displayPublic(requestPrice)}
-          disabled
-        />
-
-        <LinkField label="Metadata" text={uri} href={uri} target="_blank" />
 
         {Object.values(knowledgeBlockByIds).map((knowledgeBlock) => (
           <Fragment key={knowledgeBlock.onChainId}>
@@ -200,6 +203,19 @@ const RequestGraduation = () => {
           containerClassName="mt-4"
         />
       </Box>
+
+      <Button
+        className="w-[100%]"
+        onClick={handleExchangeNft}
+        disabled={status !== REQUEST_STATUS.APPROVED}
+        theme="main"
+      >
+        {status === REQUEST_STATUS.APPROVED
+          ? 'Đổi NFT tốt nghiệp'
+          : status === REQUEST_STATUS.REJECTED
+          ? 'Đơn yêu cầu bị từ chối'
+          : 'Đang chờ xác nhận'}
+      </Button>
     </BaseLayout>
   );
 };
