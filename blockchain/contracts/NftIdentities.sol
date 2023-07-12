@@ -22,6 +22,8 @@ contract NftIdentities is INftIdentities, ERC1155URIStorage, Registration {
     // Registration vars
     uint256 public registerFee = 0.05 ether;
 
+    address private immutable _schoolAccount;
+
     mapping(uint256 => Counters.Counter) _maxTokenIdIndexOfRole; // type => max token id
     mapping(uint256 => NftIdentity[]) private _nftsOfRole; // type => Nft
     mapping(uint256 => uint256) private _nftPosOfTokenId; // tokenId => index
@@ -59,10 +61,13 @@ contract NftIdentities is INftIdentities, ERC1155URIStorage, Registration {
         _;
     }
 
-    constructor() ERC1155("") {
+    constructor(
+        address schoolAccount
+    ) ERC1155("") {
         _owner = msg.sender;
         _hasRole[uint(ROLE.STUDENT)] = true;
         _hasRole[uint(ROLE.TEACHER)] = true;
+        _schoolAccount = schoolAccount;
     }
 
     function getTokenType(uint256 tokenId) public pure returns (uint256) {
@@ -163,6 +168,7 @@ contract NftIdentities is INftIdentities, ERC1155URIStorage, Registration {
         require(!_registeredDocumentURI[documentURI], "Document URI exist");
         require(_positionOfRegisters[role][msg.sender] == 0, "Has registered");
         _register(role, documentURI);
+        payable(_schoolAccount).transfer(msg.value);
     }
 
     function grantNftIdentity(
