@@ -90,8 +90,8 @@ export type NftClassRegistrationMethodNames =
   | 'checkNftClassRegistrationRegained'
   | 'getRegainedNftListOfClass'
   | 'allowRequestNftCompleteCourse'
-  | 'regainV2'
-  | 'registerClass';
+  | 'registerClass'
+  | 'regainV2';
 export interface ApprovalEventEmittedResponse {
   owner: string;
   approved: string;
@@ -313,10 +313,10 @@ export interface NftClassRegistration {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param nftCertificates Type: address, Indexed: false
+   * @param nftCompleteCoures Type: address, Indexed: false
    */
   initialize(
-    nftCertificates: string,
+    nftCompleteCoures: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -399,19 +399,6 @@ export interface NftClassRegistration {
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param sender Type: address, Indexed: false
-   * @param tokenId Type: uint256, Indexed: false
-   */
-  regainV2(
-    sender: string,
-    tokenId: BigNumberish,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
    * Payable: true
    * Constant: false
    * StateMutability: payable
@@ -422,6 +409,19 @@ export interface NftClassRegistration {
   registerClass(
     classId: BigNumberish,
     uri: string,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param sender Type: address, Indexed: false
+   * @param tokenId Type: uint256, Indexed: false
+   */
+  regainV2(
+    sender: string,
+    tokenId: BigNumberish,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
 }

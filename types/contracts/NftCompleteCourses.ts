@@ -73,26 +73,22 @@ export type NftCompleteCoursesMethodNames =
   | 'balanceOfBatch'
   | 'graduationPrice'
   | 'isApprovedForAll'
-  | 'registeredEndAt'
-  | 'registeredStartAt'
   | 'safeBatchTransferFrom'
   | 'safeTransferFrom'
   | 'setApprovalForAll'
   | 'supportsInterface'
   | 'uri'
-  | 'yearId'
   | 'initialize'
   | 'getOwnedNftCompleteCourse'
   | 'getNftCompleteCourse'
-  | 'getNftCompleteCourseCreationQueueByClassId'
-  | 'exchangeNftCompleteCourse'
   | 'checkCompleteCourse'
-  | 'approveOwnerForAllNft'
   | 'checkApproveOwnerForAllNft'
   | 'checkApprovedForAll'
+  | 'approveOwnerForAllNft'
   | 'regainNftCompleteCourses'
-  | '_removeFromAllNftCompleteCourses'
-  | 'checkAllNftCompleteCoursesRegained';
+  | 'exchangeNftCompleteCourse'
+  | 'checkAllNftCompleteCoursesRegained'
+  | '_removeFromAllNftCompleteCourses';
 export interface ApprovalForAllEventEmittedResponse {
   account: string;
   operator: string;
@@ -209,20 +205,6 @@ export interface NftCompleteCourses {
   ): Promise<boolean>;
   /**
    * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   */
-  registeredEndAt(overrides?: ContractCallOverrides): Promise<BigNumber>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   */
-  registeredStartAt(overrides?: ContractCallOverrides): Promise<BigNumber>;
-  /**
-   * Payable: false
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
@@ -296,13 +278,6 @@ export interface NftCompleteCourses {
   ): Promise<string>;
   /**
    * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   */
-  yearId(overrides?: ContractCallOverrides): Promise<BigNumber>;
-  /**
-   * Payable: false
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
@@ -337,30 +312,6 @@ export interface NftCompleteCourses {
    * Constant: true
    * StateMutability: view
    * Type: function
-   * @param classId Type: uint256, Indexed: false
-   */
-  getNftCompleteCourseCreationQueueByClassId(
-    classId: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<BigNumber[]>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param nftClassRegistrationTokenId Type: uint256, Indexed: false
-   * @param tokenURI Type: string, Indexed: false
-   */
-  exchangeNftCompleteCourse(
-    nftClassRegistrationTokenId: BigNumberish,
-    tokenURI: string,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
    * @param courseId Type: uint256, Indexed: false
    * @param studentAddr Type: address, Indexed: false
    */
@@ -369,17 +320,6 @@ export interface NftCompleteCourses {
     studentAddr: string,
     overrides?: ContractCallOverrides
   ): Promise<boolean>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param approved Type: bool, Indexed: false
-   */
-  approveOwnerForAllNft(
-    approved: boolean,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
   /**
    * Payable: false
    * Constant: true
@@ -407,6 +347,17 @@ export interface NftCompleteCourses {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
+   * @param approved Type: bool, Indexed: false
+   */
+  approveOwnerForAllNft(
+    approved: boolean,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
    * @param studentTokenId Type: uint256, Indexed: false
    */
   regainNftCompleteCourses(
@@ -418,12 +369,12 @@ export interface NftCompleteCourses {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param studentTokenId Type: uint256, Indexed: false
-   * @param tokenIds Type: uint256[], Indexed: false
+   * @param nftClassRegistrationTokenId Type: uint256, Indexed: false
+   * @param tokenURI Type: string, Indexed: false
    */
-  _removeFromAllNftCompleteCourses(
-    studentTokenId: BigNumberish,
-    tokenIds: BigNumberish[],
+  exchangeNftCompleteCourse(
+    nftClassRegistrationTokenId: BigNumberish,
+    tokenURI: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -437,4 +388,17 @@ export interface NftCompleteCourses {
     tokenIds: BigNumberish[],
     overrides?: ContractCallOverrides
   ): Promise<boolean>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param studentTokenId Type: uint256, Indexed: false
+   * @param tokenIds Type: uint256[], Indexed: false
+   */
+  _removeFromAllNftCompleteCourses(
+    studentTokenId: BigNumberish,
+    tokenIds: BigNumberish[],
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
 }

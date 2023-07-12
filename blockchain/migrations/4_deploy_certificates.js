@@ -14,8 +14,6 @@ module.exports = function (deployer) {
       School.address,
       NftClassRegistration.address
     )
-    .then(() => School.deployed())
-    .then((school) => school.initialize(NftCompleteCourses.address))
     .then(() => NftClassRegistration.deployed())
     .then((nftClassRegistration) =>
       nftClassRegistration.initialize(NftCompleteCourses.address)

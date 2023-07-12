@@ -61,8 +61,6 @@ export interface SchoolEventsContext {
 export type SchoolMethodNames =
   | 'new'
   | '_isInitialize'
-  | 'minimumGraduationScore'
-  | 'initialize'
   | 'getAllKnowledgeBlocks'
   | 'updateRegisteredTime'
   | 'getRegisterTime'
@@ -155,24 +153,6 @@ export interface School {
    * Type: function
    */
   _isInitialize(overrides?: ContractCallOverrides): Promise<boolean>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   */
-  minimumGraduationScore(overrides?: ContractCallOverrides): Promise<BigNumber>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param nftCertificates Type: address, Indexed: false
-   */
-  initialize(
-    nftCertificates: string,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
   /**
    * Payable: false
    * Constant: true

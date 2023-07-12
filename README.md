@@ -1,17 +1,30 @@
 # learn-to-earn
 
-## Deployment
+## Deployment Note
+
+### Deploy contract
 
 Command: `truffle deploy`
 
 Contracts will be deployed in order below:
 
-    1. Scores
-    2. Nft Identities
-    3. Nft School
-    4. Nft Certificates
+   1. Nft Identities
+   2. School
+   3. Nft Class Registration
+   4. Nft Complete Courses
+   5. Nft Graduation
 
 To know exactly how contracts are deployed, please check the sorted files in folder **migrations**
+
+Note:
+
+- 1_deploy_identities: includes the `school_account` which receives ETH when student register class.
+- 2_deploy_school: includes the initialized `knowledge_blocks`, should change if needed.
+- 3_deploy_nft_registration: includes the `school_account` which receives ETH when student register class.
+
+### Deploy Decentralized Application
+
+- `.env.development`: check variable value
 
 ## Core functions
 

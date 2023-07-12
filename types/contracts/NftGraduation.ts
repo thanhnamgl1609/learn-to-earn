@@ -128,12 +128,12 @@ export interface NftGraduation {
    * Type: constructor
    * @param nftIdentities Type: address, Indexed: false
    * @param school Type: address, Indexed: false
-   * @param nftCertificates Type: address, Indexed: false
+   * @param nftCompleteCourse Type: address, Indexed: false
    */
   'new'(
     nftIdentities: string,
     school: string,
-    nftCertificates: string,
+    nftCompleteCourse: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
