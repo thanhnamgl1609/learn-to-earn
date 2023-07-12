@@ -41,12 +41,12 @@ contract NftGraduation is ERC721BaseContract, INftGraduation {
     constructor(
         address nftIdentities,
         address school,
-        address nftCertificates
+        address nftCompleteCourse
     ) ERC721BaseContract("NftGraduation", "NCR") {
         _isInitialize = false;
         _nftIdentities = INftIdentities(nftIdentities);
         _school = ISchool(school);
-        _nftCompleteCourses = INftCompleteCourses(nftCertificates);
+        _nftCompleteCourses = INftCompleteCourses(nftCompleteCourse);
     }
 
     function getNftCompleteCourseForRequestGraduation(

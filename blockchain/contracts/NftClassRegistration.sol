@@ -48,10 +48,10 @@ contract NftClassRegistration is ERC721BaseContract, INftClassRegistration {
         _school = ISchool(school);
     }
 
-    function initialize(address nftCertificates) public onlyOwner {
+    function initialize(address nftCompleteCoures) public onlyOwner {
         require(!_isInitialize);
         _isInitialize = true;
-        _nftCompleteCoures = INftCompleteCourses(nftCertificates);
+        _nftCompleteCoures = INftCompleteCourses(nftCompleteCoures);
     }
 
     // Register class block: start
@@ -163,6 +163,44 @@ contract NftClassRegistration is ERC721BaseContract, INftClassRegistration {
         }
     }
 
+    function registerClass(uint256 classId, string memory uri) public payable {
+        NftIdentityResponse memory nftIdentityResponse = _nftIdentities
+            .getNftOfMemberWithRole(uint256(ROLE.STUDENT), msg.sender);
+        uint256 studentTokenId = nftIdentityResponse.nftIdentity.tokenId;
+        Class memory class = _school.getClassById(classId);
+        (uint256 registeredStartAt, uint256 registeredEndAt) = _school
+            .getRegisterTime(class.semester);
+
+        require(!nftIdentityResponse.isExpired);
+        require(_studentTokenIdsOfClass[class.id].length < class.maxSize);
+        require(block.timestamp >= registeredStartAt);
+        require(block.timestamp <= registeredEndAt);
+        require(
+            class.prevCourseId == 0 ||
+                _nftCompleteCoures.checkCompleteCourse(
+                    class.prevCourseId,
+                    msg.sender
+                )
+        );
+        require(
+            _registeredCourseOfStudent[studentTokenId][class.courseId] == 0
+        );
+        require(msg.value == class.registerClassFee);
+        uint256 tokenId = _mintToken(msg.sender, uri);
+        _allNftClassRegistrations.push(
+            NftClassRegistration(tokenId, classId, studentTokenId)
+        );
+        _posOfNftClassRegistrationTokenId[tokenId] = _allNftClassRegistrations
+            .length;
+        _registeredClassTokenIdsOfStudent[studentTokenId].push(tokenId);
+        _registeredCourseOfStudent[studentTokenId][class.courseId] = tokenId;
+        _tokenIdOfRegisteredClass[studentTokenId][class.id] = tokenId;
+        _studentTokenIdsOfClass[class.id].push(studentTokenId);
+
+        emit NewClassRegistrationCreated(tokenId);
+    }
+
+
     function regainV2(
         address sender,
         uint256 tokenId
@@ -206,43 +244,6 @@ contract NftClassRegistration is ERC721BaseContract, INftClassRegistration {
         delete _tokenIdOfRegisteredClass[nftClassRegistration.studentTokenId][
             class.id
         ];
-    }
-
-    function registerClass(uint256 classId, string memory uri) public payable {
-        NftIdentityResponse memory nftIdentityResponse = _nftIdentities
-            .getNftOfMemberWithRole(uint256(ROLE.STUDENT), msg.sender);
-        uint256 studentTokenId = nftIdentityResponse.nftIdentity.tokenId;
-        Class memory class = _school.getClassById(classId);
-        (uint256 registeredStartAt, uint256 registeredEndAt) = _school
-            .getRegisterTime(class.semester);
-
-        require(!nftIdentityResponse.isExpired);
-        require(_studentTokenIdsOfClass[class.id].length < class.maxSize);
-        require(block.timestamp >= registeredStartAt);
-        require(block.timestamp <= registeredEndAt);
-        require(
-            class.prevCourseId == 0 ||
-                _nftCompleteCoures.checkCompleteCourse(
-                    class.prevCourseId,
-                    msg.sender
-                )
-        );
-        require(
-            _registeredCourseOfStudent[studentTokenId][class.courseId] == 0
-        );
-        require(msg.value == class.registerClassFee);
-        uint256 tokenId = _mintToken(msg.sender, uri);
-        _allNftClassRegistrations.push(
-            NftClassRegistration(tokenId, classId, studentTokenId)
-        );
-        _posOfNftClassRegistrationTokenId[tokenId] = _allNftClassRegistrations
-            .length;
-        _registeredClassTokenIdsOfStudent[studentTokenId].push(tokenId);
-        _registeredCourseOfStudent[studentTokenId][class.courseId] = tokenId;
-        _tokenIdOfRegisteredClass[studentTokenId][class.id] = tokenId;
-        _studentTokenIdsOfClass[class.id].push(studentTokenId);
-
-        emit NewClassRegistrationCreated(tokenId);
     }
 
     function _removeClassTokenFromRegisteredList(

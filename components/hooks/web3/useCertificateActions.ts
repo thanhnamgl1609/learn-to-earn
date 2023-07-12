@@ -1,12 +1,11 @@
 import { useCallback } from 'react';
-import { formatEther, parseEther } from 'ethers/lib/utils';
+import { formatEther } from 'ethers/lib/utils';
 
 import { parseBigNumbers } from 'utils';
 import { HookFactoryWithoutSWR } from '@_types/hooks';
 import {
   ExchangeNftCompleteCourseParams,
   GrantNftGraduationParams,
-  RequestGraduationCertificateParams,
   RegainNftCompleteCoursesParams,
   AllowRequestNftCompleteCourseParams,
 } from '@_types/certificate';
@@ -15,6 +14,7 @@ import {
   addNftCompleteCourseCreatedEvent,
   addNftGraduationCreatedEvent,
 } from '@events';
+import { ENV } from '@config/env';
 
 type GetRequestGraduationPriceFunc = {
   (): Promise<string>;
@@ -157,7 +157,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
 
   const approveNftCertificates: ApproveNftCertificatesFunc = useCallback(
     async (approved) => {
-      const owner = '0x98FB9BF010095517db4C66C358B0286ADB5100d6';
+      const owner = ENV.OWNER;
       const promise = _contracts.nftCompleteCourses.setApprovalForAll(
         owner,
         approved
@@ -178,7 +178,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
   const checkApproveNftCertificates: CheckApproveNftCertificatesFunc =
     useCallback(
       async (account) => {
-        const owner = '0x98FB9BF010095517db4C66C358B0286ADB5100d6';
+        const owner = ENV.OWNER;
         const result = await _contracts.nftCompleteCourses.isApprovedForAll(
           account,
           owner
