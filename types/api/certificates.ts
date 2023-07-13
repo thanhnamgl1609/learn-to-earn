@@ -87,6 +87,7 @@ export type CreatedRequestGraduation = {
 export type RequestGraduationQuery = {
   id?: number;
   studentTokenId?: number;
+  status?: number;
 };
 
 export type RequestGraduationListQuery = {};
@@ -95,4 +96,9 @@ export type UpdateScoreForNftClassRegistrationBodyData = {
   score: number;
   tokenId: number;
   teacherTokenId: number;
+};
+
+export type UpdateRequestGraduationStatusParams = {
+  requestGraduationId: number;
+  isApproved: boolean;
 };

@@ -88,5 +88,10 @@
     "PENDING": 1,
     "APPROVED": 2,
     "REJECTED": 3
+  },
+  "REQUEST_STATUS_TEXT": {
+    "PENDING": "Chờ xác nhận",
+    "APPROVED": "Đồng ý yêu cầu",
+    "REJECTED": "Từ chối yêu cầu"
   }
 }

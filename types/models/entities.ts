@@ -19,7 +19,9 @@ export type UserEntity = {
   chainURI: string;
 
   documentURIs?: string[];
-  nftGraduation: NftGraduationEntity;
+  nftGraduation?: NftGraduationEntity;
+  requestGraduations?: RequestGraduationEntity[];
+  requestGraduation?: RequestGraduationEntity;
 };
 
 export type CourseEntity = {

@@ -15,7 +15,6 @@ import { ChangeEvent, Fragment, useCallback, useMemo } from 'react';
 import { CheckIcon, XIcon } from '@heroicons/react/solid';
 import { useRequestGraduationDetail } from '@hooks/api';
 import { ImageView } from 'components/ui/molecules';
-import { priceVO } from 'domain/models/value-objects';
 import { useGrantNftGraduation } from '@hooks/common';
 
 type CompleteCourseColumnProps = {

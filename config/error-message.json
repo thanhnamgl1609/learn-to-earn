@@ -7,6 +7,7 @@
     "USER_DENIED": "User denied"
   },
   "UPDATE_ZERO": "Không có gì để cập nhật",
+  "NOT_REQUEST_GRADUATION_EXIST": "Không tồn tại đơn xét tốt nghiệp",
   "CONTRACT": {
     "C-ERR-01": "NftIdentity đã hết hạn",
     "NCC-ERR-01": "Không phải từ Nft Graduation",

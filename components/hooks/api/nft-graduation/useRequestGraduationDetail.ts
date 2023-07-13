@@ -5,18 +5,26 @@ import { RequestGraduationQuery } from '@_types/api/certificates';
 import { useApi } from '@hooks/common';
 import { RequestGraduationEntity } from '@_types/models/entities';
 
-export const useRequestGraduationDetail = (query: RequestGraduationQuery) => {
-  const getter = useApi(async (params: [string, { onChainId: number }]) => {
-    const requestDetail = (await makeRequest()(
-      params
-    )) as RequestGraduationEntity;
+export const useRequestGraduationDetail = (
+  query: RequestGraduationQuery
+) => {
+  const getter = useApi(
+    async (params: [string, { onChainId: number }]) => {
+      const requestDetail = (await makeRequest()(
+        params
+      )) as RequestGraduationEntity;
 
-    return requestDetail;
-  });
+      return requestDetail;
+    }
+  );
 
-  const result = useSWR([endpoints.requestGraduationDetail, query], getter, {
-    revalidateOnFocus: false,
-  });
+  const result = useSWR(
+    [endpoints.requestGraduationDetail, query],
+    getter,
+    {
+      revalidateOnFocus: false,
+    }
+  );
 
   return result;
 };

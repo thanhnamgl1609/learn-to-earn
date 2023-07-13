@@ -19,7 +19,9 @@ const post: IHandler = async (req, res) => {
     throw createError(400);
   }
 
-  const result = await certificatesService.syncRequestGraduation(data);
+  const result = await certificatesService.syncRequestGraduation(
+    data
+  );
 
   res.sendData(200, result);
 };

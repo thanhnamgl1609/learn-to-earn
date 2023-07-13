@@ -8,10 +8,14 @@ export default (sequelize: Sequelize) => {
         foreignKey: 'studentTokenId',
         sourceKey: 'tokenId',
         as: 'nftGraduation',
-      })
+      });
       this.hasMany(models.user_documents, {
         foreignKey: 'userId',
         as: 'documentURIs',
+      });
+      this.hasMany(models.request_graduations, {
+        foreignKey: 'userId',
+        as: 'requestGraduations',
       });
       this.hasMany(models.classes, {
         foreignKey: 'teacherTokenId',

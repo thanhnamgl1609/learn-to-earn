@@ -9,3 +9,4 @@ export {
   getRequestGraduationList,
 } from './useRequestGraduationList';
 export { useRequestGraduationCertificate } from './useRequestGraduationCertificate';
+export { useUpdateRequestGraduationStatus } from './useUpdateRequestGraduationStatus';
