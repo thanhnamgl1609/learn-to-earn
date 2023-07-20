@@ -31,6 +31,7 @@ type ClassColumnProps = {
   onOpenNftModal: (
     nft: NftClassRegistrationEntityWithApproveStatus
   ) => void;
+  onExchangeSuccess: () => Promise<void>;
 };
 
 const { DATE_TIME, REQUEST_STATUS, REQUEST_STATUS_TEXT } = CONST;
@@ -76,12 +77,22 @@ const classTableHeaders = [
     name: 'Giảng viên',
   },
   {
+    name: 'Điểm số',
+    custom: ({ item }: ClassColumnProps) => (
+      <p>{item.score === null ? 'Chưa cập nhật' : item.score}</p>
+    ),
+  },
+  {
     name: 'Hành động',
-    custom: ({ item, onOpenNftModal }: ClassColumnProps) => {
+    custom: ({
+      item,
+      onOpenNftModal,
+      onExchangeSuccess,
+    }: ClassColumnProps) => {
       const exchangeNftCompleteCourse =
         useExchangeNftCompleteCourse();
       const onExchangeNftCompleteCourse = useCallback(
-        () => exchangeNftCompleteCourse(item),
+        () => exchangeNftCompleteCourse(item, onExchangeSuccess),
         [item]
       );
 
@@ -114,13 +125,18 @@ const classTableHeaders = [
 export const StudentProfile = () => {
   const detail = useAppSelector(selectUserDetail);
   const { tokenId } = useAppSelector(selectCurrentNftIdentity);
-  const { data: registeredClasses = [] } =
-    useNftRegistrationClassListApi({
-      tokenId,
-      isRegained: 0,
-    });
+  const {
+    data: registeredClasses = [],
+    mutate,
+    customGet,
+  } = useNftRegistrationClassListApi({
+    studentTokenId: tokenId,
+    isRegained: 0,
+  });
   const {
     data: knowledgeBlocks = knowledgeBlockEntity.createDefaultKnowledgeBlockList(),
+    mutate: mutateKnowledgeBlocks,
+    customGet: customGetKnowledgeBlocks,
   } = useNftCompleteCourseListGroupApi({
     studentTokenId: tokenId,
   });
@@ -136,6 +152,8 @@ export const StudentProfile = () => {
   const isGraduated = !!detail.nftGraduation;
   const isRequestPending =
     requestGraduation?.status === REQUEST_STATUS.PENDING;
+  const isApproved =
+    requestGraduation?.status === REQUEST_STATUS.APPROVED;
   const canRequestGraduation =
     knowledgeBlockEntity.checkCanGraduate(knowledgeBlocks);
   const requestStatusText = useMemo(() => {
@@ -154,6 +172,19 @@ export const StudentProfile = () => {
   const onCloseNftModal = () => {
     closeNFTModal();
     setNftClassRegistrationDetail(null);
+  };
+  const onExchangeSuccess = async () => {
+    mutate(
+      await customGet({
+        studentTokenId: tokenId,
+        isRegained: 0,
+      })
+    );
+    mutateKnowledgeBlocks(
+      await customGetKnowledgeBlocks({
+        studentTokenId: tokenId,
+      })
+    );
   };
 
   return (
@@ -176,7 +207,7 @@ export const StudentProfile = () => {
         <Table
           headers={classTableHeaders}
           data={registeredClasses}
-          customProps={{ onOpenNftModal }}
+          customProps={{ onOpenNftModal, onExchangeSuccess }}
         />
       </Box>
 
@@ -227,7 +258,7 @@ export const StudentProfile = () => {
               </LinkBox>
             ) : (
               <>
-                {!isRequestPending && (
+                {!isRequestPending && !isApproved && (
                   <LinkBox
                     className="inline-block ml-auto"
                     href={ROUTES.requestGraduation.name}

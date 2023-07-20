@@ -8,6 +8,7 @@ export type IMethod = 'GET' | 'PUT' | 'PATCH' | 'POST';
 export type IHandler = (
   req: NextApiRequest & {
     session: Session;
+    address?: string;
   },
   res: NextApiResponse & {
     sendData: ISendData;

@@ -129,14 +129,18 @@ export const createNftClassRegistration = (
   }, t);
 
 export const updateScore = async (
-  data: Omit<UpdateScoreForNftClassRegistrationBodyData, 'teacherTokenId'>,
+  data: Omit<
+    UpdateScoreForNftClassRegistrationBodyData,
+    'teacherTokenId'
+  >,
   t?: Transaction
 ) =>
   withTransaction(
     async (transaction) =>
       await db.nft_class_registrations.update(
         {
-          isExchangeable: data.score >= MINIMUM_SCORE_FOR_GRADUATION ? 1 : 0,
+          isExchangeable:
+            data.score >= MINIMUM_SCORE_FOR_GRADUATION ? 1 : 0,
           score: data.score,
         },
         {

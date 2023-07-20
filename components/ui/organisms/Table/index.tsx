@@ -9,7 +9,8 @@ type CustomProp = {
   item: Data;
 };
 type Props = {
-  title?: string;
+  title?: string | JSX.Element;
+  subheader?: JSX.Element;
   data: Data[];
   headers: {
     field?: string;
@@ -25,21 +26,30 @@ const Table: FC<PropsWithChildren<Props>> = (props) => {
   const {
     autoOrderId,
     title,
+    subheader,
     data,
     headers,
     onRowClick = (idx: number) => {},
     customProps = {},
   } = props;
 
-  const _onRowClick = useCallback((idx: number) => () => onRowClick(idx), []);
+  const _onRowClick = useCallback(
+    (idx: number) => () => onRowClick(idx),
+    []
+  );
 
   return (
     <>
-      {title && <h3 className="font-bold uppercase text-gray-700">{title}</h3>}
+      {title && (
+        <h3 className="font-bold uppercase text-gray-700">{title}</h3>
+      )}
+      {subheader}
       <table className={`${title ? 'mt-[24px]' : 'mt-0'}`}>
         <thead>
           <tr>
-            {autoOrderId && <th className="table-heading text-center">No</th>}
+            {autoOrderId && (
+              <th className="table-heading text-center">No</th>
+            )}
             {headers.map(({ name }) => (
               <th className="table-heading" key={name}>
                 {name}
@@ -49,7 +59,10 @@ const Table: FC<PropsWithChildren<Props>> = (props) => {
         </thead>
         <tbody>
           {data.map((item, idx) => (
-            <tr key={`item_${item.id ?? idx}`} onClick={_onRowClick(idx)}>
+            <tr
+              key={`item_${item.id ?? idx}`}
+              onClick={_onRowClick(idx)}
+            >
               {autoOrderId && (
                 <td className="table-data text-center">{idx + 1}</td>
               )}

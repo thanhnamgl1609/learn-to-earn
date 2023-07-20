@@ -22,7 +22,9 @@ export default withSession(
         const { body } = req;
         const nft = body.data;
         if (!nft.name || !nft.description || !nft.attributes) {
-          return res.status(422).json({ message: 'data are missing' });
+          return res
+            .status(422)
+            .json({ message: 'data are missing' });
         }
 
         await addressCheckMiddleware(req, res);
@@ -44,7 +46,9 @@ export default withSession(
 
         return res.status(200).json(jsonRes.data);
       } catch (e) {
-        return res.status(422).json({ message: 'cannot create json' });
+        return res
+          .status(422)
+          .json({ message: 'cannot create json' });
       }
     } else if (req.method === 'GET') {
       try {
@@ -58,7 +62,9 @@ export default withSession(
         await req.session.save();
         return res.json(message);
       } catch (e) {
-        res.status(422).json({ message: 'cannot generate a message!' });
+        res
+          .status(422)
+          .json({ message: 'cannot generate a message!' });
       }
     } else {
       res.status(404).json({ message: 'not found' });

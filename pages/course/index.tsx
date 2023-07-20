@@ -20,7 +20,10 @@ type ActionColumnsProps = {
 const ActionColumns = ({ item }: ActionColumnsProps) => (
   <div>
     <Link
-      href={Routes.courseDetail.name.replace(':id', item.id?.toString())}
+      href={Routes.courseDetail.name.replace(
+        ':id',
+        item.id?.toString()
+      )}
       className="block min-w-[70px] text-center bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80"
     >
       Chi tiết

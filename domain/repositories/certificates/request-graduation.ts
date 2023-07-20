@@ -10,6 +10,7 @@ import { RequestGraduationEntity } from '@_types/models/entities';
 import CONST from 'config/constants.json';
 import { generateCondition, withTransaction } from '@api/utils';
 import { formatGraduation } from './common';
+import moment from 'moment';
 
 const { REQUEST_STATUS } = CONST;
 
@@ -77,6 +78,19 @@ export const get = async (
                     },
                   ],
                 },
+                {
+                  model: db.users,
+                  as: 'student',
+                  attributes: {
+                    exclude: ['registerAddress'],
+                  },
+                  include: [
+                    {
+                      model: db.user_documents,
+                      as: 'documentURIs',
+                    },
+                  ],
+                },
               ],
             },
           ],
@@ -95,7 +109,7 @@ export const getAll = async (
   transaction?: Transaction
 ): Promise<RequestGraduationEntity[]> => {
   const condition = generateCondition(query, {
-    $equal: ['id', 'studentTokenId'],
+    $equal: ['id', 'status', 'studentTokenId'],
   });
 
   const result = await db.request_graduations.findAll({
@@ -123,7 +137,7 @@ export const count = async (
     $equal: ['status'],
   });
 
-  const result = await db.request_graduation.count({
+  const result = await db.request_graduations.count({
     where: condition,
     transaction,
   });
@@ -136,9 +150,15 @@ export const createRequestGraduation = (
   t?: Transaction
 ) =>
   withTransaction(async (transaction) => {
-    const { nftCompleteCourseTokenIds, ...createdData } = data;
+    const { nftCompleteCourseTokenIds, requestDate, ...createdData } =
+      data;
     const rawResult = await db.request_graduations.create(
-      createdData,
+      {
+        ...createdData,
+        requestDate: moment(requestDate).format(
+          'YYYY-MM-DD HH:mm:ss'
+        ),
+      },
       {
         transaction,
       }
@@ -163,7 +183,7 @@ export const updateStatus = async (
 ): Promise<[affectCount: number]> =>
   await withTransaction(
     (transaction) =>
-      db.request_graduation.update(
+      db.request_graduations.update(
         {
           status: data.isApproved
             ? REQUEST_STATUS.APPROVED

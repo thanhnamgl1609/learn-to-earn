@@ -25,6 +25,7 @@ Note:
 ### Deploy Decentralized Application
 
 - `.env.development`: check variable value
+- `knowledge_block`: check constants.json and migrations
 
 ## Core functions
 

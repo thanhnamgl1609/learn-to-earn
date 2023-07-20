@@ -9,10 +9,11 @@ import { classService } from 'domain/services';
 const { METHOD } = REQUEST_CONST;
 
 const get: IHandler = async (req, res) => {
-  const { studentTokenId, classId, isRegained } =
+  const { studentTokenId, tokenId, classId, isRegained } =
     req.query as NftClassRegistrationQuery;
   const result = await classesRepo.getNftClassRegistrations({
     studentTokenId,
+    tokenId,
     classId,
     isRegained,
   });

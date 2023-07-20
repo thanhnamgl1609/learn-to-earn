@@ -6,8 +6,15 @@ import CONST from '@config/constants.json';
 import REQUEST_CONST from '@config/request.json';
 import PINATA_CONST from '@config/pinata.json';
 import addressCheckMiddleware from './middleware/address-check';
-import { withSession, pinataApiKey, pinataSecretApiKey } from './utils';
-import { APPLY_VALIDATOR, CREATE_COURSE_META } from '@validators/schemas';
+import {
+  withSession,
+  pinataApiKey,
+  pinataSecretApiKey,
+} from './utils';
+import {
+  APPLY_VALIDATOR,
+  CREATE_COURSE_META,
+} from '@validators/schemas';
 import { request, today } from 'utils';
 import { logger } from 'utils';
 import { z } from 'zod';
@@ -34,7 +41,8 @@ export default withSession(
           pinataContent: Record<string, any>;
           meta?: Record<string, any> | null;
         } = await validate(target, rawData);
-        if (!pinataContent) return res.status(400).json({ message: 'invalid' });
+        if (!pinataContent)
+          return res.status(400).json({ message: 'invalid' });
 
         const jsonRes = await request.post(
           PINATA_CONST.PINNING_JSON,
@@ -58,13 +66,18 @@ export default withSession(
         });
       } catch (e) {
         logger(e);
-        return res.status(422).json({ message: 'cannot create json' });
+        return res
+          .status(422)
+          .json({ message: 'cannot create json' });
       }
     }
   }
 );
 
-const validate = async (target?: string, data?: Record<string, any>) => {
+const validate = async (
+  target?: string,
+  data?: Record<string, any>
+) => {
   if (!target) return { pinataContent: data };
 
   switch (target) {
@@ -121,7 +134,9 @@ const validateGrantNftCompleteCourse = async (
   };
 };
 
-const validateRequestGraduation = async (rawData?: Record<string, any>) => {
+const validateRequestGraduation = async (
+  rawData?: Record<string, any>
+) => {
   if (!rawData) return { pinataContent: null };
   const requestDate = today();
   const pinataContent = {
@@ -137,7 +152,9 @@ const validateRequestGraduation = async (rawData?: Record<string, any>) => {
   };
 };
 
-const validateGrantNftGraduation = async (rawData?: Record<string, any>) => {
+const validateGrantNftGraduation = async (
+  rawData?: Record<string, any>
+) => {
   if (!rawData) return { pinataContent: null };
   const grantDate = today();
   const pinataContent = {
@@ -167,7 +184,9 @@ const validateForm = (
   }
 };
 
-const validateApplyRegistration = async (rawData?: Record<string, any>) => {
+const validateApplyRegistration = async (
+  rawData?: Record<string, any>
+) => {
   const { role, ...data } = rawData;
   const memberCode = await usersRepo.getMemberCode(role);
   const approveDate = today();
@@ -185,7 +204,9 @@ const validateApplyRegistration = async (rawData?: Record<string, any>) => {
   };
 };
 
-const validateRegisterClass = async (rawData?: Record<string, any>) => {
+const validateRegisterClass = async (
+  rawData?: Record<string, any>
+) => {
   const { role, ...data } = rawData;
   const registerDate = today();
 

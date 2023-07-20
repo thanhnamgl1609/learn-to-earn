@@ -6,35 +6,13 @@ import { logger, makeRequest } from 'utils';
 
 export const addNftClassRegistrationCreatedEvent = (
   deps: Partial<Web3Dependencies>,
-  options: {
-    signatureData: SignatureData;
-    metadata: Record<string, any>;
-  }
+  syncDB: (tokenId: number) => Promise<void>
 ) => {
   const { contracts } = deps;
 
   contracts.nftClassRegistration.once(
     'NewClassRegistrationCreated',
-    async function (nftClassRegistrationId) {
-      try {
-        const id = nftClassRegistrationId.toNumber();
-        const {
-          signatureData: { signature, account },
-          metadata,
-        } = options;
-        await makeRequest({
-          method: 'POST',
-          data: {
-            signature,
-            address: account,
-            data: { id, metadata },
-          },
-        })([endpoints.registerClasses]);
-      } catch (e) {
-        logger(e);
-        toast.error('Fail to sync to database');
-      }
-    }
+    (tokenId) => syncDB(tokenId.toNumber())
   );
 };
 

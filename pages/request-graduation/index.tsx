@@ -1,5 +1,4 @@
 import { knowledgeBlockEntity } from 'domain/models';
-import ROUTES from 'config/routes.json';
 import CONST from 'config/constants.json';
 import { KnowledgeBlockEntityWithGain } from '@_types/api/certificates';
 import { ClassEntity } from '@_types/models/entities';
@@ -7,7 +6,7 @@ import { useNftCompleteCourseListGroupApi } from '@hooks/api/classes';
 import { useAppSelector } from '@hooks/stores';
 import { selectCurrentNftIdentity } from '@store/userSlice';
 import { BaseLayout } from '@templates';
-import { Breadcrumb, Table } from '@organisms';
+import { Table } from '@organisms';
 import {
   Box,
   InputField,

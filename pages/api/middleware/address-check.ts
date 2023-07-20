@@ -7,7 +7,7 @@ import { createError } from '@api/utils/create-error';
 //   ENV_CONST.RPC_PROVIDER_URL || ('http://127.0.0.1:7545' as string);
 
 export default async (
-  req: NextApiRequest & { session: Session },
+  req: NextApiRequest & { session: Session; address?: string },
   response: NextApiResponse
 ) => {
   return new Promise(async (resolve, reject) => {
@@ -29,6 +29,7 @@ export default async (
     const decodedAddress = utils.bufferToHex(addrBuffer);
 
     if (decodedAddress === address.toLowerCase()) {
+      req.address = address;
       return resolve('Correct address');
     } else {
       return reject(createError(400, 'message is empty'));

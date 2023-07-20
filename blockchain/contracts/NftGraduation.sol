@@ -42,7 +42,7 @@ contract NftGraduation is ERC721BaseContract, INftGraduation {
         uint256 studentTokenId
     ) public view returns (NftGraduation memory) {
         uint256 tokenId = _tokenIdOfStudent[studentTokenId];
-        require(tokenId > 0);
+        require(tokenId > 0, "NG-ERR-00");
         uint256 pos = _posOfNftGraduationTokenId[tokenId];
 
         return _allNftGraduations[pos - 1];
@@ -58,7 +58,7 @@ contract NftGraduation is ERC721BaseContract, INftGraduation {
             uint256(ROLE.STUDENT)
         );
         uint256 tokenId = _tokenIdOfStudent[studentTokenId];
-        require(tokenId > 0);
+        require(tokenId > 0, "NG-ERR-00");
         uint256 pos = _posOfNftGraduationTokenId[tokenId];
 
         return _allNftGraduations[pos - 1];
@@ -79,7 +79,7 @@ contract NftGraduation is ERC721BaseContract, INftGraduation {
     ) public onlyOwner {
         NftIdentityResponse memory nftIdentityResponse = _nftIdentities
             .getNftOfTokenId(studentTokenId);
-        require(!nftIdentityResponse.isExpired);
+        require(!nftIdentityResponse.isExpired, "C-ERR-01");
         _isExchangeable[studentTokenId] = isAllow;
     }
 
@@ -100,7 +100,7 @@ contract NftGraduation is ERC721BaseContract, INftGraduation {
             _isExchangeable[nftIdentityResponse.nftIdentity.tokenId],
             "NG-ERR-01"
         );
-        _checkEnoughCredits(tokenIds);
+        _checkEnoughCredits(tokenIds, nftIdentityResponse.nftIdentity.tokenId);
         _nftCompleteCourses.regainNftCompleteCourses(
             nftIdentityResponse.nftIdentity.tokenId,
             tokenIds
@@ -118,16 +118,23 @@ contract NftGraduation is ERC721BaseContract, INftGraduation {
         emit GrantNewNftGraduation(tokenId);
     }
 
-    function _checkEnoughCredits(uint256[] memory tokenIds) private view {
+    function _checkEnoughCredits(
+        uint256[] memory tokenIds,
+        uint256 studentTokenId
+    ) private view {
         uint256 count = tokenIds.length;
         KnowledgeBlock[] memory knowledgeBlocks = _school
             .getAllKnowledgeBlocks();
         uint256 knowledgeBlockCount = knowledgeBlocks.length;
-        uint256[] memory totalCredits = new uint256[](knowledgeBlockCount);
+        uint256[] memory totalCredits = new uint256[](knowledgeBlockCount + 1);
 
         for (uint256 idx; idx < count; ++idx) {
             (NftCompleteCourse memory nftCompleteCourse, ) = _nftCompleteCourses
                 .getNftCompleteCourse(tokenIds[idx]);
+            require(
+                nftCompleteCourse.studentTokenId == studentTokenId,
+                "NCR-ERR-04"
+            );
 
             totalCredits[
                 nftCompleteCourse.knowledgeBlockId
@@ -137,7 +144,7 @@ contract NftGraduation is ERC721BaseContract, INftGraduation {
         // validate number of credits
         for (uint256 idx; idx < knowledgeBlockCount; ++idx) {
             require(
-                totalCredits[knowledgeBlockCount] >=
+                totalCredits[knowledgeBlocks[idx].id] >=
                     knowledgeBlocks[idx].credits,
                 "NG-ERR-02"
             );

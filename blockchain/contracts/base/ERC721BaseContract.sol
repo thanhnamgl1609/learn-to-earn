@@ -10,10 +10,7 @@ contract ERC721BaseContract is ERC721URIStorage {
 
     address internal _owner;
 
-    constructor(
-        string memory uri,
-        string memory symbol
-    ) ERC721(uri, symbol) {
+    constructor(string memory uri, string memory symbol) ERC721(uri, symbol) {
         _owner = msg.sender;
     }
 
@@ -26,7 +23,7 @@ contract ERC721BaseContract is ERC721URIStorage {
         string memory tokenURI
     ) internal returns (uint256) {
         uint256 tokenId = _generateNewTokenId();
-        _safeMint(tokenOwner, tokenId, msg.data); // fix it
+        _safeMint(tokenOwner, tokenId, msg.data);
         _setTokenURI(tokenId, tokenURI);
 
         return tokenId;

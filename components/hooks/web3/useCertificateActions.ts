@@ -3,8 +3,10 @@ import { useCallback } from 'react';
 import { HookFactoryWithoutSWR } from '@_types/hooks';
 import {
   ExchangeNftCompleteCourseParams,
-  GrantNftGraduationParams,
+  ExchangeNftGraduationParams,
   AllowRequestNftCompleteCourseParams,
+  AllowRequestNftCompleteCoursesParams,
+  SetExchangableNftGraduationParams,
 } from '@_types/certificate';
 import { useTransactionHandler } from './common';
 import {
@@ -12,15 +14,23 @@ import {
   addNftGraduationCreatedEvent,
 } from '@events';
 
-type GrantNftGraduationFunc = {
+type ExchangeNftGraduationFunc = {
   (
-    data: GrantNftGraduationParams,
+    data: ExchangeNftGraduationParams,
     onSuccess: (tokenId: number) => Promise<void>
   ): Promise<void>;
 };
 
+type SetExchangableNftGraduationFunc = {
+  (data: SetExchangableNftGraduationParams): Promise<void>;
+};
+
 type AllowRequestNftCompleteCourseFunc = {
   (data: AllowRequestNftCompleteCourseParams): Promise<void>;
+};
+
+type AllowRequestNftCompleteCoursesFunc = {
+  (data: AllowRequestNftCompleteCoursesParams): Promise<void>;
 };
 
 type ExchangeNftCompleteCourseFunc = {
@@ -32,8 +42,10 @@ type ExchangeNftCompleteCourseFunc = {
 
 type UseCertificateActionsReturnTypes = {
   allowRequestNftCompleteCourse: AllowRequestNftCompleteCourseFunc;
+  allowRequestNftCompleteCourses: AllowRequestNftCompleteCoursesFunc;
+  setExchangableNftGraduation: SetExchangableNftGraduationFunc;
   exchangeNftCompleteCourse: ExchangeNftCompleteCourseFunc;
-  grantNftGraduation: GrantNftGraduationFunc;
+  exchangeNftGraduation: ExchangeNftGraduationFunc;
 };
 
 type SchoolActionsHookFactory =
@@ -54,6 +66,27 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
           _contracts.nftClassRegistration.allowRequestNftCompleteCourse(
             tokenId,
             isAllowed
+          );
+
+        await transactionHandler({
+          pendingMsg: 'Đang xử lí...',
+          successMsg: 'Cho đổi trao đổi NFT hoàn tất môn thành công!',
+          errorMsg: 'Cho đổi trao đổi NFT hoàn tất môn thất bại!',
+          promise,
+        });
+      },
+      [deps]
+    );
+
+  const allowRequestNftCompleteCourses: AllowRequestNftCompleteCoursesFunc =
+    useCallback(
+      async (data) => {
+        const tokenIds = data.map(({ tokenId }) => tokenId);
+        const allowLists = data.map(({ isAllowed }) => isAllowed);
+        const promise =
+          _contracts.nftClassRegistration.allowRequestNftCompleteCourses(
+            tokenIds,
+            allowLists
           );
 
         await transactionHandler({
@@ -95,28 +128,52 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
     return result;
   };
 
-  const grantNftGraduation: GrantNftGraduationFunc = useCallback(
-    async (data, onSuccess) => {
-      const { tokenIds, tokenURI } = data;
-      const promise = _contracts.nftGraduation.grantNftGraduation(
-        tokenIds,
-        tokenURI
-      );
+  const setExchangableNftGraduation: SetExchangableNftGraduationFunc =
+    useCallback(
+      async (data) => {
+        const { studentTokenId, isAllowed } = data;
+        const promise =
+          _contracts.nftGraduation.setExchangableNftGraduation(
+            studentTokenId,
+            isAllowed
+          );
 
-      await transactionHandler({
-        successMsg: 'Cấp NFT tốt nghiệp thành công',
-        errorMsg: 'Cấp NFT tốt nghiệp thất bại',
-        promise,
-      });
-      addNftGraduationCreatedEvent(_contracts, onSuccess);
-    },
-    [_contracts]
-  );
+        await transactionHandler({
+          successMsg: isAllowed
+            ? 'Cho phép sinh viên đỏi chứng chỉ tốt nghiệp'
+            : 'Từ chối yêu cầu đổi chứng chỉ tốt nghiệp',
+          errorMsg: 'Cập nhật thất bại',
+          promise,
+        });
+      },
+      [_contracts]
+    );
+
+  const exchangeNftGraduation: ExchangeNftGraduationFunc =
+    useCallback(
+      async (data, onSuccess) => {
+        const { tokenIds, tokenURI } = data;
+        const promise = _contracts.nftGraduation.grantNftGraduation(
+          tokenIds,
+          tokenURI
+        );
+
+        await transactionHandler({
+          successMsg: 'Cấp NFT tốt nghiệp thành công',
+          errorMsg: 'Cấp NFT tốt nghiệp thất bại',
+          promise,
+        });
+        addNftGraduationCreatedEvent(_contracts, onSuccess);
+      },
+      [_contracts]
+    );
 
   return {
     getOwnedNftCompleteCourse,
+    setExchangableNftGraduation,
     allowRequestNftCompleteCourse,
+    allowRequestNftCompleteCourses,
     exchangeNftCompleteCourse,
-    grantNftGraduation,
+    exchangeNftGraduation,
   };
 };

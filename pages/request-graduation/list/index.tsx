@@ -1,5 +1,6 @@
 import ROUTES from 'config/routes.json';
 import { Heading, LinkBox } from '@atoms';
+import CONST from 'config/constants.json';
 import { Table } from '@organisms';
 import { RequestGraduationEntity } from '@_types/models/entities';
 import { BaseLayout } from '@templates';
@@ -9,6 +10,8 @@ import { useRequestGraduationList } from '@hooks/api';
 type ColumnProps = {
   item: RequestGraduationEntity;
 };
+
+const { REQUEST_STATUS } = CONST;
 
 const requestGraduationHeader = [
   {
@@ -40,7 +43,9 @@ const requestGraduationHeader = [
 ];
 
 const RequestGraduationList = () => {
-  const { data: requestGraduations = [] } = useRequestGraduationList();
+  const { data: requestGraduations = [] } = useRequestGraduationList({
+    status: REQUEST_STATUS.PENDING,
+  });
 
   return (
     <BaseLayout>

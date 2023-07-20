@@ -6,7 +6,7 @@ import { addressCheck, isOwner } from '@api/middleware';
 
 const { METHOD } = REQUEST_CONST;
 
-const post: IHandler = async (req, res) => {
+const put: IHandler = async (req, res) => {
   const { data } = req.body;
   const result =
     await certificatesService.updateRequestGraduationStatus(data);
@@ -16,6 +16,6 @@ const post: IHandler = async (req, res) => {
 
 export default withSession(
   run({
-    [METHOD.POST]: [addressCheck, isOwner, post],
+    [METHOD.PUT]: [addressCheck, isOwner, put],
   })
 );

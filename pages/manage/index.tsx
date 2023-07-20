@@ -20,12 +20,16 @@ const PageManage: NextPage = () => {
       header: 'ĐƠN ĐĂNG KÝ',
       links: [
         {
-          url: `${Routes.manageRegistration.name}?r=${[ROLES.TEACHER]}`,
+          url: `${Routes.manageRegistration.name}?r=${[
+            ROLES.TEACHER,
+          ]}`,
           label: 'Giảng viên',
           badge: teacherRegistrationInfos?.length,
         },
         {
-          url: `${Routes.manageRegistration.name}?r=${[ROLES.STUDENT]}`,
+          url: `${Routes.manageRegistration.name}?r=${[
+            ROLES.STUDENT,
+          ]}`,
           label: 'Sinh viên',
           badge: studentRegistrationInfos?.length,
         },
@@ -79,10 +83,6 @@ const PageManage: NextPage = () => {
     {
       header: 'TỐT NGHIỆP',
       links: [
-        {
-          url: Routes.graduationCondition.name,
-          label: 'Điều kiện tốt nghiệp',
-        },
         {
           url: Routes.requestGraduationList.name,
           label: 'Danh sách yêu cầu tốt nghiệp',

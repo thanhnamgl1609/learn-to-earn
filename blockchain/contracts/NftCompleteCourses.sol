@@ -100,7 +100,7 @@ contract NftCompleteCourses is ERC1155BaseContract, INftCompleteCourses {
         uint256 tokenId
     ) public view returns (NftCompleteCourse memory, string memory) {
         uint256 pos = _posOfTokenIdOfNftType[NFT_COMPLETE_COURSE][tokenId];
-        require(pos > 0, "[NFT Complete Course] Not exist");
+        require(pos > 0, "NCC-ERR-00");
 
         return (_allNftCompleteCourses[pos - 1], uri(tokenId));
     }

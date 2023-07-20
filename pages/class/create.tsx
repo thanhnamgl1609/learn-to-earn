@@ -9,18 +9,28 @@ import {
   useInputTextChange,
   useSelectOptions,
 } from '@hooks/form';
-import { useCourseListApi, useCurrentYear, useUserListApi } from '@hooks/api';
+import {
+  useCourseListApi,
+  useCurrentYear,
+  useUserListApi,
+} from '@hooks/api';
 import { Breadcrumb, Form } from '@organisms';
 import { BaseLayout, FormClassDetail } from '@templates';
 import { Heading } from '@atoms';
-import { courseEntity, semesterEntity } from 'domain/models';
+import { semesterEntity } from 'domain/models';
 
-const { ROLES, UI, DATE_TIME } = CONST;
+const { ROLES, UI } = CONST;
 
 const createDefaultState = () => ({
   courseId: 0,
-  startAt: formatDate(dateAdd(new Date(), 1, 'M'), UI.INPUT_DATE_FORMAT),
-  completeAt: formatDate(dateAdd(new Date(), 2, 'M'), UI.INPUT_DATE_FORMAT),
+  startAt: formatDate(
+    dateAdd(new Date(), 5, 'd'),
+    UI.INPUT_DATE_FORMAT
+  ),
+  completeAt: formatDate(
+    dateAdd(new Date(), 35, 'd'),
+    UI.INPUT_DATE_FORMAT
+  ),
   maxSize: 40,
   semesterId: 1,
   teacherTokenId: 0,
@@ -29,7 +39,9 @@ const createDefaultState = () => ({
 
 const CreateClass = () => {
   const { data: courseList } = useCourseListApi();
-  const { data: teacherList } = useUserListApi({ role: ROLES.TEACHER });
+  const { data: teacherList } = useUserListApi({
+    role: ROLES.TEACHER,
+  });
   const { data: semesters } = useCurrentYear();
   const semesterOptions = useSelectOptions(semesters, {
     valueField: 'id',

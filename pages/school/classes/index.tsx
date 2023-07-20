@@ -8,13 +8,15 @@ import { Box } from '@molecules';
 import { Breadcrumb, Table } from '@organisms';
 import { BaseLayout } from '@templates';
 import { Button, Link } from '@atoms';
-import { useAppDispatch } from '@hooks/stores';
+import { useAppDispatch, useAppSelector } from '@hooks/stores';
 import { openConfirmModal } from '@store/appSlice';
 import { useRegisterClassesApi } from '@hooks/api/classes';
 import { classEntity } from 'domain/models';
+import { useEffect } from 'react';
+import { selectCurrentNftClassRegistrations } from '@store/userSlice';
 
 type ColumnProps = {
-  item: ClassEntity;
+  item: ClassEntity & { isRegister: boolean };
 };
 
 const { KNOWLEDGE_BLOCKS } = CONST;
@@ -61,6 +63,9 @@ const ActionColumns = ({ item }: ColumnProps) => {
         className="min-w-[100px]"
         theme="main"
         size="S"
+        disabled={item.isRegister}
+        disabledTag="Đã đăng ký môn học"
+        customTagClassName="p-1 min-w-[160px]"
       >
         Đăng ký
       </Button>
@@ -69,7 +74,7 @@ const ActionColumns = ({ item }: ColumnProps) => {
 };
 const tableHeaders = [
   {
-    field: 'id',
+    field: 'onChainId',
     name: 'Mã lớp học',
   },
   {
@@ -120,10 +125,6 @@ const tableHeaders = [
 
 const RegisteredClassList = () => {
   const { data: registeredClasses } = useRegisterClassesApi();
-  console.log(
-    '🚀 ~ file: index.tsx:116 ~ RegisteredClassList ~ registeredClasses:',
-    registeredClasses
-  );
 
   return (
     <BaseLayout>

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
-import { CourseEntity } from '@_types/models/entities';
-import CONST from '@config/constants.json';
+import { CourseForm } from '@_types/school';
 import ROUTES from '@config/routes.json';
 import { useCreateCourse } from '@hooks/common';
 import {
@@ -12,19 +11,12 @@ import {
 import { Breadcrumb, Form } from '@organisms';
 import { BaseLayout, CourseDetail } from '@templates';
 import { Heading } from '@atoms';
-import { useCourseList } from '@hooks/web3';
 import { useInputCheckChange } from '@hooks/form/useInputCheckChange';
 import { useCourseListApi } from '@hooks/api';
+import { useKnowledgeBlockListApi } from '@hooks/api/knowledge-blocks';
 
-const { KNOWLEDGE_BLOCKS } = CONST;
-
-const unsetCourse = {
-  label: 'Không có môn tiên quyết',
-  value: '0',
-};
-
-const createDefaultCourse = (): Partial<CourseEntity> => ({
-  prevCourseId: 0,
+const createDefaultCourse = (): CourseForm => ({
+  prevCourseId: '0',
   courseCode: '',
   knowledgeBlockId: 1,
   name: '',
@@ -34,6 +26,7 @@ const createDefaultCourse = (): Partial<CourseEntity> => ({
   theoryLessons: 40,
   practiceLessons: 0,
   exerciseLessons: 0,
+  chainURI: '',
 });
 
 const CreateCourse = () => {
@@ -43,14 +36,20 @@ const CreateCourse = () => {
     valueField: 'onChainId',
     noSelectLabel: 'Chọn môn học',
   });
-  const knowledgeBlocks = Object.values(KNOWLEDGE_BLOCKS).map(
-    ({ id, name }) => ({ value: id, label: name })
-  );
+  const { data: knowledgeBlocks } = useKnowledgeBlockListApi();
+  const knowledgeBlockOptions = useSelectOptions(knowledgeBlocks, {
+    noSelectLabel: 'Tất cả khối kiến thức',
+    labelField: 'name',
+    valueField: 'id',
+  });
   const [formState, setFormState] = useState(createDefaultCourse());
   const onInputChange = useInputTextChange(setFormState);
   const onInputCheckChange = useInputCheckChange(setFormState);
   const createCourse = useCreateCourse();
-  const onSubmit = useFormSubmit(() => createCourse(formState), [formState]);
+  const onSubmit = useFormSubmit(
+    () => createCourse(formState),
+    [formState]
+  );
 
   const links = [
     {
@@ -76,7 +75,7 @@ const CreateCourse = () => {
           onInputChange={onInputChange}
           onInputCheckChange={onInputCheckChange}
           courses={courses}
-          knowledgeBlocks={knowledgeBlocks}
+          knowledgeBlocks={knowledgeBlockOptions}
         />
       </Form>
     </BaseLayout>

@@ -23,17 +23,12 @@ export const useGrantNftGraduation = () => {
   const { account } = useAppSelector(selectUser);
   const student = useAppSelector(selectUserDetail);
   const { getSignedData } = useUtilities();
-  const { grantNftGraduation } = useCertificateActions();
+  const { exchangeNftGraduation } = useCertificateActions();
   const syncCreatedNftGraduation = useSyncCreatedNftGraduation();
-  const getNftCompleteCourses = useNftCompleteCourseListGetter();
 
   const _grantNftGraduation = useCallback(
     async (request: RequestGraduationEntity) => {
-      const { nftCompleteCourseTokenIds } = request;
-
-      const nftCompleteCourses = await getNftCompleteCourses({
-        nftCompleteCourseTokenIds,
-      });
+      const { nftCompleteCourses } = request;
 
       const {
         nationalDefenseEduCertificate,
@@ -63,11 +58,14 @@ export const useGrantNftGraduation = () => {
         })
       ).unwrap();
 
+      const tokenIds = nftCompleteCourses.map(
+        ({ tokenId }) => tokenId
+      );
       const params = {
-        tokenIds: nftCompleteCourseTokenIds,
+        tokenIds,
         tokenURI,
       };
-      grantNftGraduation(params, (tokenId) =>
+      await exchangeNftGraduation(params, (tokenId) =>
         syncCreatedNftGraduation(
           {
             tokenId,

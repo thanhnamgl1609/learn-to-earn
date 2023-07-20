@@ -14,13 +14,19 @@ export default (sequelize: Sequelize) => {
         as: 'documentURIs',
       });
       this.hasMany(models.request_graduations, {
-        foreignKey: 'userId',
+        foreignKey: 'studentTokenId',
+        sourceKey: 'tokenId',
         as: 'requestGraduations',
       });
       this.hasMany(models.classes, {
         foreignKey: 'teacherTokenId',
         sourceKey: 'tokenId',
         as: 'teacher',
+      });
+      this.hasMany(models.nft_class_registrations, {
+        foreignKey: 'studentTokenId',
+        sourceKey: 'tokenId',
+        as: 'nftClassRegistrations',
       });
     }
   }

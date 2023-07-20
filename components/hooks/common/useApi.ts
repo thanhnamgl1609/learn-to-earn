@@ -6,6 +6,8 @@ import { loading, unloading } from '@store/appSlice';
 import { useAppDispatch } from '@hooks/stores';
 import { useCallback } from 'react';
 
+const { CONTRACT } = ERROR_MESSAGE;
+
 export const useApi = <D, P>(
   action: (...params: P[]) => Promise<D>,
   deps?: any[]
@@ -25,6 +27,11 @@ export const useApi = <D, P>(
       );
       let errorMessage = e.customError ?? ERROR_MESSAGE.UNEXPECTED;
       if (isUserDenied) errorMessage = ERROR_MESSAGE.USER_DENIED;
+      const contractErrCodes = Object.keys(CONTRACT);
+      const errCode = contractErrCodes.find((code) =>
+        e.data?.message?.includes(code)
+      );
+      if (errCode) errorMessage = CONTRACT[errCode];
       logger(e, { method: 'error' });
       toast.error(errorMessage);
     } finally {

@@ -13,12 +13,19 @@ export const uploadData = createAppAsyncThunk<
     successText?: string;
   }
 >('user/uploadData', async (payload, { getState }) => {
-  const { data, getSignedData, successText = '', signature } = payload;
+  const {
+    data,
+    getSignedData,
+    successText = '',
+    signature,
+  } = payload;
   const {
     user: { account },
   } = getState();
 
-  const _signature = !signature ? await getSignedData(account) : signature;
+  const _signature = !signature
+    ? await getSignedData(account)
+    : signature;
   const promise = request.post('/api/apply', {
     address: account,
     signature: _signature,
@@ -26,9 +33,9 @@ export const uploadData = createAppAsyncThunk<
   });
 
   const res = await toast.promise(promise, {
-    pending: 'Uploading metadata',
+    pending: 'Uploading metadata...',
     success: successText,
-    error: 'Metadata upload error',
+    error: 'Xảy ra lỗi khi upload metadata',
   });
   const { link, meta } = res.data;
 

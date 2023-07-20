@@ -24,6 +24,20 @@ export type Course = {
   isUploading?: boolean;
 } & CourseCore;
 
+export type CourseForm = {
+  knowledgeBlockId: number;
+  courseCode: string;
+  prevCourseId: string;
+  name: string;
+  credits: number;
+  description: string;
+  isRequired: boolean;
+  theoryLessons: number;
+  practiceLessons: number;
+  exerciseLessons: number;
+  chainURI: string | null;
+};
+
 export type RegisterTime = {
   registerStartAt: Date | null;
   registerEndAt: Date | null;

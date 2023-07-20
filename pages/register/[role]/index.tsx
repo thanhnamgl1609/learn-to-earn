@@ -126,7 +126,7 @@ const RegisterRole = () => {
           value={nftMeta.personalEmail}
           onChange={onInputChange}
           name={FORM_FIELDS.PERSONAL_EMAIL}
-          label="Email cá nhấn"
+          label="Email cá nhân"
           placeholder="Nhập email cá nhân"
         />
         <InputField

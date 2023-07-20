@@ -5,7 +5,11 @@ import { SignatureData } from '@_types/common';
 import endpoints from 'config/endpoints.json';
 import { useUtilities } from '@hooks/web3';
 import { useAppSelector } from '@hooks/stores';
-import { selectCurrentNftIdentity, selectUser } from '@store/userSlice';
+import {
+  selectCurrentNftIdentity,
+  selectUser,
+} from '@store/userSlice';
+import { toast } from 'react-toastify';
 
 export const useUpdateScoreForNftClassRegistration = () => {
   const { tokenId } = useAppSelector(selectCurrentNftIdentity);
@@ -37,6 +41,7 @@ export const useUpdateScoreForNftClassRegistration = () => {
           ..._signatureData,
         },
       })([endpoints.nftClassRegistration]);
+      toast.success('Đồng bộ điểm số thành công');
     },
     [account, tokenId]
   );

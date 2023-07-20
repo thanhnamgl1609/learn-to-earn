@@ -15,7 +15,10 @@ const {
   DATE_TIME,
 } = CONST;
 
-const MemberDetail: FC<PropsWithChildren<Props>> = ({ user, children }) => (
+const MemberDetail: FC<PropsWithChildren<Props>> = ({
+  user,
+  children,
+}) => (
   <Box className="relative p-6 pt-[80px]">
     <ProfileImage
       fullName={user.fullName}
@@ -68,7 +71,11 @@ const MemberDetail: FC<PropsWithChildren<Props>> = ({ user, children }) => (
         placeholder="Nhập ngày tháng năm sinh"
         readOnly
       />
-      <InputField value={user.personalEmail} label="Email cá nhân" readOnly />
+      <InputField
+        value={user.personalEmail}
+        label="Email cá nhân"
+        readOnly
+      />
       <InputField
         value={user.identityNumber}
         label="Số CMND/CCCD"
@@ -85,7 +92,7 @@ const MemberDetail: FC<PropsWithChildren<Props>> = ({ user, children }) => (
 
     <h4 className="mt-4 mb-2 font-medium">Giấy tờ tùy thân</h4>
     <div className="grid grid-cols-1 md:grid-cols-2">
-      {user.documentURIs.map((uri) => (
+      {user.documentURIs.map(({ uri }) => (
         <Image src={uri} alt="" key={uri} canZoomIn />
       ))}
     </div>

@@ -9,7 +9,10 @@ export const APPLY_VALIDATOR = z
     fullName: z.string().nonempty(),
     profileImage: z.string().nonempty(),
     documentURIs: z.array(z.string()).nonempty(),
-    gender: z.preprocess((v: string) => parseInt(v), z.number().min(0).max(1)),
+    gender: z.preprocess(
+      (v: string) => parseInt(v),
+      z.number().min(0).max(1)
+    ),
     dateOfBirth: z.string(),
     personalEmail: z.string(),
     identityNumber: z.string().nonempty(),
@@ -25,12 +28,21 @@ export const GRANT_OR_REJECT_IDENTITY = z
 
 export const CREATE_COURSE_META = z.object({
   name: z.string().nonempty(),
-  knowledgeBlockId: z.preprocess((v: string) => parseInt(v), z.number()),
+  knowledgeBlockId: z.preprocess(
+    (v: string) => parseInt(v),
+    z.number()
+  ),
   courseCode: z.string().nonempty(),
   credits: z.preprocess((v: string) => parseInt(v), z.number()),
   theoryLessons: z.preprocess((v: string) => parseInt(v), z.number()),
-  practiceLessons: z.preprocess((v: string) => parseInt(v), z.number()),
-  exerciseLessons: z.preprocess((v: string) => parseInt(v), z.number()),
+  practiceLessons: z.preprocess(
+    (v: string) => parseInt(v),
+    z.number()
+  ),
+  exerciseLessons: z.preprocess(
+    (v: string) => parseInt(v),
+    z.number()
+  ),
   description: z.string(),
   prevCourseId: z
     .null()
@@ -39,8 +51,14 @@ export const CREATE_COURSE_META = z.object({
 
 export const CREATE_COURSE = z.object({
   prevCourseId: z.preprocess((v: string) => parseInt(v), z.number()),
-  knowledgeBlockId: z.preprocess((v: string) => parseInt(v), z.number()),
-  credits: z.preprocess((v: string) => parseInt(v), z.number().positive()),
+  knowledgeBlockId: z.preprocess(
+    (v: string) => parseInt(v),
+    z.number()
+  ),
+  credits: z.preprocess(
+    (v: string) => parseInt(v),
+    z.number().positive()
+  ),
   name: z.string().nonempty(),
   description: z.string(),
   isRequired: z.preprocess(
@@ -48,19 +66,31 @@ export const CREATE_COURSE = z.object({
     z.number().min(0).max(1)
   ),
   theoryLessons: z.preprocess((v: string) => parseInt(v), z.number()),
-  practiceLessons: z.preprocess((v: string) => parseInt(v), z.number()),
-  exerciseLessons: z.preprocess((v: string) => parseInt(v), z.number()),
+  practiceLessons: z.preprocess(
+    (v: string) => parseInt(v),
+    z.number()
+  ),
+  exerciseLessons: z.preprocess(
+    (v: string) => parseInt(v),
+    z.number()
+  ),
 });
 
 export const REGISTER_TIME = z
   .object({
     registerStartAt: z.preprocess(
       (v: string) => new Date(v),
-      z.date(customOptionsWithError('Ngày bắt đầu đăng ký không được rỗng'))
+      z.date(
+        customOptionsWithError('Ngày bắt đầu đăng ký không được rỗng')
+      )
     ),
     registerEndAt: z.preprocess(
       (v: string) => new Date(v),
-      z.date(customOptionsWithError('Ngày kết thúc đăng ký không được rỗng'))
+      z.date(
+        customOptionsWithError(
+          'Ngày kết thúc đăng ký không được rỗng'
+        )
+      )
     ),
   })
   .refine(
@@ -75,12 +105,19 @@ export const EXTEND_REGISTER_TIME = (
   semester: SemesterDetail
 ) =>
   schema
-    .refine(({ registerEndAt }) => before(registerEndAt, semester.endAt), {
-      message: 'Đăng ký phải trước khi học kì kết thúc',
-    })
-    .refine(({ registerStartAt }) => after(registerStartAt, semester.startAt), {
-      message: 'Đăng ký phải sau khi học kì bắt đầu',
-    });
+    .refine(
+      ({ registerEndAt }) => before(registerEndAt, semester.endAt),
+      {
+        message: 'Đăng ký phải trước khi học kì kết thúc',
+      }
+    )
+    .refine(
+      ({ registerStartAt }) =>
+        after(registerStartAt, semester.startAt),
+      {
+        message: 'Đăng ký phải sau khi học kì bắt đầu',
+      }
+    );
 
 export const CREATE_CLASS = z
   .object({
@@ -95,10 +132,15 @@ export const CREATE_CLASS = z
     maxSize: z.preprocess(
       (v: string) => parseInt(v),
       z
-        .number(customOptionsWithError('Nhập số lương sinh viên tối đa'))
+        .number(
+          customOptionsWithError('Nhập số lương sinh viên tối đa')
+        )
         .positive('Số lương sinh viên tối đa > 0')
     ),
-    semesterId: z.preprocess((v: string) => parseInt(v), z.number().positive()),
+    semesterId: z.preprocess(
+      (v: string) => parseInt(v),
+      z.number().positive()
+    ),
     startAt: z.preprocess(
       (v: string) => new Date(v),
       z.date(customOptionsWithError('Ngày bắt đầu không được rỗng'))
@@ -163,7 +205,7 @@ export const CREATE_NFT_COMPLETE_COURSE = z.object({
     .nonempty('sai token URL'),
   grantDate: z.preprocess(
     (v: string) => new Date(v),
-    z.date(customOptionsWithError('Ngày bắt đầu đăng ký không được rỗng'))
+    z.date(customOptionsWithError('Ngày được cấp không được rỗng'))
   ),
 });
 
@@ -197,11 +239,15 @@ export const REQUEST_NFT_GRADUATION = z.object({
   foreignLanguageCertificate: z.string(
     customOptionsWithError('Cần chứng chỉ ngoại ngữ')
   ),
-  otherCertificates: z.array(z.string(customOptionsWithError('Nhập sai'))),
+  otherCertificates: z.array(
+    z.string(customOptionsWithError('Nhập sai'))
+  ),
 });
 
 export const GRANT_GRADUATION = z.object({
-  studentTokenId: z.number(customOptionsWithError('Thiếu mã sinh viên')),
+  studentTokenId: z.number(
+    customOptionsWithError('Thiếu mã sinh viên')
+  ),
   nftCompleteCourseTokenIds: z.array(
     z.number(),
     customOptionsWithError('Chọn đủ tín chỉ cho mỗi khối kiến thức')

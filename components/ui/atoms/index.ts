@@ -16,3 +16,4 @@ export { default as Heading } from './Heading';
 export { CustomLink as Link } from './Link';
 export { LinkBox } from './LinkBox';
 export { LinkText } from './LinkText';
+export { InputFileButton } from './InputFileButton';

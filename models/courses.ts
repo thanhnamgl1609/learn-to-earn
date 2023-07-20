@@ -4,10 +4,9 @@ import { Sequelize, DataTypes } from 'sequelize';
 export default (sequelize: Sequelize) => {
   class Courses extends DBModel {
     static associate(models: DB) {
-      this.hasOne(models.courses, {
+      this.belongsTo(models.courses, {
         foreignKey: 'prevCourseId',
         as: 'prevCourse',
-        sourceKey: 'id',
       });
       this.belongsTo(models.knowledge_blocks, {
         foreignKey: 'knowledgeBlockId',

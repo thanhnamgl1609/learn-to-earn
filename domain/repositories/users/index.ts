@@ -119,6 +119,15 @@ export const get = async (
           },
         ],
       },
+      {
+        model: db.nft_class_registrations,
+        as: 'nftClassRegistrations',
+        include: [
+          {
+            model: db.classes,
+          },
+        ],
+      },
     ],
   });
 

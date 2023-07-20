@@ -17,6 +17,7 @@
   "classDetail": "/api/v1/classes/detail",
   "registerClasses": "/api/v1/classes/register",
   "nftClassRegistration": "/api/v1/classes/nft-class-registration",
+  "nftClassRegistrationList": "/api/v1/classes/nft-class-registration/list",
   "nftCompleteCourse": "/api/v1/certificates/nft-complete-course",
   "nftCompleteCourseGroup": "/api/v1/certificates/nft-complete-course/group",
   "assignedClasses": "/api/v1/classes/assigned",

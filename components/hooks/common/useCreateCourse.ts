@@ -5,10 +5,14 @@ import { makeRequest } from 'utils';
 import CONST from '@config/constants.json';
 import ROUTES from '@config/routes.json';
 import endpoints from '@config/endpoints.json';
-import { useAccount, useSchoolActions, useUtilities } from '@hooks/web3';
+import {
+  useAccount,
+  useSchoolActions,
+  useUtilities,
+} from '@hooks/web3';
 import { CREATE_COURSE } from '@validators/schemas';
 import { useValidator } from '@hooks/form';
-import { CourseCore, CourseMeta } from '@_types/school';
+import { CourseForm } from '@_types/school';
 import { uploadData } from '@store/actions';
 import { useAppDispatch } from '@hooks/stores';
 import { useApi } from './useApi';
@@ -26,7 +30,7 @@ export const useCreateCourse = () => {
     account: { data: account },
   } = useAccount();
 
-  return useApi(async (formState: Omit<CourseMeta & CourseCore, 'status'>) => {
+  return useApi(async (formState: CourseForm) => {
     const _formState = {
       ...formState,
       isRequired: formState.isRequired ? 1 : 0,
@@ -40,18 +44,22 @@ export const useCreateCourse = () => {
     ]);
     if (existedCourse) return toast.error('Mã môn học đã tồn tại');
 
-    const { knowledgeBlockId, prevCourseId, credits, courseCode } = _formState;
+    const { knowledgeBlockId, prevCourseId, credits, courseCode } =
+      _formState;
     const signature = await getSignedData();
     const { link: uri } = await dispatch(
       uploadData({
-        data: { target: UPLOAD_TARGET.CREATE_COURSE, ..._formState },
+        data: {
+          target: UPLOAD_TARGET.CREATE_COURSE,
+          ..._formState,
+        },
         signature,
         successText: 'Upload course successfully!',
       })
     ).unwrap();
     const createdCourse = {
       knowledgeBlockId,
-      prevCourseId,
+      prevCourseId: parseInt(prevCourseId),
       credits,
       uri,
       courseCode,
@@ -72,6 +80,8 @@ export const useCreateCourse = () => {
         address: account,
       },
     })([endpoints.courses]);
-    router.push(ROUTES.courseDetail.name.replace(':id', id.toString()));
+    router.push(
+      ROUTES.courseDetail.name.replace(':id', id.toString())
+    );
   }, []);
 };

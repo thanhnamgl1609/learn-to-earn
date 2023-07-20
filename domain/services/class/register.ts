@@ -7,6 +7,7 @@ import { classesRepo } from 'domain/repositories';
 import { contract } from '@api/utils/load-contract';
 import { createError } from '@api/utils/create-error';
 import { withTransaction } from '@api/utils';
+import { NftClassRegistrationEntity } from '@_types/models/entities';
 
 export const getNftRegistrationClass = async (tokenId: number) => {
   try {
@@ -33,7 +34,9 @@ export const registerClass = async (
   registerDate: string,
   registerFee: number
 ) => {
-  const count = await classesRepo.countNftClassRegistrationExisted({ tokenId });
+  const count = await classesRepo.countNftClassRegistrationExisted({
+    tokenId,
+  });
   if (count > 0) throw createError(400);
   const nftClassRegistration: CreatedNftClassRegistration = {
     tokenId,
@@ -47,15 +50,18 @@ export const registerClass = async (
   return classesRepo.createNftClassRegistration(nftClassRegistration);
 };
 
-export const updateScore = (data: UpdateScoreForNftClassRegistrationBodyData) =>
+export const updateScore = (
+  data: UpdateScoreForNftClassRegistrationBodyData
+) =>
   withTransaction(async (transaction) => {
     const { score, teacherTokenId, tokenId } = data;
-    const nftClassRegistration = await classesRepo.getNftClassRegistration(
-      {
-        tokenId,
-      },
-      transaction
-    );
+    // const nftClassRegistration =
+    //   await classesRepo.getNftClassRegistration(
+    //     {
+    //       tokenId,
+    //     },
+    //     transaction
+    //   );
     // if (nftClassRegistration.class.teacherTokenId === teacherTokenId)
     //   throw createError(400, ERROR.NOT_TEACHER_OF_CLASS);
 
@@ -75,4 +81,28 @@ export const updateScore = (data: UpdateScoreForNftClassRegistrationBodyData) =>
       },
       transaction
     );
+  });
+
+export const updateScores = (data: NftClassRegistrationEntity[]) =>
+  withTransaction(async (transaction) => {
+    // const nftClassRegistration =
+    //   await classesRepo.getNftClassRegistration(
+    //     {
+    //       tokenId,
+    //     },
+    //     transaction
+    //   );
+    // if (nftClassRegistration.class.teacherTokenId === teacherTokenId)
+    //   throw createError(400, ERROR.NOT_TEACHER_OF_CLASS);
+
+    const promises = data.map(({ score, tokenId }) =>
+      classesRepo.updateScore(
+        {
+          score,
+          tokenId,
+        },
+        transaction
+      )
+    );
+    await Promise.all(promises);
   });

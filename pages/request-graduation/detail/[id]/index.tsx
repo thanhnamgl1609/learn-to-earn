@@ -7,7 +7,7 @@ import {
 import { useAppDispatch } from '@hooks/stores';
 import { BaseLayout } from '@templates';
 import { Table } from '@organisms';
-import { Box, InputField, LinkField } from '@molecules';
+import { Box, InputField } from '@molecules';
 import { Button, Heading } from '@atoms';
 import { floor, formatDate } from 'utils';
 import { ChangeEvent, Fragment, useMemo } from 'react';
@@ -17,10 +17,8 @@ import {
   useUpdateRequestGraduationStatus,
 } from '@hooks/api';
 import { ImageView } from 'components/ui/molecules';
-import { priceVO } from 'domain/models/value-objects';
 import { useRouter } from 'next/router';
 import MemberDetail from 'components/ui/organisms/MemberDetail';
-import { useGrantNftGraduation } from '@hooks/common';
 import { openConfirmModal } from '@store/appSlice';
 
 type CompleteCourseColumnProps = {
@@ -143,6 +141,7 @@ const RequestGraduation = () => {
     updateRequestGraduationStatus({
       data: {
         requestGraduationId: requestGraduationDetail.id,
+        studentTokenId,
         isApproved,
       },
     });

@@ -23,10 +23,7 @@ type RegisterClassFunc = {
     classId: number,
     registerFee: number,
     uri: string,
-    options: {
-      signatureData: SignatureData;
-      metadata: Record<string, any>;
-    }
+    syncDB: (tokenId: number) => Promise<void>
   ): Promise<void>;
 };
 
@@ -38,14 +35,6 @@ type GetApprovalOfTokenIdFunc = {
   (tokenId: number): Promise<string>;
 };
 
-type GetRegisteredClassFunc = {
-  (): Promise<any>;
-};
-
-type RegainNftClassRegistrationFunc = {
-  (tokenId: number): Promise<void>;
-};
-
 type GetRegainedNftListOfClass = {
   (classId: number): Promise<number[]>;
 };
@@ -54,21 +43,13 @@ type GetNftClassRegistration = {
   (tokenId: number): Promise<NftclassregistrationResponse>;
 };
 
-type CheckNftClassRegistrationRegainedFunc = {
-  (studentTokenId: number, classId: number): Promise<boolean>;
-};
-
 type UseNftClassRegistrationActionsReturnTypes = {
   getStudentListOfClass: GetStudentListOfClass;
   getNumberOfStudentsOfClass: GetNumberOfStudentsOfClass;
-  getRegainedNftListOfClass: GetRegainedNftListOfClass;
   getNftClassRegistration: GetNftClassRegistration;
   registerClass: RegisterClassFunc;
   approveToTeacher: ApproveToTeacherFunc;
   getApprovalOfTokenId: GetApprovalOfTokenIdFunc;
-  getRegisteredClass: GetRegisteredClassFunc;
-  regainNftClassRegistration: RegainNftClassRegistrationFunc;
-  checkNftClassRegistrationRegained: CheckNftClassRegistrationRegainedFunc;
 };
 
 type SchoolActionsHookFactory =
@@ -94,70 +75,43 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
     [_contracts]
   );
 
-  const getNumberOfStudentsOfClass: GetNumberOfStudentsOfClass = useCallback(
-    async (classTokenId) => {
-      const result =
-        await _contracts!.nftClassRegistration.getNumberOfRegisteredStudent(
-          classTokenId
-        );
+  const getNumberOfStudentsOfClass: GetNumberOfStudentsOfClass =
+    useCallback(
+      async (classTokenId) => {
+        const result =
+          await _contracts!.nftClassRegistration.getNumberOfRegisteredStudent(
+            classTokenId
+          );
 
-      return result.toNumber();
-    },
-    [_contracts]
-  );
-
-  const getRegainedNftListOfClass: GetRegainedNftListOfClass = useCallback(
-    async (classId) => {
-      const result =
-        await _contracts!.nftClassRegistration.getRegainedNftListOfClass(
-          classId
-        );
-
-      return parseBigNumbers(result);
-    },
-    [_contracts]
-  );
-
-  const getRegisteredClass: GetRegisteredClassFunc = useCallback(async () => {
-    const result = await _contracts!.nftClassRegistration.getRegistereClasses();
-
-    return result;
-  }, [_contracts]);
+        return result.toNumber();
+      },
+      [_contracts]
+    );
 
   const getApprovalOfTokenId: GetApprovalOfTokenIdFunc = useCallback(
     async (tokenId: number) => {
-      const result = await _contracts.nftClassRegistration.getApproved(tokenId);
-
-      return result;
-    },
-    [_contracts]
-  );
-
-  const getNftClassRegistration: GetNftClassRegistration = useCallback(
-    async (tokenId: number) => {
       const result =
-        await _contracts.nftClassRegistration.getNftClassRegistration(tokenId);
+        await _contracts.nftClassRegistration.getApproved(tokenId);
+
       return result;
     },
     [_contracts]
   );
 
-  const checkNftClassRegistrationRegained: CheckNftClassRegistrationRegainedFunc =
+  const getNftClassRegistration: GetNftClassRegistration =
     useCallback(
-      async (studentTokenId, classId) => {
+      async (tokenId: number) => {
         const result =
-          await _contracts.nftClassRegistration.checkNftClassRegistrationRegained(
-            studentTokenId,
-            classId
+          await _contracts.nftClassRegistration.getNftClassRegistration(
+            tokenId
           );
-
         return result;
       },
       [_contracts]
     );
 
   const registerClass: RegisterClassFunc = useCallback(
-    async (classId, registerFee, link, { signatureData, metadata }) => {
+    async (classId, registerFee, link, syncDB) => {
       const promise = _contracts.nftClassRegistration.registerClass(
         classId,
         link,
@@ -165,25 +119,23 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
           value: ethers.utils.parseEther(registerFee.toString()),
         }
       );
-      try {
-        await transactionHandler({
-          successMsg: 'Đăng ký thành công',
-          errorMsg: 'Đăng ký thất bại',
-          promise,
-        });
-      } catch (e) {
-        logger(e);
-        throw { customError: 'Bạn đã đăng ký khóa học này rồi!' };
-      }
+      await transactionHandler({
+        successMsg: 'Đăng ký thành công',
+        errorMsg: 'Đăng ký thất bại',
+        promise,
+      });
 
-      addNftClassRegistrationCreatedEvent(deps, { signatureData, metadata });
+      addNftClassRegistrationCreatedEvent(deps, syncDB);
     },
     [_contracts, deps]
   );
 
   const approveToTeacher: ApproveToTeacherFunc = useCallback(
     async (teacher: string, tokenId: number) => {
-      const promise = _contracts.nftClassRegistration.approve(teacher, tokenId);
+      const promise = _contracts.nftClassRegistration.approve(
+        teacher,
+        tokenId
+      );
       await transactionHandler({
         successMsg: 'Đã cho phép giảng viên có thể thay đổi NFT này',
         errorMsg: 'Gửi yêu cầu thất bại',
@@ -193,30 +145,12 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
     [_contracts]
   );
 
-  const regainNftClassRegistration: RegainNftClassRegistrationFunc =
-    useCallback(
-      async (tokenId: number) => {
-        const promise = _contracts.nftClassRegistration.regainNft(tokenId);
-
-        await transactionHandler({
-          successMsg: 'Đã thu hồi NFT đăng ký khóa học',
-          errorMsg: 'Thu hồi NFT đăng ký khóa học thất bại',
-          promise,
-        });
-      },
-      [_contracts]
-    );
-
   return {
     getStudentListOfClass,
     getNumberOfStudentsOfClass,
-    getRegainedNftListOfClass,
     getApprovalOfTokenId,
     getNftClassRegistration,
-    getRegisteredClass,
-    checkNftClassRegistrationRegained,
     registerClass,
     approveToTeacher,
-    regainNftClassRegistration,
   };
 };

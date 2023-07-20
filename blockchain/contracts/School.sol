@@ -44,7 +44,7 @@ contract School is ISchool, IdentityGenerator {
     mapping(uint256 => uint256[]) private _assignedClassesOfTeacher;
 
     modifier onlyOwner() {
-        require(_owner == msg.sender);
+        require(_owner == msg.sender, "C-ERR-08");
         _;
     }
 
@@ -84,7 +84,7 @@ contract School is ISchool, IdentityGenerator {
         uint256 registeredStartAt,
         uint256 registeredEndAt
     ) external onlyOwner {
-        require(registeredEndAt > registeredStartAt);
+        require(registeredEndAt > registeredStartAt, "C-ERR-07");
         _registeredStartAt[semesterId] = registeredStartAt;
         _registeredEndAt[semesterId] = registeredEndAt;
     }
@@ -104,7 +104,7 @@ contract School is ISchool, IdentityGenerator {
 
     function getCourseById(uint256 id) public view returns (Course memory) {
         uint256 pos = _posOfCourses[id];
-        require(pos > 0);
+        require(pos > 0, "SC-ERR-00");
 
         return _allCourses[pos - 1];
     }
@@ -122,11 +122,14 @@ contract School is ISchool, IdentityGenerator {
         string memory courseCode,
         string memory uri
     ) public onlyOwner returns (uint256) {
-        require(_courseIdOfCode[courseCode] == 0);
-        require(knowledgeBlockId <= _knowledgeBlocks.length);
-        require(credits > 0);
-        require(prevCourseId == 0 || _posOfCourses[prevCourseId] > 0);
-        require(_idOfURIOfType[COURSE_ID][uri] == 0);
+        require(_courseIdOfCode[courseCode] == 0, "SC-ERR-01");
+        require(knowledgeBlockId <= _knowledgeBlocks.length, "S-ERR-01");
+        require(credits > 0, "S-ERR-02");
+        require(
+            prevCourseId == 0 || _posOfCourses[prevCourseId] > 0,
+            "SC-ERR-03"
+        );
+        require(_idOfURIOfType[COURSE_ID][uri] == 0, "C-ERR-05");
         uint256 id = generateNewId(COURSE_ID);
         _allCourses.push(
             Course(
@@ -151,7 +154,7 @@ contract School is ISchool, IdentityGenerator {
     // Class Block: Start
     function getClassById(uint256 id) public view returns (Class memory) {
         uint256 pos = _posOfClasses[id];
-        require(pos > 0, "class not found");
+        require(pos > 0, "SL-ERR-00");
 
         return _allClasses[pos - 1];
     }
@@ -206,14 +209,13 @@ contract School is ISchool, IdentityGenerator {
         string memory uri
     ) public onlyOwner returns (uint256) {
         Course memory course = getCourseById(courseId);
-        // get nft => check expired date > completeAt
         NftIdentityResponse memory nftTeacher = _nftIdentities.getNftOfTokenId(
             teacherTokenId
         );
         uint256 nftTeacherRole = _nftIdentities.getTokenType(teacherTokenId);
 
-        require(nftTeacherRole == uint256(ROLE.TEACHER));
-        require(nftTeacher.nftIdentity.expiredAt > completeAt);
+        require(nftTeacherRole == uint256(ROLE.TEACHER), "NI-ERR-03");
+        require(nftTeacher.nftIdentity.expiredAt > completeAt, "SL-ERR-01");
         uint256 id = generateNewId(CLASS_ID);
         _allClasses.push(
             Class(
@@ -242,9 +244,8 @@ contract School is ISchool, IdentityGenerator {
         uint256 tokenId
     ) public view returns (uint256) {
         uint256 pos = _posOfClasses[tokenId];
-        require(pos > 0);
+        require(pos > 0, "SL-ERR-00");
 
         return _allClasses[pos - 1].registerClassFee;
     }
-    // Class Block: End
 }

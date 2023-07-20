@@ -1,4 +1,4 @@
-import { NftClassRegistrationEntity } from "./models/entities";
+import { NftClassRegistrationEntity } from './models/entities';
 
 export type NftCompleteCourseCore = {
   tokenId: number;
@@ -18,7 +18,12 @@ export type NftCompleteCourse = {
 export type AllowRequestNftCompleteCourseParams = {
   tokenId: number;
   isAllowed: boolean;
-}
+};
+
+export type AllowRequestNftCompleteCoursesParams = {
+  tokenId: number;
+  isAllowed: boolean;
+}[];
 
 export type UpdateScoreParams = {
   score: number;
@@ -27,17 +32,22 @@ export type UpdateScoreParams = {
 
 export type UpdateScoreForNftClassRegistrationParams = {
   tokenId: number;
-  score: number; 
+  score: number;
 };
 
 export type ExchangeNftCompleteCourseParams = {
   nftClassRegistrationTokenId: number;
   tokenURI: string;
-}
+};
 
-export type GrantNftGraduationParams = {
+export type ExchangeNftGraduationParams = {
   tokenIds: number[];
   tokenURI: string;
+};
+
+export type SetExchangableNftGraduationParams = {
+  studentTokenId: number;
+  isAllowed: boolean;
 };
 
 export type RequestGraduationCertificateParams = {

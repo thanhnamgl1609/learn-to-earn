@@ -18,10 +18,17 @@ export type UserEntity = {
   expiredAt: Date;
   chainURI: string;
 
-  documentURIs?: string[];
+  documentURIs?: DocumentURI[];
   nftGraduation?: NftGraduationEntity;
+  nftClassRegistrations?: NftClassRegistrationEntity[];
   requestGraduations?: RequestGraduationEntity[];
   requestGraduation?: RequestGraduationEntity;
+};
+
+export type DocumentURI = {
+  id: number;
+  uri: string;
+  userId: number;
 };
 
 export type CourseEntity = {

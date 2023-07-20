@@ -86,7 +86,6 @@ export type NftIdentitiesMethodNames =
   | 'registerNftIdentity'
   | 'grantNftIdentity'
   | 'rejectNftIdentityRegistration'
-  | 'burnNft'
   | 'getOwnedNfts'
   | 'getAllMembers'
   | 'getNftOfMemberWithRole'
@@ -395,17 +394,6 @@ export interface NftIdentities {
   rejectNftIdentityRegistration(
     to: string,
     role: BigNumberish,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param tokenId Type: uint256, Indexed: false
-   */
-  burnNft(
-    tokenId: BigNumberish,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**

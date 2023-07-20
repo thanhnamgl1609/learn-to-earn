@@ -1,4 +1,8 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  createSelector,
+  createSlice,
+  PayloadAction,
+} from '@reduxjs/toolkit';
 import { RootState } from '@store';
 
 import { NftIdentity, RegistrationInfo } from '@_types/nftIdentity';
@@ -47,15 +51,23 @@ export const { updateUser } = userSlice.actions;
 
 // selectors
 export const selectUser = (state: RootState): UserState => state.user;
-export const selectCurrentRegistration = createSelector(selectUser, (user) =>
-  user.registrationInfos.find(({ role }) => role === user.role)
+export const selectCurrentRegistration = createSelector(
+  selectUser,
+  (user) =>
+    user.registrationInfos.find(({ role }) => role === user.role)
 );
-export const selectCurrentNftIdentity = createSelector(selectUser, (user) =>
-  user.nftIdentities.find(({ role }) => role === user.role)
+export const selectCurrentNftIdentity = createSelector(
+  selectUser,
+  (user) => user.nftIdentities.find(({ role }) => role === user.role)
 );
 export const selectUserDetail = createSelector(
   selectUser,
   ({ detail }) => detail
+);
+export const selectCurrentNftClassRegistrations = createSelector(
+  selectUserDetail,
+  ({ nftClassRegistrations }) =>
+    nftClassRegistrations.filter(({ isRegained }) => !isRegained)
 );
 
 export default userSlice.reducer;

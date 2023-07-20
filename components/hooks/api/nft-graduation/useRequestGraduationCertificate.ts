@@ -1,3 +1,6 @@
+import { useRouter } from 'next/router';
+import ROUTES from 'config/routes.json';
+
 import { ClassEntity } from '@_types/models/entities';
 import { useValidator } from '@hooks/form';
 import { useAppSelector } from '@hooks/stores';
@@ -16,6 +19,7 @@ type FormData = {
 };
 
 export const useRequestGraduationCertificate = () => {
+  const router = useRouter();
   const { detail } = useAppSelector(selectUser);
   const validator = useValidator(REQUEST_NFT_GRADUATION);
   const { getSignedData } = useUtilities();
@@ -45,6 +49,7 @@ export const useRequestGraduationCertificate = () => {
           studentTokenId,
         },
       });
+      router.push(ROUTES.myRequestGraduation.name);
     },
     [detail]
   );

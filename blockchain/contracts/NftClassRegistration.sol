@@ -21,8 +21,6 @@ contract NftClassRegistration is ERC721BaseContract, INftClassRegistration {
     // REMOVE when have certificate
     mapping(uint256 => uint256[]) private _registeredClassTokenIdsOfStudent;
     mapping(uint256 => mapping(uint256 => uint256))
-        private _tokenIdOfRegisteredClass;
-    mapping(uint256 => mapping(uint256 => uint256))
         private _registeredCourseOfStudent;
     mapping(uint256 => uint256[]) private _studentTokenIdsOfClass; // KEEP
     mapping(uint256 => bool) private _allowedExchangeToken;
@@ -88,7 +86,7 @@ contract NftClassRegistration is ERC721BaseContract, INftClassRegistration {
         uint256 tokenId
     ) public view returns (NftClassRegistration memory) {
         uint256 posOfNft = _posOfNftClassRegistrationTokenId[tokenId];
-        require(posOfNft > 0, "nft not found");
+        require(posOfNft > 0, "NCR-ERR-00");
 
         return _allNftClassRegistrations[posOfNft - 1];
     }
@@ -114,33 +112,6 @@ contract NftClassRegistration is ERC721BaseContract, INftClassRegistration {
         return _studentTokenIdsOfClass[classId].length;
     }
 
-    function checkNftClassRegistrationRegained(
-        uint256 studentTokenId,
-        uint256 classId
-    ) public view returns (bool) {
-        return _tokenIdOfRegisteredClass[studentTokenId][classId] == 0;
-    }
-
-    function getRegainedNftListOfClass(
-        uint256 classId
-    ) public view returns (uint256[] memory) {
-        uint256[] memory studentTokenIds = _studentTokenIdsOfClass[classId];
-        uint256 count = studentTokenIds.length;
-        uint256[] memory regainedStudentTokenIds = new uint256[](count);
-        uint256 current;
-
-        for (uint256 idx; idx < count; ++idx) {
-            if (
-                checkNftClassRegistrationRegained(studentTokenIds[idx], classId)
-            ) {
-                regainedStudentTokenIds[current] = studentTokenIds[idx];
-                ++current;
-            }
-        }
-
-        return regainedStudentTokenIds;
-    }
-
     function allowRequestNftCompleteCourse(
         uint256 tokenId,
         bool isAllowed
@@ -149,20 +120,68 @@ contract NftClassRegistration is ERC721BaseContract, INftClassRegistration {
             memory nftClassRegistration = getNftClassRegistration(tokenId);
         NftIdentityResponse memory nftIdentityResponse = _nftIdentities
             .getNftOfMemberWithRole(uint256(ROLE.TEACHER), msg.sender);
-        Class memory class = _school.getClassById(
-            nftClassRegistration.classId
+        Class memory class = _school.getClassById(nftClassRegistration.classId);
+        require(
+            !isAllowed ||
+                _registeredCourseOfStudent[nftClassRegistration.studentTokenId][
+                    class.courseId
+                ] >
+                0,
+            "NCR-ERR-02"
         );
-        require(!isAllowed || _registeredCourseOfStudent[tokenId][class.courseId] > 0, "Already update");
-        require(class.completeAt > block.timestamp, "out of date");
-        require(!nftIdentityResponse.isExpired, "expired");
+        require(class.completeAt > block.timestamp, "NCR-ERR-03");
+        require(!nftIdentityResponse.isExpired, "C-ERR-01");
         require(
             class.teacherTokenId == nftIdentityResponse.nftIdentity.tokenId,
-            "Not teacher of class"
+            "C-ERR-02"
         );
         _allowedExchangeToken[tokenId] = isAllowed;
 
         if (!isAllowed) {
-            delete _registeredCourseOfStudent[tokenId][class.courseId];
+            delete _registeredCourseOfStudent[
+                nftClassRegistration.studentTokenId
+            ][class.courseId];
+        }
+    }
+
+    function allowRequestNftCompleteCourses(
+        uint256[] memory tokenIds,
+        bool[] memory allowedList
+    ) public {
+        require(tokenIds.length == allowedList.length, "C-ERR-03");
+        uint256 count = tokenIds.length;
+        NftIdentityResponse memory nftIdentityResponse = _nftIdentities
+            .getNftOfMemberWithRole(uint256(ROLE.TEACHER), msg.sender);
+        require(!nftIdentityResponse.isExpired, "C-ERR-01");
+        for (uint256 idx; idx < count; ++idx) {
+            uint256 tokenId = tokenIds[idx];
+            bool isAllowed = allowedList[idx];
+
+            NftClassRegistration
+                memory nftClassRegistration = getNftClassRegistration(tokenId);
+            Class memory class = _school.getClassById(
+                nftClassRegistration.classId
+            );
+            require(
+                !isAllowed ||
+                    _registeredCourseOfStudent[
+                        nftClassRegistration.studentTokenId
+                    ][class.courseId] >
+                    0,
+                "NCR-ERR-02"
+            );
+            require(class.completeAt > block.timestamp, "NCR-ERR-03");
+            require(
+                class.teacherTokenId == nftIdentityResponse.nftIdentity.tokenId,
+                "C-ERR-02"
+            );
+            _allowedExchangeToken[tokenId] = isAllowed;
+
+            if (!isAllowed) {
+                delete _registeredCourseOfStudent[
+                    nftClassRegistration.studentTokenId
+                ][class.courseId];
+            }
         }
     }
 
@@ -174,19 +193,24 @@ contract NftClassRegistration is ERC721BaseContract, INftClassRegistration {
         (uint256 registeredStartAt, uint256 registeredEndAt) = _school
             .getRegisterTime(class.semester);
 
-        require(!nftIdentityResponse.isExpired);
-        require(_studentTokenIdsOfClass[class.id].length < class.maxSize);
-        require(block.timestamp >= registeredStartAt);
-        require(block.timestamp <= registeredEndAt);
+        require(!nftIdentityResponse.isExpired, "C-ERR-01");
+        require(
+            _studentTokenIdsOfClass[class.id].length < class.maxSize,
+            "NCR-ERR-01"
+        );
+        require(block.timestamp >= registeredStartAt, "NCR-ERR-05");
+        require(block.timestamp <= registeredEndAt, "NCR-ERR-05");
         require(
             class.prevCourseId == 0 ||
                 _nftCompleteCoures.checkCompleteCourse(
                     class.prevCourseId,
                     msg.sender
-                )
+                ),
+            "NCR-ERR-06"
         );
         require(
-            _registeredCourseOfStudent[studentTokenId][class.courseId] == 0
+            _registeredCourseOfStudent[studentTokenId][class.courseId] == 0,
+            "NCR-ERR-07"
         );
         require(msg.value == class.registerClassFee);
         uint256 tokenId = _mintToken(msg.sender, uri);
@@ -197,35 +221,31 @@ contract NftClassRegistration is ERC721BaseContract, INftClassRegistration {
             .length;
         _registeredClassTokenIdsOfStudent[studentTokenId].push(tokenId);
         _registeredCourseOfStudent[studentTokenId][class.courseId] = tokenId;
-        _tokenIdOfRegisteredClass[studentTokenId][class.id] = tokenId;
         _studentTokenIdsOfClass[class.id].push(studentTokenId);
         payable(_schoolAccount).transfer(msg.value);
-        
+
         emit NewClassRegistrationCreated(tokenId);
     }
-
 
     function regainV2(
         address sender,
         uint256 tokenId
     ) public onlyNftCompleteCourses returns (Class memory, NftIdentity memory) {
-        require(_allowedExchangeToken[tokenId], "Not allowed");
+        require(_allowedExchangeToken[tokenId], "NCC-ERR-03");
 
         NftIdentityResponse memory nftIdentityResponse = _nftIdentities
             .getNftOfMemberWithRole(uint256(ROLE.STUDENT), sender);
-        require(!nftIdentityResponse.isExpired, "expired");
+        require(!nftIdentityResponse.isExpired, "C-ERR-01");
 
         NftClassRegistration
             memory nftClassRegistration = getNftClassRegistration(tokenId);
         require(
-            nftClassRegistration.tokenId ==
+            nftClassRegistration.studentTokenId ==
                 nftIdentityResponse.nftIdentity.tokenId,
-            "not owner"
+            "NCR-ERR-04"
         );
 
-        Class memory class = _school.getClassById(
-            nftClassRegistration.classId
-        );
+        Class memory class = _school.getClassById(nftClassRegistration.classId);
 
         _regainNft(nftClassRegistration, class, tokenId);
         return (class, nftIdentityResponse.nftIdentity);
@@ -244,9 +264,6 @@ contract NftClassRegistration is ERC721BaseContract, INftClassRegistration {
         _removeNftClassRegistration(tokenId);
         delete _registeredCourseOfStudent[nftClassRegistration.studentTokenId][
             class.courseId
-        ];
-        delete _tokenIdOfRegisteredClass[nftClassRegistration.studentTokenId][
-            class.id
         ];
     }
 

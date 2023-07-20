@@ -3,7 +3,10 @@ import { UserDetail } from '@_types/api/user';
 import { SemesterDetail } from '@_types/api/semester';
 import { findById } from 'utils';
 import CONST from '@config/constants.json';
-import { CREATE_CLASS, EXTEND_CREATE_CLASS } from '@validators/schemas';
+import {
+  CREATE_CLASS,
+  EXTEND_CREATE_CLASS,
+} from '@validators/schemas';
 import { uploadData } from '@store/actions';
 import { useSchoolActions, useUtilities } from '@hooks/web3';
 import { useValidator } from '@hooks/form';
@@ -24,11 +27,12 @@ export const useCreateClass = () => {
     async (
       formState: {
         courseId: number | string;
-        endAt: string;
+        startAt: string;
         completeAt: string;
         maxSize: number | string;
         teacherTokenId: number | string;
         semesterId: number | string;
+        registerClassFee: string;
       },
       courses: CourseApi[],
       teachers: UserDetail[],
@@ -52,7 +56,11 @@ export const useCreateClass = () => {
       if (!data) return;
 
       const course = findById(courses, data.courseId, 'onChainId');
-      const teacher = findById(teachers, data.teacherTokenId, 'tokenId');
+      const teacher = findById(
+        teachers,
+        data.teacherTokenId,
+        'tokenId'
+      );
       const signature = await getSignedData();
       const { link: uri } = await dispatch(
         uploadData({
@@ -68,7 +76,7 @@ export const useCreateClass = () => {
             teacherName: teacher.fullName,
           },
           signature,
-          successText: 'Upload class metadata successfully!',
+          successText: 'Upload class metadata thành công!',
         })
       ).unwrap();
       const createdClass: any = {

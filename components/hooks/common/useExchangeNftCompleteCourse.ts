@@ -11,22 +11,34 @@ import {
 import { SignatureData } from '@_types/common';
 import { NftClassRegistrationEntityWithApproveStatus } from '@_types/api/class';
 import { ExchangeNftCompleteCourseParams } from '@_types/certificate';
-import { selectCurrentNftIdentity, selectUser } from '@store/userSlice';
+import {
+  selectCurrentNftIdentity,
+  selectUser,
+} from '@store/userSlice';
 import { useSyncCreatedNftCompleteCourse } from '@hooks/api/nft-complete-courses';
 
 const { UPLOAD_TARGET } = CONST;
 
 export const useExchangeNftCompleteCourse = () => {
   const dispatch = useAppDispatch();
-  const { tokenId: studentTokenId } = useAppSelector(selectCurrentNftIdentity);
+  const { tokenId: studentTokenId } = useAppSelector(
+    selectCurrentNftIdentity
+  );
   const { account } = useAppSelector(selectUser);
   const { getSignedData } = useUtilities();
   const { exchangeNftCompleteCourse } = useCertificateActions();
   const syncDB = useSyncCreatedNftCompleteCourse();
 
   const _exchangeNftClassRegistration = async (
-    { nftClassRegistrationTokenId, tokenURI }: ExchangeNftCompleteCourseParams,
-    meta: Pick<CreatedNftCompleteCourse, 'grantDate'>,
+    {
+      nftClassRegistrationTokenId,
+      tokenURI,
+    }: ExchangeNftCompleteCourseParams,
+    meta: Pick<
+      CreatedNftCompleteCourse,
+      'grantDate' | 'avgScore' | 'classId'
+    >,
+    onSuccess: () => void,
     { signature }: SignatureData
   ) => {
     await exchangeNftCompleteCourse(
@@ -34,25 +46,31 @@ export const useExchangeNftCompleteCourse = () => {
         nftClassRegistrationTokenId,
         tokenURI,
       },
-      (tokenId) =>
-        syncDB(
+      async (tokenId) => {
+        await syncDB(
           {
-            nftClassRegistrationTokenId,
             tokenId,
             studentTokenId,
             tokenURI,
             ...meta,
           },
           { signature, address: account }
-        )
+        );
+        onSuccess?.();
+      }
     );
   };
 
   return useApi(
     async (
-      nftClassRegistration: NftClassRegistrationEntityWithApproveStatus
+      nftClassRegistration: NftClassRegistrationEntityWithApproveStatus,
+      onSuccess: () => void
     ) => {
-      const { class: classInfo, student, score } = nftClassRegistration;
+      const {
+        class: classInfo,
+        student,
+        score,
+      } = nftClassRegistration;
       const { course } = classInfo;
 
       const signature = await getSignedData();
@@ -67,7 +85,8 @@ export const useExchangeNftCompleteCourse = () => {
             target: UPLOAD_TARGET.GRANT_NFT_COMPLETE_COURSE,
           },
           signature,
-          successText: 'Metadata đã được upload! Đang gửi yêu cầu...!',
+          successText:
+            'Metadata đã được upload! Đang gửi yêu cầu...!',
         })
       ).unwrap();
       await _exchangeNftClassRegistration(
@@ -75,7 +94,12 @@ export const useExchangeNftCompleteCourse = () => {
           nftClassRegistrationTokenId: nftClassRegistration.tokenId,
           tokenURI,
         },
-        meta as Pick<ExchangeNftCompleteCourseBodyData, 'grantDate'>,
+        {
+          grantDate: meta.grantDate,
+          classId: nftClassRegistration.classId,
+          avgScore: nftClassRegistration.score,
+        },
+        onSuccess,
         { signature }
       );
     },

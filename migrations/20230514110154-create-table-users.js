@@ -46,7 +46,7 @@ module.exports = {
           type: Sequelize.STRING,
         },
         phone: {
-          type: Sequelize.STRING(10),
+          type: Sequelize.STRING(20),
         },
         role: {
           type: Sequelize.INTEGER,
@@ -59,6 +59,9 @@ module.exports = {
         registerAddress: {
           type: Sequelize.STRING,
           allowNull: false,
+        },
+        owner: {
+          type: Sequelize.STRING,
         },
         expiredAt: {
           type: Sequelize.DATE,

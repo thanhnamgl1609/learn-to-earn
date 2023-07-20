@@ -1,6 +1,12 @@
 import { Web3Dependencies } from '@_types/hooks';
-import { hookFactory as createAccountHook, UseAccountHook } from './useAccount';
-import { hookFactory as createNetworkHook, UseNetworkHook } from './useNetwork';
+import {
+  hookFactory as createAccountHook,
+  UseAccountHook,
+} from './useAccount';
+import {
+  hookFactory as createNetworkHook,
+  UseNetworkHook,
+} from './useNetwork';
 import {
   hookFactory as createUserInfoHook,
   UseUserInfoHook,
@@ -46,10 +52,6 @@ import {
   UseClassDetailHook,
 } from './useClassDetail';
 import {
-  hookFactory as createRegisteredClassesHook,
-  UseRegisteredClassesHook,
-} from './useRegisteredClasses';
-import {
   hookFactory as createAssignedClassesHook,
   UseAssignedClassesHook,
 } from './useAssignedClasses';
@@ -80,7 +82,6 @@ export type Web3Hooks = {
   useMemberList: UseMemberListHook;
   useClassList: UseClassListHook;
   useClassDetail: UseClassDetailHook;
-  useRegisteredClasses: UseRegisteredClassesHook;
   useAssignedClasses: UseAssignedClassesHook;
   useIdentitiesActions: UseIdentitiesActionsHook;
   useNftClassRegistrationActions: UseNftClassRegistrationActionsHook;
@@ -106,10 +107,10 @@ export const setupHooks: SetupHooks = (deps) => {
     useMemberList: createMemberListHook(deps),
     useClassList: createClassListHook(deps),
     useClassDetail: createClassDetailHook(deps),
-    useRegisteredClasses: createRegisteredClassesHook(deps),
     useAssignedClasses: createAssignedClassesHook(deps),
     useIdentitiesActions: createIdentitiesActionsHook(deps),
-    useNftClassRegistrationActions: createNftClassRegistrationActionsHook(deps),
+    useNftClassRegistrationActions:
+      createNftClassRegistrationActionsHook(deps),
     useCertificateActions: createCertificateActionsHook(deps),
   };
 };

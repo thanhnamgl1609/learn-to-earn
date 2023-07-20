@@ -157,14 +157,18 @@ export const getGroupByKnowledge = async (
         (prev, { nftCompleteCourses, credits }) => ({
           totalCredits: prev.totalCredits + credits,
           totalScore:
-            prev.totalScore + nftCompleteCourses[0].avgScore * credits,
+            prev.totalScore +
+            nftCompleteCourses[0].avgScore * credits,
         }),
         {
           totalCredits: 0,
           totalScore: 0,
         }
       );
-      const avgScore = floor(gained.totalScore / gained.totalCredits, 2);
+      const avgScore = floor(
+        gained.totalScore / gained.totalCredits,
+        2
+      );
       totalCredits += gained.totalCredits;
       totalScore += gained.totalScore;
       return {
@@ -199,5 +203,5 @@ export const createNftCompleteCourse = (
       transaction,
     });
 
-    return get(result.get().id, transaction);
+    return get({ id: result.get().id }, transaction);
   }, t);

@@ -1,14 +1,14 @@
 import { ChangeEvent, FC } from 'react';
 
 import { InputField, SelectField, TextField } from '@molecules';
-import { CourseEntity } from '@_types/models/entities';
+import { CourseForm } from '@_types/school';
 
 type SelectOption = {
   label: string;
   value: number | string;
 };
 type CourseDetailProps = {
-  formState: Partial<CourseEntity>;
+  formState: CourseForm;
   onInputChange?: (e: ChangeEvent) => void;
   onInputCheckChange?: (e: ChangeEvent) => void;
   courses: SelectOption[];
@@ -97,7 +97,11 @@ export const CourseDetail: FC<CourseDetailProps> = ({
       value={formState.exerciseLessons}
     />
     {edit && (
-      <InputField label="Metadata" value={formState.chainURI} disabled />
+      <InputField
+        label="Metadata"
+        value={formState.chainURI}
+        disabled
+      />
     )}
   </>
 );

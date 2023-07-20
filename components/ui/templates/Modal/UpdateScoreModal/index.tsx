@@ -52,14 +52,14 @@ export const UpdateScoreModal: FC<Props> = memo(
               <>
                 <p>Điểm số: {score}</p>
                 <p>
-                  Vì điếm dưới 5 nên sinh viên sẽ <b>không nhận được</b> NFT
-                  hoàn thành môn
+                  Vì điếm dưới 5 nên sinh viên sẽ{' '}
+                  <b>không nhận được</b> NFT hoàn thành môn
                 </p>
                 <p>Bạn có chắc chắn không?</p>
               </>
             ) : (
               <>
-                <p>Điểm số: ${score}</p>
+                <p>Điểm số: {score}</p>
                 <p>Bạn có chắc chắn không?</p>
               </>
             ),

@@ -33,7 +33,9 @@ export const useUserInfo = () => {
   };
 };
 
-export const useRegistrationList = (params: UseRegistrationListParams) => {
+export const useRegistrationList = (
+  params: UseRegistrationListParams
+) => {
   const { useRegistrationList } = useHooks();
   const swrResponse = useRegistrationList(params);
 
@@ -104,14 +106,9 @@ export const useClassDetail = (params: UseClassDetailParams) => {
   return { classDetail };
 };
 
-export const useRegisteredClasses = () => {
-  const { useRegisteredClasses } = useHooks();
-  const registeredClasses = useRegisteredClasses();
-
-  return { registeredClasses };
-};
-
-export const useAssignedClasses = (params: UseAssignedClassesParams) => {
+export const useAssignedClasses = (
+  params: UseAssignedClassesParams
+) => {
   const { useAssignedClasses } = useHooks();
   const assignedClasses = useAssignedClasses(params);
 

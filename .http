@@ -1,0 +1,56 @@
+###
+curl 'http://localhost:3000/api/v1/users/detail' \
+  -H 'Accept: application/json, text/plain, */*' \
+  -H 'Accept-Language: vi,vi-VN;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: application/json' \
+  -H 'Cookie: fblo_1446181252535541=y; nft-auth-session=Fe26.2*1*c20a1c79b6edec4ecac3036a759d8480a13a4830cf22108b42de695eeb64d9dd*l-SgnY3d56AkwGWwzuTlrw*gP8GMGUJNHf2fJZDDOZ3zbJX2qJ4DSU9ejDvlcr0JHiJlFsMblQtE8bd4xnkCvCkpcPWeLKWZxR1mFYTzTlonQM-NnLBXRFbLLkEc-gMsfq2hGgMmW6yt7qyXTBZUfvXG-0puNoe-rVpY7PkfLnD6-fNYcwFc9Gh88IVQdU2g5_hNxr_Ls8E5fKuJ2B0gIJQDs4DhAnmv0krc0UW5299NVm65jpdpVes1jLwFwnQx5PomwH7MGiXHWi0C4u8dYhruLmZ-dhU88yZOIQn9rgoACno78tPYNFshsiK4qhZHw_FhlENxUI8j7Upm2nQvjl0QK0Qf5Jxs6044GQ33dkAMr6ZJhc4LV0EWjnPtJpLQ-wVPPgr4770H8RGbeZqSMrbT_FFjiYseqO_EGXyZU0DU8fR8FgzV0my8vfCJQn8rwtrOKsH4BHBtByXWRHypA9jSgyusXbVcyn5Da8aNZXVLClPzZEeRLApZMMHRogBPzy8SAkTsvfvWwKJv_RIZtO57R9g9why0X0t8-yuY1jsDQ*1690812455278*55cb52837d0399b646f110e19bf6c2ff30851aeb03c1058c32406f531a830256*f6TcLB3DeNKlDDpwgy6P8XfaE5jSMO9ot8bLaZs7DL4' \
+  -H 'Origin: http://localhost:3000' \
+  -H 'Referer: http://localhost:3000/manage/registration/0x0989e308d8cc35b2C5c81c36CfD35eEA33a17Be8' \
+  -H 'Sec-Fetch-Dest: empty' \
+  -H 'Sec-Fetch-Mode: cors' \
+  -H 'Sec-Fetch-Site: same-origin' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36' \
+  -H 'sec-ch-ua: "Not.A/Brand";v="8", "Chromium";v="114", "Google Chrome";v="114"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Windows"' \
+  --data-raw '{"address":"0xc1d63c78F37eA2CFEbD1D076c909b98a7B7E5432","data":{"applicant":"0x0989e308d8cc35b2C5c81c36CfD35eEA33a17Be8","documentURI":"https://ipfs.io/ipfs/QmVe88WCDxo2bVAJkgd2FVacrHU3WrAmDzRUNit8tyxm5g","meta":{"fullName":"Đinh Thành Nam S","profileImage":"/upload/1689516253597_ava2.png","documentURIs":["/upload/1689516256415_ava3.webp"],"gender":0,"dateOfBirth":"2000-01-01T00:00:00.000Z","personalEmail":"","identityNumber":"232323232","phone":"091010101","registerDate":"2023-07-16T14:04:22.329Z","registerURI":"https://ipfs.io/ipfs/QmVe88WCDxo2bVAJkgd2FVacrHU3WrAmDzRUNit8tyxm5g","approveDate":"2023-07-16T14:07:38.266Z","memberCode":"SV000003"},"role":0,"isUploading":false,"expiredAt":"2027-07-16","tokenURI":"https://ipfs.io/ipfs/QmfPpS8mFnrU3tt2oVa6jwKmPyZ3CpJRiiSaYxzWth7TNB"},"signature":"0xe46cc8cdf5c79f83fb00a6a62ee72200f0295a467bafcf4397fd79cea2b5db7a4f6539ca473f0b800a2ee05621eb8f2000d5090243582e50faf04883b7bf05481b"}' \
+  --compressed
+
+###
+curl 'http://localhost:3000/api/v1/certificates/nft-complete-course' \
+  -H 'Accept: application/json, text/plain, */*' \
+  -H 'Accept-Language: vi,vi-VN;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: application/json' \
+  -H 'Cookie: fblo_1446181252535541=y; nft-auth-session=Fe26.2*1*41ccc212e256e3abc900288fe74cbddeb8ac8a7df1fc68c80d847c174a27c63d*Zw5Kqjqc1emEIB3wjRi3Xg*hB2qvdBIt5gEoqU_iLtyWeYK2W-gualyqXF5g94hEU1CMZszjrlExLCJDdlKth3jAzcQKFNxuHinZZO_ExbNSiBDP-Vyl0XfzB1UbdH532Ai7mQgp84xZXduFNzfLYb_tftRel-nH6CRsk776lyfL0yzHkLE0zYkf73nL3zxpmGQ-BF1X-fCyxsyXS1YogUnvbwpPWKmT3TW-ecrECN84zn_LgeblY9YB7eBNMQBVwPf_WiwfetmnO1oPqw4WQ4MNv8C2EfdQ4hfBvipFAo69Lgi_SNaag3x_daVmAVZ6tufSyhV9t10qp9-mZ5dpaL19pDzG5MD1zqAoMiPkRS_kKO8rYd-oBkmaj4zzRGHVZitB17uZm8cOdLDWx6JYC8WRA17jtat1CKVxVIlK0xTPAMx3hI9C4FSCx2g8ukZwHxQiSexPXMdoPB4NpEiJJKpcO7H-_7WhcYcwCTfYiKrMFfvYfOyg8IFI61zoOreRj6JbLpffmn1vtn_OmcauzjHdfxFaSI2PiWbkaqExNkCQg*1690814536461*44ec5188cca177d1d6531e5b5478e66524441f2072ff0dcd806f45555049cb1b*peW0v2CloacoqQTzB3kekM-RSMuS3hGge_eBGwMZRZ8' \
+  -H 'Origin: http://localhost:3000' \
+  -H 'Referer: http://localhost:3000/profile' \
+  -H 'Sec-Fetch-Dest: empty' \
+  -H 'Sec-Fetch-Mode: cors' \
+  -H 'Sec-Fetch-Site: same-origin' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36' \
+  -H 'sec-ch-ua: "Not.A/Brand";v="8", "Chromium";v="114", "Google Chrome";v="114"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Windows"' \
+  --data-raw '{"data":{"classId":4,"avgScore": 9, "tokenId":65537,"studentTokenId":1,"tokenURI":"https://ipfs.io/ipfs/QmPqwTtu7epPYxq8i5Aw4X1w2DDN4cjTBinm72Ee9MNXzy","grantDate":"2023-07-16T14:42:27.223Z"},"signature":"0x5e1bc3698657d16ac31ccc633f4540314901c87a789fa19146fee8b68b544ec353e67c51c1b3e519bc8f6ffb277f515484573bcdcd5dd85826cb98f3c6efc8841c","address":"0x0989e308d8cc35b2C5c81c36CfD35eEA33a17Be8"}' \
+  --compressed
+
+###
+curl 'http://localhost:3000/api/v1/certificates/nft-complete-course' \
+  -H 'Accept: application/json, text/plain, */*' \
+  -H 'Accept-Language: vi,vi-VN;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: application/json' \
+  -H 'Cookie: fblo_1446181252535541=y; nft-auth-session=Fe26.2*1*86cb12aece464ef39655302ec4c90e3b519c8ac70e5036fd853b3951e9f7b75f*__2YORg0FUerofDcbxblTA*NfoY-ugfoqOV8SqkPufhbqXLCtAat3AbrG2gDfqyRBQo_FesRTWb5XAEosMCX9YVI2L7INrbyBiEgegPZ5ALD_HQGR_taLbHC3PQFieJAd6dk1A5Km8ebR6f1Jwv4C3p3_YNIKOpJ_8ZKWmL_--1olWii3vsqV2Q6kfBrPXHnvdf7D1zRLVFHtD03txMRpBTJmgSxBd_VtMOF9hr5mllIHnxtXtniVYBIv8DPe-42Yr4-8l4xQrtDRp1xmdZaxzrloJJUzEJCiGJZgafL9Vr5LpcF9ByV8h2RPrZ5esw41sPreXfavgd2re1UbdD5-0P75V-5q_fWBfSQ5zX9YydZA1mZn8QMcJQ-X6v5Rvbi8all378NjcWiVoYATJ-YQ_dsNboCNTcjMCJG8uQw5pe6gdW1rvk1aEvi45KZ2e6BwVgr4VO2OLu66exVcArUR805WNoFDxAdxQjSyg5N6gre2YlDiQi1Z1tfI_NGWAlZzuDwZSMauKvgjwLLW4lt6HxE6td3ZptxOItT0197LNnEA*1690872013714*f675aba4b34e4752271c206265c22bca97cb39f44414347526dbeef27e56a783*mIo9rYedDQJKmBjwbwAliiw2fZrUbNis-z_TmnmayW0' \
+  -H 'Origin: http://localhost:3000' \
+  -H 'Referer: http://localhost:3000/profile' \
+  -H 'Sec-Fetch-Dest: empty' \
+  -H 'Sec-Fetch-Mode: cors' \
+  -H 'Sec-Fetch-Site: same-origin' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36' \
+  -H 'sec-ch-ua: "Not.A/Brand";v="8", "Chromium";v="114", "Google Chrome";v="114"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Windows"' \
+  --data-raw '{"data":{"tokenId":65537,"studentTokenId":1,"tokenURI":"https://ipfs.io/ipfs/QmNioc67RoHtmmPHjySdxGgpyrXxGX8msCf3N1aEaP11oe","classId":4,"avgScore":9,"grantDate": "2023-07-17T06:37:51.173Z"},"signature":"0x0f1679d1604d1829df53cd74eb0501989291af4f2a092fa55a613c89113cf48b3916fb1494b7f9124b169ce211ec8ffb26cbf2f698007fe84018101eb9dabce71b","address":"0xe5322b74f6fb2d4c4df7DDDF6819B214455CBd48"}' \
+  --compressed

@@ -58,11 +58,11 @@ const completeCourseTableHeaders = [
     ),
   },
   {
-    field: 'nftCompleteCourses[0].avgScore',
+    field: 'avgScore',
     name: 'Điểm trung bình',
   },
   {
-    field: 'teacher.fullName',
+    field: 'class.teacher.fullName',
     name: 'Giảng viên',
   },
 ];

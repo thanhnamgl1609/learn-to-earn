@@ -1,14 +1,10 @@
 import { useRouter } from 'next/router';
 
-import { NftIdentity } from '@_types/nftIdentity';
 import ROUTES from '@config/routes.json';
-import { useAppDispatch } from '@hooks/stores';
-import { useGrantNftIdentity } from '@hooks/common';
 import { BaseLayout, FormClassDetail } from '@templates';
 import { Breadcrumb } from '@organisms';
 import { Box } from '@molecules';
-import { Button, Heading, LinkText } from '@atoms';
-import { openConfirmModal } from '@store/appSlice';
+import { LinkText } from '@atoms';
 import { useClassDetailApi } from '@hooks/api/classes';
 import { classEntity } from 'domain/models';
 

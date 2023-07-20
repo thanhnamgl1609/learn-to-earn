@@ -38,32 +38,7 @@ contract NftIdentities is INftIdentities, ERC1155URIStorage, Registration {
     uint256[] _extendRequestTokenIds;
     mapping(uint256 => uint256) _positionOfRequestTokenId;
 
-    modifier isAfterNow(uint256 timestamp) {
-        require(timestamp > block.timestamp);
-        _;
-    }
-
-    modifier canGenerateNewTokens(uint256 role, uint256 amount) {
-        uint256 currentIndex = _maxTokenIdIndexOfRole[role].current() +
-            amount -
-            1;
-        require(currentIndex | MAX_NFT_INDEX == MAX_NFT_INDEX);
-        _;
-    }
-
-    modifier ownNft(uint256 tokenId) {
-        require(_ownerOfNft[tokenId] == msg.sender);
-        _;
-    }
-
-    modifier tokenOwnByContract(uint256 tokenId) {
-        require(_ownerOfNft[tokenId] == _owner);
-        _;
-    }
-
-    constructor(
-        address schoolAccount
-    ) ERC1155("") {
+    constructor(address schoolAccount) ERC1155("") {
         _owner = msg.sender;
         _hasRole[uint(ROLE.STUDENT)] = true;
         _hasRole[uint(ROLE.TEACHER)] = true;
@@ -79,7 +54,7 @@ contract NftIdentities is INftIdentities, ERC1155URIStorage, Registration {
     ) public view returns (NftIdentityResponse memory) {
         uint256 nftType = getTokenType(tokenId);
         uint256 pos = _nftPosOfTokenId[tokenId];
-        require(pos > 0, "Nft is not exist");
+        require(pos > 0, "NI-ERR-00");
         NftIdentity memory nftIdentity = _nftsOfRole[nftType][pos - 1];
 
         NftIdentityResponse memory nftIdentityResponse = NftIdentityResponse(
@@ -91,55 +66,6 @@ contract NftIdentities is INftIdentities, ERC1155URIStorage, Registration {
 
         return nftIdentityResponse;
     }
-
-    // function getAllExtendExpiredRequest()
-    //     public
-    //     view
-    //     onlyOwner
-    //     returns (NftIdentity[] memory, string[] memory)
-    // {
-    //     uint256 numberOfRequests = _extendRequestTokenIds.length;
-    //     NftIdentity[] memory nftIdentities = new NftIdentity[](
-    //         numberOfRequests
-    //     );
-    //     string[] memory tokenURIs = new string[](numberOfRequests);
-
-    //     for (uint256 index = 0; index < numberOfRequests; ++index) {
-    //         uint256 tokenId = _extendRequestTokenIds[index];
-    //         NftIdentity memory nftIdentity;
-    //         string memory tokenURI;
-    //         (nftIdentity, tokenURI) = getNftInfo(tokenId);
-
-    //         nftIdentities[index] = nftIdentity;
-    //         tokenURIs[index] = tokenURI;
-    //     }
-
-    //     return (nftIdentities, tokenURIs);
-    // }
-
-    // Used for everyone: Section end
-
-    // Used for teacher: Section start
-    /*
-        Teacher: if expired => request to extend =>
-            - Accept: Reset expired date
-            - Reject: Burn token
-        Student: if expired => Extend year end? (graduated won't own nft) => request to extend =>
-            - Accept: Reset expired date
-            - Reject: Burn token
-    */
-    // function requestExtendExpiredNft() public {
-    //     uint256 tokenId = _nftOfOwner[msg.sender];
-    //     require(tokenId > 0);
-    //     NftIdentity memory nftIdentity = getNftOfTokenId(tokenId);
-    //     require(nftIdentity.expiredAt < block.timestamp);
-
-    //     safeTransferFrom(msg.sender, _owner, tokenId, ONE_NFT, msg.data);
-    //     _extendRequestTokenIds.push(tokenId);
-    //     _positionOfRequestTokenId[tokenId] = _extendRequestTokenIds.length;
-    // }
-
-    // Used for student: Section start
 
     function ownerOf(uint256 tokenId) external view returns (address) {
         return _ownerOfNft[tokenId];
@@ -163,10 +89,13 @@ contract NftIdentities is INftIdentities, ERC1155URIStorage, Registration {
         uint256 role,
         string memory documentURI
     ) public payable {
-        require(msg.value == registerFee);
-        require(role == uint256(ROLE.TEACHER) || role == uint256(ROLE.STUDENT));
-        require(!_registeredDocumentURI[documentURI], "Document URI exist");
-        require(_positionOfRegisters[role][msg.sender] == 0, "Has registered");
+        require(msg.value == registerFee, "C-ERR-04");
+        require(
+            role == uint256(ROLE.TEACHER) || role == uint256(ROLE.STUDENT),
+            "NI-ERR-01"
+        );
+        require(!_registeredDocumentURI[documentURI], "C-ERR-05");
+        require(_positionOfRegisters[role][msg.sender] == 0, "NI-ERR-02");
         _register(role, documentURI);
         payable(_schoolAccount).transfer(msg.value);
     }
@@ -186,27 +115,6 @@ contract NftIdentities is INftIdentities, ERC1155URIStorage, Registration {
         uint256 role
     ) public onlyOwner hasRegistered(to, role) {
         _removeFromRegistersList(to, role);
-    }
-
-    // Registration Section: End
-
-    // function extendExpiredNft(
-    //     uint256 tokenId,
-    //     uint256 nextExpiredAt
-    // ) public onlyOwner tokenOwnByContract(tokenId) isAfterNow(nextExpiredAt) {
-    //     // For approve extend expired request
-    //     uint256 nftType = getTokenType(tokenId);
-    //     uint256 pos = _nftPosOfTokenId[tokenId];
-    //     require(pos > 0, "Nft is not exist");
-
-    //     _nftsOfRole[nftType][pos - 1].expiredAt = nextExpiredAt;
-    // }
-
-    function burnNft(
-        uint256 tokenId
-    ) public onlyOwner tokenOwnByContract(tokenId) {
-        // For reject extend expired request
-        _burn(_owner, tokenId, ONE_NFT);
     }
 
     function getOwnedNfts() public view returns (NftIdentityResponse[] memory) {
@@ -254,6 +162,7 @@ contract NftIdentities is INftIdentities, ERC1155URIStorage, Registration {
     ) public view returns (uint256) {
         return _mappingRoleToTokenIdOfOwner[checkedAddr][role];
     }
+
     // Checker Section: End
 
     // Used for members: Section end
@@ -266,10 +175,7 @@ contract NftIdentities is INftIdentities, ERC1155URIStorage, Registration {
         bytes memory data
     ) internal virtual override {
         super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
-        require(
-            from == address(0) || to == address(0),
-            "Only mint or burn is allowed"
-        );
+        require(from == address(0) || to == address(0), "C-ERR-06");
 
         uint256 idsCount = ids.length;
         for (uint256 idx = 0; idx < idsCount; ++idx) {
@@ -332,7 +238,7 @@ contract NftIdentities is INftIdentities, ERC1155URIStorage, Registration {
         uint256 expiredAt,
         string memory tokenURI
     ) private returns (uint256) {
-        require(!_usedTokenURI[tokenURI], "Token URI has already used");
+        require(!_usedTokenURI[tokenURI], "C-ERR-05");
         uint256 tokenId = _generateNewTokenId(role);
         _setURI(tokenId, tokenURI);
 
