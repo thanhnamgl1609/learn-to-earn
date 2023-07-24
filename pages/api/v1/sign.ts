@@ -3,10 +3,11 @@ import { IHandler } from '@_types/api';
 import REQUEST_CONST from 'config/request.json';
 import { run, withSession } from '@api/utils';
 import {
-  nftCertificatesContractAddress,
+  nftCompleteCoursesContractAddress,
   nftClassRegistrationContractAddress,
   schoolsContractAddress,
   nftIdentitiesContractAddress,
+  nftGraduationContractAddress,
 } from '@api/utils/load-contract';
 import { createError } from '@api/utils/create-error';
 
@@ -18,8 +19,9 @@ const post: IHandler = async (req, res) => {
       id: uuidv4(),
       nftIdentitiesContractAddress,
       schoolsContractAddress,
-      nftCertificatesContractAddress,
+      nftCompleteCoursesContractAddress,
       nftClassRegistrationContractAddress,
+      nftGraduationContractAddress,
     };
     req.session.set('message-session', message);
     await req.session.save();

@@ -14,3 +14,9 @@ export const formatGraduation = (
     nftCompleteCourses,
   };
 };
+
+export const formatGraduations = (
+  requestGraduations: (RequestGraduationEntity | NftGraduationEntity)[],
+) => {
+  return requestGraduations.map(i => formatGraduation(i));
+};

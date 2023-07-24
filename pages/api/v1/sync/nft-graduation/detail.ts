@@ -15,6 +15,6 @@ const post: IHandler = async (req, res) => {
 
 export default withSession(
   run({
-    [METHOD.POST]: [addressCheck, isOwner, post],
+    [METHOD.POST]: [addressCheck, post],
   })
 );

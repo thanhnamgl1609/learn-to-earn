@@ -44,6 +44,11 @@ module.exports = {
         chainURI: {
           type: Sequelize.STRING,
         },
+        isRegained: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          defaultValue: 0,
+        },
         createdAt: {
           type: Sequelize.DATE,
           defaultValue: Sequelize.literal('current_timestamp'),

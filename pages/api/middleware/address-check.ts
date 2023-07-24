@@ -3,9 +3,6 @@ import { Session } from 'next-iron-session';
 import * as utils from 'ethereumjs-util';
 import { createError } from '@api/utils/create-error';
 
-// const RPC_PROVIDER_URL =
-//   ENV_CONST.RPC_PROVIDER_URL || ('http://127.0.0.1:7545' as string);
-
 export default async (
   req: NextApiRequest & { session: Session; address?: string },
   response: NextApiResponse

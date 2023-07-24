@@ -23,7 +23,7 @@ contract NftGraduation is ERC721BaseContract, INftGraduation {
     event GrantNewNftGraduation(uint256 tokenId);
 
     modifier onlyOwner() {
-        require(_owner == msg.sender);
+        require(_owner == msg.sender, "C-ERR-08");
         _;
     }
 
@@ -92,7 +92,7 @@ contract NftGraduation is ERC721BaseContract, INftGraduation {
     function grantNftGraduation(
         uint256[] memory tokenIds,
         string memory tokenURI
-    ) public onlyOwner {
+    ) public {
         NftIdentityResponse memory nftIdentityResponse = _nftIdentities
             .getNftOfMemberWithRole(uint256(ROLE.STUDENT), msg.sender);
         require(!nftIdentityResponse.isExpired, "C-ERR-01");
