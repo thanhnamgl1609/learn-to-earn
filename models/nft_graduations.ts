@@ -9,11 +9,11 @@ export default (sequelize: Sequelize) => {
         sourceKey: 'tokenId',
         as: 'nftCompleteCourseGraduationRelations',
       });
-      // this.belongsTo(models.request_graduations, {
-      //   foreignKey: 'requestGraduationId',
-      //   targetKey: 'id',
-      //   as: 'request',
-      // });
+      this.belongsTo(models.request_graduations, {
+        foreignKey: 'requestGraduationId',
+        targetKey: 'id',
+        as: 'request',
+      });
       this.belongsTo(models.users, {
         foreignKey: 'studentTokenId',
         targetKey: 'tokenId',

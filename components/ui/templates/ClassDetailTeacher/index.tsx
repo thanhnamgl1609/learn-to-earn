@@ -226,6 +226,13 @@ const ClassDetailTeacher = () => {
     setSelectedNftClassRegistration(null);
   };
 
+  const handleRefreshStudents = async () => {
+    const res = await customGet({
+      classId: id,
+    });
+    mutate(res);
+  };
+
   const isTeacher = role === ROLES.TEACHER;
 
   const links = isTeacher
@@ -299,6 +306,7 @@ const ClassDetailTeacher = () => {
         isOpen={isGrantModalOpen}
         onClose={onCloseGrantModal}
         nftClassRegistration={selectedNftClassRegistration}
+        onRefreshStudents={handleRefreshStudents}
       />
     </BaseLayout>
   );

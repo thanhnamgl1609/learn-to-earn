@@ -1,6 +1,3 @@
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-
 import CONST from '@config/constants.json';
 import { useAppSelector } from '@hooks/stores';
 import { selectUser } from '@store/userSlice';

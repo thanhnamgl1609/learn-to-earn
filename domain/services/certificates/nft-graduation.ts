@@ -1,5 +1,5 @@
 import { certificatesRepo } from 'domain/repositories';
-import { CreatedNftGraduation } from '@_types/api/certificates';
+import { CreatedNftGraduation, NftGraduationQuery } from '@_types/api/certificates';
 import { logger } from 'utils';
 
 export const syncNftGraduation = async (
@@ -17,3 +17,9 @@ export const syncNftGraduation = async (
 
   return result;
 };
+
+export const getAllNftGraduations = async (
+  query: NftGraduationQuery,
+) => {
+  certificatesRepo.nftGraduation.getAll(query);
+}

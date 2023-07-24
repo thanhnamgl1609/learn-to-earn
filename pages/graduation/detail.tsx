@@ -1,8 +1,11 @@
 import CONST from 'config/constants.json';
 import { KnowledgeBlockEntityWithGain } from '@_types/api/certificates';
-import { ClassEntity, NftCompleteCourseEntity } from '@_types/models/entities';
+import {
+  ClassEntity,
+  NftCompleteCourseEntity,
+} from '@_types/models/entities';
 import { useAppSelector } from '@hooks/stores';
-import { selectCurrentNftIdentity, selectUserDetail } from '@store/userSlice';
+import { selectUserDetail } from '@store/userSlice';
 import { BaseLayout } from '@templates';
 import { Table } from '@organisms';
 import { Box, InputField, LinkField } from '@molecules';
@@ -10,9 +13,7 @@ import { Heading } from '@atoms';
 import { floor, formatDate } from 'utils';
 import { ChangeEvent, Fragment, useMemo } from 'react';
 import { CheckIcon, XIcon } from '@heroicons/react/solid';
-import { useRequestGraduationDetail } from '@hooks/api';
 import { ImageView } from 'components/ui/molecules';
-import { priceVO } from 'domain/models/value-objects';
 
 type CompleteCourseColumnProps = {
   item: NftCompleteCourseEntity;
@@ -70,46 +71,56 @@ const NftGraduationDetail = () => {
     nftCompleteCourses = [],
     grantDate,
     uri,
-    id,
     request,
   } = nftGraduation;
+  const {
+    otherCertificates = [],
+    foreignLanguageCertificate = '',
+    nationalDefenseEduCertificate = '',
+  } = request || {};
 
-  const { totalCredits, avgScore, knowledgeBlockByIds } = useMemo(() => {
-    let _totalAllCredits = 0;
-    let _totalAllScore = 0;
-    let _knowledgeBlocks: Record<string, any> = {};
+  const { totalCredits, avgScore, knowledgeBlockByIds } =
+    useMemo(() => {
+      let _totalAllCredits = 0;
+      let _totalAllScore = 0;
+      let _knowledgeBlocks: Record<string, any> = {};
 
-    const _totalCredits = Object.values(nftCompleteCourses).reduce(
-      (prev, currSelected) => {
-        if (!currSelected) return prev;
+      const _totalCredits = Object.values(nftCompleteCourses).reduce(
+        (prev, currSelected) => {
+          if (!currSelected) return prev;
 
-        _knowledgeBlocks[currSelected.class.knowledgeBlock.onChainId] ??= {
-          ...currSelected.class.knowledgeBlock,
-          nftCompleteCourses: [],
-        };
-        _knowledgeBlocks[
-          currSelected.class.knowledgeBlock.onChainId
-        ].nftCompleteCourses.push(currSelected);
+          _knowledgeBlocks[
+            currSelected.class.knowledgeBlock.onChainId
+          ] ??= {
+            ...currSelected.class.knowledgeBlock,
+            nftCompleteCourses: [],
+          };
+          _knowledgeBlocks[
+            currSelected.class.knowledgeBlock.onChainId
+          ].nftCompleteCourses.push(currSelected);
 
-        prev[currSelected.class.knowledgeBlock.onChainId] =
-          (prev[currSelected.class.knowledgeBlock.onChainId] ?? 0) +
-          currSelected.class.credits;
+          prev[currSelected.class.knowledgeBlock.onChainId] =
+            (prev[currSelected.class.knowledgeBlock.onChainId] ?? 0) +
+            currSelected.class.credits;
 
-        _totalAllScore += currSelected.avgScore * currSelected.class.credits;
-        _totalAllCredits += currSelected.class.credits;
+          _totalAllScore +=
+            currSelected.avgScore * currSelected.class.credits;
+          _totalAllCredits += currSelected.class.credits;
 
-        return prev;
-      },
-      {} as { [k: number]: number }
-    );
+          return prev;
+        },
+        {} as { [k: number]: number }
+      );
 
-    return {
-      totalCredits: _totalCredits,
-      avgScore:
-        _totalAllCredits > 0 ? floor(_totalAllScore / _totalAllCredits, 2) : 0,
-      knowledgeBlockByIds: _knowledgeBlocks,
-    };
-  }, [nftCompleteCourses]);
+      return {
+        totalCredits: _totalCredits,
+        avgScore:
+          _totalAllCredits > 0
+            ? floor(_totalAllScore / _totalAllCredits, 2)
+            : 0,
+        knowledgeBlockByIds: _knowledgeBlocks,
+      };
+    }, [nftCompleteCourses]);
 
   return (
     <BaseLayout>
@@ -132,7 +143,12 @@ const NftGraduationDetail = () => {
           readOnly
         />
 
-        <LinkField label="Metadata" text={uri} href={uri} target="_blank" />
+        <LinkField
+          label="Metadata"
+          text={uri}
+          href={uri}
+          target="_blank"
+        />
 
         {Object.values(knowledgeBlockByIds).map((knowledgeBlock) => (
           <Fragment key={knowledgeBlock.onChainId}>
@@ -160,7 +176,7 @@ const NftGraduationDetail = () => {
         ))}
       </Box>
 
-      {/* <Box autoLayout>
+      <Box autoLayout>
         <Heading className="uppercase">Chứng chỉ</Heading>
 
         <ImageView
@@ -179,14 +195,19 @@ const NftGraduationDetail = () => {
           containerClassName="mt-4"
         />
 
-        <ImageView
-          images={otherCertificates.map((src) => ({ src, alt: '' }))}
-          canZoomIn
-          label="Chứng chỉ khác"
-          labelClassName="text-xl"
-          containerClassName="mt-4"
-        />
-      </Box> */}
+        {otherCertificates && otherCertificates.length > 0 && (
+          <ImageView
+            images={otherCertificates.map((src) => ({
+              src,
+              alt: '',
+            }))}
+            canZoomIn
+            label="Chứng chỉ khác"
+            labelClassName="text-xl"
+            containerClassName="mt-4"
+          />
+        )}
+      </Box>
     </BaseLayout>
   );
 };

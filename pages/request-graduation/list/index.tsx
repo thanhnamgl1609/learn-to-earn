@@ -1,7 +1,7 @@
 import ROUTES from 'config/routes.json';
 import { Heading, LinkBox } from '@atoms';
 import CONST from 'config/constants.json';
-import { Table } from '@organisms';
+import { Breadcrumb, Table } from '@organisms';
 import { RequestGraduationEntity } from '@_types/models/entities';
 import { BaseLayout } from '@templates';
 import { Box } from '@molecules';
@@ -47,8 +47,20 @@ const RequestGraduationList = () => {
     status: REQUEST_STATUS.PENDING,
   });
 
+  const links = [
+    {
+      label: 'Trang chủ',
+      route: ROUTES.home,
+    },
+    {
+      label: 'Danh sách đơn yêu cầu tốt nghiệp',
+    },
+  ];
+
   return (
     <BaseLayout>
+      <Breadcrumb links={links} />
+
       <Heading>Danh sách sinh viên yêu cầu tốt nghiệp</Heading>
 
       <Box autoLayout>

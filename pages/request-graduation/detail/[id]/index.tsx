@@ -1,4 +1,8 @@
+import { ChangeEvent, Fragment, useMemo } from 'react';
+import { CheckIcon, XIcon } from '@heroicons/react/solid';
+
 import CONST from 'config/constants.json';
+import ROUTES from 'config/routes.json';
 import { KnowledgeBlockEntityWithGain } from '@_types/api/certificates';
 import {
   ClassEntity,
@@ -6,12 +10,10 @@ import {
 } from '@_types/models/entities';
 import { useAppDispatch } from '@hooks/stores';
 import { BaseLayout } from '@templates';
-import { Table } from '@organisms';
+import { Breadcrumb, Table } from '@organisms';
 import { Box, InputField } from '@molecules';
 import { Button, Heading } from '@atoms';
 import { floor, formatDate } from 'utils';
-import { ChangeEvent, Fragment, useMemo } from 'react';
-import { CheckIcon, XIcon } from '@heroicons/react/solid';
 import {
   useRequestGraduationDetail,
   useUpdateRequestGraduationStatus,
@@ -137,14 +139,15 @@ const RequestGraduation = () => {
       };
     }, [nftCompleteCourses]);
 
-  const onUpdateStatusCaller = (isApproved) => () => {
-    updateRequestGraduationStatus({
+  const onUpdateStatusCaller = (isApproved: boolean) => async () => {
+    await updateRequestGraduationStatus({
       data: {
         requestGraduationId: requestGraduationDetail.id,
         studentTokenId,
         isApproved,
       },
     });
+    redirectToList();
   };
 
   const onApprove = () => {
@@ -205,8 +208,27 @@ const RequestGraduation = () => {
     );
   };
 
+  const redirectToList = () =>
+    router.push(ROUTES.requestGraduationList.name);
+
+  const links = [
+    {
+      label: 'Trang chủ',
+      route: ROUTES.home,
+    },
+    {
+      label: 'Danh sách đơn yêu cầu tốt nghiệp',
+      route: ROUTES.requestGraduationList,
+    },
+    {
+      label: `Đơn số #${requestGraduationDetail?.id}`,
+    },
+  ];
+
   return (
     <BaseLayout>
+      <Breadcrumb links={links} />
+
       {student && <MemberDetail user={student} />}
 
       <Box autoLayout>

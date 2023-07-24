@@ -1,7 +1,9 @@
+import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 
 import CONST from 'config/constants.json';
-import { useSyncCreatedNftGraduation } from '@hooks/api';
+import ROUTES from 'config/routes.json';
+import { useMe, useSyncCreatedNftGraduation } from '@hooks/api';
 import { useAppDispatch, useAppSelector } from '@hooks/stores';
 import { useNftCompleteCourseListGetter } from '@hooks/api/classes';
 import { useCertificateActions, useUtilities } from '@hooks/web3';
@@ -19,10 +21,12 @@ type Params = {
 const { UPLOAD_TARGET } = CONST;
 
 export const useGrantNftGraduation = () => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { account } = useAppSelector(selectUser);
   const student = useAppSelector(selectUserDetail);
   const { getSignedData } = useUtilities();
+  const fetchMe = useMe();
   const { exchangeNftGraduation } = useCertificateActions();
   const syncCreatedNftGraduation = useSyncCreatedNftGraduation();
 
@@ -65,8 +69,8 @@ export const useGrantNftGraduation = () => {
         tokenIds,
         tokenURI,
       };
-      await exchangeNftGraduation(params, (tokenId) =>
-        syncCreatedNftGraduation(
+      await exchangeNftGraduation(params, async (tokenId) => {
+        await syncCreatedNftGraduation(
           {
             tokenId,
             studentTokenId: student.tokenId,
@@ -74,7 +78,10 @@ export const useGrantNftGraduation = () => {
             uri: tokenURI,
           },
           { signature, address: account }
-        )
+        );
+        await fetchMe();
+        router.push(ROUTES.myGraduationDetail.name);
+      }
       );
     },
     [student]

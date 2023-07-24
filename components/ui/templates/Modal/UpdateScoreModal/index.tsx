@@ -16,6 +16,7 @@ type Props = {
   nftClassRegistration?: NftClassRegistrationEntityWithApproveStatus | null;
   isOpen: boolean;
   onClose: () => void;
+  onRefreshStudents: () => Promise<void>;
 };
 
 const { MINIMUM_SCORE_FOR_GRADUATION } = CONST;
@@ -25,7 +26,7 @@ const createDefaultState = () => ({
 });
 
 export const UpdateScoreModal: FC<Props> = memo(
-  ({ isOpen, onClose, nftClassRegistration }) => {
+  ({ isOpen, onClose, nftClassRegistration, onRefreshStudents }) => {
     const updateScore = useUpdateScore();
     const [formState, setFormState] = useState(createDefaultState());
     const dispatch = useAppDispatch();
@@ -38,11 +39,14 @@ export const UpdateScoreModal: FC<Props> = memo(
         return;
       }
 
-      const caller = () =>
-        updateScore({
+      const caller = async () => {
+        await updateScore({
           score,
           nftClassRegistration,
         });
+        onClose();
+        await onRefreshStudents();
+      };
       dispatch(
         openConfirmModal({
           type: 'info',

@@ -19,7 +19,7 @@ const ClosableImage = ({ containerClassName, onRemove, ...props }: Props) => (
     <Image className="hover:opacity-80" {...props} />
     <XCircleIcon
       className={`
-        cursor-pointer opacity-0 text-white
+        cursor-pointer opacity-0 text-white bg-black rounded-full
         group-hover:opacity-100 absolute top-1 right-1
         w-[32px] h-[32px] transition-opacity duration-300
       `}

@@ -29,6 +29,10 @@ export const get = async (
         },
       },
       {
+        model: db.request_graduations,
+        as: 'request',
+      },
+      {
         model: db.nft_complete_course_graduation_relations,
         as: 'nftCompleteCourseGraduationRelations',
         attributes: {
