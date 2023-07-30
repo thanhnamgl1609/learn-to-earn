@@ -18,9 +18,10 @@ export const useRequestGraduationList = (
     }
   );
 
-  const result = useSWR([endpoints.requestGraduationList, query], getter, {
-    revalidateOnFocus: false,
-  });
+  const result = useSWR(
+    [endpoints.requestGraduationList, query],
+    getter
+  );
 
   return result;
 };

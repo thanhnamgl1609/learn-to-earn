@@ -4,8 +4,9 @@ import CONST from '@config/constants.json';
 import Routes from '@config/routes.json';
 import { BaseLayout } from '@templates';
 import { BoxLinks } from '@organisms';
+import { useRequestGraduationList } from '@hooks/api';
 
-const { ROLES } = CONST;
+const { ROLES, REQUEST_STATUS } = CONST;
 
 const PageManage: NextPage = () => {
   const {
@@ -14,6 +15,9 @@ const PageManage: NextPage = () => {
   const {
     registrationList: { data: studentRegistrationInfos },
   } = useRegistrationList({ role: ROLES.STUDENT });
+  const { data: requestGraduations = [] } = useRequestGraduationList({
+    status: REQUEST_STATUS.PENDING,
+  });
 
   const boxes = [
     {
@@ -86,6 +90,7 @@ const PageManage: NextPage = () => {
         {
           url: Routes.requestGraduationList.name,
           label: 'Danh sách yêu cầu tốt nghiệp',
+          badge: requestGraduations?.length ?? 0,
         },
         // {
         //   url: Routes.graduationList.name,
