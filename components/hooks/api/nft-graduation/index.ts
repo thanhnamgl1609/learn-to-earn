@@ -10,3 +10,5 @@ export {
 } from './useRequestGraduationList';
 export { useRequestGraduationCertificate } from './useRequestGraduationCertificate';
 export { useUpdateRequestGraduationStatus } from './useUpdateRequestGraduationStatus';
+export { useNftGraduationList } from './useNftGraduationList';
+export { useNftGraduationDetail } from './useNftGraduationDetail';

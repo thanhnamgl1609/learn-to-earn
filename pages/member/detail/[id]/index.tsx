@@ -2,7 +2,11 @@ import { useRouter } from 'next/router';
 
 import CONST from '@config/constants.json';
 import Routes from '@config/routes.json';
-import { Breadcrumb } from '@organisms';
+import {
+  Breadcrumb,
+  MemberStudentProfile,
+  MemberTeacherProfile,
+} from '@organisms';
 import { BaseLayout } from '@templates';
 import MemberDetail from 'components/ui/organisms/MemberDetail';
 import { useMemberDetail } from '@hooks/api';
@@ -11,7 +15,7 @@ type Query = {
   id: string;
 };
 
-const { ROLE_LABELS, ROLE_LABELS_VI } = CONST;
+const { ROLES, ROLE_LABELS_VI } = CONST;
 
 const MemberDetailPage = () => {
   const router = useRouter();
@@ -26,9 +30,9 @@ const MemberDetailPage = () => {
       route: Routes.manage,
     },
     {
-      label: `Danh sách ${
-        ROLE_LABELS_VI[member?.role].toLowerCase() ?? ''
-      }`,
+      label: `Danh sách ${(
+        ROLE_LABELS_VI[member?.role] ?? ''
+      ).toLowerCase()}`,
       route: { name: memberListUrl },
     },
     {
@@ -42,6 +46,12 @@ const MemberDetailPage = () => {
         <Breadcrumb links={breadcrumbs} />
 
         {member && <MemberDetail user={member} />}
+        {member?.role === ROLES.TEACHER && (
+          <MemberTeacherProfile user={member} />
+        )}
+        {member?.role === ROLES.STUDENT && (
+          <MemberStudentProfile user={member} />
+        )}
       </BaseLayout>
     </>
   );

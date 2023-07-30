@@ -9,7 +9,7 @@ import {
 } from '@_types/nftIdentity';
 import { before } from 'utils';
 import { formatGraduation } from '../certificates/common';
-import { certificatesRepo } from '..';
+import { certificatesRepo, classesRepo } from '..';
 import { UserEntity } from '@_types/models/entities';
 
 const { ROLES } = CONST;
@@ -138,10 +138,20 @@ export const get = async (
     user.nftGraduation = await certificatesRepo.nftGraduation.get({
       studentTokenId: user.tokenId,
     });
+    user.nftCompleteCourses = await certificatesRepo.getAll({
+      studentTokenId: user.tokenId,
+    });
     user.requestGraduations = user.requestGraduations.sort(
       ({ id: id1 }, { id: id2 }) => (id1 > id2 ? -1 : 1)
     );
     user.requestGraduation = user.requestGraduations[0];
+  }
+
+  const isTeacher = user?.role === ROLES.TEACHER;
+  if (isTeacher) {
+    user.assignedClasses = await classesRepo.getAll({
+      teacherTokenId: user.tokenId,
+    });
   }
 
   return user;

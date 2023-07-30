@@ -8,8 +8,6 @@ import {
 } from 'react';
 import { useRouter } from 'next/router';
 
-import { NftIdentity } from '@_types/nftIdentity';
-import { useMemberList } from '@hooks/web3';
 import CONST from '@config/constants.json';
 import Routes from '@config/routes.json';
 import { BaseLayout } from '@templates';

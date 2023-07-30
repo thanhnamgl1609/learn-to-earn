@@ -21,9 +21,11 @@ export type UserEntity = {
 
   documentURIs?: DocumentURI[];
   nftGraduation?: NftGraduationEntity;
+  nftCompleteCourses?: NftCompleteCourseEntity[];
   nftClassRegistrations?: NftClassRegistrationEntity[];
   requestGraduations?: RequestGraduationEntity[];
   requestGraduation?: RequestGraduationEntity;
+  assignedClasses?: ClassEntity[];
 };
 
 export type DocumentURI = {
@@ -71,6 +73,7 @@ export type ClassEntity = {
   teacher?: UserEntity;
   knowledgeBlock?: KnowledgeBlockEntity;
   nftCompleteCourses?: NftCompleteCourseEntity[];
+  isCurrent?: boolean;
 };
 
 export type SemesterEntity = {
@@ -159,4 +162,5 @@ export type NftGraduationEntity = {
   nftCompleteCourses: NftCompleteCourseEntity[];
   nftCompleteCourseGraduationRelations?: NftCompleteCourseGraduationRelation[];
   request?: RequestGraduationEntity;
+  student?: UserEntity;
 };

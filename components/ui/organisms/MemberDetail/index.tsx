@@ -1,6 +1,5 @@
 import { Heading, Image } from '@atoms';
 import { Box, InputField, LinkField, ProfileImage } from '@molecules';
-import { RegistrationInfoMeta } from '@_types/nftIdentity';
 import { FC, memo, PropsWithChildren } from 'react';
 import { formatDate } from 'utils';
 import CONST from 'config/constants.json';
@@ -13,6 +12,7 @@ type Props = {
 const {
   UI: { INPUT_DATE_FORMAT },
   DATE_TIME,
+  ROLES,
 } = CONST;
 
 const MemberDetail: FC<PropsWithChildren<Props>> = ({

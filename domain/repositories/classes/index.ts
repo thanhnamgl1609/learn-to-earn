@@ -3,13 +3,22 @@ import { ClassEntity } from '@_types/models/entities';
 import { ClassQuery } from '@_types/api/class';
 import db from 'models';
 import { withTransaction, generateCondition } from '@api/utils';
+import { between } from 'utils';
 
-export const getAll = (query?: ClassQuery, transaction?: Transaction) => {
+const formatItem = (item: ClassEntity) => ({
+  ...item,
+  isCurrent: between(item.startAt, item.completeAt),
+});
+
+export const getAll = async (
+  query?: ClassQuery,
+  transaction?: Transaction
+) => {
   const condition = generateCondition(query, {
     $equal: ['onChainId', 'semesterId', 'teacherTokenId'],
   });
 
-  return db.classes.findAll({
+  const classes = await db.classes.findAll({
     where: condition,
     transaction,
     include: [
@@ -36,6 +45,8 @@ export const getAll = (query?: ClassQuery, transaction?: Transaction) => {
       },
     ],
   });
+
+  return classes.map((item) => formatItem(item.get()));
 };
 
 export const get = async (
@@ -43,7 +54,7 @@ export const get = async (
   transaction?: Transaction
 ): Promise<ClassEntity> => {
   const condition = generateCondition(query, {
-    $equal: ['onChainId', 'semesterId'],
+    $equal: ['onChainId', 'semesterId', 'teacherTokenId'],
   });
 
   const result = await db.classes.findOne({
@@ -70,10 +81,13 @@ export const get = async (
     ],
   });
 
-  return result?.get();
+  return formatItem(result?.get());
 };
 
-export const insert = async (_class: Partial<ClassEntity>, t?: Transaction) =>
+export const insert = async (
+  _class: Partial<ClassEntity>,
+  t?: Transaction
+) =>
   withTransaction(async (transaction: Transaction) => {
     const createdClass = await db.classes.create(_class, {
       transaction,
@@ -82,7 +96,10 @@ export const insert = async (_class: Partial<ClassEntity>, t?: Transaction) =>
     return createdClass.get();
   }, t);
 
-export const update = async (_class: Partial<ClassEntity>, t?: Transaction) =>
+export const update = async (
+  _class: Partial<ClassEntity>,
+  t?: Transaction
+) =>
   withTransaction(async (transaction: Transaction) => {
     const { id, ...updatedClass } = _class;
 
@@ -94,7 +111,10 @@ export const update = async (_class: Partial<ClassEntity>, t?: Transaction) =>
     });
   }, t);
 
-export const upsert = async (_class: Partial<ClassEntity>, t?: Transaction) =>
+export const upsert = async (
+  _class: Partial<ClassEntity>,
+  t?: Transaction
+) =>
   withTransaction(async (transaction: Transaction) => {
     const { onChainId } = _class;
     const currentClass = await get({ onChainId }, transaction);
@@ -109,6 +129,9 @@ export const upsert = async (_class: Partial<ClassEntity>, t?: Transaction) =>
   }, t);
 
 export const incrementNumberOfStudents = (classId: number) =>
-  db.classes.increment({ numberOfStudents: 1 }, { where: { id: classId } });
+  db.classes.increment(
+    { numberOfStudents: 1 },
+    { where: { id: classId } }
+  );
 
 export * from './register';

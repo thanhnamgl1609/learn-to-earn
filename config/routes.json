@@ -12,6 +12,7 @@
   "requestGraduationList": { "name": "/request-graduation/list" },
   "requestGraduationDetail": { "name": "/request-graduation/detail/:id" },
   "graduationList": { "name": "/graduation/list" },
+  "graduationDetail": { "name": "/graduation/detail/:id" },
   "profile": { "name": "/profile" },
   "selfCompleteCourse": { "name": "/profile/complete-course" },
   "requestGraduation": { "name": "/request-graduation" },

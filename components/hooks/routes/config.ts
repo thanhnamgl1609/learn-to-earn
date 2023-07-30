@@ -3,7 +3,8 @@ import Routes from '@config/routes.json';
 
 const { ROLES } = CONST;
 const DEFAULT_ROUTE = Routes.home.name;
-const withParam = (path: string, param = '[param]') => `${path}/${param}`;
+const withParam = (path: string, param = '[param]') =>
+  `${path}/${param}`;
 
 export type Route = {
   name: string;
@@ -45,7 +46,8 @@ const RouteConfig: RouteConfigType = {
     default: Routes.manage,
     [Routes.manage.name]: Routes.manage,
     [Routes.manageRegistration.name]: Routes.manageRegistration,
-    [Routes.manageRegistrationDetail.name]: Routes.manageRegistrationDetail,
+    [Routes.manageRegistrationDetail.name]:
+      Routes.manageRegistrationDetail,
     [Routes.courses.name]: Routes.courses,
     [Routes.createCourse.name]: Routes.createCourse,
     [Routes.courseDetail.name]: Routes.courseDetail,
@@ -57,8 +59,10 @@ const RouteConfig: RouteConfigType = {
     [Routes.memberDetail.name]: Routes.memberDetail,
     [Routes.graduationCondition.name]: Routes.graduationCondition,
     [Routes.requestGraduationList.name]: Routes.requestGraduationList,
-    [Routes.requestGraduationDetail.name]: Routes.requestGraduationDetail,
+    [Routes.requestGraduationDetail.name]:
+      Routes.requestGraduationDetail,
     [Routes.graduationList.name]: Routes.graduationList,
+    [Routes.graduationDetail.name]: Routes.graduationDetail,
   },
 };
 

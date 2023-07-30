@@ -54,11 +54,11 @@ const ClassDetailCouncil = () => {
 
   const links = [
     {
-      label: 'Manager',
+      label: 'Dashboard',
       route: ROUTES.manage,
     },
     {
-      label: 'Class List',
+      label: 'Danh sách lớp học',
       route: ROUTES.classes,
     },
     {

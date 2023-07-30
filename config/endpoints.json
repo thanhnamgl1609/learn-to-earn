@@ -24,5 +24,7 @@
   "knowledgeBlocks": "/api/v1/knowledge-blocks",
   "requestGraduationList": "/api/v1/graduation/request",
   "requestGraduationDetail": "/api/v1/graduation/request/detail",
-  "requestGraduationStatus": "/api/v1/graduation/request/status"
+  "requestGraduationStatus": "/api/v1/graduation/request/status",
+  "nftGraduation": "/api/v1/certificates/nft-graduation",
+  "nftGraduationDetail": "/api/v1/certificates/nft-graduation/detail"
 }
