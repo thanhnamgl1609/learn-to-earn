@@ -1,8 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-import { CourseEntity } from '@_types/models/entities';
-import CONST from '@config/constants.json';
+import { CourseForm } from '@_types/school';
 import ROUTES from '@config/routes.json';
 import { useInputTextChange, useSelectOptions } from '@hooks/form';
 import { useCourseDetailApi, useCourseListApi } from '@hooks/api';
@@ -12,8 +11,8 @@ import { Breadcrumb } from '@organisms';
 import { Box } from '@molecules';
 import { Heading } from '@atoms';
 
-const createDefaultCourse = (): Partial<CourseEntity> => ({
-  prevCourseId: 0,
+const createDefaultCourse = (): CourseForm => ({
+  prevCourseId: '0',
   courseCode: '',
   knowledgeBlockId: 1,
   name: '',
@@ -23,6 +22,7 @@ const createDefaultCourse = (): Partial<CourseEntity> => ({
   theoryLessons: 40,
   practiceLessons: 0,
   exerciseLessons: 0,
+  chainURI: '',
 });
 
 const CourseDetailPage = () => {
@@ -43,7 +43,7 @@ const CourseDetailPage = () => {
 
   const links = [
     {
-      label: 'Trang chủ',
+      label: 'Dashboard',
       route: ROUTES.manage,
     },
     {
@@ -56,7 +56,11 @@ const CourseDetailPage = () => {
   ];
 
   useEffect(() => {
-    if (data) setFormData(data);
+    if (data)
+      setFormData({
+        ...data,
+        prevCourseId: String(data.prevCourseId),
+      });
   }, [data]);
 
   return (

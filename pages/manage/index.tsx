@@ -35,51 +35,51 @@ const PageManage: NextPage = () => {
         },
       ],
     },
-    {
-      header: 'Thành viên',
-      links: [
-        {
-          url: `${Routes.member.name}?r=${[ROLES.TEACHER]}`,
-          label: 'Giảng viên',
-        },
-        {
-          url: `${Routes.member.name}?r=${[ROLES.STUDENT]}`,
-          label: 'Sinh viên',
-        },
-      ],
-    },
-    {
-      header: 'MÔN HỌC',
-      links: [
-        {
-          url: Routes.createCourse.name,
-          label: 'Tạo môn học',
-        },
-        {
-          url: Routes.courses.name,
-          label: 'Danh sách môn học',
-        },
-      ],
-    },
-    {
-      header: 'LỚP HỌC',
-      links: [
-        {
-          url: Routes.createClass.name,
-          label: 'Tạo lớp học',
-          disabledTag: 'Chỉnh sửa thời gian đăng ký học phần!',
-        },
-        {
-          url: Routes.classes.name,
-          label: 'Danh sách lớp học',
-          disabledTag: 'Chỉnh sửa thời gian đăng ký học phần!',
-        },
-        {
-          url: Routes.registerTime.name,
-          label: 'Chỉnh sửa thời gian đăng ký học phần',
-        },
-      ],
-    },
+    // {
+    //   header: 'Thành viên',
+    //   links: [
+    //     {
+    //       url: `${Routes.member.name}?r=${[ROLES.TEACHER]}`,
+    //       label: 'Giảng viên',
+    //     },
+    //     {
+    //       url: `${Routes.member.name}?r=${[ROLES.STUDENT]}`,
+    //       label: 'Sinh viên',
+    //     },
+    //   ],
+    // },
+    // {
+    //   header: 'MÔN HỌC',
+    //   links: [
+    //     {
+    //       url: Routes.createCourse.name,
+    //       label: 'Tạo môn học',
+    //     },
+    //     {
+    //       url: Routes.courses.name,
+    //       label: 'Danh sách môn học',
+    //     },
+    //   ],
+    // },
+    // {
+    //   header: 'LỚP HỌC',
+    //   links: [
+    //     {
+    //       url: Routes.createClass.name,
+    //       label: 'Tạo lớp học',
+    //       disabledTag: 'Chỉnh sửa thời gian đăng ký học phần!',
+    //     },
+    //     {
+    //       url: Routes.classes.name,
+    //       label: 'Danh sách lớp học',
+    //       disabledTag: 'Chỉnh sửa thời gian đăng ký học phần!',
+    //     },
+    //     {
+    //       url: Routes.registerTime.name,
+    //       label: 'Chỉnh sửa thời gian đăng ký học phần',
+    //     },
+    //   ],
+    // },
     {
       header: 'TỐT NGHIỆP',
       links: [
@@ -87,10 +87,10 @@ const PageManage: NextPage = () => {
           url: Routes.requestGraduationList.name,
           label: 'Danh sách yêu cầu tốt nghiệp',
         },
-        {
-          url: Routes.graduationList.name,
-          label: 'Danh sách sinh viên đã tốt nghiệp',
-        },
+        // {
+        //   url: Routes.graduationList.name,
+        //   label: 'Danh sách sinh viên đã tốt nghiệp',
+        // },
       ],
     },
   ];

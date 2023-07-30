@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { ChangeEvent, useCallback, useMemo, useState } from 'react';
 import Link from 'next/link';
 
 import { CourseEntity } from '@_types/models/entities';
 import CONST from '@config/constants.json';
 import Routes from '@config/routes.json';
-import { Box, SelectField } from '@molecules';
+import { Box, InputField, SelectField } from '@molecules';
 import { Breadcrumb, Table } from '@organisms';
 import { BaseLayout } from '@templates';
 import { useCourseListApi } from '@hooks/api';
@@ -35,6 +35,7 @@ const tableHeaders = [
   {
     field: 'id',
     name: 'ID môn học',
+    textCenter: true,
   },
   {
     field: 'courseCode',
@@ -61,6 +62,7 @@ const tableHeaders = [
   {
     field: 'credits',
     name: 'Tín chỉ',
+    textCenter: true,
   },
   {
     name: 'Action',
@@ -74,6 +76,7 @@ const CourseList = () => {
   const syncCourse = useSyncCourse(revalidate);
   const onSelectChange = useInputTextChange(setQuery);
   const { data: knowledgeBlocks } = useKnowledgeBlockListApi();
+  const [nameKeyword, setNameKeyword] = useState('');
   const knowledgeBlockOptions = useSelectOptions(knowledgeBlocks, {
     noSelectLabel: 'Tất cả khối kiến thức',
     labelField: 'name',
@@ -82,9 +85,17 @@ const CourseList = () => {
 
   const tableItems = data || [];
 
+  const displayItems = useMemo(() => {
+    if (!nameKeyword || nameKeyword.length < 3) return tableItems;
+
+    return tableItems.filter(({ name }) =>
+      name.toLowerCase().includes(nameKeyword.toLowerCase())
+    );
+  }, [nameKeyword, tableItems]);
+
   const breadcrumbs = [
     {
-      label: 'Manager',
+      label: 'Dashboard',
       route: Routes.manage,
     },
     {
@@ -92,30 +103,47 @@ const CourseList = () => {
     },
   ];
 
+  const onChangeNameKeyword = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) =>
+      setNameKeyword(e.target.value),
+    []
+  );
+
   return (
     <BaseLayout>
       <Breadcrumb links={breadcrumbs} />
       <Box autoLayout>
-        <div className="flex">
-          <SelectField
-            label="Khối kiến thức"
-            options={knowledgeBlockOptions}
-            name="knowledgeBlockId"
-            onChange={onSelectChange}
-          />
-
-          <Button
-            className="ml-auto px-4 h-[31px] mt-auto bg-indigo-900 text-white text-sm"
-            size="S"
-            onClick={syncCourse}
-          >
-            Đồng bộ
-          </Button>
-        </div>
         <Table
           title="Danh sách môn học"
-          data={tableItems}
+          subheader={
+            <div className="flex flex-wrap gap-y-[16px]">
+              <SelectField
+                label="Khối kiến thức"
+                options={knowledgeBlockOptions}
+                name="knowledgeBlockId"
+                onChange={onSelectChange}
+              />
+
+              <Button
+                className="ml-auto px-4 h-[31px] mt-auto bg-indigo-900 text-white text-sm"
+                size="S"
+                onClick={syncCourse}
+              >
+                Đồng bộ
+              </Button>
+
+              <InputField
+                containerClassName="w-full"
+                label="Tên môn học"
+                value={nameKeyword}
+                onChange={onChangeNameKeyword}
+                placeholder="Nhập tên môn học để tìm kiếm (ít nhất 3 ký tự)..."
+              />
+            </div>
+          }
+          data={displayItems}
           headers={tableHeaders}
+          fullWidth
         />
       </Box>
     </BaseLayout>

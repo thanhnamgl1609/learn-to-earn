@@ -17,6 +17,7 @@ export type UserEntity = {
   approveDate: Date;
   expiredAt: Date;
   chainURI: string;
+  isExpired?: boolean;
 
   documentURIs?: DocumentURI[];
   nftGraduation?: NftGraduationEntity;

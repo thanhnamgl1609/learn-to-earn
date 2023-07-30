@@ -25,6 +25,7 @@ export type Course = {
 } & CourseCore;
 
 export type CourseForm = {
+  id?: number;
   knowledgeBlockId: number;
   courseCode: string;
   prevCourseId: string;

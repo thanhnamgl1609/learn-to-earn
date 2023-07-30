@@ -12,3 +12,7 @@ export { default as TextField } from './TextField';
 export { default as LinkField } from './LinkField';
 export { default as BadgeButton } from './BadgeButton';
 export { default as ImageView } from './ImageView';
+export { default as UserDropdown } from './Dropdowns/UserDropdown';
+export { default as NotificationDropdown } from './Dropdowns/NotificationDropdown';
+export { default as PagesDropdown } from './Dropdowns/PagesDropdown';
+export { default as SearchBar } from './SearchBar';

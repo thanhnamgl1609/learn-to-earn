@@ -15,9 +15,11 @@ type Props = {
   headers: {
     field?: string;
     name: string;
+    textCenter?: boolean;
     custom?: FC<CustomProp>;
   }[];
   autoOrderId?: boolean;
+  fullWidth?: boolean;
   onRowClick?: (idx: number) => void;
   customProps?: Record<string, any>;
 };
@@ -29,6 +31,7 @@ const Table: FC<PropsWithChildren<Props>> = (props) => {
     subheader,
     data,
     headers,
+    fullWidth,
     onRowClick = (idx: number) => {},
     customProps = {},
   } = props;
@@ -44,7 +47,11 @@ const Table: FC<PropsWithChildren<Props>> = (props) => {
         <h3 className="font-bold uppercase text-gray-700">{title}</h3>
       )}
       {subheader}
-      <table className={`${title ? 'mt-[24px]' : 'mt-0'}`}>
+      <table
+        className={`${title ? 'mt-[24px]' : 'mt-0'} ${
+          fullWidth ? 'w-full' : ''
+        }`}
+      >
         <thead>
           <tr>
             {autoOrderId && (
@@ -66,18 +73,25 @@ const Table: FC<PropsWithChildren<Props>> = (props) => {
               {autoOrderId && (
                 <td className="table-data text-center">{idx + 1}</td>
               )}
-              {headers.map(({ field, custom: Custom }, itemIdx) => (
-                <td
-                  className="table-data"
-                  key={`item_${item.id}_${itemIdx}_${field ?? ''}`}
-                >
-                  {Custom ? (
-                    <Custom item={item} {...customProps} />
-                  ) : (
-                    _.get(item, field)
-                  )}
-                </td>
-              ))}
+              {headers.map(
+                (
+                  { field, textCenter = false, custom: Custom },
+                  itemIdx
+                ) => (
+                  <td
+                    className={`table-data ${
+                      textCenter ? 'text-center' : ''
+                    }`}
+                    key={`item_${item.id}_${itemIdx}_${field ?? ''}`}
+                  >
+                    {Custom ? (
+                      <Custom item={item} {...customProps} />
+                    ) : (
+                      _.get(item, field)
+                    )}
+                  </td>
+                )
+              )}
             </tr>
           ))}
         </tbody>

@@ -68,7 +68,7 @@ const CreateClass = () => {
 
   const links = [
     {
-      label: 'Manager',
+      label: 'Dashboard',
       route: ROUTES.manage,
     },
     {
@@ -83,7 +83,7 @@ const CreateClass = () => {
   return (
     <BaseLayout containerClassName="max-w-[640px]">
       <Breadcrumb links={links} />
-      <Form submitText="Create" onSubmit={onSubmit}>
+      <Form submitText="Tạo" onSubmit={onSubmit}>
         <Heading>Tạo lớp học</Heading>
 
         <FormClassDetail

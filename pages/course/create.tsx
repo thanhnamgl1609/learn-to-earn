@@ -68,8 +68,8 @@ const CreateCourse = () => {
   return (
     <BaseLayout containerClassName="max-w-[640px]">
       <Breadcrumb links={links} />
-      <Form submitText="Create" onSubmit={onSubmit}>
-        <Heading>Create Course</Heading>
+      <Form submitText="Tạo" onSubmit={onSubmit}>
+        <Heading>Tạo môn học</Heading>
         <CourseDetail
           formState={formState}
           onInputChange={onInputChange}

@@ -19,13 +19,20 @@ const MemberDetailPage = () => {
   const { id: _tokenId } = router.query as Query;
   const tokenId = parseInt(_tokenId);
   const { data: member } = useMemberDetail({ tokenId });
+  const memberListUrl = `${Routes.member.name}?r=${member?.role}`;
   const breadcrumbs = [
     {
-      label: 'Manager',
+      label: 'Dashboard',
       route: Routes.manage,
     },
     {
-      label: `Danh sách ${ROLE_LABELS_VI[member?.role] ?? ''}`,
+      label: `Danh sách ${
+        ROLE_LABELS_VI[member?.role].toLowerCase() ?? ''
+      }`,
+      route: { name: memberListUrl },
+    },
+    {
+      label: _tokenId,
     },
   ];
 

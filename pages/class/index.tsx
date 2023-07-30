@@ -1,30 +1,30 @@
-import { useMemo, useState } from 'react';
+import { ChangeEvent, useCallback, useMemo, useState } from 'react';
 import Link from 'next/link';
 
-import { Class } from '@_types/school';
-import CONST from '@config/constants.json';
 import Routes from '@config/routes.json';
 import { useClassListApi } from '@hooks/api/classes';
 import { ClassEntity } from '@_types/models/entities';
 import { useSemesterListApi } from '@hooks/api';
-import { Box, SelectField } from '@molecules';
+import { Box, InputField, SelectField } from '@molecules';
 import { Breadcrumb, Table } from '@organisms';
 import { BaseLayout } from '@templates';
 import { useInputTextChange, useSelectOptions } from '@hooks/form';
 import { semesterEntity } from 'domain/models';
-import { useClassList } from '@hooks/web3';
 
 type ActionColumnsProps = {
   item: ClassEntity;
 };
 
 const ActionColumns = ({ item }: ActionColumnsProps) => (
-  <div>
+  <div className="flex items-center justify-center">
     <Link
-      href={Routes.classDetail.name.replace(':id', item.onChainId.toString())}
-      className="bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80"
+      href={Routes.classDetail.name.replace(
+        ':id',
+        item.onChainId.toString()
+      )}
+      className="min-w-[64px] bg-indigo-900 px-2 py-1 text-white rounded-[4px] hover:opacity-80"
     >
-      View
+      Chi tiết
     </Link>
   </div>
 );
@@ -33,6 +33,7 @@ const tableHeaders = [
   {
     field: 'onChainId',
     name: 'Mã lớp học',
+    textCenter: true,
   },
   {
     name: 'Tên môn học',
@@ -49,6 +50,7 @@ const tableHeaders = [
   {
     field: 'knowledgeBlock.name',
     name: 'Khối kiến thức',
+    textCenter: true,
   },
   {
     field: 'credits',
@@ -57,11 +59,13 @@ const tableHeaders = [
   },
   {
     field: 'maxSize',
-    name: 'Số sinh viên tối đa',
+    name: 'Số SV tối đa',
+    textCenter: true,
   },
   {
     field: 'numberOfStudents',
-    name: 'Số sinh viên đã đăng ký',
+    name: 'Số SV đăng ký',
+    textCenter: true,
   },
   {
     name: 'Phí đăng ký',
@@ -72,6 +76,7 @@ const tableHeaders = [
   {
     field: 'teacher.fullName',
     name: 'Giảng viên',
+    textCenter: true,
   },
   {
     name: 'Action',
@@ -85,8 +90,8 @@ const ClassList = () => {
   });
   const onSelectChange = useInputTextChange(setQuery);
   const { data: classList } = useClassListApi(query);
-  const x = useClassList({ semester: 1 });
   const { data: semesters } = useSemesterListApi();
+  const [nameKeyword, setNameKeyword] = useState('');
   const semesterOptions = useSelectOptions(semesters, {
     labelField: 'id',
     noSelectLabel: 'Tất cả học kì',
@@ -95,9 +100,23 @@ const ClassList = () => {
 
   const tableItems = classList || [];
 
+  const displayItems = useMemo(() => {
+    if (!nameKeyword || nameKeyword.length < 3) return tableItems;
+
+    return tableItems.filter(({ course: { name } }) =>
+      name.toLowerCase().includes(nameKeyword.toLowerCase())
+    );
+  }, [nameKeyword, tableItems]);
+
+  const onChangeNameKeyword = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) =>
+      setNameKeyword(e.target.value),
+    []
+  );
+
   const breadcrumbs = [
     {
-      label: 'Manager',
+      label: 'Dashboard',
       route: Routes.manage,
     },
     {
@@ -109,18 +128,27 @@ const ClassList = () => {
     <BaseLayout>
       <Breadcrumb links={breadcrumbs} />
       <Box autoLayout>
-        <div className="flex">
-          <SelectField
-            label="Học kì"
-            options={semesterOptions}
-            name="semesterId"
-            onChange={onSelectChange}
-          />
-        </div>
-
         <Table
           title="Danh sách lớp học"
-          data={tableItems}
+          subheader={
+            <div className="flex flex-wrap gap-[16px]">
+              <InputField
+                containerClassName="flex-1"
+                label="Tên môn học"
+                value={nameKeyword}
+                onChange={onChangeNameKeyword}
+                placeholder="Nhập tên môn học để tìm kiếm (ít nhất 3 ký tự)..."
+              />
+              <SelectField
+                containerClassName="flex-1"
+                label="Học kì"
+                options={semesterOptions}
+                name="semesterId"
+                onChange={onSelectChange}
+              />
+            </div>
+          }
+          data={displayItems}
           headers={tableHeaders}
         />
       </Box>

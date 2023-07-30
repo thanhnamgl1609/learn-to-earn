@@ -64,9 +64,7 @@ const tableHeaders = [
       <p className="text-center">{item.score || 'X'}</p>
     ),
   },
-];
-
-const actionColumn = {
+  {
   name: 'Hành động',
   custom: ({ item, onOpenGrantModal }: ColumnProp) => {
     const onOpenModal = () => onOpenGrantModal(item);
@@ -87,7 +85,8 @@ const actionColumn = {
       </Button>
     );
   },
-};
+},
+];
 
 const ClassDetailTeacher = () => {
   const router = useRouter();
@@ -233,37 +232,15 @@ const ClassDetailTeacher = () => {
     mutate(res);
   };
 
-  const isTeacher = role === ROLES.TEACHER;
-
-  const links = isTeacher
-    ? [
-        {
-          label: 'Trang cá nhân',
-          route: ROUTES.profile,
-        },
-        {
-          label: `Lớp #${id}`,
-        },
-      ]
-    : [
-        {
-          label: 'Manager',
-          route: ROUTES.manage,
-        },
-        {
-          label: 'Danh sách lớp học',
-          route: ROUTES.classes,
-        },
-        {
-          label: `Lớp #${id}`,
-        },
-      ];
-
-  const _tableHeaders = useMemo(
-    () =>
-      isTeacher ? [...tableHeaders, actionColumn] : tableHeaders,
-    [isTeacher]
-  );
+  const links = [
+    {
+      label: 'Trang cá nhân',
+      route: ROUTES.profile,
+    },
+    {
+      label: `Lớp #${id}`,
+    },
+  ];
 
   return (
     <BaseLayout containerClassName="max-w-[640px]">
@@ -279,7 +256,7 @@ const ClassDetailTeacher = () => {
         <Table
           title={`Danh sách sinh viên`}
           data={studentList}
-          headers={_tableHeaders}
+          headers={tableHeaders}
           customProps={{ onOpenGrantModal }}
           subheader={
             <div>

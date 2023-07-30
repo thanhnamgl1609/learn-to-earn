@@ -7,6 +7,7 @@ import { LoadingPage } from '@organisms';
 import { AuthWrapper } from '@templates';
 import { ConfirmDialog } from '@templates/Modal';
 import 'react-toastify/dist/ReactToastify.css';
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import { store } from '@store';
 
 const App = (props: AppProps) => {

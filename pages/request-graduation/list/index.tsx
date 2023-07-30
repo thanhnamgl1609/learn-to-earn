@@ -4,8 +4,9 @@ import CONST from 'config/constants.json';
 import { Breadcrumb, Table } from '@organisms';
 import { RequestGraduationEntity } from '@_types/models/entities';
 import { BaseLayout } from '@templates';
-import { Box } from '@molecules';
+import { Box, InputField } from '@molecules';
 import { useRequestGraduationList } from '@hooks/api';
+import { ChangeEvent, useCallback, useMemo, useState } from 'react';
 
 type ColumnProps = {
   item: RequestGraduationEntity;
@@ -46,6 +47,22 @@ const RequestGraduationList = () => {
   const { data: requestGraduations = [] } = useRequestGraduationList({
     status: REQUEST_STATUS.PENDING,
   });
+  const [nameKeyword, setNameKeyword] = useState('');
+
+  const displayItems = useMemo(() => {
+    if (!nameKeyword || nameKeyword.length < 3)
+      return requestGraduations;
+
+    return requestGraduations.filter(({ student: { fullName } }) =>
+      fullName.toLowerCase().includes(nameKeyword.toLowerCase())
+    );
+  }, [nameKeyword, requestGraduations]);
+
+  const onChangeNameKeyword = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) =>
+      setNameKeyword(e.target.value),
+    []
+  );
 
   const links = [
     {
@@ -61,12 +78,22 @@ const RequestGraduationList = () => {
     <BaseLayout>
       <Breadcrumb links={links} />
 
-      <Heading>Danh sách sinh viên yêu cầu tốt nghiệp</Heading>
-
       <Box autoLayout>
         <Table
-          data={requestGraduations}
+          subheader={
+            <div className="flex flex-wrap gap-[16px]">
+              <InputField
+                containerClassName="w-[50%]"
+                label="Tên sinh viên"
+                value={nameKeyword}
+                onChange={onChangeNameKeyword}
+                placeholder="Nhập tên sinh viên để tìm kiếm (ít nhất 3 ký tự)..."
+              />
+            </div>
+          }
+          title="Danh sách sinh viên yêu cầu tốt nghiệp"
           headers={requestGraduationHeader}
+          data={displayItems}
           autoOrderId
         />
       </Box>

@@ -15,7 +15,7 @@ type Query = {
   address: string;
 };
 
-const { ROLE_LABELS } = CONST;
+const { ROLE_LABELS_VI: ROLE_LABELS } = CONST;
 
 const RegistrationInfoDetail = () => {
   const router = useRouter();
@@ -27,11 +27,13 @@ const RegistrationInfoDetail = () => {
   if (!application) router.push(managementURL);
   const breadcrumbs = [
     {
-      label: 'Manager',
+      label: 'Dashboard',
       route: Routes.manage,
     },
     {
-      label: `${ROLE_LABELS[application.role]} registration manager`,
+      label: `Danh sách ${ROLE_LABELS[
+        application.role
+      ].toLowerCase()}`,
       route: { name: managementURL },
     },
     {
@@ -39,8 +41,11 @@ const RegistrationInfoDetail = () => {
     },
   ];
 
-  const [isApprovalModalOpen, onOpenApprovalModal, onCloseApprovalModal] =
-    useModalController();
+  const [
+    isApprovalModalOpen,
+    onOpenApprovalModal,
+    onCloseApprovalModal,
+  ] = useModalController();
   const rejectNftIdentity = useRejectNftIdentity(application);
 
   return (
