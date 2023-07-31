@@ -11,9 +11,7 @@ export const useNftGraduationDetail = (
   const result = useSWR(
     [`${endpoints.nftGraduationDetail}/${id}`],
     useApi(makeRequest()),
-    {
-      revalidateOnFocus: false,
-    }
+    {}
   );
 
   return result;

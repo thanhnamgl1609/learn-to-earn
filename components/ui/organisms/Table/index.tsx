@@ -16,6 +16,7 @@ type Props = {
     field?: string;
     name: string;
     textCenter?: boolean;
+    hideOnTablet?: boolean;
     custom?: FC<CustomProp>;
   }[];
   autoOrderId?: boolean;
@@ -57,8 +58,13 @@ const Table: FC<PropsWithChildren<Props>> = (props) => {
             {autoOrderId && (
               <th className="table-heading text-center">No</th>
             )}
-            {headers.map(({ name }) => (
-              <th className="table-heading" key={name}>
+            {headers.map(({ name, hideOnTablet }) => (
+              <th
+                className={`${'table-heading'} ${
+                  hideOnTablet ? 'hidden lg:table-cell' : ''
+                }`}
+                key={name}
+              >
                 {name}
               </th>
             ))}
@@ -75,13 +81,18 @@ const Table: FC<PropsWithChildren<Props>> = (props) => {
               )}
               {headers.map(
                 (
-                  { field, textCenter = false, custom: Custom },
+                  {
+                    field,
+                    textCenter = false,
+                    hideOnTablet = false,
+                    custom: Custom,
+                  },
                   itemIdx
                 ) => (
                   <td
                     className={`table-data ${
                       textCenter ? 'text-center' : ''
-                    }`}
+                    } ${hideOnTablet ? 'hidden lg:table-cell' : ''}`}
                     key={`item_${item.id}_${itemIdx}_${field ?? ''}`}
                   >
                     {Custom ? (

@@ -56,10 +56,12 @@ const tableHeaders = [
   {
     field: 'meta.identityNumber',
     name: 'CCCD/CMND',
+    hideOnTablet: true,
     textCenter: true,
   },
   {
     name: 'Ngày sinh',
+    hideOnTablet: true,
     custom: ({ item }) => (
       <p className="text-center">
         {formatDate(item.meta.dateOfBirth)}

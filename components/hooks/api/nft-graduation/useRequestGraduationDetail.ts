@@ -21,9 +21,7 @@ export const useRequestGraduationDetail = (
   const result = useSWR(
     [endpoints.requestGraduationDetail, query],
     getter,
-    {
-      revalidateOnFocus: false,
-    }
+    {}
   );
 
   return result;

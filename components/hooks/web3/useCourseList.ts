@@ -7,7 +7,10 @@ import { useApi } from '@hooks/common';
 
 type UseCourseListResponse = {};
 
-type CourseListHookFactory = CryptoHookFactory<Course[], UseCourseListResponse>;
+type CourseListHookFactory = CryptoHookFactory<
+  Course[],
+  UseCourseListResponse
+>;
 
 export type UseCourseListHook = ReturnType<CourseListHookFactory>;
 
@@ -31,9 +34,7 @@ export const hookFactory: CourseListHookFactory =
     const { data, ...swr } = useSWR(
       contracts ? `web3/useCourseList` : null,
       getAllCourseCaller,
-      {
-        revalidateOnFocus: false,
-      }
+      {}
     );
 
     return {

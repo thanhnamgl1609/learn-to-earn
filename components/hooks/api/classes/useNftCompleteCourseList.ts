@@ -13,15 +13,19 @@ import { useApi } from '@hooks/common';
 export const useNftCompleteCourseListApi = (
   query: NftCompleteCourseQuery
 ): SWRResponse<NftCompleteCourseListResponse> => {
-  const getter = useApi(async (params: [string, NftCompleteCourse]) => {
-    const nftCompleteCourses = await makeRequest()(params);
+  const getter = useApi(
+    async (params: [string, NftCompleteCourse]) => {
+      const nftCompleteCourses = await makeRequest()(params);
 
-    return nftCompleteCourses as NftCompleteCourseListResponse;
-  });
+      return nftCompleteCourses as NftCompleteCourseListResponse;
+    }
+  );
 
-  const result = useSWR([endpoints.nftCompleteCourse, query], getter, {
-    revalidateOnFocus: false,
-  });
+  const result = useSWR(
+    [endpoints.nftCompleteCourse, query],
+    getter,
+    {}
+  );
 
   return result;
 };

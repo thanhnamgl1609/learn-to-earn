@@ -61,22 +61,26 @@ const tableHeaders = [
     field: 'maxSize',
     name: 'Số SV tối đa',
     textCenter: true,
+    hideOnTablet: true,
   },
   {
     field: 'numberOfStudents',
     name: 'Số SV đăng ký',
     textCenter: true,
+    hideOnTablet: true,
   },
   {
     name: 'Phí đăng ký',
     custom: ({ item: { registerClassFee } }: ActionColumnsProps) => (
       <p>{registerClassFee} ETH</p>
     ),
+    hideOnTablet: true,
   },
   {
     field: 'teacher.fullName',
     name: 'Giảng viên',
     textCenter: true,
+    hideOnTablet: true,
   },
   {
     name: 'Action',

@@ -25,9 +25,7 @@ type RouteQuery = {
   r?: string;
 };
 
-const { ROLES, GENDER, ROLE_LABELS_VI: ROLE_LABELS } = CONST;
-
-const AVAILABLE_ROLES = [ROLES.STUDENT, ROLES.TEACHER];
+const { ROLES, ROLE_LABELS_VI: ROLE_LABELS } = CONST;
 
 const ActionColumns = ({ item }: ActionColumnsProps) => (
   <div className="flex items-center justify-center">
@@ -103,6 +101,7 @@ const MemberList = () => {
         field: 'phone',
         name: 'SĐT',
         textCenter: true,
+        hideOnTablet: true,
       },
       {
         name: 'Ngày hết hạn',
@@ -115,6 +114,7 @@ const MemberList = () => {
             {formatDate(item.expiredAt)}
           </p>
         ),
+        hideOnTablet: true,
       },
       {
         name: 'Action',

@@ -6,13 +6,17 @@ import { ClassQuery } from '@_types/api/class';
 import endpoints from 'config/endpoints.json';
 import { makeRequest } from 'utils/request';
 import { useApi } from '@hooks/common';
-import { useNftClassRegistrationActions, useSchoolActions } from '@hooks/web3';
+import {
+  useNftClassRegistrationActions,
+  useSchoolActions,
+} from '@hooks/web3';
 
 export const useClassListApi = (
   query?: ClassQuery
 ): SWRResponse<ClassEntity[]> => {
   const { getRegisterFeeClassById } = useSchoolActions();
-  const { getNumberOfStudentsOfClass } = useNftClassRegistrationActions();
+  const { getNumberOfStudentsOfClass } =
+    useNftClassRegistrationActions();
 
   const _query = useMemo(() => {
     const q: ClassQuery = { ...query };
@@ -44,9 +48,7 @@ export const useClassListApi = (
     return classListWithRegisterFee;
   });
 
-  const result = useSWR([endpoints.classes, _query], getter, {
-    revalidateOnFocus: false,
-  });
+  const result = useSWR([endpoints.classes, _query], getter);
 
   return result;
 };

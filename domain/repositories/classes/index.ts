@@ -81,7 +81,7 @@ export const get = async (
     ],
   });
 
-  return formatItem(result?.get());
+  return result ? formatItem(result?.get()) : null;
 };
 
 export const insert = async (

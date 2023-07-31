@@ -17,9 +17,7 @@ export const useNftGraduationList = (
     }
   );
 
-  const result = useSWR([endpoints.nftGraduation, query], getter, {
-    revalidateOnFocus: false,
-  });
+  const result = useSWR([endpoints.nftGraduation, query], getter, {});
 
   return result;
 };

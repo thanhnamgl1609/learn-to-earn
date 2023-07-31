@@ -75,7 +75,7 @@ export const useRegisterClass = () => {
           data,
           signature,
           successText:
-            'Upload successfully! Please wait for sending request!',
+            'Upload metadata cho NFT đăng ký lớp học thành công!',
         })
       ).unwrap();
 

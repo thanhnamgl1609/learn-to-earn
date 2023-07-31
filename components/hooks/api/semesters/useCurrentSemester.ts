@@ -14,10 +14,12 @@ export const useCurrentSemester = (): SWRResponse<SemesterEntity> => {
     [endpoints.currentSemesters],
     useApi(async (url) => {
       const response = (await makeRequest()([url])) as SemesterEntity;
-      const { registerEndAt, registerStartAt } = await getRegisterTime(
-        response.id
+      const { registerEndAt, registerStartAt } =
+        await getRegisterTime(response.id);
+      const isInRegisterTime = between(
+        registerStartAt,
+        registerEndAt
       );
-      const isInRegisterTime = between(registerStartAt, registerEndAt);
       return {
         ...response,
         registerStartAt,
@@ -25,9 +27,7 @@ export const useCurrentSemester = (): SWRResponse<SemesterEntity> => {
         isInRegisterTime,
       } as SemesterEntity;
     }),
-    {
-      revalidateOnFocus: false,
-    }
+    {}
   );
 
   return result;

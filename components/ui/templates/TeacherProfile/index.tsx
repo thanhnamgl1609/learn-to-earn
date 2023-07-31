@@ -37,6 +37,7 @@ const classTableHeaders = [
   {
     field: 'onChainId',
     name: 'Mã lớp học',
+    textCenter: true,
   },
   {
     field: 'course.name',
@@ -48,30 +49,40 @@ const classTableHeaders = [
     custom: ({ item }: ClassColumnProps) => (
       <p>{KNOWLEDGE_BLOCK_BY_IDS[item.knowledgeBlockId].name}</p>
     ),
+    hideOnTablet: true,
   },
   {
     field: 'credits',
     name: 'Số tín chỉ',
+    textCenter: true,
   },
   {
     field: 'maxSize',
     name: 'Số sinh viên tối đa',
+    hideOnTablet: true,
+    textCenter: true,
   },
   {
     field: 'numberOfStudents',
     name: 'Số sinh viên',
+    hideOnTablet: true,
+    textCenter: true,
   },
   {
     name: 'Ngày bắt đầu môn học',
     custom: ({ item }: ClassColumnProps) => (
       <p>{formatDate(item.startAt, DATE_TIME.DATETIME)}</p>
     ),
+    hideOnTablet: true,
+    textCenter: true,
   },
   {
     name: 'Ngày kết thúc môn học',
     custom: ({ item }: ClassColumnProps) => (
       <p>{formatDate(item.completeAt, DATE_TIME.DATETIME)}</p>
     ),
+    hideOnTablet: true,
+    textCenter: true,
   },
   {
     name: 'Hành động',

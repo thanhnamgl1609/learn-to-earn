@@ -10,9 +10,11 @@ import { CourseEntity, UserEntity } from '@_types/models/entities';
 export const useUserListApi = (
   query?: UserQuery
 ): SWRResponse<UserEntity[]> => {
-  const result = useSWR([endpoints.users, query], useApi(makeRequest()), {
-    revalidateOnFocus: false,
-  });
+  const result = useSWR(
+    [endpoints.users, query],
+    useApi(makeRequest()),
+    {}
+  );
 
   return result;
 };

@@ -47,9 +47,7 @@ export const useRegisterClassesApi = (): SWRResponse<
     [currentNftClassRegistrations]
   );
 
-  const result = useSWR([endpoints.registerClasses], getter, {
-    revalidateOnFocus: false,
-  });
+  const result = useSWR([endpoints.registerClasses], getter, {});
 
   const data = useMemo(
     () =>

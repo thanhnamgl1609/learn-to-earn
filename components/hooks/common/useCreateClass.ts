@@ -76,7 +76,7 @@ export const useCreateClass = () => {
             teacherName: teacher.fullName,
           },
           signature,
-          successText: 'Upload class metadata thành công!',
+          successText: 'Upload metadata cho lớp học thành công!',
         })
       ).unwrap();
       const createdClass: any = {

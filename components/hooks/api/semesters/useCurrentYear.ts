@@ -37,9 +37,7 @@ export const useCurrentYear = (): SWRResponse<SemesterDetail[]> => {
 
       return responseWithRegisterTime;
     }),
-    {
-      revalidateOnFocus: false,
-    }
+    {}
   );
 
   return result;

@@ -70,7 +70,8 @@ type PromiseHandlerFunc = (params: {
 type SchoolActionsHookFactory =
   HookFactoryWithoutSWR<UseSchoolActionsReturnTypes>;
 
-export type UseSchoolActionsHook = ReturnType<SchoolActionsHookFactory>;
+export type UseSchoolActionsHook =
+  ReturnType<SchoolActionsHookFactory>;
 
 export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
   const { contracts } = deps;
@@ -78,7 +79,13 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
 
   const createCourse: CreateCourseFunc = useCallback(
     async ({ data, onSuccess, onError }) => {
-      const { credits, knowledgeBlockId, uri, courseCode, prevCourseId } = data;
+      const {
+        credits,
+        knowledgeBlockId,
+        uri,
+        courseCode,
+        prevCourseId,
+      } = data;
       const promise = _contracts.school?.createCourse(
         prevCourseId,
         knowledgeBlockId,
@@ -87,8 +94,8 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
         uri
       );
       await promiseHandler({
-        successMsg: `Success to create course`,
-        errorMsg: `Fail to grant NFT`,
+        successMsg: `Tạo môn học thành công`,
+        errorMsg: `Tạo môn học thất bại`,
         onSuccess,
         onError,
         promise,
@@ -122,8 +129,8 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
           uri
         );
         await promiseHandler({
-          successMsg: `Success to create class`,
-          errorMsg: `Fail to grant NFT`,
+          successMsg: `Tạo lớp học thành công`,
+          errorMsg: `Tạo lớp học thất bại`,
           promise,
         });
 
@@ -135,9 +142,8 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
 
   const getRegisterTime: GetRegisterTimeFunc = useApi(
     async (semesterId) => {
-      const registerTimeResponse = await contracts!.school.getRegisterTime(
-        semesterId
-      );
+      const registerTimeResponse =
+        await contracts!.school.getRegisterTime(semesterId);
 
       return formatRegisterTime(registerTimeResponse);
     },
@@ -163,9 +169,8 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
   const getRegisterFeeClassById: GetRegisterFeeClassByIdFunc = async (
     tokenId
   ) => {
-    const registerClassFee = await _contracts.school.getRegisterFeeClassById(
-      tokenId
-    );
+    const registerClassFee =
+      await _contracts.school.getRegisterFeeClassById(tokenId);
 
     return parseFloat(ethers.utils.formatEther(registerClassFee));
   };

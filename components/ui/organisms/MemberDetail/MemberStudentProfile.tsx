@@ -35,6 +35,7 @@ const classTableHeaders = [
   {
     field: 'tokenId',
     name: 'Token ID',
+    textCenter: true,
   },
   {
     field: 'class.course.name',
@@ -43,6 +44,7 @@ const classTableHeaders = [
   {
     field: 'class.knowledgeBlock.name',
     name: 'Khối kiến thức',
+    hideOnTablet: true,
   },
   {
     field: 'class.credits',
@@ -50,28 +52,36 @@ const classTableHeaders = [
     custom: ({ item }: ClassColumnProps) => (
       <p>{item.class.credits}</p>
     ),
+    textCenter: true,
   },
   {
     name: 'Ngày bắt đầu môn học',
     custom: ({ item }: ClassColumnProps) => (
       <p>{formatDate(item.class.startAt, DATE_TIME.DATETIME)}</p>
     ),
+    hideOnTablet: true,
+    textCenter: true,
   },
   {
     name: 'Ngày kết thúc môn học',
     custom: ({ item }: ClassColumnProps) => (
       <p>{formatDate(item.class.completeAt, DATE_TIME.DATETIME)}</p>
     ),
+    hideOnTablet: true,
+    textCenter: true,
   },
   {
     field: 'class.teacher.fullName',
     name: 'Giảng viên',
+    hideOnTablet: true,
+    textCenter: true,
   },
   {
     name: 'Điểm số',
     custom: ({ item }: ClassColumnProps) => (
       <p>{item.score === null ? 'Chưa cập nhật' : item.score}</p>
     ),
+    textCenter: true,
   },
 ];
 

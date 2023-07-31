@@ -29,9 +29,7 @@ export const useNftCompleteCourseListGroupApi = (
   const result = useSWR(
     [endpoints.nftCompleteCourseGroup, query],
     getter,
-    {
-      revalidateOnFocus: false,
-    }
+    {}
   );
 
   return {

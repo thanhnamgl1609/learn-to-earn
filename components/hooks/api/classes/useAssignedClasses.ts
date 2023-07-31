@@ -13,29 +13,30 @@ import { useApi } from '@hooks/common';
 export const useAssignedClassesApi = (
   query?: NftClassRegistrationQuery
 ): SWRResponse<ClassEntity[]> => {
-  const { getNumberOfStudentsOfClass } = useNftClassRegistrationActions();
+  const { getNumberOfStudentsOfClass } =
+    useNftClassRegistrationActions();
 
-  const getter = useApi(async (params: [string, NftClassRegistrationQuery]) => {
-    const classList = await makeRequest()(params);
-    const classListWithRegisterFee = await Promise.all(
-      classList.map(async (classItem: ClassEntity) => {
-        const numberOfStudents = await getNumberOfStudentsOfClass(
-          classItem.onChainId
-        );
+  const getter = useApi(
+    async (params: [string, NftClassRegistrationQuery]) => {
+      const classList = await makeRequest()(params);
+      const classListWithRegisterFee = await Promise.all(
+        classList.map(async (classItem: ClassEntity) => {
+          const numberOfStudents = await getNumberOfStudentsOfClass(
+            classItem.onChainId
+          );
 
-        return {
-          ...classItem,
-          numberOfStudents,
-        };
-      })
-    );
+          return {
+            ...classItem,
+            numberOfStudents,
+          };
+        })
+      );
 
-    return classListWithRegisterFee;
-  });
+      return classListWithRegisterFee;
+    }
+  );
 
-  const result = useSWR([endpoints.assignedClasses, query], getter, {
-    revalidateOnFocus: false,
-  });
+  const result = useSWR([endpoints.assignedClasses, query], getter);
 
   return result;
 };

@@ -35,9 +35,7 @@ export const hookFactory: ClassListHookFactory =
     const { data, ...swr } = useSWR(
       contracts ? `web3/useClassList` : null,
       getAllClassCaller,
-      {
-        revalidateOnFocus: false,
-      }
+      {}
     );
 
     return {

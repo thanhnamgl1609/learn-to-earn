@@ -16,7 +16,10 @@ type UseUserInfoResponse = {
   getSignature: () => Promise<string>;
 };
 
-type UserInfoHookFactory = CryptoHookFactory<SWRResponse, UseUserInfoResponse>;
+type UserInfoHookFactory = CryptoHookFactory<
+  SWRResponse,
+  UseUserInfoResponse
+>;
 
 export type UseUserInfoHook = ReturnType<UserInfoHookFactory>;
 
@@ -39,16 +42,18 @@ export const hookFactory: UserInfoHookFactory =
           };
         }
 
-        const [registrationInfoResponses, nftResponses] = await Promise.all([
-          _contracts!.nftIdentities.getAllOwnedRegistrationInfos(),
-          _contracts!.nftIdentities.getOwnedNfts(),
-        ]);
+        const [registrationInfoResponses, nftResponses] =
+          await Promise.all([
+            _contracts!.nftIdentities.getAllOwnedRegistrationInfos(),
+            _contracts!.nftIdentities.getOwnedNfts(),
+          ]);
 
         const registrationInfos: RegistrationInfo[] =
-          await formatRegistrationInfoResponses(registrationInfoResponses);
-        const nftIdentities: NftIdentity[] = await formatNftIdentities(
-          nftResponses
-        );
+          await formatRegistrationInfoResponses(
+            registrationInfoResponses
+          );
+        const nftIdentities: NftIdentity[] =
+          await formatNftIdentities(nftResponses);
 
         return {
           registrationInfos,
@@ -58,7 +63,6 @@ export const hookFactory: UserInfoHookFactory =
       },
       {
         revalidateIfStale: false,
-        revalidateOnFocus: false,
       }
     );
 
@@ -66,7 +70,9 @@ export const hookFactory: UserInfoHookFactory =
       const accounts = await provider?.listAccounts();
 
       if (accounts && accounts[0] && ethereum) {
-        const { data: messageToSign } = await request.post(endpoints.sign);
+        const { data: messageToSign } = await request.post(
+          endpoints.sign
+        );
         return ethereum?.request({
           method: 'personal_sign',
           params: [

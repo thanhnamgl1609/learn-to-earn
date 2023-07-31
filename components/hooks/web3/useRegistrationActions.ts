@@ -45,7 +45,8 @@ type RejectNftIdentityFunc = (params: RejectParams) => Promise<void>;
 type UtilitiesHookFactory =
   HookFactoryWithoutSWR<UseRegistrationActionsReturnTypes>;
 
-export type UseRegistrationActionsHook = ReturnType<UtilitiesHookFactory>;
+export type UseRegistrationActionsHook =
+  ReturnType<UtilitiesHookFactory>;
 
 export const hookFactory: UtilitiesHookFactory =
   ({ contracts }) =>
@@ -63,15 +64,17 @@ export const hookFactory: UtilitiesHookFactory =
           }
         );
         await promiseHandler({
-          successMsg: 'Request sent! Waiting for validating!',
-          errorMsg: 'Error when sending request!',
+          successMsg: 'Đã gửi yêu cầu! Chờ xác nhận...',
+          errorMsg: 'Xảy ra lỗi khi gửi yêu cầu',
           promise,
         });
 
         const registrationInfoResponses =
           await _contracts.nftIdentities?.getAllOwnedRegistrationInfos();
 
-        return formatRegistrationInfoResponses(registrationInfoResponses);
+        return formatRegistrationInfoResponses(
+          registrationInfoResponses
+        );
       },
       [_contracts]
     );
@@ -92,8 +95,8 @@ export const hookFactory: UtilitiesHookFactory =
           tokenURI
         );
         await promiseHandler({
-          successMsg: `Success to grant NFT for ${applicant}`,
-          errorMsg: `Fail to grant NFT for ${applicant}`,
+          successMsg: `Cấp NFT thành công`,
+          errorMsg: `Xảy ra lỗi khi cấp NFT`,
           onSuccess,
           onError,
           promise,
@@ -104,13 +107,14 @@ export const hookFactory: UtilitiesHookFactory =
 
     const rejectNftIdentity: RejectNftIdentityFunc = useCallback(
       async ({ role, applicant, onSuccess, onError }) => {
-        const promise = _contracts.nftIdentities.rejectNftIdentityRegistration(
-          applicant,
-          role
-        );
+        const promise =
+          _contracts.nftIdentities.rejectNftIdentityRegistration(
+            applicant,
+            role
+          );
         await promiseHandler({
-          successMsg: `Success to reject NFT for ${applicant}`,
-          errorMsg: `Fail to reject NFT for ${applicant}`,
+          successMsg: `Từ chối yêu cầu thành công`,
+          errorMsg: `Từ chối yêu cầu thất bại`,
           onSuccess,
           onError,
           promise,
@@ -130,7 +134,7 @@ export const hookFactory: UtilitiesHookFactory =
         const tx = await promise;
 
         const result = await toast.promise(tx!.wait(), {
-          pending: 'Processing...',
+          pending: 'Đang xử lí...',
           success: successMsg,
           error: errorMsg,
         });

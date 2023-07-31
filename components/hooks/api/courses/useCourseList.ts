@@ -12,15 +12,20 @@ export const useCourseListApi = (
 ): SWRResponse<CourseEntity[]> & { revalidate: () => void } => {
   const _query = useMemo(() => {
     const { knowledgeBlockId, ...other } = query || {};
-    if (knowledgeBlockId && parseInt(knowledgeBlockId as string) === 0) {
+    if (
+      knowledgeBlockId &&
+      parseInt(knowledgeBlockId as string) === 0
+    ) {
       return other;
     }
 
     return query;
   }, [query]);
-  const result = useSWR([endpoints.courses, _query], useApi(makeRequest()), {
-    revalidateOnFocus: false,
-  });
+  const result = useSWR(
+    [endpoints.courses, _query],
+    useApi(makeRequest()),
+    {}
+  );
   const revalidate = useCallback(
     () => result.mutate([endpoints.courses, _query]),
     [_query, result]

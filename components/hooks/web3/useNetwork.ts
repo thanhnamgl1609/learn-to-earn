@@ -19,7 +19,10 @@ type UseNetworkResponse = {
   targetNetwork: string;
 };
 
-type NetworkHookFactory = CryptoHookFactory<string, UseNetworkResponse>;
+type NetworkHookFactory = CryptoHookFactory<
+  string,
+  UseNetworkResponse
+>;
 
 export type UseNetworkHook = ReturnType<NetworkHookFactory>;
 
@@ -37,9 +40,7 @@ export const hookFactory: NetworkHookFactory =
 
         return NETWORKS[chainId];
       },
-      {
-        revalidateOnFocus: false,
-      }
+      {}
     );
 
     const isSupported = data == targetNetwork;

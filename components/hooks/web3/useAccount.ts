@@ -10,7 +10,10 @@ type UseAccountResponse = {
   isInstalled: boolean;
 };
 
-type AccountHookFactory = CryptoHookFactory<string, UseAccountResponse>;
+type AccountHookFactory = CryptoHookFactory<
+  string,
+  UseAccountResponse
+>;
 
 export type UseAccountHook = ReturnType<AccountHookFactory>;
 
@@ -29,7 +32,6 @@ export const hookFactory: AccountHookFactory =
         return accounts[0];
       },
       {
-        revalidateOnFocus: false,
         shouldRetryOnError: false,
       }
     );
@@ -38,7 +40,10 @@ export const hookFactory: AccountHookFactory =
       ethereum?.on('accountsChanged', handleAccountsChanged);
 
       return () => {
-        ethereum?.removeListener('accountsChanged', handleAccountsChanged);
+        ethereum?.removeListener(
+          'accountsChanged',
+          handleAccountsChanged
+        );
       };
     }, [ethereum]);
 
@@ -60,7 +65,10 @@ export const hookFactory: AccountHookFactory =
           console.log(users);
         })
         .catch((error) => {
-          console.log('🚀 ~ file: useAccount.ts:56 ~ connect ~ error:', error);
+          console.log(
+            '🚀 ~ file: useAccount.ts:56 ~ connect ~ error:',
+            error
+          );
         });
     };
 

@@ -51,10 +51,7 @@ export const useNftRegistrationClassListApi = (
 
   const result = useSWR(
     [endpoints.nftClassRegistration, query],
-    getter,
-    {
-      revalidateOnFocus: false,
-    }
+    getter
   );
 
   return {

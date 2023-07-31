@@ -38,9 +38,7 @@ export const hookFactory: CourseDetailHookFactory =
     const { data, ...swr } = useSWR(
       contracts ? `web3/useCourseDetail${id}` : null,
       getCourseDetail,
-      {
-        revalidateOnFocus: false,
-      }
+      {}
     );
 
     return {

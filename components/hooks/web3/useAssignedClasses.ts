@@ -17,14 +17,17 @@ type AssignedClassesHookFactory = CryptoHookFactory<
   UseAssignedClassesParams
 >;
 
-export type UseAssignedClassesHook = ReturnType<AssignedClassesHookFactory>;
+export type UseAssignedClassesHook =
+  ReturnType<AssignedClassesHookFactory>;
 
 export const hookFactory: AssignedClassesHookFactory =
   ({ contracts }) =>
   ({ tokenId } = { tokenId: null }) => {
     const getAllClassCaller = useApi(async () => {
       if (!tokenId) return [];
-      const result = await contracts!.school.getAssignedClasses(tokenId);
+      const result = await contracts!.school.getAssignedClasses(
+        tokenId
+      );
 
       return formatClassResponses(result);
     });
@@ -32,9 +35,7 @@ export const hookFactory: AssignedClassesHookFactory =
     const { data, ...swr } = useSWR(
       contracts ? `web3/useAssignedClasses` : null,
       getAllClassCaller,
-      {
-        revalidateOnFocus: false,
-      }
+      {}
     );
 
     return {

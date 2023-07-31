@@ -6,9 +6,11 @@ import { useApi } from '@hooks/common';
 import { Semester } from '@_types/api/semester';
 
 export const useSemesterListApi = (): SWRResponse<Semester[]> => {
-  const result = useSWR([endpoints.semesters], useApi(makeRequest()), {
-    revalidateOnFocus: false,
-  });
+  const result = useSWR(
+    [endpoints.semesters],
+    useApi(makeRequest()),
+    {}
+  );
 
   return result;
 };
