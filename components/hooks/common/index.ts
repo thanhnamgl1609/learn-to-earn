@@ -16,3 +16,4 @@ export { useRequestGraduationPrice } from './useRequestGraduationPrice';
 export { useUpdateScore } from './useUpdateScore';
 export { useUpdateScores } from './useUpdateScores';
 export { useExchangeNftCompleteCourse } from './useExchangeNftCompleteCourse';
+export { useSearchNFT } from './useSearchNFT';

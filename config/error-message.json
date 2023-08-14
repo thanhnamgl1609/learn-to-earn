@@ -1,10 +1,12 @@
 {
   "UNEXPECTED": "Có lỗi xảy ra",
+  "NETWORK_ERROR": "Xảy ra lỗi khi kết nối mạng. Vui lòng thử lại sau!",
   "USER_DENIED": "Hủy yêu cầu",
   "NOT_TEACHER": "Không phải giảng viên",
   "NOT_TEACHER_OF_CLASS": "Không phải giảng viên của lớp",
   "MAPPING": {
-    "USER_DENIED": "User denied"
+    "USER_DENIED": "User denied",
+    "NETWORK_ERROR": "MetaMask is having trouble connecting to the network"
   },
   "UPDATE_ZERO": "Không có gì để cập nhật",
   "NOT_REQUEST_GRADUATION_EXIST": "Không tồn tại đơn xét tốt nghiệp",

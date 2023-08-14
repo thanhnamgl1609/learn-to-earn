@@ -38,6 +38,14 @@ contract NftGraduation is ERC721BaseContract, INftGraduation {
         _nftCompleteCourses = INftCompleteCourses(nftCompleteCourse);
     }
 
+    function getNftGraduationByTokenId(
+        uint256 tokenId
+    ) public view returns (NftGraduation memory) {
+        uint256 pos = _posOfNftGraduationTokenId[tokenId];
+
+        return _allNftGraduations[pos - 1];
+    }
+
     function getNftGraduation(
         uint256 studentTokenId
     ) public view returns (NftGraduation memory) {

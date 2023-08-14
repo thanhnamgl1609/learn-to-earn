@@ -213,18 +213,18 @@
     "absolutePath": "project:/blockchain/contracts/interfaces/INftClassRegistration.sol",
     "exportedSymbols": {
       "IConstant": [
-        8926
+        8967
       ],
       "INftClassRegistration": [
-        8962
+        9003
       ]
     },
-    "id": 8963,
+    "id": 9004,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 8928,
+        "id": 8969,
         "literals": [
           "solidity",
           "^",
@@ -237,11 +237,11 @@
       {
         "absolutePath": "project:/blockchain/contracts/interfaces/IConstant.sol",
         "file": "./IConstant.sol",
-        "id": 8929,
+        "id": 8970,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 8963,
-        "sourceUnit": 8927,
+        "scope": 9004,
+        "sourceUnit": 8968,
         "src": "130:25:27",
         "symbolAliases": [],
         "unitAlias": ""
@@ -251,13 +251,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 8930,
+              "id": 8971,
               "name": "IConstant",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 8926,
+              "referencedDeclaration": 8967,
               "src": "194:9:27"
             },
-            "id": 8931,
+            "id": 8972,
             "nodeType": "InheritanceSpecifier",
             "src": "194:9:27"
           }
@@ -266,10 +266,10 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 8962,
+        "id": 9003,
         "linearizedBaseContracts": [
-          8962,
-          8926
+          9003,
+          8967
         ],
         "name": "INftClassRegistration",
         "nameLocation": "169:21:27",
@@ -277,7 +277,7 @@
         "nodes": [
           {
             "functionSelector": "256283ed",
-            "id": 8940,
+            "id": 8981,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -285,17 +285,17 @@
             "nameLocation": "220:21:27",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8934,
+              "id": 8975,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8933,
+                  "id": 8974,
                   "mutability": "mutable",
                   "name": "classId",
                   "nameLocation": "260:7:27",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8940,
+                  "scope": 8981,
                   "src": "252:15:27",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -304,7 +304,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8932,
+                    "id": 8973,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "252:7:27",
@@ -319,47 +319,47 @@
               "src": "241:33:27"
             },
             "returnParameters": {
-              "id": 8939,
+              "id": 8980,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8938,
+                  "id": 8979,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8940,
+                  "scope": 8981,
                   "src": "298:28:27",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_struct$_NftIdentityResponse_$8925_memory_ptr_$dyn_memory_ptr",
+                    "typeIdentifier": "t_array$_t_struct$_NftIdentityResponse_$8966_memory_ptr_$dyn_memory_ptr",
                     "typeString": "struct IConstant.NftIdentityResponse[]"
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 8936,
+                      "id": 8977,
                       "nodeType": "UserDefinedTypeName",
                       "pathNode": {
-                        "id": 8935,
+                        "id": 8976,
                         "name": "NftIdentityResponse",
                         "nodeType": "IdentifierPath",
-                        "referencedDeclaration": 8925,
+                        "referencedDeclaration": 8966,
                         "src": "298:19:27"
                       },
-                      "referencedDeclaration": 8925,
+                      "referencedDeclaration": 8966,
                       "src": "298:19:27",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_NftIdentityResponse_$8925_storage_ptr",
+                        "typeIdentifier": "t_struct$_NftIdentityResponse_$8966_storage_ptr",
                         "typeString": "struct IConstant.NftIdentityResponse"
                       }
                     },
-                    "id": 8937,
+                    "id": 8978,
                     "nodeType": "ArrayTypeName",
                     "src": "298:21:27",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_struct$_NftIdentityResponse_$8925_storage_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_struct$_NftIdentityResponse_$8966_storage_$dyn_storage_ptr",
                       "typeString": "struct IConstant.NftIdentityResponse[]"
                     }
                   },
@@ -368,7 +368,7 @@
               ],
               "src": "297:30:27"
             },
-            "scope": 8962,
+            "scope": 9003,
             "src": "211:117:27",
             "stateMutability": "view",
             "virtual": false,
@@ -376,7 +376,7 @@
           },
           {
             "functionSelector": "a24a7c30",
-            "id": 8948,
+            "id": 8989,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -384,17 +384,17 @@
             "nameLocation": "345:23:27",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8943,
+              "id": 8984,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8942,
+                  "id": 8983,
                   "mutability": "mutable",
                   "name": "tokenId",
                   "nameLocation": "387:7:27",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8948,
+                  "scope": 8989,
                   "src": "379:15:27",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -403,7 +403,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8941,
+                    "id": 8982,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "379:7:27",
@@ -418,38 +418,38 @@
               "src": "368:33:27"
             },
             "returnParameters": {
-              "id": 8947,
+              "id": 8988,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8946,
+                  "id": 8987,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8948,
+                  "scope": 8989,
                   "src": "425:27:27",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_NftClassRegistration_$8883_memory_ptr",
+                    "typeIdentifier": "t_struct$_NftClassRegistration_$8924_memory_ptr",
                     "typeString": "struct IConstant.NftClassRegistration"
                   },
                   "typeName": {
-                    "id": 8945,
+                    "id": 8986,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 8944,
+                      "id": 8985,
                       "name": "NftClassRegistration",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 8883,
+                      "referencedDeclaration": 8924,
                       "src": "425:20:27"
                     },
-                    "referencedDeclaration": 8883,
+                    "referencedDeclaration": 8924,
                     "src": "425:20:27",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_NftClassRegistration_$8883_storage_ptr",
+                      "typeIdentifier": "t_struct$_NftClassRegistration_$8924_storage_ptr",
                       "typeString": "struct IConstant.NftClassRegistration"
                     }
                   },
@@ -458,7 +458,7 @@
               ],
               "src": "424:29:27"
             },
-            "scope": 8962,
+            "scope": 9003,
             "src": "336:118:27",
             "stateMutability": "view",
             "virtual": false,
@@ -466,7 +466,7 @@
           },
           {
             "functionSelector": "8e053c70",
-            "id": 8961,
+            "id": 9002,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -474,17 +474,17 @@
             "nameLocation": "471:8:27",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 8953,
+              "id": 8994,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8950,
+                  "id": 8991,
                   "mutability": "mutable",
                   "name": "sender",
                   "nameLocation": "498:6:27",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8961,
+                  "scope": 9002,
                   "src": "490:14:27",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -493,7 +493,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 8949,
+                    "id": 8990,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "490:7:27",
@@ -507,12 +507,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 8952,
+                  "id": 8993,
                   "mutability": "mutable",
                   "name": "tokenId",
                   "nameLocation": "523:7:27",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8961,
+                  "scope": 9002,
                   "src": "515:15:27",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -521,7 +521,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 8951,
+                    "id": 8992,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "515:7:27",
@@ -536,38 +536,38 @@
               "src": "479:58:27"
             },
             "returnParameters": {
-              "id": 8960,
+              "id": 9001,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 8956,
+                  "id": 8997,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8961,
+                  "scope": 9002,
                   "src": "556:12:27",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Class_$8870_memory_ptr",
+                    "typeIdentifier": "t_struct$_Class_$8911_memory_ptr",
                     "typeString": "struct IConstant.Class"
                   },
                   "typeName": {
-                    "id": 8955,
+                    "id": 8996,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 8954,
+                      "id": 8995,
                       "name": "Class",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 8870,
+                      "referencedDeclaration": 8911,
                       "src": "556:5:27"
                     },
-                    "referencedDeclaration": 8870,
+                    "referencedDeclaration": 8911,
                     "src": "556:5:27",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Class_$8870_storage_ptr",
+                      "typeIdentifier": "t_struct$_Class_$8911_storage_ptr",
                       "typeString": "struct IConstant.Class"
                     }
                   },
@@ -575,33 +575,33 @@
                 },
                 {
                   "constant": false,
-                  "id": 8959,
+                  "id": 9000,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 8961,
+                  "scope": 9002,
                   "src": "570:18:27",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_NftIdentity_$8915_memory_ptr",
+                    "typeIdentifier": "t_struct$_NftIdentity_$8956_memory_ptr",
                     "typeString": "struct IConstant.NftIdentity"
                   },
                   "typeName": {
-                    "id": 8958,
+                    "id": 8999,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 8957,
+                      "id": 8998,
                       "name": "NftIdentity",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 8915,
+                      "referencedDeclaration": 8956,
                       "src": "570:11:27"
                     },
-                    "referencedDeclaration": 8915,
+                    "referencedDeclaration": 8956,
                     "src": "570:11:27",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_NftIdentity_$8915_storage_ptr",
+                      "typeIdentifier": "t_struct$_NftIdentity_$8956_storage_ptr",
                       "typeString": "struct IConstant.NftIdentity"
                     }
                   },
@@ -610,14 +610,14 @@
               ],
               "src": "555:34:27"
             },
-            "scope": 8962,
+            "scope": 9003,
             "src": "462:128:27",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 8963,
+        "scope": 9004,
         "src": "159:434:27",
         "usedErrors": []
       }
@@ -630,7 +630,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-07-20T00:38:45.190Z",
+  "updatedAt": "2023-08-12T04:30:07.193Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

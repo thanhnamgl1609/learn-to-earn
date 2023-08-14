@@ -1,5 +1,5 @@
 export type UserEntity = {
-  id: number;
+  id?: number;
   profileImage: string;
   tokenId: number;
   fullName: string;
@@ -12,7 +12,7 @@ export type UserEntity = {
   phone: string;
   role: number;
   status: number;
-  registerAddress: string;
+  registerAddress?: string;
   registerDate: Date;
   approveDate: Date;
   expiredAt: Date;
@@ -35,11 +35,11 @@ export type DocumentURI = {
 };
 
 export type CourseEntity = {
-  id: number;
+  id?: number;
   knowledgeBlockId: number;
   onChainId: number | null;
   courseCode: string;
-  prevCourseId: number | null;
+  prevCourseId?: number | null;
   name: string;
   credits: number;
   status: number;
@@ -55,7 +55,7 @@ export type CourseEntity = {
 };
 
 export type ClassEntity = {
-  id: number;
+  id?: number;
   onChainId: number;
   courseCode: string;
   knowledgeBlockId: number;
@@ -65,7 +65,7 @@ export type ClassEntity = {
   maxSize: number;
   teacherTokenId: number;
   chainURI: string;
-  semesterId: number;
+  semesterId?: number;
 
   numberOfStudents?: number;
   registerClassFee?: number;
@@ -108,7 +108,7 @@ export type NftClassRegistrationEntity = {
 };
 
 export type NftCompleteCourseEntity = {
-  id: number;
+  id?: number;
   tokenId: number;
   studentTokenId: number;
   classId: number;
@@ -152,12 +152,15 @@ export type RequestGraduationEntity = {
 };
 
 export type NftGraduationEntity = {
-  id: number;
+  id?: number;
   tokenId: number;
   studentTokenId: number;
   nftCompleteCourseIds: number[];
   grantDate: Date;
   uri: string;
+  nationalDefenseEduCertificate?: string;
+  foreignLanguageCertificate?: string;
+  otherCertificates?: string[];
 
   nftCompleteCourses: NftCompleteCourseEntity[];
   nftCompleteCourseGraduationRelations?: NftCompleteCourseGraduationRelation[];

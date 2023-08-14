@@ -40,3 +40,7 @@ export type CreatedNftClassRegistration = {
 
 export type NftClassRegistrationEntityWithApproveStatus =
   NftClassRegistrationEntity & {};
+
+export type AssignedClassQuery = {
+  teacherTokenId: number;
+}

@@ -47,7 +47,7 @@ export const useRegisterNftIdentity = () => {
             data: { ...data, target: UPLOAD_TARGET.REGISTRATION },
             getSignedData,
             successText:
-              'Your profile is uploaded! Please wait for sending request!',
+              'Đã update thông tin của bạn! Đang gửi yêu cầu...',
           })
         ).unwrap();
         await registerNftIdentity(role, link);

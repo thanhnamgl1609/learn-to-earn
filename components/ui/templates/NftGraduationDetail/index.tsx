@@ -2,18 +2,23 @@ import CONST from 'config/constants.json';
 import { KnowledgeBlockEntityWithGain } from '@_types/api/certificates';
 import {
   ClassEntity,
+  KnowledgeBlockEntity,
   NftCompleteCourseEntity,
+  NftGraduationEntity,
 } from '@_types/models/entities';
-import { useAppSelector } from '@hooks/stores';
-import { selectUserDetail } from '@store/userSlice';
 import { BaseLayout } from '@templates';
 import { Table } from '@organisms';
 import { Box, InputField, LinkField } from '@molecules';
 import { Heading } from '@atoms';
 import { floor, formatDate } from 'utils';
-import { ChangeEvent, Fragment, useMemo } from 'react';
+import { ChangeEvent, FC, Fragment, useMemo } from 'react';
 import { CheckIcon, XIcon } from '@heroicons/react/solid';
 import { ImageView } from 'components/ui/molecules';
+
+type Props = {
+  knowledgeBlocks: KnowledgeBlockEntity[];
+  nftGraduation: NftGraduationEntity;
+};
 
 type CompleteCourseColumnProps = {
   item: NftCompleteCourseEntity;
@@ -40,12 +45,6 @@ const completeCourseTableHeaders = [
     name: 'Tên môn học',
   },
   {
-    name: 'Khối kiến thức',
-    custom: ({ knowledgeBlock }: CompleteCourseColumnProps) => (
-      <p>{knowledgeBlock.name}</p>
-    ),
-  },
-  {
     field: 'class.credits',
     name: 'Số tín chỉ',
   },
@@ -65,21 +64,28 @@ const completeCourseTableHeaders = [
   },
 ];
 
-const NftGraduationDetail = () => {
-  const { nftGraduation } = useAppSelector(selectUserDetail);
+export const NftGraduationDetail: FC<Props> = ({
+  nftGraduation,
+  knowledgeBlocks,
+}) => {
   const {
     nftCompleteCourses = [],
     grantDate,
     uri,
-    request,
     tokenId,
-  } = nftGraduation;
-  const {
     otherCertificates = [],
     foreignLanguageCertificate = '',
     nationalDefenseEduCertificate = '',
-  } = request || {};
+  } = nftGraduation;
 
+  const allKnowledgeBlockByIds = useMemo(
+    () =>
+      knowledgeBlocks.reduce(
+        (prev, curr) => ({ ...prev, [curr.onChainId]: curr }),
+        {}
+      ),
+    [knowledgeBlocks]
+  );
   const { totalCredits, avgScore, knowledgeBlockByIds } =
     useMemo(() => {
       let _totalAllCredits = 0;
@@ -90,18 +96,18 @@ const NftGraduationDetail = () => {
         (prev, currSelected) => {
           if (!currSelected) return prev;
 
-          _knowledgeBlocks[
-            currSelected.class.knowledgeBlock.onChainId
-          ] ??= {
-            ...currSelected.class.knowledgeBlock,
+          _knowledgeBlocks[currSelected.class.knowledgeBlockId] ??= {
+            ...allKnowledgeBlockByIds[
+              currSelected.class.knowledgeBlockId
+            ],
             nftCompleteCourses: [],
           };
           _knowledgeBlocks[
-            currSelected.class.knowledgeBlock.onChainId
+            currSelected.class.knowledgeBlockId
           ].nftCompleteCourses.push(currSelected);
 
-          prev[currSelected.class.knowledgeBlock.onChainId] =
-            (prev[currSelected.class.knowledgeBlock.onChainId] ?? 0) +
+          prev[currSelected.class.knowledgeBlockId] =
+            (prev[currSelected.class.knowledgeBlockId] ?? 0) +
             currSelected.class.credits;
 
           _totalAllScore +=
@@ -121,10 +127,10 @@ const NftGraduationDetail = () => {
             : 0,
         knowledgeBlockByIds: _knowledgeBlocks,
       };
-    }, [nftCompleteCourses]);
+    }, [nftCompleteCourses, allKnowledgeBlockByIds]);
 
   return (
-    <BaseLayout>
+    <>
       <Box autoLayout>
         <Heading className="uppercase">
           Danh sách môn học dùng để tốt nghiệp
@@ -216,8 +222,6 @@ const NftGraduationDetail = () => {
           />
         )}
       </Box>
-    </BaseLayout>
+    </>
   );
 };
-
-export default NftGraduationDetail;

@@ -34,7 +34,7 @@ export const useGrantNftIdentity = () => {
         uploadData({
           data: { role, ...metadata, target: UPLOAD_TARGET.APPLY_REGISTRATION },
           signature,
-          successText: 'Metadata is uploaded! Please wait for sending request!',
+          successText: 'Upload metadata thành công! Đang cấp NFT định danh...',
         })
       ).unwrap();
       await grantNftIdentity({

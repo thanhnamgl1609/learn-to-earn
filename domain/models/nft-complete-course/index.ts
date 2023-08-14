@@ -1,6 +1,6 @@
 import { NftCompleteCourseEntity } from '@_types/models/entities';
 import CONST from 'config/constants.json';
-import { classEntity, userEntity } from '..';
+import { classEntity, courseEntity, userEntity } from '..';
 import { dateVO } from '../value-objects';
 
 export const displayGrantDate = ({
@@ -28,6 +28,9 @@ export const displayPublic = ({
   grantDate,
   student: userEntity.displayPublic(student),
   class: classEntity.displayPublic(classInfo),
+  course: classInfo.course
+    ? courseEntity.displayPublic(classInfo.course)
+    : {},
   teacher: userEntity.displayPublic(classInfo.teacher),
 });
 

@@ -13,6 +13,9 @@ export const displayPublic = (userDetail: UserEntity) => ({
   email: userDetail.email,
   personalEmail: userDetail.personalEmail,
   phone: userDetail.phone,
+  registerDate: userDetail.registerDate,
+  approveDate: userDetail.approveDate,
   expiredAt: userDetail.expiredAt,
   chainURI: userDetail.chainURI,
+  identityNumber: userDetail.identityNumber,
 });

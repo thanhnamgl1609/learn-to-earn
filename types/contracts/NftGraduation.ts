@@ -80,6 +80,7 @@ export type NftGraduationMethodNames =
   | 'symbol'
   | 'tokenURI'
   | 'transferFrom'
+  | 'getNftGraduationByTokenId'
   | 'getNftGraduation'
   | 'getOwnedNftGraduation'
   | 'getAllGraduations'
@@ -281,6 +282,17 @@ export interface NftGraduation {
     tokenId: BigNumberish,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param tokenId Type: uint256, Indexed: false
+   */
+  getNftGraduationByTokenId(
+    tokenId: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<NftgraduationResponse>;
   /**
    * Payable: false
    * Constant: true

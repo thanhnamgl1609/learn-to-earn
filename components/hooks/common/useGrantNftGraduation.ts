@@ -5,13 +5,11 @@ import CONST from 'config/constants.json';
 import ROUTES from 'config/routes.json';
 import { useMe, useSyncCreatedNftGraduation } from '@hooks/api';
 import { useAppDispatch, useAppSelector } from '@hooks/stores';
-import { useNftCompleteCourseListGetter } from '@hooks/api/classes';
 import { useCertificateActions, useUtilities } from '@hooks/web3';
 import { nftCompleteCourseEntity, userEntity } from 'domain/models';
 import { selectUser, selectUserDetail } from '@store/userSlice';
 import { uploadData } from '@store/actions';
 import { useApi } from './useApi';
-import { priceVO } from 'domain/models/value-objects';
 import { RequestGraduationEntity } from '@_types/models/entities';
 
 type Params = {

@@ -13,12 +13,24 @@ import {
   addNftCompleteCourseCreatedEvent,
   addNftGraduationCreatedEvent,
 } from '@events';
+import {
+  NftCompleteCourseEntity,
+  NftGraduationEntity,
+} from '@_types/models/entities';
+import {
+  formatNftCompleteCourse,
+  formatNftGraduation,
+} from './formatter/certificates';
 
 type ExchangeNftGraduationFunc = {
   (
     data: ExchangeNftGraduationParams,
     onSuccess: (tokenId: number) => Promise<void>
   ): Promise<void>;
+};
+
+type SearchNFTFunc<ReturnType> = {
+  (tokenId: number): Promise<ReturnType>;
 };
 
 type SetExchangableNftGraduationFunc = {
@@ -46,6 +58,8 @@ type UseCertificateActionsReturnTypes = {
   setExchangableNftGraduation: SetExchangableNftGraduationFunc;
   exchangeNftCompleteCourse: ExchangeNftCompleteCourseFunc;
   exchangeNftGraduation: ExchangeNftGraduationFunc;
+  getNftCompleteCourse: SearchNFTFunc<NftCompleteCourseEntity>;
+  getNftGraduation: SearchNFTFunc<NftGraduationEntity>;
 };
 
 type SchoolActionsHookFactory =
@@ -168,6 +182,35 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
       [_contracts]
     );
 
+  const getNftGraduation: SearchNFTFunc<NftGraduationEntity> =
+    useCallback(async (studentTokenId) => {
+      const { tokenId } =
+        await _contracts.nftGraduation.getNftGraduationByTokenId(
+          studentTokenId
+        );
+      const metadataURI = await _contracts.nftGraduation.tokenURI(
+        tokenId
+      );
+      return formatNftGraduation({
+        tokenId: tokenId.toNumber(),
+        metadataURI,
+      });
+    }, []);
+
+  const getNftCompleteCourse: SearchNFTFunc<NftCompleteCourseEntity> =
+    useCallback(async (tokenId) => {
+      await _contracts.nftCompleteCourses.getNftCompleteCourse(
+        tokenId
+      );
+      const metadataURI = await _contracts.nftCompleteCourses.uri(
+        tokenId
+      );
+      return formatNftCompleteCourse({
+        tokenId,
+        metadataURI,
+      });
+    }, []);
+
   return {
     getOwnedNftCompleteCourse,
     setExchangableNftGraduation,
@@ -175,5 +218,7 @@ export const hookFactory: SchoolActionsHookFactory = (deps) => () => {
     allowRequestNftCompleteCourses,
     exchangeNftCompleteCourse,
     exchangeNftGraduation,
+    getNftCompleteCourse,
+    getNftGraduation,
   };
 };

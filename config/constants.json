@@ -29,14 +29,16 @@
     "TEACHER": 1,
     "VISITOR": 99,
     "REGISTERED": 100,
-    "COUNCIL": 101
+    "COUNCIL": 101,
+    "GUEST": 999
   },
   "ROLE_LABELS": {
     "0": "Student",
     "1": "Teacher",
     "99": "Visitor",
     "100": "Register",
-    "101": "Council"
+    "101": "Council",
+    "999": "Guest"
   },
   "ROLE_LABELS_VI": {
     "0": "Sinh viên",
@@ -93,5 +95,11 @@
     "1": "Chờ xác nhận",
     "2": "Đồng ý yêu cầu",
     "3": "Từ chối yêu cầu"
+  },
+  "NFT_TYPE_KEYS": {
+    "NFT_IDENTITIES": 1,
+    "NFT_CLASS_REGISTRATION": 2,
+    "NFT_COMPLETE_COURSE": 3,
+    "NFT_GRADUATION": 4
   }
 }

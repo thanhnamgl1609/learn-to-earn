@@ -7,7 +7,13 @@ import { Route, RouteConfig } from '@hooks/routes/config';
 import { useAppDispatch } from '@hooks/stores';
 import { useAccount, useUserInfo } from '@hooks/web3';
 import { type RoleType, updateUser } from '@store/userSlice';
-import { Button, CircleBox, CircleButton, CircleLink, Loading } from '@atoms';
+import {
+  Button,
+  CircleBox,
+  CircleButton,
+  CircleLink,
+  Loading,
+} from '@atoms';
 import MetaMaskIcon from './MetaMaskIcon';
 import { useRouter } from 'next/router';
 import { useOwnedUserDetail } from '@hooks/api';
@@ -64,8 +70,20 @@ const SignInSection = ({
   onSelect: OnSelectRole;
 }) => (
   <div className="flex justify-center items-center flex-col">
-    <p className="text-white capitalize text-3xl text-center">Sign In with</p>
+    <p className="text-white capitalize text-3xl text-center">
+      Sign In with
+    </p>
     <div className="mt-4 flex gap-4 justify-center">
+      <Button
+        className="bg-white text-xl uppercase text-gray-800 px-8 py-4"
+        onClick={onSelect({
+          role: ROLES.GUEST,
+          url: RouteConfig[ROLES.GUEST].default,
+          roleType: ROLES.GUEST,
+        })}
+      >
+        {ROLE_LABELS[ROLES.GUEST]}
+      </Button>
       {nftIdentities.map(({ role }) => (
         <Button
           className="bg-white text-xl uppercase text-gray-800 px-8 py-4"
@@ -120,7 +138,9 @@ const SignUpSection = ({
   onSelect: OnSelectRole;
 }) => (
   <div className="flex justify-end items-center flex-col">
-    <p className="text-white capitalize text-3xl text-center">Sign Up with</p>
+    <p className="text-white capitalize text-3xl text-center">
+      Sign Up with
+    </p>
     <div className="mt-4 flex gap-4 justify-center">
       {roles.map((role) => (
         <Button
@@ -196,7 +216,11 @@ const AppLoading: NextPage = () => {
 
   if (account.isLoading) {
     return (
-      <Loading width={64} height={64} className="text-white dark:text-white" />
+      <Loading
+        width={64}
+        height={64}
+        className="text-white dark:text-white"
+      />
     );
   }
 
@@ -255,12 +279,12 @@ const AppLoading: NextPage = () => {
           onSelect={onSelectRole}
         />
       )}
-      {userInfoData.nftIdentities.length > 0 && (
+      {/* {userInfoData.nftIdentities.length > 0 && ( */}
         <SignInSection
           nftIdentities={userInfoData.nftIdentities}
           onSelect={onSelectRole}
         />
-      )}
+      {/* )} */}
       {otherRoles.length > 0 && (
         <SignUpSection roles={otherRoles} onSelect={onSelectRole} />
       )}

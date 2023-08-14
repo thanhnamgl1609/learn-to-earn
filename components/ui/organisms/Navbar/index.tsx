@@ -21,6 +21,7 @@ const navigation = {
   [ROLES.VISITOR]: [],
   [ROLES.REGISTERED]: [],
   [ROLES.COUNCIL]: [],
+  [ROLES.GUEST]: [],
 };
 
 function classNames(...classes: string[]) {

@@ -30,3 +30,11 @@ export const checkCanGraduate = (
 
   return isEnoughTotalCredits && isEnoughForEach;
 };
+
+export const displayPublic = (
+  knowledgeBlocks: KnowledgeBlockEntity
+) => ({
+  name: knowledgeBlocks.name,
+  onChainId: knowledgeBlocks.onChainId,
+  credits: knowledgeBlocks.credits,
+});

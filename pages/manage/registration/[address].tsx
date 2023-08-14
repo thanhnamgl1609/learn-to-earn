@@ -37,7 +37,7 @@ const RegistrationInfoDetail = () => {
       route: { name: managementURL },
     },
     {
-      label: address,
+      label: `${address.substring(0, 4)}...`,
     },
   ];
 

@@ -1,6 +1,7 @@
 import { ClassEntity } from '@_types/models/entities';
 import CONST from 'config/constants.json';
 import { formatDate } from 'utils';
+import { courseEntity, knowledgeBlockEntity } from '..';
 
 const { UI } = CONST;
 
@@ -25,7 +26,10 @@ export const displayRegisterFee = (registerFee?: number) =>
 export const displayClassDetail = (classDetail: ClassEntity) => ({
   ...classDetail,
   startAt: formatDate(classDetail?.startAt, UI.INPUT_DATE_FORMAT),
-  completeAt: formatDate(classDetail?.completeAt, UI.INPUT_DATE_FORMAT),
+  completeAt: formatDate(
+    classDetail?.completeAt,
+    UI.INPUT_DATE_FORMAT
+  ),
   registerClassFee: displayRegisterFee(classDetail?.registerClassFee),
 });
 
@@ -34,7 +38,15 @@ export const displayPublic = (classDetail: ClassEntity) => ({
   knowledgeBlockId: classDetail.knowledgeBlockId,
   teacherTokenId: classDetail.teacherTokenId,
   credits: classDetail.credits,
+  startDate: classDetail.startAt,
   completeAt: classDetail.completeAt,
   maxSize: classDetail.maxSize,
   chainURI: classDetail.chainURI,
+  semesterId: classDetail.semesterId,
+  course: classDetail.course
+    ? courseEntity.displayPublic(classDetail.course)
+    : {},
+  knowledgeBlock: classDetail?.knowledgeBlock
+    ? knowledgeBlockEntity.displayPublic(classDetail.knowledgeBlock)
+    : {},
 });

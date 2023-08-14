@@ -12,8 +12,8 @@ export type Semester = {
 }
 
 export type SemesterDetail = Semester & {
-  isCurrent: boolean;
-  isPast: boolean;
+  isCurrent?: boolean;
+  isPast?: boolean;
   registerStartAt?: Date;
   registerEndAt?: Date;
 }

@@ -6,3 +6,4 @@ export { TeacherProfile } from './TeacherProfile';
 export { StudentProfile } from './StudentProfile';
 export { default as ClassDetailCouncil } from './ClassDetailCouncil';
 export { default as ClassDetailTeacher } from './ClassDetailTeacher';
+export { DisplayNFT } from './DisplayNFT';

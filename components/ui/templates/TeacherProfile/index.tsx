@@ -1,9 +1,7 @@
 import _ from 'lodash';
 
-import { Class } from '@_types/school';
 import ROUTES from '@config/routes.json';
 import CONST from '@config/constants.json';
-import { useAssignedClasses } from '@hooks/web3';
 import { Box } from '@molecules';
 import { Table } from '@organisms';
 import { Heading, Link } from '@atoms';
@@ -91,7 +89,7 @@ const classTableHeaders = [
 ];
 export const TeacherProfile = () => {
   const { tokenId } = useAppSelector(selectCurrentNftIdentity);
-  const { data: assignedClasses = [] } = useAssignedClassesApi({ tokenId });
+  const { data: assignedClasses = [] } = useAssignedClassesApi({ teacherTokenId: tokenId });
 
   return (
     <Box className="px-8 py-6" autoLayout>

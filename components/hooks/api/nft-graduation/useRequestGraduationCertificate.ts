@@ -5,7 +5,7 @@ import { ClassEntity } from '@_types/models/entities';
 import { useValidator } from '@hooks/form';
 import { useAppSelector } from '@hooks/stores';
 import { useUtilities } from '@hooks/web3';
-import { useSyncRequestGraduationDetail } from '@hooks/api';
+import { useMe, useSyncRequestGraduationDetail } from '@hooks/api';
 import { selectUser } from '@store/userSlice';
 import { REQUEST_NFT_GRADUATION } from '@validators/schemas';
 import { useApi } from '../../common/useApi';
@@ -24,6 +24,7 @@ export const useRequestGraduationCertificate = () => {
   const validator = useValidator(REQUEST_NFT_GRADUATION);
   const { getSignedData } = useUtilities();
   const syncDB = useSyncRequestGraduationDetail();
+  const fetchMe = useMe();
 
   return useApi(
     async (formData: FormData) => {
@@ -49,6 +50,7 @@ export const useRequestGraduationCertificate = () => {
           studentTokenId,
         },
       });
+      await fetchMe();
       router.push(ROUTES.myRequestGraduation.name);
     },
     [detail]

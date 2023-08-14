@@ -1,4 +1,5 @@
 {
+  "search": { "name": "/search", "as": "/" },
   "home": { "name": "/" },
   "manage": { "name": "/manage", "as": "/" },
   "register": { "name": "/register/:role" },

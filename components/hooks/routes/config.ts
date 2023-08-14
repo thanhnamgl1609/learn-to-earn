@@ -64,6 +64,10 @@ const RouteConfig: RouteConfigType = {
     [Routes.graduationList.name]: Routes.graduationList,
     [Routes.graduationDetail.name]: Routes.graduationDetail,
   },
+  [ROLES.GUEST]: {
+    default: Routes.search,
+    [Routes.search.name]: Routes.search,
+  },
 };
 
 export { RouteConfig, DEFAULT_ROUTE };

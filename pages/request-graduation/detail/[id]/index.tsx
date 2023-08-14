@@ -162,7 +162,7 @@ const RequestGraduation = () => {
             </h3>
             <p>
               <label className="font-medium inline-block min-w-[56px]">
-                Sinh viên:
+                Sinh viên
               </label>
               : {requestGraduationDetail.student.fullName}
             </p>
@@ -191,7 +191,7 @@ const RequestGraduation = () => {
             </h3>
             <p>
               <label className="font-medium inline-block min-w-[56px]">
-                Sinh viên:
+                Sinh viên
               </label>
               : {requestGraduationDetail.student.fullName}
             </p>

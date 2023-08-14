@@ -21,6 +21,7 @@ const withAuth =
 
       return route;
     }, [role]);
+    console.log("🚀 ~ file: withAuth.tsx:24 ~ currentRoute ~ currentRoute:", currentRoute)
 
     useEffect(() => {
       if (!currentRoute) {
