@@ -116,29 +116,14 @@ contract NftCompleteCourses is ERC1155BaseContract, INftCompleteCourses {
         return _completedCoursesOfStudent[studentTokenId][courseId];
     }
 
-    function checkApproveOwnerForAllNft() public view returns (bool) {
-        return isApprovedForAll(msg.sender, _owner);
-    }
+    function regainNftCompleteCourses(
+        uint256 studentTokenId,
+        uint256[] memory tokenIds
+    ) public {
+        require(msg.sender == address(_nftGraduation), "NCC-ERR-01");
+        require(_nftGraduation.checkExchangeable(studentTokenId), "NCC-ERR-03");
+        address sender = _nftIdentities.ownerOf(studentTokenId);
 
-    function checkApprovedForAll(
-        address sender,
-        address owner
-    ) public view returns (bool) {
-        return isApprovedForAll(sender, owner);
-    }
-
-    function approveOwnerForAllNft(bool approved) public {
-        setApprovalForAll(_owner, approved);
-    }
-
-    function regainNftCompleteCourses(uint256 studentTokenId) public onlyOwner {
-        address studentAddr = _nftIdentities.ownerOf(studentTokenId);
-        require(
-            checkApprovedForAll(studentAddr, _owner),
-            "not approved by student"
-        );
-        uint256[] memory tokenIds = _nftGraduation
-            .getNftCompleteCourseForRequestGraduation(studentTokenId);
         uint256 count = tokenIds.length;
         uint256[] memory amounts = new uint256[](count);
 
@@ -146,7 +131,7 @@ contract NftCompleteCourses is ERC1155BaseContract, INftCompleteCourses {
             amounts[idx] = 1;
         }
 
-        _burnBatch(studentAddr, tokenIds, amounts);
+        _burnBatch(sender, tokenIds, amounts);
         _removeFromAllNftCompleteCourses(studentTokenId, tokenIds);
     }
 

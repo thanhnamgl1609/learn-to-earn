@@ -21,9 +21,11 @@ export default (sequelize: Sequelize) => {
       requestDate: DataTypes.STRING,
       nationalDefenseEduCertificate: DataTypes.STRING,
       foreignLanguageCertificate: DataTypes.STRING,
-      requestPrice: DataTypes.FLOAT,
       otherCertificates: DataTypes.JSON,
-      uri: DataTypes.STRING,
+      status: {
+        type: DataTypes.NUMBER,
+        defaultValue: 1,
+      },
     },
     {
       sequelize,

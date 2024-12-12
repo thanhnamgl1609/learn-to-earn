@@ -72,19 +72,22 @@ export type CreatedNftGraduation = {
   uri: string;
 };
 
-export type CreatedRequestGraduation = {
+export type ReceivedCreatedRequestGraduation = {
   studentTokenId: number;
   nftCompleteCourseTokenIds: number[];
-  uri: string;
   nationalDefenseEduCertificate?: string;
   foreignLanguageCertificate?: string;
-  requestPrice?: string;
   otherCertificates?: string[];
 };
+
+export type CreatedRequestGraduation = {
+  requestDate: Date;
+} & ReceivedCreatedRequestGraduation;
 
 export type RequestGraduationQuery = {
   id?: number;
   studentTokenId?: number;
+  status?: number;
 };
 
 export type RequestGraduationListQuery = {};
@@ -93,4 +96,9 @@ export type UpdateScoreForNftClassRegistrationBodyData = {
   score: number;
   tokenId: number;
   teacherTokenId: number;
+};
+
+export type UpdateRequestGraduationStatusParams = {
+  requestGraduationId: number;
+  isApproved: boolean;
 };

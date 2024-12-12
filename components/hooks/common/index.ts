@@ -14,7 +14,6 @@ export { useRequestCompleteCourseCertificate } from './useRequestCompleteCourseC
 export { useGrantNftCompleteCourse } from './useGrantNftCompleteCourse';
 export { usePromiseHandler } from './usePromiseHandler';
 export { useGrantNftGraduation } from './useGrantNftGraduation';
-export { useRequestGraduationCertificate } from './useRequestGraduationCertificate';
 export { useRequestGraduationPrice } from './useRequestGraduationPrice';
 export { useUpdateScore } from './useUpdateScore';
 export { useExchangeNftCompleteCourse } from './useExchangeNftCompleteCourse';

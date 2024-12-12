@@ -22,5 +22,6 @@
   "assignedClasses": "/api/v1/classes/assigned",
   "knowledgeBlocks": "/api/v1/knowledge-blocks",
   "requestGraduationList": "/api/v1/graduation/request",
-  "requestGraduationDetail": "/api/v1/graduation/request/detail"
+  "requestGraduationDetail": "/api/v1/graduation/request/detail",
+  "requestGraduationStatus": "/api/v1/graduation/request/status"
 }

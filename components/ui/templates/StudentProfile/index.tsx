@@ -18,18 +18,22 @@ import {
 } from '@hooks/api/classes';
 import { NftClassRegistrationDetailModal } from '@templates/Modal';
 import { useModalController } from '@hooks/ui';
-import { useCallback, useState } from 'react';
-import { selectCurrentNftIdentity, selectUserDetail } from '@store/userSlice';
+import { useCallback, useMemo, useState } from 'react';
+import {
+  selectCurrentNftIdentity,
+  selectUserDetail,
+} from '@store/userSlice';
 import { useExchangeNftCompleteCourse } from '@hooks/common';
 import { knowledgeBlockEntity } from 'domain/models';
-import { useRequestGraduationStatus } from '@hooks/api';
 
 type ClassColumnProps = {
   item: NftClassRegistrationEntityWithApproveStatus;
-  onOpenNftModal: (nft: NftClassRegistrationEntityWithApproveStatus) => void;
+  onOpenNftModal: (
+    nft: NftClassRegistrationEntityWithApproveStatus
+  ) => void;
 };
 
-const { DATE_TIME } = CONST;
+const { DATE_TIME, REQUEST_STATUS, REQUEST_STATUS_TEXT } = CONST;
 
 const classTableHeaders = [
   {
@@ -47,7 +51,9 @@ const classTableHeaders = [
   {
     field: 'class.credits',
     name: 'Số tín chỉ',
-    custom: ({ item }: ClassColumnProps) => <p>{item.class.credits}</p>,
+    custom: ({ item }: ClassColumnProps) => (
+      <p>{item.class.credits}</p>
+    ),
   },
   {
     field: 'class.numberOfStudents',
@@ -72,7 +78,8 @@ const classTableHeaders = [
   {
     name: 'Hành động',
     custom: ({ item, onOpenNftModal }: ClassColumnProps) => {
-      const exchangeNftCompleteCourse = useExchangeNftCompleteCourse();
+      const exchangeNftCompleteCourse =
+        useExchangeNftCompleteCourse();
       const onExchangeNftCompleteCourse = useCallback(
         () => exchangeNftCompleteCourse(item),
         [item]
@@ -107,34 +114,40 @@ const classTableHeaders = [
 export const StudentProfile = () => {
   const detail = useAppSelector(selectUserDetail);
   const { tokenId } = useAppSelector(selectCurrentNftIdentity);
-  const { data: registeredClasses = [] } = useNftRegistrationClassListApi({
-    tokenId,
-    isRegained: 0,
-  });
+  const { data: registeredClasses = [] } =
+    useNftRegistrationClassListApi({
+      tokenId,
+      isRegained: 0,
+    });
   const {
     data: knowledgeBlocks = knowledgeBlockEntity.createDefaultKnowledgeBlockList(),
   } = useNftCompleteCourseListGroupApi({
     studentTokenId: tokenId,
   });
-  const [isNFTModalOpen, openNftModal, closeNFTModal] = useModalController();
+  const [isNFTModalOpen, openNftModal, closeNFTModal] =
+    useModalController();
   const [nftClassRegistrationDetail, setNftClassRegistrationDetail] =
     useState<NftClassRegistrationEntity | null>(null);
-  const {
-    data: { isInQueue } = {
-      isInQueue: false,
-      isApprovedSent: false,
-    },
-  } = useRequestGraduationStatus();
-  const totalRequiredCredits = knowledgeBlockEntity.getTotalRequiredCredits(
-    knowledgeBlocks.list as KnowledgeBlockEntity[]
-  );
+  const { requestGraduation } = detail;
+  const totalRequiredCredits =
+    knowledgeBlockEntity.getTotalRequiredCredits(
+      knowledgeBlocks.list as KnowledgeBlockEntity[]
+    );
   const isGraduated = !!detail.nftGraduation;
+  const isRequestPending =
+    requestGraduation?.status === REQUEST_STATUS.PENDING;
   const canRequestGraduation =
     knowledgeBlockEntity.checkCanGraduate(knowledgeBlocks);
-  const requestGraduationText = isInQueue
-    ? 'Xem yêu cầu xét tốt nghiệp'
-    : 'Yêu cầu xét tốt nghiệp';
-  const onOpenNftModal = (nftClassRegistration: NftClassRegistrationEntity) => {
+  const requestStatusText = useMemo(() => {
+    if (!requestGraduation) {
+      return 'Chưa có';
+    }
+
+    return REQUEST_STATUS_TEXT[requestGraduation.status];
+  }, [requestGraduation]);
+  const onOpenNftModal = (
+    nftClassRegistration: NftClassRegistrationEntity
+  ) => {
     openNftModal();
     setNftClassRegistrationDetail(nftClassRegistration);
   };
@@ -195,6 +208,15 @@ export const StudentProfile = () => {
               disabled
             />
 
+            <InputField
+              containerClassName="flex items-center gap-[24px]"
+              className="mt-0 flex-1"
+              labelClassName="min-w-[200px]"
+              label="Tình trạng xét tốt nghiệp"
+              value={requestStatusText}
+              disabled
+            />
+
             {isGraduated ? (
               <LinkBox
                 className="inline-block ml-auto"
@@ -204,19 +226,29 @@ export const StudentProfile = () => {
                 Xem NFT tốt nghiệp
               </LinkBox>
             ) : (
-              <LinkBox
-                className="inline-block ml-auto"
-                href={
-                  isInQueue
-                    ? ROUTES.myRequestGraduation.name
-                    : ROUTES.requestGraduation.name
-                }
-                theme="main"
-                disabledContainerClassName="inline-block ml-auto"
-                disabled={!canRequestGraduation}
-              >
-                {requestGraduationText}
-              </LinkBox>
+              <>
+                {!isRequestPending && (
+                  <LinkBox
+                    className="inline-block ml-auto"
+                    href={ROUTES.requestGraduation.name}
+                    theme="main"
+                    disabledContainerClassName="inline-block ml-auto"
+                    disabled={!canRequestGraduation}
+                  >
+                    Yêu cầu xét tốt nghiệp
+                  </LinkBox>
+                )}
+
+                {requestGraduation && (
+                  <LinkBox
+                    className="inline-block ml-auto"
+                    href={ROUTES.myRequestGraduation.name}
+                    theme="main"
+                  >
+                    Xem yêu cầu xét tốt nghiệp
+                  </LinkBox>
+                )}
+              </>
             )}
           </div>
 

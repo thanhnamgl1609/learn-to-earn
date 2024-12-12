@@ -1,6 +1,9 @@
 import CONST from 'config/constants.json';
 import { KnowledgeBlockEntityWithGain } from '@_types/api/certificates';
-import { ClassEntity, NftCompleteCourseEntity } from '@_types/models/entities';
+import {
+  ClassEntity,
+  NftCompleteCourseEntity,
+} from '@_types/models/entities';
 import { useAppDispatch } from '@hooks/stores';
 import { BaseLayout } from '@templates';
 import { Table } from '@organisms';
@@ -9,7 +12,10 @@ import { Button, Heading } from '@atoms';
 import { floor, formatDate } from 'utils';
 import { ChangeEvent, Fragment, useMemo } from 'react';
 import { CheckIcon, XIcon } from '@heroicons/react/solid';
-import { useRequestGraduationDetail } from '@hooks/api';
+import {
+  useRequestGraduationDetail,
+  useUpdateRequestGraduationStatus,
+} from '@hooks/api';
 import { ImageView } from 'components/ui/molecules';
 import { priceVO } from 'domain/models/value-objects';
 import { useRouter } from 'next/router';
@@ -76,73 +82,85 @@ const RequestGraduation = () => {
   const { id: _studentTokenId } = router.query as Query;
   const studentTokenId = parseInt(_studentTokenId);
   const dispatch = useAppDispatch();
-  const { data: requestGraduationDetail } = useRequestGraduationDetail({
-    studentTokenId,
-  });
+  const { data: requestGraduationDetail } =
+    useRequestGraduationDetail({
+      studentTokenId,
+    });
   const {
     nftCompleteCourses = [],
     nationalDefenseEduCertificate,
     foreignLanguageCertificate,
     otherCertificates = [],
-    requestPrice,
-    uri,
     student,
   } = requestGraduationDetail || {};
-  const grantNftGraduation = useGrantNftGraduation();
+  const updateRequestGraduationStatus =
+    useUpdateRequestGraduationStatus();
 
-  const { totalCredits, avgScore, knowledgeBlockByIds } = useMemo(() => {
-    let _totalAllCredits = 0;
-    let _totalAllScore = 0;
-    let _knowledgeBlocks: Record<string, any> = {};
+  const { totalCredits, avgScore, knowledgeBlockByIds } =
+    useMemo(() => {
+      let _totalAllCredits = 0;
+      let _totalAllScore = 0;
+      let _knowledgeBlocks: Record<string, any> = {};
 
-    const _totalCredits = Object.values(nftCompleteCourses).reduce(
-      (prev, currSelected) => {
-        if (!currSelected) return prev;
+      const _totalCredits = Object.values(nftCompleteCourses).reduce(
+        (prev, currSelected) => {
+          if (!currSelected) return prev;
 
-        _knowledgeBlocks[currSelected.class.knowledgeBlock.onChainId] ??= {
-          ...currSelected.class.knowledgeBlock,
-          nftCompleteCourses: [],
-        };
-        _knowledgeBlocks[
-          currSelected.class.knowledgeBlock.onChainId
-        ].nftCompleteCourses.push(currSelected);
+          _knowledgeBlocks[
+            currSelected.class.knowledgeBlock.onChainId
+          ] ??= {
+            ...currSelected.class.knowledgeBlock,
+            nftCompleteCourses: [],
+          };
+          _knowledgeBlocks[
+            currSelected.class.knowledgeBlock.onChainId
+          ].nftCompleteCourses.push(currSelected);
 
-        prev[currSelected.class.knowledgeBlock.onChainId] =
-          (prev[currSelected.class.knowledgeBlock.onChainId] ?? 0) +
-          currSelected.class.credits;
+          prev[currSelected.class.knowledgeBlock.onChainId] =
+            (prev[currSelected.class.knowledgeBlock.onChainId] ?? 0) +
+            currSelected.class.credits;
 
-        _totalAllScore += currSelected.avgScore * currSelected.class.credits;
-        _totalAllCredits += currSelected.class.credits;
+          _totalAllScore +=
+            currSelected.avgScore * currSelected.class.credits;
+          _totalAllCredits += currSelected.class.credits;
 
-        return prev;
+          return prev;
+        },
+        {} as { [k: number]: number }
+      );
+
+      return {
+        totalCredits: _totalCredits,
+        avgScore:
+          _totalAllCredits > 0
+            ? floor(_totalAllScore / _totalAllCredits, 2)
+            : 0,
+        knowledgeBlockByIds: _knowledgeBlocks,
+      };
+    }, [nftCompleteCourses]);
+
+  const onUpdateStatusCaller = (isApproved) => () => {
+    updateRequestGraduationStatus({
+      data: {
+        requestGraduationId: requestGraduationDetail.id,
+        isApproved,
       },
-      {} as { [k: number]: number }
-    );
-
-    return {
-      totalCredits: _totalCredits,
-      avgScore:
-        _totalAllCredits > 0 ? floor(_totalAllScore / _totalAllCredits, 2) : 0,
-      knowledgeBlockByIds: _knowledgeBlocks,
-    };
-  }, [nftCompleteCourses]);
+    });
+  };
 
   const onApprove = () => {
-    const caller = () =>
-      grantNftGraduation({
-        request: requestGraduationDetail,
-      });
-
     dispatch(
       openConfirmModal({
         type: 'info',
         header: 'Chú ý',
         content: (
           <>
-            <h3 className="font-bold">Cấp NFT cho sinh viên?</h3>
+            <h3 className="font-bold">
+              Đồng ý với yêu cầu xét tốt nghiệp?
+            </h3>
             <p>
               <label className="font-medium inline-block min-w-[56px]">
-                Họ tên
+                Sinh viên:
               </label>
               : {requestGraduationDetail.student.fullName}
             </p>
@@ -154,24 +172,24 @@ const RequestGraduation = () => {
             </p>
           </>
         ),
-        onAccept: caller,
+        onAccept: onUpdateStatusCaller(true),
       })
     );
   };
 
   const onReject = () => {
-    const caller = () => console.log('hello world');
-
     dispatch(
       openConfirmModal({
         type: 'info',
         header: 'Chú ý',
         content: (
           <>
-            <h3 className="font-bold">Từ chối cấp NFT cho sinh viên?</h3>
+            <h3 className="font-bold">
+              Đồng ý với yêu cầu xét tốt nghiệp?
+            </h3>
             <p>
               <label className="font-medium inline-block min-w-[56px]">
-                Họ tên
+                Sinh viên:
               </label>
               : {requestGraduationDetail.student.fullName}
             </p>
@@ -183,7 +201,7 @@ const RequestGraduation = () => {
             </p>
           </>
         ),
-        onAccept: caller,
+        onAccept: onUpdateStatusCaller(false),
       })
     );
   };
@@ -205,16 +223,6 @@ const RequestGraduation = () => {
           value={avgScore}
           disabled
         />
-        <InputField
-          containerClassName="flex items-center gap-[24px]"
-          labelClassName="min-w-[200px]"
-          className="mt-0"
-          label="Phí gửi yêu cầu"
-          value={priceVO.displayPublic(requestPrice)}
-          disabled
-        />
-
-        <LinkField label="Metadata" text={uri} href={uri} target="_blank" />
 
         {Object.values(knowledgeBlockByIds).map((knowledgeBlock) => (
           <Fragment key={knowledgeBlock.onChainId}>

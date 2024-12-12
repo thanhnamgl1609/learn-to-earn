@@ -10,12 +10,9 @@ type Params = {
   data: {
     studentTokenId: number;
     nftCompleteCourseTokenIds: number[];
-    uri: string;
     nationalDefenseEduCertificate?: string;
     foreignLanguageCertificate?: string;
-    requestPrice?: string;
     others?: string[];
-    requestDate: string;
   };
 };
 

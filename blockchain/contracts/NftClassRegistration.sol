@@ -14,6 +14,7 @@ contract NftClassRegistration is ERC721BaseContract, INftClassRegistration {
     INftCompleteCourses private _nftCompleteCoures;
 
     bool private _isInitialize;
+    address private immutable _schoolAccount;
 
     NftClassRegistration[] private _allNftClassRegistrations;
     mapping(uint256 => uint256) private _posOfNftClassRegistrationTokenId;
@@ -41,11 +42,13 @@ contract NftClassRegistration is ERC721BaseContract, INftClassRegistration {
 
     constructor(
         address nftIdentities,
-        address school
+        address school,
+        address schoolAccount
     ) ERC721BaseContract("NftClassRegistration", "NCR") {
         _isInitialize = false;
         _nftIdentities = INftIdentities(nftIdentities);
         _school = ISchool(school);
+        _schoolAccount = schoolAccount;
     }
 
     function initialize(address nftCompleteCoures) public onlyOwner {
@@ -196,7 +199,8 @@ contract NftClassRegistration is ERC721BaseContract, INftClassRegistration {
         _registeredCourseOfStudent[studentTokenId][class.courseId] = tokenId;
         _tokenIdOfRegisteredClass[studentTokenId][class.id] = tokenId;
         _studentTokenIdsOfClass[class.id].push(studentTokenId);
-
+        payable(_schoolAccount).transfer(msg.value);
+        
         emit NewClassRegistrationCreated(tokenId);
     }
 
